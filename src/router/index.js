@@ -2,6 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
+import Error404 from "../views/Error404.vue"
+
+import DirectSales from "../views/direct_sales/DirectSales.vue"
+import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue"
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,7 +23,25 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
+  },
+  {
+    path: "/lancamentos",
+    component: DirectSales,
+    // props busca itens
+    children: [
+      {
+        path: ":uri",
+        component: DirectSalesDetail,
+        name: "direct-sales-product"
+      }
+    ]
+  },
+  {
+    path: "/lancamento/:uri",
+    component: DirectSalesDetail
+    // props busca itens
+  },
+  { path: "*", component: Error404 }
 ];
 
 const router = new VueRouter({

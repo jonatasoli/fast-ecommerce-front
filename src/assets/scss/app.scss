@@ -5,6 +5,10 @@
 @import "variables";
 
 // 2. Setup your Custom Colors
+$primary: #36454f;
+$primary-invert: findColorInvert($primary);
+$secondary: #E3E97A;
+$secondary-invert: findColorInvert($secondary);
 $linkedin: #0077b5;
 $linkedin-invert: findColorInvert($linkedin);
 $twitter: #55acee;
