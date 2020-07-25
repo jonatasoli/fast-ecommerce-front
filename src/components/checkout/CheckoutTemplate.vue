@@ -98,6 +98,7 @@
               v-model="transaction.credit_card_validate"
               trap-focus
             ></b-datepicker>
+          </b-field>
             <b-field label="Número de Parcelas" :labelPosition="labelPosition">
               <b-select
                 placeholder="Escolha um número de parcelas"
@@ -106,14 +107,12 @@
                 <option v-for="i in transaction.installments" v-bind:key="i.value">{{ i.name }}</option>:
               </b-select>
             </b-field>
-          </b-field>
         </div>
         <b-field class="has-margin-top-1 center-element">
           <b-button
             rounded
             size="is-large"
             type="is-success"
-            pack="fas"
             icon-left="money-check-alt"
             @click.prevent="onSubmit"
             class="is-mobile is-centered"
