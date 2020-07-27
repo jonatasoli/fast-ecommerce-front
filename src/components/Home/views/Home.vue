@@ -1,7 +1,9 @@
 <template>
-  <div class="home">
+  <div class="home-style">
     <NavBar />
+        <v-content>
     <SecondaryNavBar />
+        </v-content>
   </div>
 </template>
 
@@ -16,3 +18,13 @@ export default {
   }
 };
 </script>
+
+
+<style lang="sass" scoped>
+.home-style
+    display: flex
+    flex-flow: row wrap
+    color:"white"
+    background-color: "white"
+    background: "white"
+</style>

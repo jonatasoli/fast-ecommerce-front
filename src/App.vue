@@ -1,8 +1,21 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <v-app>
+    <Home />
+  </v-app>
 </template>
 
-<style lang="scss">
-</style>
+<script>
+import Home from "./components/Home/views/Home";
+
+export default {
+  name: "App",
+
+  components: {
+    Home
+  },
+
+  data: () => ({
+    //
+  })
+};
+</script>

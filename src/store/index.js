@@ -6,9 +6,9 @@ Vue.use(Vuex);
 const state = {
   erro: undefined,
   shopping_cart: [],
-transaction: [],
-    product: [],
-    upsell: [],
+  transaction: [],
+  product: [],
+  upsell: [],
   direct_sales: [],
   checkout: []
 };
@@ -29,7 +29,7 @@ const mutations = {
   [DIRECT_SALE_PRODUCT]: (state, { product }) => {
     console.log(product);
     state.product = product;
-      console.log(state.product);
+    console.log(state.product);
   },
   [DIRECT_SALE_PRODUCT_UPSELL_LIST]: (state, { upsell }) => {
     state.upsell = upsell;
@@ -49,7 +49,7 @@ const actions = {
   },
   getDirectSalesProduct: async ({ commit }, { uri }) => {
     try {
-    console.log(uri);
+      console.log(uri);
       const response = await DirectSalesService.getDirectSalesProduct(uri);
       console.log(response.data);
       commit(types.DIRECT_SALE_PRODUCT, { product: response.data });
@@ -67,9 +67,9 @@ const actions = {
   }
 };
 
-const getters =  {
-    ProductURI: state => uri => state.product.uri === uri
-}
+const getters = {
+  ProductURI: state => uri => state.product.uri === uri
+};
 
 export default new Vuex.Store({
   state,

@@ -26,7 +26,12 @@
             ></b-input>
           </b-field>
           <b-field label="Password">
-            <b-input type="password" expanded v-model="transaction.password" password-reveal></b-input>
+            <b-input
+              type="password"
+              expanded
+              v-model="transaction.password"
+              password-reveal
+            ></b-input>
           </b-field>
         </b-field>
         <h3>Endereço de cobrança</h3>
@@ -55,36 +60,54 @@
           <b-input v-model="transaction.zip"></b-input>
         </b-field>
 
-        <b-checkbox
-          v-model="transaction.shipping_is_payment"
-        >Endereço de cobrança é o mesmo de envio</b-checkbox>
+        <b-checkbox v-model="transaction.shipping_is_payment"
+          >Endereço de cobrança é o mesmo de envio</b-checkbox
+        >
         <h3>Forma de pagamento</h3>
         <div class="block">
           <b-radio
             v-model="transaction.payment_method"
             name="payment-method"
             native-value="credit-cart"
-          >Cartão</b-radio>
+            >Cartão</b-radio
+          >
           <b-radio
             v-model="transaction.payment_method"
             name="payment-method"
             native-value="slip-bank"
-          >Boleto</b-radio>
+            >Boleto</b-radio
+          >
         </div>
         <b-field label="Cartões aceitos" :label-position="labelPosition">
           <b-icon pack="fas" icon="fa-cc-visa" style="color:navy;"></b-icon>
           <b-icon pack="fas" icon="fa-cc-amex" style="color:blue;"></b-icon>
-          <b-icon pack="fas" icon="fa-cc-mastercard" style="color:red;"></b-icon>
-          <b-icon pack="fas" icon="fa-cc-discover" style="color:orange;"></b-icon>
+          <b-icon
+            pack="fas"
+            icon="fa-cc-mastercard"
+            style="color:red;"
+          ></b-icon>
+          <b-icon
+            pack="fas"
+            icon="fa-cc-discover"
+            style="color:orange;"
+          ></b-icon>
         </b-field>
         <b-field label="Nome no cartão" :label-position="labelPosition">
           <b-input v-model="transaction.credit_card_name"></b-input>
         </b-field>
         <b-field label="Numero do cartão" :label-position="labelPosition">
-          <b-input pack="fas" icon="credit-card" v-model="transaction.credit_card_number"></b-input>
+          <b-input
+            pack="fas"
+            icon="credit-card"
+            v-model="transaction.credit_card_number"
+          ></b-input>
         </b-field>
         <b-field label="CVV" :label-position="labelPosition">
-          <b-input type="password" v-model="transaction.credit_card_cvv" password-reveal></b-input>
+          <b-input
+            type="password"
+            v-model="transaction.credit_card_cvv"
+            password-reveal
+          ></b-input>
         </b-field>
         <b-field label="Validade do cartão" :label-position="labelPosition">
           <b-datepicker
@@ -155,5 +178,4 @@ export default {
 // 4 - Comprar
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

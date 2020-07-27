@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "../components/Home/views/Home.vue";
 
-import Error404 from "../views/Error404.vue"
+import Error404 from "../views/Error404.vue";
 
-import DirectSales from "../views/direct_sales/DirectSales.vue"
-import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue"
+import DirectSales from "../views/direct_sales/DirectSales.vue";
+import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
 
 Vue.use(VueRouter);
 
