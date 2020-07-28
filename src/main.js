@@ -11,7 +11,6 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import vuetify from "./plugins/vuetify";
 
-
 library.add(fas);
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 

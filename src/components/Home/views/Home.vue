@@ -1,9 +1,9 @@
 <template>
   <div class="home-style">
     <NavBar />
-        <v-content>
-    <SecondaryNavBar />
-        </v-content>
+        <v-main>
+            <SecondaryNavBar />
+        </v-main>
   </div>
 </template>
 
