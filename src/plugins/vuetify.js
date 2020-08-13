@@ -8,8 +8,10 @@ export default new Vuetify({
   theme: {
     dark: {
       background: "#18121E",
-      color: "blue",
-      active: "red"
+      secondary: "#984B43",
+      primary: "#EAC67A",
+      info: "#233237",
+
     }
   },
   icons: {

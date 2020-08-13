@@ -1,36 +1,46 @@
 <template>
-  <section class="section">
-    <div class="column is-three-fifths is-offset-one-fifth">
-      <h3>Resumo</h3>
-    </div>
-  </section>
+  <v-row>
+    <v-col v-for="product in cart" :key="product.id">
+      <v-card color="#233237" dark>
+        <v-card-title class="headline">{{ product.name }}</v-card-title>
+
+        <v-card-subtitle>{{ product.name }}</v-card-subtitle>
+
+        <v-card-actions>Valor: {{ formatCurrency(product.price/100) }}</v-card-actions>
+      </v-card>
+      <v-card color="#EAC67A" dark>
+        <v-card-title class="headline">Total: {{ formatCurrency(totalPrice) }}</v-card-title>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-/* import { mapState } from "vuex"; */
+import FormatCurrencyMixin from "@/mixins/format-currency";
+import { mapState, mapGetters } from "vuex";
 
 export default {
+  name: "OrderCurrenctCart",
+  mixins: [FormatCurrencyMixin],
   data() {
     return {
       labelPosition: "on-border",
-      hasError: false
+      hasError: false,
+      totalPrice: 0
     };
+  },
+  computed: {
+    ...mapState({
+      cart: "shopping_cart"
+    }),
+    ...mapGetters({
+      cartTotal: "totalCart"
+    })
+  },
+  async created() {
+    this.totalPrice = await this.cartTotal;
   }
-  /* computed: { */
-  /*   ...mapState("direct_sales", ["direct_sales"]) */
-  /* }, */
-  /* methods: { */
-  /*   onSubmit() { */
-  /*     const _transaction = Object.assign({}, this.transaction); */
-  /*     console.log("Formulario ", _transaction); */
-  /*   } */
-  /* } */
 };
-// Todo
-// 1 - Configurar o campo de completar endereço
-// 2 - Validações
-// 3 - Forma de pagamento
-// 4 - Comprar
 </script>
 
 <style scoped lang="scss"></style>

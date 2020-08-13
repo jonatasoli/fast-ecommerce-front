@@ -1,10 +1,14 @@
 <template>
-  <div class="home-style">
-    <NavBar />
-        <v-main>
-            <SecondaryNavBar />
-        </v-main>
-  </div>
+  <v-container>
+    <div class="home-style">
+      <v-row>
+        <NavBar />
+      </v-row>
+      <v-row>
+        <SecondaryNavBar />
+      </v-row>
+    </div>
+  </v-container>
 </template>
 
 <script>

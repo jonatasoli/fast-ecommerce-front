@@ -18,7 +18,10 @@ import {
   DIRECT_SALE_CHECKOUT,
   DIRECT_SALE_PRODUCT,
   DIRECT_SALE_PRODUCT_UPSELL_LIST,
-  SET_ERROR
+  SET_ERROR,
+  SET_SHOPPING_CART,
+  SET_ITEM_SHOPPING_CART
+
 } from "./mutations_types";
 import DirectSalesService from "./../services/product_direct_sales_service";
 
@@ -27,12 +30,16 @@ const mutations = {
     state.transaction.push(transaction);
   },
   [DIRECT_SALE_PRODUCT]: (state, { product }) => {
-    console.log(product);
     state.product = product;
-    console.log(state.product);
   },
   [DIRECT_SALE_PRODUCT_UPSELL_LIST]: (state, { upsell }) => {
     state.upsell = upsell;
+  },
+  [SET_ITEM_SHOPPING_CART]: (state, { product }) => {
+    state.shopping_cart.push(product);
+  },
+  [SET_SHOPPING_CART]: (state, { product }) => {
+    state.shopping_cart = product;
   },
   [SET_ERROR]: (state, { error }) => {
     state.error = error;
@@ -49,10 +56,9 @@ const actions = {
   },
   getDirectSalesProduct: async ({ commit }, { uri }) => {
     try {
-      console.log(uri);
       const response = await DirectSalesService.getDirectSalesProduct(uri);
-      console.log(response.data);
       commit(types.DIRECT_SALE_PRODUCT, { product: response.data });
+      commit(types.SET_ITEM_SHOPPING_CART, { product: response.data });
     } catch (error) {
       commit(types.SET_ERROR, { error });
     }
@@ -64,11 +70,36 @@ const actions = {
     } catch (error) {
       commit(types.SET_ERROR, { error });
     }
+  },
+  addShoppingCart: async ({ commit }, { product }) => {
+    try {
+      commit(types.SET_ITEM_SHOPPING_CART, { product });
+    } catch (error) {
+      commit(types.SET_ERROR, { error });
+    }
+  },
+  resetShoppingCart: async commit => {
+    try {
+      commit(types.SET_SHOPPING_CART, undefined);
+    } catch (error) {
+      commit(types.SET_ERROR, { error });
+    }
   }
+
 };
 
 const getters = {
-  ProductURI: state => uri => state.product.uri === uri
+  ProductURI: state => uri => state.product.uri === uri,
+  totalCart: state => {
+        let sumTotalCart = 0;
+        let _product = state.shopping_cart;
+        let _item = undefined;
+        for (_item in state.shopping_cart) {
+          sumTotalCart += _product[_item].price;
+        }
+        sumTotalCart = sumTotalCart / 100;
+        return parseFloat(sumTotalCart).toFixed(2);
+  }
 };
 
 export default new Vuex.Store({

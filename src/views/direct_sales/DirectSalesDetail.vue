@@ -1,14 +1,18 @@
 <template>
-  <div class="container is-fluid has-margin-top-1">
-    <div v-if="pageProduct.id" class="tile is-ancestor">
-      <div class="tile is-vertical is-8">
-        <div class="tile is-parent">
-          <div class="tile is-child notification is-info box">
+  <v-container class="mt-2">
+    <v-row v-if="pageProduct.id">
+    <v-col 
+      align="center"
+      justify="center"
+      class="mt-5 md-6">
+    <v-card color="#233237" dark>
+        <v-card-title>Pagamento</v-card-title>
+        <v-card-text>
             <CheckoutTemplate />
-          </div>
-        </div>
-        <div v-if="direct_sales" class="tile is-parent">
-          <div class="tile is-child notification is-warning box">
+        </v-card-text>
+    </v-card>
+
+    <v-card>
             <h3 class="font-weight-light">Nome: {{ direct_sales }}</h3>
             <p>Email: {{ direct_sales }}</p>
             <p>{{ affiliate }}</p>
@@ -23,45 +27,38 @@
             <div v-else>
               <p>IPOD não</p>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="tile is-vertical is-2">
-        <div class="tile is-parent">
-          <div class="tile is-child notification is-success box">
+            </v-card>
+    </v-col>
+      <v-row dense>
+        <v-col class="mt-5 md-4">
             <Order />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else class="tile is-ancestor">
-      <div class="tile is-parent">
-        <div class="tile is-child notification is-warning box">
+        </v-col>
+      </v-row>
+    </v-row>
+    <v-row v-else >
+        <NavBar />
+        <v-col>
+        <v-alert type="info">
           <p>Produto não encontrado</p>
-        </div>
-      </div>
-    </div>
-  </div>
+        </v-alert>
+        </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-/* import EventBus from './../../event-bus' */
 import { mapState, mapGetters, mapActions } from "vuex";
 
 import CheckoutTemplate from "@/components/checkout/CheckoutTemplate.vue";
 import Order from "@/components/checkout/Order.vue";
+import NavBar from "@/components/shared/NavBar.vue";
 
 export default {
-  /* props: { */
-  /*     id: { */
-  /*         type: Number, */
-  /*         required: true */
-  /*     } */
-  /* }, */
   name: "direct-sales-product",
   components: {
     CheckoutTemplate,
-    Order
+    Order,
+    NavBar
   },
   data() {
     return {
@@ -74,26 +71,31 @@ export default {
   },
   computed: {
     ...mapState({
-      pageProduct: "product"
+      pageProduct: "product",
+      cart: "shopping_cart"
     }),
     ...mapGetters(["ProductURI"])
   },
   /* created() { */
-  /*   console.log(this.uri); */
-  /*   this.product = this.getDirectSalesProduct({ uri: this.uri }); */
-  /*   console.log("menos product"); */
-  /*   console.log(this.product); */
+  /*   this.resetShoppingCart() */ 
   /* }, */
+  watch: {
+    updateShoppingCart(){
+      console.log("update");
+    }
+  },
   methods: {
-    ...mapActions(["getDirectSalesProduct"])
+    ...mapActions([
+    "getDirectSalesProduct",
+    "addShoppingCart",
+    "resetShoppingCart"
+    ]),
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      // vm.direct_sales = EventBus.buscarContato(vm.id)
       if (to.params.uri === "course01") {
         vm.allow_direct_sales = true;
       }
-      console.log(to.params.uri);
       vm.product = vm.getDirectSalesProduct({ uri: to.params.uri });
 
       vm.uri = to.params.uri;
@@ -103,7 +105,6 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    /*this.direct_sales = EventBus.buscarContato(+to.params.id) */
     this.affiliate = to.query.afil;
     this.cupom = to.query.cupom;
     next();
@@ -113,5 +114,5 @@ export default {
 
 <style lang="sass" scoped>
 .has-margin-top-1
-    margin-top: 1.5rem
+    margin-top: 80px 
 </style>
