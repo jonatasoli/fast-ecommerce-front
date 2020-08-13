@@ -12,22 +12,6 @@
         </v-card-text>
     </v-card>
 
-    <v-card>
-            <h3 class="font-weight-light">Nome: {{ direct_sales }}</h3>
-            <p>Email: {{ direct_sales }}</p>
-            <p>{{ affiliate }}</p>
-            <p>{{ cupom }}</p>
-            <p>Produto: {{ pageProduct.id }}</p>
-            <p>Getter: {{ ProductURI(uri) }}</p>
-            <p>{{ uri }}</p>
-            <p v-if="ProductURI(uri)">nois</p>
-            <div v-if="allow_direct_sales">
-              <p>IPOD</p>
-            </div>
-            <div v-else>
-              <p>IPOD não</p>
-            </div>
-            </v-card>
     </v-col>
       <v-row dense>
         <v-col class="mt-5 md-4">
