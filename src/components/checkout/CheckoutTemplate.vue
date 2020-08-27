@@ -1,7 +1,20 @@
 <template>
   <v-container class="section">
-  <v-row>
-  </v-row>
+          <v-snackbar
+            v-model="showSnackbar"
+            top
+          >
+            {{ error }}
+            <v-btn
+              color="pink"
+              flat
+              icon
+              @click="showSnackbar = false"
+            >
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-snackbar>
+
       <v-form
       ref="form"
       v-model="valid"
@@ -20,7 +33,7 @@
             label="e-mail"
             placeholder="email@email.com"
             prepend-inner-icon="fa-envelope"
-            v-model="transaction.email"
+            v-model="transaction.mail"
           ></v-text-field>
           <v-text-field
             label="Telefone"
@@ -52,12 +65,12 @@
           <v-text-field
             label="Número"
             placeholder="Ex:. 33"
-            v-model="transaction._number"
+            v-model="transaction.address_number"
           ></v-text-field>
           <v-text-field
             label="Complemento"
             placeholder="Ex:. Ao lado da igreja"
-            v-model="transaction.complement"
+            v-model="transaction.address_complement"
           ></v-text-field>
           <v-text-field
             label="Bairro"
@@ -72,15 +85,18 @@
           <v-text-field
             label="Estado"
             placeholder="Ex:. São Paulo"
-            v-model="transaction._state"
+            v-model="transaction.state"
           ></v-text-field>
-          <v-text-field
+          <v-select
+            :items="country_select"
+            item-text="name"
+            item-value="value"
             label="País"
             v-model="transaction.country"
-          ></v-text-field>
+          ></v-select>
           <v-text-field
             label="Cep"
-            v-model="transaction.zip"
+            v-model="transaction.zip_code"
           ></v-text-field>
     
           <v-switch 
@@ -104,12 +120,12 @@
           <v-text-field
             label="Número"
             placeholder="Ex:. 33"
-            v-model="transaction.ship_number"
+            v-model="transaction.ship_address_number"
           ></v-text-field>
           <v-text-field
             label="Complemento"
             placeholder="Ex:. Ao lado da igreja"
-            v-model="transaction.ship_complement"
+            v-model="transaction.ship_address_complement"
           ></v-text-field>
           <v-text-field
             label="Bairro"
@@ -126,13 +142,16 @@
             placeholder="Ex:. São Paulo"
             v-model="transaction.ship_state"
           ></v-text-field>
-          <v-text-field
+          <v-select
+            :items="country_select"
+            item-text="name"
+            item-value="value"
             label="País"
             v-model="transaction.ship_country"
-          ></v-text-field>
+          ></v-select>
           <v-text-field
             label="Cep"
-            v-model="transaction.ship_zip"
+            v-model="transaction.ship_zip_code"
           ></v-text-field>
     </div>
 
@@ -212,34 +231,42 @@
             </v-dialog>
 
         <v-select
-          :items="transaction.installments"
+          :items="installments_select"
           item-text="name"
           item-value="value"
           label="Standard"
-          v-model="transaction.installment_select"
+          v-model="transaction.installments"
         ></v-select>
 
     </div>
         <v-btn
-          color="primary"
+          color="#46cb18"
           dark large
           @click.prevent="onSubmit">
-          <v-icon>fa-money-check-alt</v-icon>
           Comprar
+          <v-spacer></v-spacer>
+          <v-icon>fa-money-bill-alt</v-icon>
           </v-btn>
       </v-form>
+    <v-progress-linear
+    v-show="isLoading"
+      indeterminate
+      color="yellow darken-2"
+    ></v-progress-linear>
   </v-container>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import moment from "moment";
 
 export default {
+  props: ['cupom', 'affiliate'],
   data() {
     return {
+      isLoading: false,
+      showSnackbar: false,
       show1: false,
-      labelPosition: "on-border",
       dateDialogValue: this.formattedDate, 
       transaction: {
         document: "",
@@ -247,71 +274,112 @@ export default {
         password: "",
         name: "",
         address: "",
-        _number: "",
-        complement: "",
+        address_number: "",
+        address_complement: "",
         neighborhood: "",
         city: "",
-        _state: "",
-        country: "Brasil",
-        zip: "",
+        state: "",
+        country: "br",
+        zip_code: "",
         shipping_is_payment: true,
         ship_name: "",
         ship_address: "",
-        ship_number: "",
-        ship_complement: "",
+        ship_address_number: "",
+        ship_address_complement: "",
         ship_neighborhood: "",
         ship_city: "",
         ship_state: "",
-        ship_country: "Brasil",
-        ship_zip: "",
+        ship_country: "br",
+        ship_zip_code: "",
         payment_method: "credit-card",
         shopping_cart: ["1"],
         credit_card_name: "",
         credit_card_number: "",
         credit_card_cvv: "",
         credit_card_validate: new Date(),
-        installments: [
-          { value: 1, name: "1 sem juros" },
-          { value: 2, name: "2 com juros" }
-        ],
-        installment_select: ""
+        installments: ""
       },
       hasError: false,
-      showDateDialog: false
+      showDateDialog: false,
+      installments_select: [
+        { value: 1, name: "1 sem juros" },
+        { value: 2, name: "2 com juros" }
+      ],
+      country_select: [
+        { value: "br", name: "Brasil"}
+      ],
+      state_select: [
+        { value: "São Paulo", name: "São Paulo"}
+      ]
     };
   },
   computed: {
     ...mapState({
     direct_sales: "direct_sales",
-    pageProduct: "product"
+    pageProduct: "product",
+    Cart: "shopping_cart"
     }),
     formattedDate() {
       return moment(this.transaction.credit_card_validate).format("MM/YYYY")
-    }
+    },
+    formattedDateOutput() {
+      return moment(this.transaction.credit_card_validate).format("MMYY")
+    },
+    ...mapGetters({
+      cartTotal: "totalCart",
+      getShoppingCart: "getShoppingCart"
+    })
   },
   methods: {
+    ...mapActions(['postCheckout']),
     onSubmit() {
-      const _transaction = Object.assign({}, this.transaction);
-      console.log("Formulario ", _transaction);
+      this.isLoading = true
+      try {
+        const _transaction = Object.assign({}, this.transaction);
+        const _product = this.getShoppingCart[0];
+        console.log(_product);
+        const _shopping_cart = [{
+            "total_amount": this.cartTotal,
+            "installments": _transaction.installments,
+            "itens": [{
+                "amount": _product.price,
+                "qty": 1,
+                "product_id": _product.id,
+                "product_name": _product.name,
+                "affiliate": this.affiliate,
+                "tangible": true
+                }]
+            }];
+        _transaction.shopping_cart = _shopping_cart;
+        _transaction.credit_card_validate=this.formattedDateOutput
+        const _affiliate = this.affiliate;
+        const _cupom = this.cupom;
+        console.log("ShoppingCart", _shopping_cart);
+        console.log("Formulario ", _transaction);
+        console.log("Affliate ", _affiliate);
+        console.log("Cupom ", _cupom);
+        console.log("passou o pagamento");
+        const checkout = { "transaction": _transaction, "affiliate": _affiliate, "cupom": _cupom}
+        console.log(checkout)
+        this.postCheckout(checkout);
+        this.$router.push('/pagamento-processado')
+      } catch (error) {
+        console.log(error);
+        this.error = error.message
+        this.showSnackbar = true
+      } finally {
+        this.isLoading = false
+      }
+    
     }
   }
 };
 // Todo
-// 1 - Configurar o campo de completar endereço
 // 2 - Validações
 // 3 - Forma de pagamento
 // 4 - Comprar
 </script>
 
 <style scoped lang="sass">
-.has-margin-top-1
-    margin-top: 0.75rem !important
-
-
-.center-element
-  display: flex
-  align-items: center
-  justify-content: center
-
 $color: #fff
 </style>

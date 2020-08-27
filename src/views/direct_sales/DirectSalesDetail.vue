@@ -8,7 +8,7 @@
     <v-card color="#233237" dark>
         <v-card-title>Pagamento</v-card-title>
         <v-card-text>
-            <CheckoutTemplate />
+            <CheckoutTemplate :cupom="cupom" :affiliate="affiliate" />
         </v-card-text>
     </v-card>
 
@@ -60,9 +60,6 @@ export default {
     }),
     ...mapGetters(["ProductURI"])
   },
-  /* created() { */
-  /*   this.resetShoppingCart() */ 
-  /* }, */
   watch: {
     updateShoppingCart(){
       console.log("update");
@@ -77,9 +74,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (to.params.uri === "course01") {
-        vm.allow_direct_sales = true;
-      }
       vm.product = vm.getDirectSalesProduct({ uri: to.params.uri });
 
       vm.uri = to.params.uri;

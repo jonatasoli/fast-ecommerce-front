@@ -10,12 +10,14 @@ const state = {
   product: [],
   upsell: [],
   direct_sales: [],
-  checkout: []
+  checkout: [],
+  checkout_response: []
 };
 
 import * as types from "./mutations_types";
 import {
   DIRECT_SALE_CHECKOUT,
+  DIRECT_SALE_RESPONSE_CHECKOUT,
   DIRECT_SALE_PRODUCT,
   DIRECT_SALE_PRODUCT_UPSELL_LIST,
   SET_ERROR,
@@ -28,6 +30,10 @@ import DirectSalesService from "./../services/product_direct_sales_service";
 const mutations = {
   [DIRECT_SALE_CHECKOUT]: (state, { transaction }) => {
     state.transaction.push(transaction);
+  },
+  [DIRECT_SALE_RESPONSE_CHECKOUT]: (state, { checkout_response }) => {
+    console.log(checkout_response);
+    state.checkout_response = checkout_response;
   },
   [DIRECT_SALE_PRODUCT]: (state, { product }) => {
     state.product = product;
@@ -47,10 +53,12 @@ const mutations = {
 };
 
 const actions = {
-  postCheckout: ({ commit }, { transaction }) => {
-    return DirectSalesService.postCheckout(transaction)
+  postCheckout: ({ commit }, payload) => {
+    console.log("entrou no checkout");
+    console.log(payload);
+    return DirectSalesService.postCheckout(payload)
       .then(response =>
-        commit(types.DIRECT_SALE_CHECKOUT, { transaction: response.data })
+        commit(types.DIRECT_SALE_RESPONSE_CHECKOUT, { checkout_response: response.data })
       )
       .catch(error => commit(types.SET_ERROR, { error }));
   },
@@ -99,7 +107,8 @@ const getters = {
         }
         sumTotalCart = sumTotalCart / 100;
         return parseFloat(sumTotalCart).toFixed(2);
-  }
+  },
+    getShoppingCart: state => { return state.shopping_cart }
 };
 
 export default new Vuex.Store({

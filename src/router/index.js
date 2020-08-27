@@ -6,6 +6,8 @@ import Error404 from "../views/Error404.vue";
 
 import DirectSales from "../views/direct_sales/DirectSales.vue";
 import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
+import PaymentProccess from "../components/payment/PaymentProccess.vue"
+import PaymentError from "../components/payment/PaymentError.vue"
 
 Vue.use(VueRouter);
 
@@ -40,6 +42,14 @@ const routes = [
     path: "/lancamento/:uri",
     component: DirectSalesDetail
     // props busca itens
+  },
+  {
+    path: "/pagamento-processado",
+    component: PaymentProccess
+  },
+  {
+    path: "/pagamento-erro",
+    component: PaymentError
   },
   { path: "*", component: Error404 }
 ];
