@@ -23,7 +23,6 @@ export default {
 };
 </script>
 
-
 <style lang="sass" scoped>
 .home-style
     display: flex

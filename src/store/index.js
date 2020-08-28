@@ -23,7 +23,6 @@ import {
   SET_ERROR,
   SET_SHOPPING_CART,
   SET_ITEM_SHOPPING_CART
-
 } from "./mutations_types";
 import DirectSalesService from "./../services/product_direct_sales_service";
 
@@ -58,7 +57,9 @@ const actions = {
     console.log(payload);
     return DirectSalesService.postCheckout(payload)
       .then(response =>
-        commit(types.DIRECT_SALE_RESPONSE_CHECKOUT, { checkout_response: response.data })
+        commit(types.DIRECT_SALE_RESPONSE_CHECKOUT, {
+          checkout_response: response.data
+        })
       )
       .catch(error => commit(types.SET_ERROR, { error }));
   },
@@ -93,22 +94,23 @@ const actions = {
       commit(types.SET_ERROR, { error });
     }
   }
-
 };
 
 const getters = {
   ProductURI: state => uri => state.product.uri === uri,
   totalCart: state => {
-        let sumTotalCart = 0;
-        let _product = state.shopping_cart;
-        let _item = undefined;
-        for (_item in state.shopping_cart) {
-          sumTotalCart += _product[_item].price;
-        }
-        sumTotalCart = sumTotalCart / 100;
-        return parseFloat(sumTotalCart).toFixed(2);
+    let sumTotalCart = 0;
+    let _product = state.shopping_cart;
+    let _item = undefined;
+    for (_item in state.shopping_cart) {
+      sumTotalCart += _product[_item].price;
+    }
+    sumTotalCart = sumTotalCart / 100;
+    return parseFloat(sumTotalCart).toFixed(2);
   },
-    getShoppingCart: state => { return state.shopping_cart }
+  getShoppingCart: state => {
+    return state.shopping_cart;
+  }
 };
 
 export default new Vuex.Store({

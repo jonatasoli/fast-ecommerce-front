@@ -1,31 +1,27 @@
 <template>
   <v-container class="mt-2">
     <v-row v-if="pageProduct.id">
-    <v-col 
-      align="center"
-      justify="center"
-      class="mt-5 md-6">
-    <v-card color="#233237" dark>
-        <v-card-title>Pagamento</v-card-title>
-        <v-card-text>
+      <v-col align="center" justify="center" class="mt-5 md-6">
+        <v-card color="#233237" dark>
+          <v-card-title>Pagamento</v-card-title>
+          <v-card-text>
             <CheckoutTemplate :cupom="cupom" :affiliate="affiliate" />
-        </v-card-text>
-    </v-card>
-
-    </v-col>
+          </v-card-text>
+        </v-card>
+      </v-col>
       <v-row dense>
         <v-col class="mt-5 md-4">
-            <Order />
+          <Order />
         </v-col>
       </v-row>
     </v-row>
-    <v-row v-else >
-        <NavBar />
-        <v-col>
+    <v-row v-else>
+      <NavBar />
+      <v-col>
         <v-alert type="info">
           <p>Produto não encontrado</p>
         </v-alert>
-        </v-col>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -61,16 +57,16 @@ export default {
     ...mapGetters(["ProductURI"])
   },
   watch: {
-    updateShoppingCart(){
+    updateShoppingCart() {
       console.log("update");
     }
   },
   methods: {
     ...mapActions([
-    "getDirectSalesProduct",
-    "addShoppingCart",
-    "resetShoppingCart"
-    ]),
+      "getDirectSalesProduct",
+      "addShoppingCart",
+      "resetShoppingCart"
+    ])
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -92,5 +88,5 @@ export default {
 
 <style lang="sass" scoped>
 .has-margin-top-1
-    margin-top: 80px 
+    margin-top: 80px
 </style>

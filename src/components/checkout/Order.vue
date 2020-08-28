@@ -6,10 +6,14 @@
 
         <v-card-subtitle>{{ product.name }}</v-card-subtitle>
 
-        <v-card-actions>Valor: {{ formatCurrency(product.price/100) }}</v-card-actions>
+        <v-card-actions
+          >Valor: {{ formatCurrency(product.price / 100) }}</v-card-actions
+        >
       </v-card>
       <v-card color="#EAC67A" dark>
-        <v-card-title class="headline">Total: {{ formatCurrency(totalPrice) }}</v-card-title>
+        <v-card-title class="headline"
+          >Total: {{ formatCurrency(totalPrice) }}</v-card-title
+        >
       </v-card>
     </v-col>
   </v-row>

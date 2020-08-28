@@ -11,14 +11,16 @@ const apiClient = axios.create({
 
 export default {
   getDirectSalesProduct(uri) {
-    return apiClient.get(`/direct-sales/product/${uri}`, {crossDomain: true});
+    return apiClient.get(`/direct-sales/product/${uri}`, { crossDomain: true });
   },
   getDirectSalesUpsell(id) {
-    return apiClient.get(`/direct-sales/upsell/${id}`, {crossDomain: true});
+    return apiClient.get(`/direct-sales/upsell/${id}`, { crossDomain: true });
   },
   postCheckout(checkout) {
     console.log("POST _______");
     console.log(checkout);
-    return apiClient.post("/direct-sales/checkout", checkout, {crossDomain: true});
+    return apiClient.post("/direct-sales/checkout", checkout, {
+      crossDomain: true
+    });
   }
 };

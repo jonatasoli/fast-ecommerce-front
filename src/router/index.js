@@ -6,8 +6,8 @@ import Error404 from "../views/Error404.vue";
 
 import DirectSales from "../views/direct_sales/DirectSales.vue";
 import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
-import PaymentProccess from "../components/payment/PaymentProccess.vue"
-import PaymentError from "../components/payment/PaymentError.vue"
+import PaymentProccess from "../components/payment/PaymentProccess.vue";
+import PaymentError from "../components/payment/PaymentError.vue";
 
 Vue.use(VueRouter);
 
