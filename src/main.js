@@ -9,6 +9,7 @@ import Vuelidate from "vuelidate";
 import vuetify from "./plugins/vuetify";
 
 Vue.config.productionTip = false;
+Vue.config.errorHandler = "debugger";
 Vue.use(Vuelidate);
 
 new Vue({

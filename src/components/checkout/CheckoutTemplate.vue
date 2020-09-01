@@ -35,6 +35,7 @@
         placeholder="Apenas números"
         prepend-inner-icon="fa-phone"
         v-model="$v.transaction.phone.$model"
+        :error-messages="phoneErrors"
         :success="$v.transaction.phone.$invalid"
         type="number"
       ></v-text-field>
@@ -54,36 +55,42 @@
         label="Nome"
         placeholder="Seu nome completo"
         v-model="$v.transaction.name.$model"
+        :error-messages="nameErrors"
         :success="$v.transaction.name.$invalid"
       ></v-text-field>
       <v-text-field
         label="Endereço"
         placeholder="Ex:. Rua Barão de Mauá"
         v-model="$v.transaction.address.$model"
+        :error-messages="addressErrors"
         :success="$v.transaction.address.$invalid"
       ></v-text-field>
       <v-text-field
         label="Número"
         placeholder="Ex:. 33"
         v-model="$v.transaction.address_number.$model"
+        :error-messages="addressNumberErrors"
         :success="$v.transaction.address_number.$invalid"
       ></v-text-field>
       <v-text-field
         label="Complemento"
         placeholder="Ex:. Ao lado da igreja"
         v-model="$v.transaction.address_complement.$model"
+        :error-messages="addressComplementErrors"
         :success="$v.transaction.address_complement.$invalid"
       ></v-text-field>
       <v-text-field
         label="Bairro"
         placeholder="Ex:. Jardim Cruzeiro"
         v-model="$v.transaction.neighborhood.$model"
+        :error-messages="neighborhoodErrors"
         :success="$v.transaction.neighborhood.$invalid"
       ></v-text-field>
       <v-text-field
         label="Cidade"
         placeholder="Ex:. São Paulo"
         v-model="$v.transaction.city.$model"
+        :error-messages="cityErrors"
         :success="$v.transaction.city.$invalid"
       ></v-text-field>
       <v-select
@@ -92,6 +99,7 @@
         item-value="value"
         label="Estado"
         v-model="$v.transaction.state.$model"
+        :error-messages="stateErrors"
         :success="$v.transaction.state.$invalid"
       ></v-select>
       <v-select
@@ -100,16 +108,19 @@
         item-value="value"
         label="País"
         v-model="$v.transaction.country.$model"
+        :error-messages="countryErrors"
         :success="$v.transaction.country.$invalid"
       ></v-select>
       <v-text-field
         label="Cep"
         v-model="$v.transaction.zip_code.$model"
+        :error-messages="zipCodeErrors"
         :success="$v.transaction.zip_code.$invalid"
       ></v-text-field>
 
       <v-switch
         v-model="$v.transaction.shipping_is_payment.$model"
+        :error-messages="shippingErrors"
         :success="$v.transaction.shipping_is_payment.$invalid"
         class="ma-2"
         label="Endereço de cobrança é o mesmo de envio?"
@@ -122,36 +133,42 @@
           label="Nome"
           placeholder="Seu nome completo"
           v-model="$v.transaction.ship_name.$model"
+          :error-messages="shipNameErrors"
           :success="$v.transaction.ship_name.$invalid"
         ></v-text-field>
         <v-text-field
           label="Endereço"
           placeholder="Ex:. Rua Barão de Mauá"
           v-model="$v.transaction.ship_address.$model"
+          :error-messages="shipAddressErrors"
           :success="$v.transaction.ship_address.$invalid"
         ></v-text-field>
         <v-text-field
           label="Número"
           placeholder="Ex:. 33"
           v-model="$v.transaction.ship_address_number.$model"
+          :error-messages="shipAddressNumberErrors"
           :success="$v.transaction.ship_address_number.$invalid"
         ></v-text-field>
         <v-text-field
           label="Complemento"
           placeholder="Ex:. Ao lado da igreja"
           v-model="$v.transaction.ship_address_complement.$model"
+          :error-messages="shipAddressComplementErrors"
           :success="$v.transaction.ship_address_complement.$invalid"
         ></v-text-field>
         <v-text-field
           label="Bairro"
           placeholder="Ex:. Jardim Cruzeiro"
           v-model="$v.transaction.ship_neighborhood.$model"
+          :error-messages="shipNeighborhoodErrors"
           :success="$v.transaction.ship_neighborhood.$invalid"
         ></v-text-field>
         <v-text-field
           label="Cidade"
           placeholder="Ex:. São Paulo"
           v-model="$v.transaction.ship_city.$model"
+          :error-messages="shipCityErrors"
           :success="$v.transaction.ship_city.$invalid"
         ></v-text-field>
         <v-select
@@ -160,6 +177,7 @@
           item-value="value"
           label="Estado"
           v-model="$v.transaction.ship_state.$model"
+          :error-messages="shipStateErrors"
           :success="$v.transaction.ship_state.$invalid"
         ></v-select>
         <v-select
@@ -168,11 +186,13 @@
           item-value="value"
           label="País"
           v-model="$v.transaction.ship_country.$model"
+          :error-messages="shipCountryErrors"
           :success="$v.transaction.ship_country.$invalid"
         ></v-select>
         <v-text-field
           label="Cep"
           v-model="$v.transaction.ship_zip_code.$model"
+          :error-messages="shipZipCodeErrors"
           :success="$v.transaction.ship_zip_code.$invalid"
         ></v-text-field>
       </div>
@@ -180,6 +200,7 @@
       <v-subheader>Forma de pagamento</v-subheader>
       <v-radio-group
         v-model="$v.transaction.payment_method.$model"
+        :error-messages="paymentMethodErrors"
         :success="$v.transaction.payment_method.$invalid"
       >
         <v-radio
@@ -203,6 +224,7 @@
           placeholder="João D Silva"
           prepend-inner-icon="fa-id-badge"
           v-model="$v.transaction.credit_card_name.$model"
+          :error-messages="creditCardNameErrors"
           :success="$v.transaction.credit_card_name.$invalid"
         ></v-text-field>
         <v-text-field
@@ -210,6 +232,7 @@
           placeholder="Apenas Números"
           prepend-inner-icon="fa-credit-card"
           v-model="$v.transaction.credit_card_number.$model"
+          :error-messages="creditCardNumberErrors"
           :success="$v.transaction.credit_card_number.$invalid"
         ></v-text-field>
         <v-text-field
@@ -217,6 +240,7 @@
           placeholder="Ex:. 123"
           prepend-inner-icon="fa-key"
           v-model="$v.transaction.credit_card_cvv.$model"
+          :error-messages="creditCardCVVErrors"
           :success="$v.transaction.credit_card_cvv.$invalid"
         ></v-text-field>
 
@@ -257,7 +281,7 @@
           :items="installments_select"
           item-text="name"
           item-value="value"
-          label="Standard"
+          label="Parcelas"
           v-model="$v.transaction.installments.$model"
           :success="$v.transaction.installments.$invalid"
         ></v-select>
@@ -278,11 +302,14 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+const validateDocument = (value) => value.length == 11
+const validateZipCode = (value) => value.length == 8
+const validateCVV = (value) => value.length >=3 || value.length <= 4
+
 import {
   required,
   requiredIf,
   minLength,
-  between,
   numeric,
   email
 } from "vuelidate/lib/validators";
@@ -300,6 +327,7 @@ export default {
         document: "",
         mail: "",
         password: "",
+        phone: "",
         name: "",
         address: "",
         address_number: "",
@@ -380,20 +408,21 @@ export default {
       cartTotal: "totalCart",
       getShoppingCart: "getShoppingCart"
     }),
-    nameErrors () {
-      const errors = []
-      const name = this.$v.transaction.name
-      if (!name.$dirty) { return errors }
-      !name.required && errors.push('Nome é obrigatório!')
-      !name.minLength && errors.push(`Insira pelo menos ${name.$params.minLength.min} caracteres!`)
-      return errors
-    },
     emailErrors () {
       const errors = []
       const email = this.$v.transaction.mail
       if (!email.$dirty) { return errors }
       !email.required && errors.push('Email é obrigatório!')
       !email.email && errors.push('Insira um email válido!')
+      return errors
+    },
+    phoneErrors () {
+      const errors = []
+      const phone = this.$v.transaction.phone
+      if (!phone.$dirty) { return errors }
+      !phone.required && errors.push('Este campo é obrigatório!')
+      !phone.numeric && errors.push("Utilize apenas números")
+      !phone.minLength && errors.push(`Insira pelo menos ${phone.$params.minLength.min} caracteres!`)
       return errors
     },
     passwordErrors () {
@@ -408,8 +437,183 @@ export default {
       const errors = []
       const document = this.$v.transaction.document
       if (!document.$dirty) {return errors }
-      !document.required && errors.push("documento é um campo obrigatório!")
+      !document.required && errors.push("Este campo é obrigatório!")
       !document.numeric && errors.push("Utilize apenas números")
+      !document.validateDocument && errors.push("CPF deve ter 11 digitos")
+      return errors
+    }, 
+    nameErrors () {
+      const errors = []
+      const name = this.$v.transaction.name
+      if (!name.$dirty) { return errors }
+      !name.required && errors.push('Nome é obrigatório!')
+      return errors
+    },
+    addressErrors () {
+      const errors = []
+      const address = this.$v.transaction.address
+      if (!address.$dirty) {return errors }
+      !address.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    addressNumberErrors () {
+      const errors = []
+      const address_number = this.$v.transaction.address_number
+      if (!address_number.$dirty) {return errors }
+      !address_number.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    addressComplementErrors () {
+      const errors = []
+      const address_complement = this.$v.transaction.address_complement
+      if (!address_complement.$dirty) {return errors }
+      !address_complement.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    neighborhoodErrors () {
+      const errors = []
+      const field = this.$v.transaction.neighborhood
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    cityErrors () {
+      const errors = []
+      const field = this.$v.transaction.city
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    stateErrors () {
+      const errors = []
+      const field = this.$v.transaction.state
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    countryErrors () {
+      const errors = []
+      const field = this.$v.transaction.country
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    zipCodeErrors () {
+      const errors = []
+      const field = this.$v.transaction.zip_code
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      !field.numeric && errors.push("Utilize apenas números")
+      !field.validateZipCode && errors.push("CEP deve ter 8 digitos")
+      return errors
+    }, 
+    shippingErrors () {
+      const errors = []
+      const field = this.$v.transaction.shipping_is_payment
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipNameErrors () {
+      const errors = []
+      const name = this.$v.transaction.ship_name
+      if (!name.$dirty) { return errors }
+      !name.required && errors.push('Nome é obrigatório!')
+      return errors
+    },
+    shipAddressErrors () {
+      const errors = []
+      const address = this.$v.transaction.ship_address
+      if (!address.$dirty) {return errors }
+      !address.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipAddressNumberErrors () {
+      const errors = []
+      const address_number = this.$v.transaction.ship_address_number
+      if (!address_number.$dirty) {return errors }
+      !address_number.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipAddressComplementErrors () {
+      const errors = []
+      const address_complement = this.$v.transaction.ship_address_complement
+      if (!address_complement.$dirty) {return errors }
+      !address_complement.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipNeighborhoodErrors () {
+      const errors = []
+      const field = this.$v.transaction.ship_neighborhood
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipCityErrors () {
+      const errors = []
+      const field = this.$v.transaction.ship_city
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipStateErrors () {
+      const errors = []
+      const field = this.$v.transaction.ship_state
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipCountryErrors () {
+      const errors = []
+      const field = this.$v.transaction.ship_country
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    shipZipCodeErrors () {
+      const errors = []
+      const field = this.$v.transaction.ship_zip_code
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      !field.numeric && errors.push("Utilize apenas números")
+      !field.validateZipCode && errors.push("CEP deve ter 8 digitos")
+      return errors
+    }, 
+    paymentMethodErrors () {
+      const errors = []
+      const field = this.$v.transaction.payment_method
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    creditCardNameErrors () {
+      const errors = []
+      const field = this.$v.transaction.credit_card_name
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    creditCardNumberErrors () {
+      const errors = []
+      const field = this.$v.transaction.credit_card_number
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      return errors
+    }, 
+    creditCardCVVErrors () {
+      const errors = []
+      const field = this.$v.transaction.credit_card_cvv
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
+      !field.numeric && errors.push("Utilize apenas números")
+      !field.validateCVV && errors.push("CEP deve ter 8 digitos")
+      return errors
+    }, 
+    installmentsErrors () {
+      const errors = []
+      const field = this.$v.transaction.installments
+      if (!field.$dirty) {return errors }
+      !field.required && errors.push("Este campo é obrigatório!")
       return errors
     }, 
 
@@ -419,7 +623,7 @@ export default {
       document: {
         required,
         numeric,
-        between: between(10, 11)
+        validateDocument
       },
       mail: {
         email,
@@ -461,7 +665,7 @@ export default {
       },
       zip_code: {
         numeric,
-        between: between(8, 8),
+        validateZipCode,
         required
       },
       shipping_is_payment: {
@@ -469,49 +673,50 @@ export default {
       },
       ship_name: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          console.log("ShipIsPayment ", this.transaction.shipping_is_payment === false)
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_address: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_address_number: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_address_complement: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_neighborhood: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_city: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_state: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_country: {
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       ship_zip_code: {
         numeric,
-        between: between(8, 8),
+        validateZipCode,
         required: requiredIf(function() {
-          return !this.shipping_is_payment;
+          return this.transaction.shipping_is_payment === false;
         })
       },
       payment_method: {
@@ -519,6 +724,7 @@ export default {
       },
       credit_card_name: {
         required: requiredIf(function() {
+          console.log("requiredif creditcart ", !this.payment_method == "credit-card")
           return !this.payment_method == "credit-card";
         })
       },
@@ -530,7 +736,7 @@ export default {
       },
       credit_card_cvv: {
         numeric,
-        between: between(3, 4),
+        validateCVV,
         required: requiredIf(function() {
           return !this.payment_method == "credit-card";
         })
@@ -586,11 +792,19 @@ export default {
           cupom: _cupom
         };
         console.log(checkout);
+        console.log("Invalidação ", this.$v.$invalid)
+        console.log(this.$v)
+        console.log("Shipping ", !_transaction.shipping_is_payment)
+        /* if (this.$v.$invalid) throw "Formulário inválido, por favor verifique os campos e tente novamente!" */ 
         this.postCheckout(checkout);
         this.$router.push("/pagamento-processado");
       } catch (error) {
         console.log(error);
-        this.error = error.message;
+        if (error.message){
+          this.error = error.message;
+        } else {
+          this.error = error;
+        }
         this.showSnackbar = true;
       } finally {
         this.isLoading = false;

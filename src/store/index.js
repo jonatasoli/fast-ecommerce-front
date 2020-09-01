@@ -28,7 +28,7 @@ import DirectSalesService from "./../services/product_direct_sales_service";
 
 const mutations = {
   [DIRECT_SALE_CHECKOUT]: (state, { transaction }) => {
-    state.transaction.push(transaction);
+    state.transaction = transaction;
   },
   [DIRECT_SALE_RESPONSE_CHECKOUT]: (state, { checkout_response }) => {
     console.log(checkout_response);

@@ -19,7 +19,7 @@
       <NavBar />
       <v-col>
         <v-alert type="info">
-          <p>Produto não encontrado</p>
+          <p>Produto está sendo carregado aguarde ...</p>
         </v-alert>
       </v-col>
     </v-row>
