@@ -302,9 +302,9 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-const validateDocument = (value) => value.length == 11
-const validateZipCode = (value) => value.length == 8
-const validateCVV = (value) => value.length >=3 || value.length <= 4
+const validateDocument = value => value.length == 11;
+const validateZipCode = value => value.length == 8;
+const validateCVV = value => value.length >= 3 || value.length <= 4;
 
 import {
   required,
@@ -408,215 +408,276 @@ export default {
       cartTotal: "totalCart",
       getShoppingCart: "getShoppingCart"
     }),
-    emailErrors () {
-      const errors = []
-      const email = this.$v.transaction.mail
-      if (!email.$dirty) { return errors }
-      !email.required && errors.push('Email é obrigatório!')
-      !email.email && errors.push('Insira um email válido!')
-      return errors
+    emailErrors() {
+      const errors = [];
+      const email = this.$v.transaction.mail;
+      if (!email.$dirty) {
+        return errors;
+      }
+      !email.required && errors.push("Email é obrigatório!");
+      !email.email && errors.push("Insira um email válido!");
+      return errors;
     },
-    phoneErrors () {
-      const errors = []
-      const phone = this.$v.transaction.phone
-      if (!phone.$dirty) { return errors }
-      !phone.required && errors.push('Este campo é obrigatório!')
-      !phone.numeric && errors.push("Utilize apenas números")
-      !phone.minLength && errors.push(`Insira pelo menos ${phone.$params.minLength.min} caracteres!`)
-      return errors
+    phoneErrors() {
+      const errors = [];
+      const phone = this.$v.transaction.phone;
+      if (!phone.$dirty) {
+        return errors;
+      }
+      !phone.required && errors.push("Este campo é obrigatório!");
+      !phone.numeric && errors.push("Utilize apenas números");
+      !phone.minLength &&
+        errors.push(
+          `Insira pelo menos ${phone.$params.minLength.min} caracteres!`
+        );
+      return errors;
     },
-    passwordErrors () {
-      const errors = []
-      const password = this.$v.transaction.password
-      if (!password.$dirty) { return errors }
-      !password.required && errors.push('Senha é obrigatória!')
-      !password.minLength && errors.push(`Insira pelo menos ${password.$params.minLength.min} caracteres!`)
-      return errors
+    passwordErrors() {
+      const errors = [];
+      const password = this.$v.transaction.password;
+      if (!password.$dirty) {
+        return errors;
+      }
+      !password.required && errors.push("Senha é obrigatória!");
+      !password.minLength &&
+        errors.push(
+          `Insira pelo menos ${password.$params.minLength.min} caracteres!`
+        );
+      return errors;
     },
-    documentErrors () {
-      const errors = []
-      const document = this.$v.transaction.document
-      if (!document.$dirty) {return errors }
-      !document.required && errors.push("Este campo é obrigatório!")
-      !document.numeric && errors.push("Utilize apenas números")
-      !document.validateDocument && errors.push("CPF deve ter 11 digitos")
-      return errors
-    }, 
-    nameErrors () {
-      const errors = []
-      const name = this.$v.transaction.name
-      if (!name.$dirty) { return errors }
-      !name.required && errors.push('Nome é obrigatório!')
-      return errors
+    documentErrors() {
+      const errors = [];
+      const document = this.$v.transaction.document;
+      if (!document.$dirty) {
+        return errors;
+      }
+      !document.required && errors.push("Este campo é obrigatório!");
+      !document.numeric && errors.push("Utilize apenas números");
+      !document.validateDocument && errors.push("CPF deve ter 11 digitos");
+      return errors;
     },
-    addressErrors () {
-      const errors = []
-      const address = this.$v.transaction.address
-      if (!address.$dirty) {return errors }
-      !address.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    addressNumberErrors () {
-      const errors = []
-      const address_number = this.$v.transaction.address_number
-      if (!address_number.$dirty) {return errors }
-      !address_number.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    addressComplementErrors () {
-      const errors = []
-      const address_complement = this.$v.transaction.address_complement
-      if (!address_complement.$dirty) {return errors }
-      !address_complement.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    neighborhoodErrors () {
-      const errors = []
-      const field = this.$v.transaction.neighborhood
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    cityErrors () {
-      const errors = []
-      const field = this.$v.transaction.city
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    stateErrors () {
-      const errors = []
-      const field = this.$v.transaction.state
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    countryErrors () {
-      const errors = []
-      const field = this.$v.transaction.country
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    zipCodeErrors () {
-      const errors = []
-      const field = this.$v.transaction.zip_code
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      !field.numeric && errors.push("Utilize apenas números")
-      !field.validateZipCode && errors.push("CEP deve ter 8 digitos")
-      return errors
-    }, 
-    shippingErrors () {
-      const errors = []
-      const field = this.$v.transaction.shipping_is_payment
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipNameErrors () {
-      const errors = []
-      const name = this.$v.transaction.ship_name
-      if (!name.$dirty) { return errors }
-      !name.required && errors.push('Nome é obrigatório!')
-      return errors
+    nameErrors() {
+      const errors = [];
+      const name = this.$v.transaction.name;
+      if (!name.$dirty) {
+        return errors;
+      }
+      !name.required && errors.push("Nome é obrigatório!");
+      return errors;
     },
-    shipAddressErrors () {
-      const errors = []
-      const address = this.$v.transaction.ship_address
-      if (!address.$dirty) {return errors }
-      !address.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipAddressNumberErrors () {
-      const errors = []
-      const address_number = this.$v.transaction.ship_address_number
-      if (!address_number.$dirty) {return errors }
-      !address_number.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipAddressComplementErrors () {
-      const errors = []
-      const address_complement = this.$v.transaction.ship_address_complement
-      if (!address_complement.$dirty) {return errors }
-      !address_complement.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipNeighborhoodErrors () {
-      const errors = []
-      const field = this.$v.transaction.ship_neighborhood
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipCityErrors () {
-      const errors = []
-      const field = this.$v.transaction.ship_city
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipStateErrors () {
-      const errors = []
-      const field = this.$v.transaction.ship_state
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipCountryErrors () {
-      const errors = []
-      const field = this.$v.transaction.ship_country
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    shipZipCodeErrors () {
-      const errors = []
-      const field = this.$v.transaction.ship_zip_code
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      !field.numeric && errors.push("Utilize apenas números")
-      !field.validateZipCode && errors.push("CEP deve ter 8 digitos")
-      return errors
-    }, 
-    paymentMethodErrors () {
-      const errors = []
-      const field = this.$v.transaction.payment_method
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    creditCardNameErrors () {
-      const errors = []
-      const field = this.$v.transaction.credit_card_name
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    creditCardNumberErrors () {
-      const errors = []
-      const field = this.$v.transaction.credit_card_number
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-    creditCardCVVErrors () {
-      const errors = []
-      const field = this.$v.transaction.credit_card_cvv
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      !field.numeric && errors.push("Utilize apenas números")
-      !field.validateCVV && errors.push("CEP deve ter 8 digitos")
-      return errors
-    }, 
-    installmentsErrors () {
-      const errors = []
-      const field = this.$v.transaction.installments
-      if (!field.$dirty) {return errors }
-      !field.required && errors.push("Este campo é obrigatório!")
-      return errors
-    }, 
-
+    addressErrors() {
+      const errors = [];
+      const address = this.$v.transaction.address;
+      if (!address.$dirty) {
+        return errors;
+      }
+      !address.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    addressNumberErrors() {
+      const errors = [];
+      const address_number = this.$v.transaction.address_number;
+      if (!address_number.$dirty) {
+        return errors;
+      }
+      !address_number.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    addressComplementErrors() {
+      const errors = [];
+      const address_complement = this.$v.transaction.address_complement;
+      if (!address_complement.$dirty) {
+        return errors;
+      }
+      !address_complement.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    neighborhoodErrors() {
+      const errors = [];
+      const field = this.$v.transaction.neighborhood;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    cityErrors() {
+      const errors = [];
+      const field = this.$v.transaction.city;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    stateErrors() {
+      const errors = [];
+      const field = this.$v.transaction.state;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    countryErrors() {
+      const errors = [];
+      const field = this.$v.transaction.country;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    zipCodeErrors() {
+      const errors = [];
+      const field = this.$v.transaction.zip_code;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      !field.numeric && errors.push("Utilize apenas números");
+      !field.validateZipCode && errors.push("CEP deve ter 8 digitos");
+      return errors;
+    },
+    shippingErrors() {
+      const errors = [];
+      const field = this.$v.transaction.shipping_is_payment;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipNameErrors() {
+      const errors = [];
+      const name = this.$v.transaction.ship_name;
+      if (!name.$dirty) {
+        return errors;
+      }
+      !name.required && errors.push("Nome é obrigatório!");
+      return errors;
+    },
+    shipAddressErrors() {
+      const errors = [];
+      const address = this.$v.transaction.ship_address;
+      if (!address.$dirty) {
+        return errors;
+      }
+      !address.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipAddressNumberErrors() {
+      const errors = [];
+      const address_number = this.$v.transaction.ship_address_number;
+      if (!address_number.$dirty) {
+        return errors;
+      }
+      !address_number.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipAddressComplementErrors() {
+      const errors = [];
+      const address_complement = this.$v.transaction.ship_address_complement;
+      if (!address_complement.$dirty) {
+        return errors;
+      }
+      !address_complement.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipNeighborhoodErrors() {
+      const errors = [];
+      const field = this.$v.transaction.ship_neighborhood;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipCityErrors() {
+      const errors = [];
+      const field = this.$v.transaction.ship_city;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipStateErrors() {
+      const errors = [];
+      const field = this.$v.transaction.ship_state;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipCountryErrors() {
+      const errors = [];
+      const field = this.$v.transaction.ship_country;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    shipZipCodeErrors() {
+      const errors = [];
+      const field = this.$v.transaction.ship_zip_code;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      !field.numeric && errors.push("Utilize apenas números");
+      !field.validateZipCode && errors.push("CEP deve ter 8 digitos");
+      return errors;
+    },
+    paymentMethodErrors() {
+      const errors = [];
+      const field = this.$v.transaction.payment_method;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    creditCardNameErrors() {
+      const errors = [];
+      const field = this.$v.transaction.credit_card_name;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    creditCardNumberErrors() {
+      const errors = [];
+      const field = this.$v.transaction.credit_card_number;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    },
+    creditCardCVVErrors() {
+      const errors = [];
+      const field = this.$v.transaction.credit_card_cvv;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      !field.numeric && errors.push("Utilize apenas números");
+      !field.validateCVV && errors.push("CEP deve ter 8 digitos");
+      return errors;
+    },
+    installmentsErrors() {
+      const errors = [];
+      const field = this.$v.transaction.installments;
+      if (!field.$dirty) {
+        return errors;
+      }
+      !field.required && errors.push("Este campo é obrigatório!");
+      return errors;
+    }
   },
   validations: {
     transaction: {
@@ -673,7 +734,10 @@ export default {
       },
       ship_name: {
         required: requiredIf(function() {
-          console.log("ShipIsPayment ", this.transaction.shipping_is_payment === false)
+          console.log(
+            "ShipIsPayment ",
+            this.transaction.shipping_is_payment === false
+          );
           return this.transaction.shipping_is_payment === false;
         })
       },
@@ -724,7 +788,10 @@ export default {
       },
       credit_card_name: {
         required: requiredIf(function() {
-          console.log("requiredif creditcart ", !this.payment_method == "credit-card")
+          console.log(
+            "requiredif creditcart ",
+            !this.payment_method == "credit-card"
+          );
           return !this.payment_method == "credit-card";
         })
       },
@@ -792,15 +859,16 @@ export default {
           cupom: _cupom
         };
         console.log(checkout);
-        console.log("Invalidação ", this.$v.$invalid)
-        console.log(this.$v)
-        console.log("Shipping ", !_transaction.shipping_is_payment)
-        /* if (this.$v.$invalid) throw "Formulário inválido, por favor verifique os campos e tente novamente!" */ 
+        console.log("Invalidação ", this.$v.$invalid);
+        console.log(this.$v);
+        console.log("Shipping ", !_transaction.shipping_is_payment);
+        /* if (this.$v.$invalid) throw "Formulário inválido, por favor verifique os campos e tente novamente!" */
+
         this.postCheckout(checkout);
         this.$router.push("/pagamento-processado");
       } catch (error) {
         console.log(error);
-        if (error.message){
+        if (error.message) {
           this.error = error.message;
         } else {
           this.error = error;
