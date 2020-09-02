@@ -278,7 +278,7 @@
         </v-dialog>
 
         <v-select
-          :items="installments_select"
+          :items="pageProduct.installments_list"
           item-text="name"
           item-value="value"
           label="Parcelas"
@@ -286,6 +286,7 @@
           :success="$v.transaction.installments.$invalid"
         ></v-select>
       </div>
+      <p>* valor com taxa de juros de 1.99% ao mês</p>
       <v-btn color="#46cb18" dark large @click.prevent="onSubmit">
         Comprar
         <v-spacer></v-spacer>
