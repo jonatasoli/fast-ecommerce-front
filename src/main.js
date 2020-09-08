@@ -7,10 +7,12 @@ import "./assets/scss/app.scss";
 
 import Vuelidate from "vuelidate";
 import vuetify from "./plugins/vuetify";
+import VueMask from "v-mask"
 
 Vue.config.productionTip = false;
 Vue.config.errorHandler = "debugger";
 Vue.use(Vuelidate);
+Vue.use(VueMask);
 
 new Vue({
   router,

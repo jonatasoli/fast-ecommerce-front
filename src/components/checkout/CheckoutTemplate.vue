@@ -303,7 +303,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-const validateDocument = value => value.length == 11;
+const validateDocument = value => value.length == 11 || value.length == 14;
 const validateZipCode = value => value.length == 8;
 const validateCVV = value => value.length >= 3 || value.length <= 4;
 
@@ -454,7 +454,7 @@ export default {
       }
       !document.required && errors.push("Este campo é obrigatório!");
       !document.numeric && errors.push("Utilize apenas números");
-      !document.validateDocument && errors.push("CPF deve ter 11 digitos");
+      !document.validateDocument && errors.push("CPF deve ter 11 ou CNPJ com 14 digitos");
       return errors;
     },
     nameErrors() {
