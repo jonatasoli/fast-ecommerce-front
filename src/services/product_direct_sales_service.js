@@ -11,6 +11,7 @@ const apiClient = axios.create({
 
 export default {
   getDirectSalesProduct(uri) {
+    alert(process.env.VUE_APP_BASE_URL);
     return apiClient.get(`/direct-sales/product/${uri}`, { crossDomain: true });
   },
   getDirectSalesUpsell(id) {
