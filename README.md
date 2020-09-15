@@ -1,29 +1,36 @@
-# fast-ecommerce-front
+ # Fast Ecommerce 
 
-## Project setup
+Ecommerce Front End application under construction.
+## Technologies
++ Vue Js
++ Yarn
++ Axios
+
+## Install
+```
+git clone https://github.com/jonatasoli/fast-ecommerce-front
+```
 ```
 yarn install
 ```
-
-### Compiles and hot-reloads for development
 ```
 yarn serve
-```
+``` 
 
-### Compiles and minifies for production
+## Compiles ans minfieis for production
 ```
 yarn build
 ```
 
-### Run your unit tests
+## Run your init tests
 ```
 yarn test:unit
 ```
 
-### Lints and fixes files
+## Linsts and fixes files
+
 ```
 yarn lint
 ```
-
-### Customize configuration
+## Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
