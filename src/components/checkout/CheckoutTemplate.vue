@@ -490,7 +490,7 @@ export default {
       if (!address_complement.$dirty) {
         return errors;
       }
-      !address_complement.required && errors.push("Este campo é obrigatório!");
+      !address_complement.minLength && errors.push("O campo precisa ter no mínimo uma frase");
       return errors;
     },
     neighborhoodErrors() {
@@ -711,7 +711,7 @@ export default {
         required
       },
       address_complement: {
-        required
+        minLength: minLength(0)
       },
       neighborhood: {
         required
@@ -778,8 +778,12 @@ export default {
         })
       },
       ship_zip_code: {
-        numeric,
-        validateZipCode,
+        numeric: requiredIf(function() {
+          return this.transaction.shipping_is_payment === false;
+        }),
+        validateZipCode: requiredIf(function() {
+          return this.transaction.shipping_is_payment === false;
+        }),
         required: requiredIf(function() {
           return this.transaction.shipping_is_payment === false;
         })
@@ -863,7 +867,7 @@ export default {
         console.log("Invalidação ", this.$v.$invalid);
         console.log(this.$v);
         console.log("Shipping ", !_transaction.shipping_is_payment);
-        /* if (this.$v.$invalid) throw "Formulário inválido, por favor verifique os campos e tente novamente!" */
+        if (this.$v.$invalid) throw "Formulário inválido, por favor verifique os campos e tente novamente!"
 
         this.postCheckout(checkout);
         this.$router.push("/pagamento-processado");

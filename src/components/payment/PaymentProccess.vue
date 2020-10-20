@@ -21,24 +21,23 @@
           {{ checkout_response.payment_status }}
         </v-alert>
       </v-col>
-      <v-col sm-12 v-else-if="checkout_response.errors">
+      <v-col sm-12 v-else-if="checkout_response.detail">
         <v-card>
-          <v-card-title>
-            Houve um erro no pagamento! Por favor entrar em contato com
-            tecnologia@graciellegatto.com.br
-          </v-card-title>
+          <v-card-title>Houve um erro no pagamento!</v-card-title>
           <v-card-text>
-            <p v-for="error in checkout_response.erros" :key="error.message">
-              {{ error.message }}
+            <p>
+              Por favor verifique o erro abaixo e
+              tente novamente caso o erro persista entrar em contato com
+              tecnologia@graciellegatto.com.br
             </p>
+            <p>{{ checkout_response.detail }}</p>
           </v-card-text>
         </v-card>
+        <v-btn color="secondary" @click="$router.back()">Voltar</v-btn>
       </v-col>
       <v-col sm-12 v-else>
         <v-card>
-          <v-card-title
-            >Seu pagamento está sendo processados aguarde</v-card-title
-          >
+          <v-card-title>Seu pagamento está sendo processados aguarde</v-card-title>
         </v-card>
       </v-col>
     </v-row>
