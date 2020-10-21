@@ -1,4 +1,6 @@
 FROM node:10.15.3-alpine AS dev-stage
+ARG ARG_VUE_BASE_URL
+ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 
 WORKDIR /usr/app
 
@@ -11,10 +13,15 @@ COPY . .
 
 FROM dev-stage AS build-stage
 
+ARG ARG_VUE_BASE_URL
+ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
+
 RUN npm run build
 
 
 FROM nginx:alpine AS prod-stage
+ARG ARG_VUE_BASE_URL
+ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 
 COPY --from=build-stage /usr/app/dist /usr/share/nginx/html
 
