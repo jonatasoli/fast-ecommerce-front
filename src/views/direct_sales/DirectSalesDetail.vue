@@ -1,7 +1,7 @@
 <template>
   <v-container class="mt-2">
-    <v-row v-if="pageProduct.id">
-      <v-col align="center" justify="center" class="mt-5 md-6">
+    <v-row v-if="pageProduct.id" class="mb-12 sm-12 xs-12">
+      <v-col cols="12" mt="5" md="6" order="1" align="center" justify="center">
         <v-card color="#233237" dark>
           <v-card-title>Pagamento</v-card-title>
           <v-card-text>
@@ -9,11 +9,9 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-row dense>
-        <v-col class="mt-5 md-4">
-          <Order />
-        </v-col>
-      </v-row>
+      <v-col cols="12" xs="12" sm="12" mt="5" md="4" order-sm="0" order-xs="0">
+        <Order />
+      </v-col>
     </v-row>
     <v-row v-else>
       <NavBar />
