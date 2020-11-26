@@ -26,9 +26,13 @@ export default {
   postInstallments(cart) {
     console.log("POST _______");
     console.log(cart);
-    return apiClient.post("/product/cart/installments", { "cart": cart }, {
-      crossDomain: true,
-    });
+    return apiClient.post(
+      "/product/cart/installments",
+      { cart: cart },
+      {
+        crossDomain: true,
+      }
+    );
   },
   postCheckout(checkout) {
     console.log("POST _______");

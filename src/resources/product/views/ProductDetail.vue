@@ -35,22 +35,22 @@
           >
             <v-form @submit.prevent="addCart">
               <h1>{{ product.name }}</h1>
-              <p>{{ formatCurrency(product.price/100) }}</p>
+              <p>{{ formatCurrency(product.price / 100) }}</p>
               <div v-if="product.quantity === 0">
-              <v-alert inf>Produto Esgotado</v-alert>
+                <v-alert inf>Produto Esgotado</v-alert>
               </div>
               <div v-else>
-              <v-select 
-               :items="productAvailable"
-               label="Quantidade"
-               solo
-               v-model="product_qty_select" 
-               ></v-select>
-              <v-btn color="#46cb18" dark large @click.prevent="addCart">
-                Adicionar ao Carrinho
-                <v-spacer></v-spacer>
-                <v-icon>fa-shopping-cart</v-icon>
-              </v-btn>
+                <v-select
+                  :items="productAvailable"
+                  label="Quantidade"
+                  solo
+                  v-model="product_qty_select"
+                ></v-select>
+                <v-btn color="#46cb18" dark large @click.prevent="addCart">
+                  Adicionar ao Carrinho
+                  <v-spacer></v-spacer>
+                  <v-icon>fa-shopping-cart</v-icon>
+                </v-btn>
               </div>
             </v-form>
             <v-divider inset></v-divider>
@@ -95,26 +95,23 @@ export default {
       product: "product",
     }),
     productAvailable() {
-        let _available = []
-        console.log("QTY DETAIL", this.product.quantity)
-        if (this.product.quantity > 10){
-            console.log("FOR");
-            let n =1;
-            for (n; n <= 10; n++)
-            {
-                console.log("Iterações", n)
-                _available.push(n);
-
-            }
-        } else {
-            let n =1;
-              for (n; n <= this.product.quantity; n++) {
-                _available.push(n)
-                  }
-            }
-        return _available
-
-        },
+      let _available = [];
+      console.log("QTY DETAIL", this.product.quantity);
+      if (this.product.quantity > 10) {
+        console.log("FOR");
+        let n = 1;
+        for (n; n <= 10; n++) {
+          console.log("Iterações", n);
+          _available.push(n);
+        }
+      } else {
+        let n = 1;
+        for (n; n <= this.product.quantity; n++) {
+          _available.push(n);
+        }
+      }
+      return _available;
+    },
   },
   watch: {},
   created() {
@@ -122,19 +119,23 @@ export default {
   },
   methods: {
     ...mapActions(["getProduct", "addShoppingCart"]),
+    ...mapState({
+      state_afilliate: "affiliate",
+    }),
     addCart() {
-      console.log("QTY ", this.product_qty_select)
+      console.log("QTY ", this.product_qty_select);
+
       this.cart_item = {
         amount: this.product.price,
         qty: this.product_qty_select,
         product_id: this.product.id,
         product_name: this.product.name,
-        affiliate: this.affiliate,
+        affiliate: this.state_afilliate,
         tangible: true,
       };
       this.addShoppingCart(this.cart_item);
       this.cart_item = undefined;
-      this.$router.push({ name: "ShoppingCart" })
+      this.$router.push({ name: "ShoppingCart" });
     },
     getProductPage() {
       console.log("ID ----", this.id);
