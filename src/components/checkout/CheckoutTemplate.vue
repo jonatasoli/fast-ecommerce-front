@@ -9,7 +9,7 @@
 
     <v-form
       ref="form"
-      v-model="valid"
+      v-model="transaction"
       align="center"
       justify="center"
       @submit.prevent="onSubmit"
@@ -198,26 +198,22 @@
       </div>
 
       <v-subheader>Forma de pagamento</v-subheader>
+      <p>{{ transaction.payment_method }}</p>
       <v-radio-group
         v-model="$v.transaction.payment_method.$model"
         :error-messages="paymentMethodErrors"
         :success="$v.transaction.payment_method.$invalid"
       >
-        <v-radio
-          name="payment-method"
-          label="Cartão de Crédito"
-          value="credit-card"
-        >
-        </v-radio>
-        <v-radio name="payment-method" label="Boleto" value="slip-bank">
-        </v-radio>
+        <v-radio label="Cartão de Crédito" value="credit-card"> </v-radio>
+        <v-radio label="Boleto" value="slip-bank"> </v-radio>
       </v-radio-group>
+
       <div v-if="transaction.payment_method == 'credit-card'">
         <v-subheader>Cartões aceitos</v-subheader>
         <v-icon fas fa-cc-visa></v-icon>
-        <v-icon fas fa-cc-amex style="color:blue;"></v-icon>
-        <v-icon fas fa-cc-mastercard style="color:red;"></v-icon>
-        <v-icon fas fa-cc-discover style="color:orange;"></v-icon>
+        <v-icon fas fa-cc-amex style="color: blue"></v-icon>
+        <v-icon fas fa-cc-mastercard style="color: red"></v-icon>
+        <v-icon fas fa-cc-discover style="color: orange"></v-icon>
 
         <v-text-field
           label="Nome do Cartão"
@@ -303,16 +299,16 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-const validateDocument = value => value.length == 11 || value.length == 14;
-const validateZipCode = value => value.length == 8;
-const validateCVV = value => value.length >= 3 || value.length <= 4;
+const validateDocument = (value) => value.length == 11 || value.length == 14;
+const validateZipCode = (value) => value.length == 8;
+const validateCVV = (value) => value.length >= 3 || value.length <= 4;
 
 import {
   required,
   requiredIf,
   minLength,
   numeric,
-  email
+  email,
 } from "vuelidate/lib/validators";
 import moment from "moment";
 
@@ -348,19 +344,19 @@ export default {
         ship_state: "São Paulo",
         ship_country: "br",
         ship_zip_code: "",
-        payment_method: "credit-card",
+        payment_method: null,
         shopping_cart: ["1"],
         credit_card_name: "",
         credit_card_number: "",
         credit_card_cvv: "",
         credit_card_validate: new Date(),
-        installments: ""
+        installments: "",
       },
       hasError: false,
       showDateDialog: false,
       installments_select: [
         { value: 1, name: "1 sem juros" },
-        { value: 2, name: "2 com juros" }
+        { value: 2, name: "2 com juros" },
       ],
       country_select: [{ value: "br", name: "Brasil" }],
       state_select: [
@@ -389,15 +385,15 @@ export default {
         { value: "Santa Catarina", name: "Santa Catarina" },
         { value: "Sergipe", name: "Sergipe" },
         { value: "Tocantins", name: "Tocantins" },
-        { value: "Distrito Federal", name: "Distrito Federal" }
-      ]
+        { value: "Distrito Federal", name: "Distrito Federal" },
+      ],
     };
   },
   computed: {
     ...mapState({
       direct_sales: "direct_sales",
       pageProduct: "product",
-      Cart: "shopping_cart"
+      Cart: "shopping_cart",
     }),
     formattedDate() {
       return moment(this.transaction.credit_card_validate).format("MM/YYYY");
@@ -407,7 +403,7 @@ export default {
     },
     ...mapGetters({
       cartTotal: "totalCart",
-      getShoppingCart: "getShoppingCart"
+      getShoppingCart: "getShoppingCart",
     }),
     emailErrors() {
       const errors = [];
@@ -454,7 +450,8 @@ export default {
       }
       !document.required && errors.push("Este campo é obrigatório!");
       !document.numeric && errors.push("Utilize apenas números");
-      !document.validateDocument && errors.push("CPF deve ter 11 ou CNPJ com 14 digitos");
+      !document.validateDocument &&
+        errors.push("CPF deve ter 11 ou CNPJ com 14 digitos");
       return errors;
     },
     nameErrors() {
@@ -490,7 +487,8 @@ export default {
       if (!address_complement.$dirty) {
         return errors;
       }
-      !address_complement.minLength && errors.push("O campo precisa ter no mínimo uma frase");
+      !address_complement.minLength &&
+        errors.push("O campo precisa ter no mínimo uma frase");
       return errors;
     },
     neighborhoodErrors() {
@@ -678,152 +676,152 @@ export default {
       }
       !field.required && errors.push("Este campo é obrigatório!");
       return errors;
-    }
+    },
   },
   validations: {
     transaction: {
       document: {
         required,
         numeric,
-        validateDocument
+        validateDocument,
       },
       mail: {
         email,
-        required
+        required,
       },
       password: {
         required,
-        minLength: minLength(6)
+        minLength: minLength(6),
       },
       name: {
-        required
+        required,
       },
       phone: {
         numeric,
         minLength: minLength(11),
-        required
+        required,
       },
       address: {
-        required
+        required,
       },
       address_number: {
         numeric,
-        required
+        required,
       },
       address_complement: {
-        minLength: minLength(0)
+        minLength: minLength(0),
       },
       neighborhood: {
-        required
+        required,
       },
       city: {
-        required
+        required,
       },
       state: {
-        required
+        required,
       },
       country: {
-        required
+        required,
       },
       zip_code: {
         numeric,
         validateZipCode,
-        required
+        required,
       },
       shipping_is_payment: {
-        required
+        required,
       },
       ship_name: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           console.log(
             "ShipIsPayment ",
             this.transaction.shipping_is_payment === false
           );
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_address: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_address_number: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_address_complement: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_neighborhood: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_city: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_state: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_country: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       ship_zip_code: {
-        numeric: requiredIf(function() {
+        numeric: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
         }),
-        validateZipCode: requiredIf(function() {
+        validateZipCode: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
         }),
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return this.transaction.shipping_is_payment === false;
-        })
+        }),
       },
       payment_method: {
-        required
+        required,
       },
       credit_card_name: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           console.log(
             "requiredif creditcart ",
             !this.payment_method == "credit-card"
           );
           return !this.payment_method == "credit-card";
-        })
+        }),
       },
       credit_card_number: {
         numeric,
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return !this.payment_method == "credit-card";
-        })
+        }),
       },
       credit_card_cvv: {
         numeric,
         validateCVV,
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return !this.payment_method == "credit-card";
-        })
+        }),
       },
       credit_card_validate: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return !this.payment_method == "credit-card";
-        })
+        }),
       },
       installments: {
-        required: requiredIf(function() {
+        required: requiredIf(function () {
           return !this.payment_method == "credit-card";
-        })
-      }
-    }
+        }),
+      },
+    },
   },
   methods: {
     ...mapActions(["postCheckout"]),
@@ -844,10 +842,10 @@ export default {
                 product_id: _product.id,
                 product_name: _product.name,
                 affiliate: this.affiliate,
-                tangible: true
-              }
-            ]
-          }
+                tangible: true,
+              },
+            ],
+          },
         ];
         _transaction.shopping_cart = _shopping_cart;
         _transaction.credit_card_validate = this.formattedDateOutput;
@@ -861,13 +859,14 @@ export default {
         const checkout = {
           transaction: _transaction,
           affiliate: _affiliate,
-          cupom: _cupom
+          cupom: _cupom,
         };
         console.log(checkout);
         console.log("Invalidação ", this.$v.$invalid);
         console.log(this.$v);
         console.log("Shipping ", !_transaction.shipping_is_payment);
-        if (this.$v.$invalid) throw "Formulário inválido, por favor verifique os campos e tente novamente!"
+        if (this.$v.$invalid)
+          throw "Formulário inválido, por favor verifique os campos e tente novamente!";
 
         this.postCheckout(checkout);
         this.$router.push("/pagamento-processado");
@@ -882,8 +881,8 @@ export default {
       } finally {
         this.isLoading = false;
       }
-    }
-  }
+    },
+  },
 };
 // Todo
 // 2 - Validações

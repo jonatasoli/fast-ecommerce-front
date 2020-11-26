@@ -10,15 +10,15 @@
 
       <v-img
         src="./assets/img/logo.png"
-        class=".d-flex .d-sm-none"
+        class="d-flex d-sm-none"
         max-width="80"
         contain
       />
 
       <v-spacer />
       <v-toolbar-items>
-        <v-btn>ENTRAR</v-btn>
-        <v-btn>
+        <v-btn @click="goToSales">OFERTAS</v-btn>
+        <v-btn @click="goToShoppingCart">
           CARRINHO
           <v-icon right dark>fa-shopping-cart</v-icon>
         </v-btn>
@@ -29,7 +29,21 @@
 
 <script>
 export default {
-  name: "MainNavBar"
+  name: "MainNavBar",
+  methods: {
+    goToShoppingCart() {
+      console.log("Cart");
+      this.$router.push({
+        name: "ShoppingCart",
+      });
+    },
+    goToSales() {
+      console.log("entrou");
+      this.$router.push({
+        name: "Showcase",
+      });
+    },
+  },
 };
 </script>
 

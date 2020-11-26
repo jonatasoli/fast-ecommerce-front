@@ -5,8 +5,8 @@ const apiClient = axios.create({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*"
-  }
+    "Access-Control-Allow-Origin": "*",
+  },
 });
 
 export default {
@@ -20,7 +20,7 @@ export default {
     console.log("POST _______");
     console.log(checkout);
     return apiClient.post("/direct-sales/checkout", checkout, {
-      crossDomain: true
+      crossDomain: true,
     });
-  }
+  },
 };

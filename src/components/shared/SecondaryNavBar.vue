@@ -27,5 +27,6 @@ export default {};
 .center-items
     display: flex
     justify-content: center
-    align-items: center</style
->>
+    align-items: center
+</style>
+>

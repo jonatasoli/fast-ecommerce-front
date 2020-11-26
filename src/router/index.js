@@ -8,6 +8,7 @@ import DirectSales from "../views/direct_sales/DirectSales.vue";
 import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
 import PaymentProccess from "../components/payment/PaymentProccess.vue";
 import PaymentError from "../components/payment/PaymentError.vue";
+import ProductRoutes from "@/resources/product/router";
 
 Vue.use(VueRouter);
 
@@ -15,49 +16,45 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
   },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
-  },
+  ...ProductRoutes,
   {
     path: "/lancamentos",
+    name: "DirectSales",
     component: DirectSales,
     // props busca itens
     children: [
       {
         path: ":uri",
         component: DirectSalesDetail,
-        name: "direct-sales-product"
-      }
-    ]
+        name: "direct-sales-product",
+      },
+    ],
   },
   {
     path: "/lancamento/:uri",
-    component: DirectSalesDetail
+    name: "DirectSalesDetail",
+    component: DirectSalesDetail,
     // props busca itens
   },
   {
     path: "/pagamento-processado",
-    component: PaymentProccess
+    name: "PaymentProccess",
+    component: PaymentProccess,
   },
   {
     path: "/pagamento-erro",
-    component: PaymentError
+    name: "PaymentError",
+    component: PaymentError,
   },
-  { path: "*", component: Error404 }
+  { path: "*", component: Error404 },
 ];
 
 const router = new VueRouter({
   mode: "history",
-  base: process.env.VUE_APP_BASE_URL,
-  routes
+  base: process.env.BASE_URL,
+  routes,
 });
 
 export default router;

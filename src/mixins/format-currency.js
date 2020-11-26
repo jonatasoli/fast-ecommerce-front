@@ -4,6 +4,6 @@ export default {
   methods: {
     formatCurrency(value) {
       return currencyFormatter().format(value);
-    }
-  }
+    },
+  },
 };

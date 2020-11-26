@@ -36,7 +36,7 @@ export default {
   components: {
     CheckoutTemplate,
     Order,
-    NavBar
+    NavBar,
   },
   data() {
     return {
@@ -44,30 +44,30 @@ export default {
       direct_sales: undefined,
       affiliate: undefined,
       cupom: undefined,
-      uri: undefined
+      uri: undefined,
     };
   },
   computed: {
     ...mapState({
       pageProduct: "product",
-      cart: "shopping_cart"
+      cart: "shopping_cart",
     }),
-    ...mapGetters(["ProductURI"])
+    ...mapGetters(["ProductURI"]),
   },
   watch: {
     updateShoppingCart() {
       console.log("update");
-    }
+    },
   },
   methods: {
     ...mapActions([
       "getDirectSalesProduct",
       "addShoppingCart",
-      "resetShoppingCart"
-    ])
+      "resetShoppingCart",
+    ]),
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       vm.product = vm.getDirectSalesProduct({ uri: to.params.uri });
 
       vm.uri = to.params.uri;
@@ -80,7 +80,7 @@ export default {
     this.affiliate = to.query.afil;
     this.cupom = to.query.cupom;
     next();
-  }
+  },
 };
 </script>
 
