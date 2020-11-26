@@ -155,9 +155,18 @@ export default {
       "setShippingPrice",
       "setZipCode",
       "setInstallments",
+      "postCalculateShipping",
     ]),
     calcShipping() {
       console.log(this.shipping);
+      /*
+       - pegar carrinho e mandar pra uma action de calcular
+       - receber o valor de volta e colocar no shippingPrice
+      */
+      this.postCalculateShipping({
+        shipping: this.shipping,
+        cart: this.shopping_cart,
+      });
       this.shippingPrice = 100;
     },
     goToCheckout() {

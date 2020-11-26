@@ -37,4 +37,10 @@ export default {
       crossDomain: true,
     });
   },
+  calculateShipping(payload) {
+    console.log("CART SHIP ", payload);
+    return apiClient.post("/zip_code/shipping/calc", payload, {
+      crossDomain: true,
+    });
+  },
 };

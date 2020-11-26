@@ -185,19 +185,27 @@ const productModule = {
         )
         .catch((error) => commit(types.SET_ERROR, { error }));
     },
-  postCheckout: ({ commit }, payload) => {
-    console.log("entrou no checkout");
-    console.log(payload);
-    return productService.postCheckout(payload)
-      .then((response) =>
-        commit(types.RESPONSE_CHECKOUT, {
-          checkout_response: response.data,
-        })
-      )
-      .catch((error) => commit(types.SET_ERROR, { error }));
+    postCheckout: ({ commit }, payload) => {
+      console.log("entrou no checkout");
+      console.log(payload);
+      return productService.postCheckout(payload)
+        .then((response) =>
+          commit(types.RESPONSE_CHECKOUT, {
+            checkout_response: response.data,
+          })
+        )
+        .catch((error) => commit(types.SET_ERROR, { error }));
+    },
+    postCalculateShipping: ({ commit }, payload) => {
+      return productService.calculateShipping(payload)
+        .then((response) =>
+          commit(types.SET_SHIPPING_PRICE, { 
+            shippingPrice: response.data})
+        )
+        .catch((error) => commit(types.SET_ERROR, { error }));
+    },
   },
-  },
-  
+
   getters: {
     getShowcase: (state) => {
       return state.products;
