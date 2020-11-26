@@ -2,7 +2,9 @@
   <v-container>
     <NavBar />
     <v-container v-if="shopping_cart.length > 0">
-      <v-row class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8">
+      <v-row
+        class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8"
+      >
         <v-col class="md-12">
           <v-card color="blue-grey darken-4">
             <v-card-title>Carrinho de Compras</v-card-title>
@@ -23,7 +25,7 @@
                     <tr v-for="item in shopping_cart" :key="item.product_id">
                       <th>#</th>
                       <td>{{ item.product_name }}</td>
-                      <td>{{ formatCurrency(item.amount/100) }}</td>
+                      <td>{{ formatCurrency(item.amount / 100) }}</td>
                       <td>
                         <span>{{ item.qty }}</span>
                       </td>
@@ -36,7 +38,7 @@
                       <td></td>
                       <td v-if="shippingPrice === -1">-</td>
                       <td v-else-if="shippingPrice === 0">Frete Grátis</td>
-                      <td v-else>{{ formatCurrency(shippingPrice/100) }}</td>
+                      <td v-else>{{ formatCurrency(shippingPrice / 100) }}</td>
                     </tr>
                     <tr>
                       <td></td>
@@ -60,7 +62,10 @@
       </v-row>
     </v-container>
     <v-container v-else>
-      <v-alert dense type="info">Seu carrinho está vazio no momento volte para fazer suas compras!</v-alert>
+      <v-alert dense type="info"
+        >Seu carrinho está vazio no momento volte para fazer suas
+        compras!</v-alert
+      >
     </v-container>
   </v-container>
 </template>

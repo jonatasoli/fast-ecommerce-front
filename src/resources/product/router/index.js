@@ -2,7 +2,7 @@ const Showcase = () => import("./../views/Showcase.vue");
 const ProductDetail = () => import("./../views/ProductDetail.vue");
 const ShoppingCart = () => import("./../views/ShoppingCart.vue");
 const Checkout = () => import("./../views/Checkout.vue");
-const ShoppingPaymentProcess = () => import("./../views/PaymentProcess.vue") 
+const ShoppingPaymentProcess = () => import("./../views/PaymentProcess.vue");
 
 export default [
   {

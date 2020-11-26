@@ -11,7 +11,11 @@
         xl="12"
         v-if="products.length > 0"
       >
-        <ProductCard v-for="product in products" :key="product.id" :product="product"></ProductCard>
+        <ProductCard
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
+        ></ProductCard>
       </v-col>
       <v-col v-else>
         <h2>Não há produtos nessa sessão!</h2>

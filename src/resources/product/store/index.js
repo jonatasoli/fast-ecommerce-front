@@ -58,14 +58,14 @@ const productModule = {
       // console.log(state)
       cartItem.qty++;
     },
-    [SET_TOTAL_PRICE]: (state, totalPrice ) => {
+    [SET_TOTAL_PRICE]: (state, totalPrice) => {
       state.totalPrice = totalPrice;
     },
-    [SET_SHIPPING_PRICE]: (state, shippingPrice ) => {
+    [SET_SHIPPING_PRICE]: (state, shippingPrice) => {
       state.shippingPrice = shippingPrice;
-      console.log("STATE SHIPPIN", state.shippingPrice)
+      console.log("STATE SHIPPIN", state.shippingPrice);
     },
-    [DECREMENT_PRODUCT_TO_CART]: (state, cartItem ) => {
+    [DECREMENT_PRODUCT_TO_CART]: (state, cartItem) => {
       cartItem.qty--;
     },
     [DECREMENT_PRODUCT_QUANTITY]: (state) => {
@@ -121,7 +121,7 @@ const productModule = {
           commit(types.ADD_PRODUCT_TO_CART, { item: cart_item });
         } else {
           console.log("add");
-          commit(types.INCREMENT_PRODUCT_TO_CART, { cartItem: cartItem })
+          commit(types.INCREMENT_PRODUCT_TO_CART, { cartItem: cartItem });
           // commit(types.INCREMENT_PRODUCT_TO_CART, cartItem)
         }
         commit(types.DECREMENT_PRODUCT_QUANTITY, cart_item);
@@ -138,8 +138,8 @@ const productModule = {
     },
     increaseProduct: ({ commit }, productItem) => {
       try {
-        console.log("ACTION ", productItem.qty)
-        console.log("ACTION ", productItem)
+        console.log("ACTION ", productItem.qty);
+        console.log("ACTION ", productItem);
         commit(types.INCREMENT_PRODUCT_TO_CART, { cartItem: productItem });
       } catch (error) {
         commit(types.SET_ERROR, { error });
@@ -170,7 +170,7 @@ const productModule = {
     },
     setZipCode: ({ commit }, zipCode) => {
       try {
-        commit(types.SET_ZIP_CODE, zipCode)
+        commit(types.SET_ZIP_CODE, zipCode);
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
@@ -178,18 +178,19 @@ const productModule = {
     setInstallments: async ({ state, commit }) => {
       try {
         const cart = JSON.parse(JSON.stringify(state.shopping_cart));
-        cart.push({amount: state.shippingPrice, qty: 1})
-        console.log("INSTALL ACT", cart)
+        cart.push({ amount: state.shippingPrice, qty: 1 });
+        console.log("INSTALL ACT", cart);
         const response = await productService.postInstallments(cart);
-        commit(types.SET_INSTALLMENTS, { installments: response.data })
+        commit(types.SET_INSTALLMENTS, { installments: response.data });
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
     },
     getAsyncInstallment: ({ state, commit }) => {
       const cart = JSON.parse(JSON.stringify(state.shopping_cart));
-      cart.push({amount: state.shippingPrice, qty: 1})
-      return productService.postInstallments(cart)
+      cart.push({ amount: state.shippingPrice, qty: 1 });
+      return productService
+        .postInstallments(cart)
         .then((response) =>
           commit(types.SET_INSTALLMENTS, { installments: response.data })
         )
@@ -198,7 +199,8 @@ const productModule = {
     postCheckout: ({ commit }, payload) => {
       console.log("entrou no checkout");
       console.log(payload);
-      return productService.postCheckout(payload)
+      return productService
+        .postCheckout(payload)
         .then((response) =>
           commit(types.RESPONSE_CHECKOUT, {
             checkout_response: response.data,
@@ -207,7 +209,8 @@ const productModule = {
         .catch((error) => commit(types.SET_ERROR, { error }));
     },
     postCalculateShipping: ({ commit }, payload) => {
-      return productService.calculateShipping(payload)
+      return productService
+        .calculateShipping(payload)
         .then((response) =>
           commit(types.SET_SHIPPING_PRICE, response.data.shipping)
         )
@@ -215,7 +218,7 @@ const productModule = {
     },
     setAffiliate: ({ commit }, affiliate) => {
       try {
-        commit(types.SET_AFFILIATE, affiliate)
+        commit(types.SET_AFFILIATE, affiliate);
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
@@ -231,20 +234,20 @@ const productModule = {
     },
     getTotalPrice: (state) => {
       if (state.totalPrice) {
-        return (state.totalPrice / 100);
+        return state.totalPrice / 100;
       } else {
-        return 0
+        return 0;
       }
     },
     getShippingPrice: (state) => {
       if (state.shippingPrice) {
-      return state.shippingPrice;
+        return state.shippingPrice;
       } else {
-        return 0
+        return 0;
       }
     },
     getInstallments: (state) => {
-      return state.installments
+      return state.installments;
     },
   },
 };

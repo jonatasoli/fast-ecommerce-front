@@ -2,14 +2,14 @@
   <div>
     <v-subheader>Forma de pagamento</v-subheader>
 
-      <v-select
-        :items="payment_method_select"
-        id="payment_method"
-        item-text="name"
-        item-value="value"
-        label="Metodo de pagamento"
-        v-model="payment_method"
-      ></v-select>
+    <v-select
+      :items="payment_method_select"
+      id="payment_method"
+      item-text="name"
+      item-value="value"
+      label="Metodo de pagamento"
+      v-model="payment_method"
+    ></v-select>
     <div v-if="transaction.payment_method == 'credit-card'">
       <v-subheader>Cartões aceitos</v-subheader>
       <v-icon fas fa-cc-visa></v-icon>
@@ -106,27 +106,29 @@ export default {
       dateDialogValue: this.formattedDate,
       hasError: false,
       showDateDialog: false,
-      payment_method_select: [{name: "Cartão de Crédito", value:
-      "credit-card"}, {name: "Boleto", value: "slip-payment"}],
+      payment_method_select: [
+        { name: "Cartão de Crédito", value: "credit-card" },
+        { name: "Boleto", value: "slip-payment" },
+      ],
       payment_method: "credit-card",
-      installments_select_local: [{name: "1 x", value: 1}],
+      installments_select_local: [{ name: "1 x", value: 1 }],
       installment: 1,
     };
   },
   watch: {
     payment_method() {
-        this.$emit("payment-method", this.payment_method)
-        },
+      this.$emit("payment-method", this.payment_method);
+    },
     installment() {
-        console.log("emitindo evendo ", this.installment)
-        this.$emit("installment-select", this.installment )
+      console.log("emitindo evendo ", this.installment);
+      this.$emit("installment-select", this.installment);
     },
     /* async installments_select_local() { */
     /*     console.log("WATCH ", this.installments_select_local) */
     /*     this.installments_select_local = await this.getAsyncInstallment(); */
     /*     console.log("WATCH ", this.installments_select_local) */
     /*     }, */
-      },
+  },
   computed: {
     formattedDate() {
       return moment(this.transaction.credit_card_validate).format("MM/YYYY");
@@ -235,18 +237,18 @@ export default {
   },
   methods: {
     ...mapGetters(["getShoppingCart", "getInstallments"]),
-    ...mapActions(["getAsyncInstallment", "setInstallments"])
+    ...mapActions(["getAsyncInstallment", "setInstallments"]),
   },
   async mounted() {
-    console.log("MOUNT2 ", this.installments_select_local)
+    console.log("MOUNT2 ", this.installments_select_local);
     await this.setInstallments();
     this.installments_select_local = this.getInstallments();
-    console.log("MOUNT2 ", this.installments_select_local)
+    console.log("MOUNT2 ", this.installments_select_local);
   },
   async updated() {
-    console.log("updated")
-    console.log(this.installment)
-    await this.$emit("installment-select", this.installment )
+    console.log("updated");
+    console.log(this.installment);
+    await this.$emit("installment-select", this.installment);
   },
 
   beforeRouteEnter(to, from, next) {
