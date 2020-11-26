@@ -25,8 +25,8 @@
               <CheckoutShippingFields :transaction="transaction" />
               <CheckoutBillingFields
                 :transaction="transaction"
-                :installments_select="installments_select"
                 @payment-method="paymentMethodValue"
+                @installment="transaction.installments"
               />
               <v-btn color="#46cb18" :disabled="isDisabled" dark large @click.prevent="onSubmit">
                 Comprar
@@ -120,10 +120,7 @@ export default {
       },
       hasError: false,
       showDateDialog: false,
-      installments_select: [
-        { value: 1, name: "1 sem juros" },
-        { value: 2, name: "2 com juros" },
-      ],
+      installments_select: this.getInstallments(),
       country_select: [{ value: "br", name: "Brasil" }],
       shopping_cart: [],
       affiliate: undefined,
@@ -291,7 +288,7 @@ export default {
     formattedDate() {
       return moment(this.transaction.credit_card_validate).format("MM/YYYY");
     },
-    mormattedDateOutput() {
+    formattedDateOutput() {
       return moment(this.transaction.credit_card_validate).format("MMYY");
     },
   },
@@ -319,7 +316,7 @@ export default {
           },
         ];
         _transaction.shopping_cart = _shopping_cart;
-        _transaction.credit_card_validate = "1222";
+        _transaction.credit_card_validate = this.formattedDateOutput;
         const _affiliate = this.affiliate;
         const _cupom = this.cupom;
         console.log("ShoppingCart", _shopping_cart);

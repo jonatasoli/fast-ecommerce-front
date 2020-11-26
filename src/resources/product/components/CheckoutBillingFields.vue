@@ -79,13 +79,11 @@
       </v-dialog>
 
       <v-select
-        :items="installments_select"
+        :items="installments_select_local"
         item-text="name"
         item-value="value"
         label="Parcelas"
-        v-model="$v.transaction.installments.$model"
-        :success="!$v.transaction.installments.$invalid"
-        :error="$v.transaction.installments.$invalid"
+        v-model="instalment"
       ></v-select>
     </div>
     <p>* valor com taxa de juros de 1.99% ao mês</p>
@@ -95,11 +93,13 @@
 <script>
 const validateCVV = (value) => value.length >= 3 || value.length <= 4;
 
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapGetters } = createNamespacedHelpers("product");
 import { required, requiredIf, numeric } from "vuelidate/lib/validators";
 import moment from "moment";
 
 export default {
-  props: ["transaction", "installments_select"],
+  props: ["transaction"],
   data() {
     return {
       isLoading: false,
@@ -108,14 +108,25 @@ export default {
       dateDialogValue: this.formattedDate,
       hasError: false,
       showDateDialog: false,
-      payment_method_select: this.transaction.payment_method_select,
-      payment_method: "",
+      payment_method_select: [{name: "Cartão de Crédito", value:
+      "credit-card"}, {name: "Boleto", value: "slip-payment"}],
+      payment_method: "credit-card",
+      installments_select_local: [{name: "1 x", value: 1}],
+      installment: undefined,
     };
   },
   watch: {
     payment_method() {
         this.$emit("payment-method", this.payment_method)
-        }
+        },
+    installment() {
+        this.$emit("installment-select", this.installment )
+        },
+    /* async installments_select_local() { */
+    /*     console.log("WATCH ", this.installments_select_local) */
+    /*     this.installments_select_local = await this.getAsyncInstallment(); */
+    /*     console.log("WATCH ", this.installments_select_local) */
+    /*     }, */
       },
   computed: {
     formattedDate() {
@@ -222,6 +233,27 @@ export default {
         }),
       },
     },
+  },
+  methods: {
+    ...mapGetters(["getShoppingCart", "getInstallments"]),
+    ...mapActions(["getAsyncInstallment", "setInstallments"])
+  },
+  async mounted() {
+    console.log("MOUNT2 ", this.installments_select_local)
+    /* this.installments_select_local = await this.getAsyncInstallment(); */
+    await this.setInstallments();
+    this.installments_select_local = this.getInstallments();
+    console.log("MOUNT2 ", this.installments_select_local)
+  },
+  async updated() {
+    console.log("updated")
+    await this.$emit("installment-select", this.installment )
+  },
+
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.installment = 1;
+    });
   },
 };
 </script>

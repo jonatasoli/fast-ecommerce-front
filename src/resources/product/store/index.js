@@ -76,7 +76,6 @@ const productModule = {
       state.zipCode = zipCode;
     },
     [SET_INSTALLMENTS]: (state, { installments }) => {
-      console.log("INSTALL", installments)
       state.installments = installments;
     },
   [RESPONSE_CHECKOUT]: (state, { checkout_response }) => {
@@ -177,6 +176,14 @@ const productModule = {
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
+    },
+    getAsyncInstallment: ({ state, commit }) => {
+      const cart = state.shopping_cart;
+      return productService.postInstallments(cart)
+        .then((response) =>
+          commit(types.SET_INSTALLMENTS, { installments: response.data })
+        )
+        .catch((error) => commit(types.SET_ERROR, { error }));
     },
   postCheckout: ({ commit }, payload) => {
     console.log("entrou no checkout");
