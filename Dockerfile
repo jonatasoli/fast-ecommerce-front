@@ -14,7 +14,7 @@ COPY . .
 
 FROM dev-stage AS build-stage
 
-ARG ARG_VUE_BASE_URL=https://api.gattorosa.com.br/
+ARG ARG_VUE_BASE_URL=https://stgapi.gattorosa.com.br/
 ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 RUN echo $VUE_APP_BASE_URL
 
