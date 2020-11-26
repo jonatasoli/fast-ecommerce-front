@@ -3,7 +3,7 @@ const currencyFormatter = (
 ) => {
   return new Intl.NumberFormat(locale, {
     style: "currency",
-    currency
+    currency,
   });
 };
 

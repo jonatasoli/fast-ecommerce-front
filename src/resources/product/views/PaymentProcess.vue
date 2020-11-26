@@ -36,9 +36,7 @@
       </v-col>
       <v-col sm-12 v-else>
         <v-card>
-          <v-card-title
-            >Seu pagamento está sendo processados aguarde</v-card-title
-          >
+          <v-card-title>Seu pagamento está sendo processados aguarde</v-card-title>
         </v-card>
       </v-col>
     </v-row>
@@ -46,7 +44,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("product");
 export default {
   data() {
     return {

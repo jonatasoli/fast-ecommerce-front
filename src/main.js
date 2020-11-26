@@ -7,7 +7,7 @@ import "./assets/scss/app.scss";
 
 import Vuelidate from "vuelidate";
 import vuetify from "./plugins/vuetify";
-import VueMask from "v-mask"
+import VueMask from "v-mask";
 
 Vue.config.productionTip = false;
 Vue.config.errorHandler = "debugger";
@@ -18,5 +18,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

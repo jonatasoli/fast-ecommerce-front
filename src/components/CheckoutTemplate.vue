@@ -80,17 +80,17 @@
             >
           </div>
           <b-field label="Cartões aceitos" :label-position="labelPosition">
-            <b-icon pack="fas" icon="fa-cc-visa" style="color:navy;"></b-icon>
-            <b-icon pack="fas" icon="fa-cc-amex" style="color:blue;"></b-icon>
+            <b-icon pack="fas" icon="fa-cc-visa" style="color: navy"></b-icon>
+            <b-icon pack="fas" icon="fa-cc-amex" style="color: blue"></b-icon>
             <b-icon
               pack="fas"
               icon="fa-cc-mastercard"
-              style="color:red;"
+              style="color: red"
             ></b-icon>
             <b-icon
               pack="fas"
               icon="fa-cc-discover"
-              style="color:orange;"
+              style="color: orange"
             ></b-icon>
           </b-field>
           <b-field label="Nome no cartão" :label-position="labelPosition">
@@ -158,20 +158,20 @@ export default {
         credit_card_name: "",
         credit_card_number: "",
         credit_card_cvv: "",
-        credit_card_validate: new Date()
+        credit_card_validate: new Date(),
       },
-      hasError: false
+      hasError: false,
     };
   },
   computed: {
-    ...mapState("direct_sales")
+    ...mapState("direct_sales"),
   },
   methods: {
     onSubmit() {
       const _transaction = Object.assign({}, this.transaction);
       console.log("Formulario ", _transaction);
-    }
-  }
+    },
+  },
 };
 // Todo
 // 1 - Configurar o campo de completar endereço
