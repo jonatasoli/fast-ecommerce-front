@@ -2,8 +2,6 @@
   <div>
     <v-subheader>Forma de pagamento</v-subheader>
 
-    <p>{{ transaction.payment_method }}</p>
-    <p>{{ payment_method }}</p>
       <v-select
         :items="payment_method_select"
         id="payment_method"
@@ -83,10 +81,10 @@
         item-text="name"
         item-value="value"
         label="Parcelas"
-        v-model="instalment"
+        v-model="installment"
       ></v-select>
     </div>
-    <p>* valor com taxa de juros de 1.99% ao mês</p>
+    <p>* valor a partir da quarta parcela com taxa de juros de 1.99% ao mês</p>
   </div>
 </template>
 
@@ -112,7 +110,7 @@ export default {
       "credit-card"}, {name: "Boleto", value: "slip-payment"}],
       payment_method: "credit-card",
       installments_select_local: [{name: "1 x", value: 1}],
-      installment: undefined,
+      installment: 1,
     };
   },
   watch: {
@@ -120,8 +118,9 @@ export default {
         this.$emit("payment-method", this.payment_method)
         },
     installment() {
+        console.log("emitindo evendo ", this.installment)
         this.$emit("installment-select", this.installment )
-        },
+    },
     /* async installments_select_local() { */
     /*     console.log("WATCH ", this.installments_select_local) */
     /*     this.installments_select_local = await this.getAsyncInstallment(); */
@@ -240,13 +239,13 @@ export default {
   },
   async mounted() {
     console.log("MOUNT2 ", this.installments_select_local)
-    /* this.installments_select_local = await this.getAsyncInstallment(); */
     await this.setInstallments();
     this.installments_select_local = this.getInstallments();
     console.log("MOUNT2 ", this.installments_select_local)
   },
   async updated() {
     console.log("updated")
+    console.log(this.installment)
     await this.$emit("installment-select", this.installment )
   },
 

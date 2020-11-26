@@ -23,7 +23,7 @@
                     <tr v-for="item in shopping_cart" :key="item.product_id">
                       <th>#</th>
                       <td>{{ item.product_name }}</td>
-                      <td>{{ item.amount }}</td>
+                      <td>{{ formatCurrency(item.amount/100) }}</td>
                       <td>
                         <v-btn class="mx-2" fab dark small @click="decrementProduct(item)">
                           <v-icon dark>fa-minus-circle</v-icon>
@@ -55,7 +55,7 @@
                       </td>
                       <td v-if="shippingPrice === -1">-</td>
                       <td v-else-if="shippingPrice === 0">Frete Grátis</td>
-                      <td v-else>{{ formatCurrency(shippingPrice) }}</td>
+                      <td v-else>{{ formatCurrency(shippingPrice/100) }}</td>
                     </tr>
                     <tr>
                       <th></th>
@@ -102,7 +102,7 @@ import { createNamespacedHelpers } from "vuex";
 import NavBar from "@/resources/product/components/Header.vue";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 
-const { mapActions, mapGetters } = createNamespacedHelpers("product");
+const { mapActions, mapGetters, mapState } = createNamespacedHelpers("product");
 
 export default {
   name: "ShoppingCart",
@@ -119,20 +119,21 @@ export default {
       ],
       shopping_cart: this.getShoppingCart(),
       shipping: "",
-      shippingPrice: -1,
     };
   },
   computed: {
+    ...mapState({ shippingPrice: "shippingPrice" }),
     getTotalPrice() {
       let price = 0;
       console.log(price);
       console.log("CART SHOPPING", this.shopping_cart);
+      console.log("PRICE SH", this.shippingPrice);
       this.shopping_cart.forEach(function (value) {
         price += value.amount * value.qty;
         console.log("Total ", price);
       });
       if (this.shippingPrice > 0) {
-        return price / 100 + this.shippingPrice;
+        return price / 100 + this.shippingPrice / 100;
       }
       return price / 100;
     },
@@ -157,17 +158,13 @@ export default {
       "setInstallments",
       "postCalculateShipping",
     ]),
-    calcShipping() {
+    async calcShipping() {
       console.log(this.shipping);
-      /*
-       - pegar carrinho e mandar pra uma action de calcular
-       - receber o valor de volta e colocar no shippingPrice
-      */
-      this.postCalculateShipping({
+      const sh = await this.postCalculateShipping({
         shipping: this.shipping,
         cart: this.shopping_cart,
       });
-      this.shippingPrice = 100;
+      console.log("SHIPP", sh);
     },
     goToCheckout() {
       let _total = this.shopping_cart;
@@ -190,16 +187,6 @@ export default {
       this.shopping_cart = [];
       this.totalPrice = 0;
     },
-    /* getTotalPrice() { */
-    /*   let price = 0; */
-    /*   this.shopping_cart.forEach(function (value) { */
-    /*     console.log("Processando", value); */
-    /*     price += value.amount; */
-    /*     console.log("Total ", price); */
-    /*     /1* console.log("Total ", this.totalPrice); *1/ */
-    /*   }); */
-    /*   return 10000; */
-    /* }, */
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

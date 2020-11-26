@@ -6,7 +6,6 @@
         <v-card color="#233237" dark>
           <v-card-title>Pagamento</v-card-title>
           <v-container class="section">
-            <p>trans {{ transaction }}</p>
             <v-snackbar v-model="showSnackbar" top>
               {{ error }}
               <v-btn color="pink" @click="showSnackbar = false">
@@ -26,7 +25,7 @@
               <CheckoutBillingFields
                 :transaction="transaction"
                 @payment-method="paymentMethodValue"
-                @installment="transaction.installments"
+                @installment-select="installmentSelect"
               />
               <v-btn color="#46cb18" :disabled="isDisabled" dark large @click.prevent="onSubmit">
                 Comprar
@@ -123,7 +122,6 @@ export default {
       installments_select: this.getInstallments(),
       country_select: [{ value: "br", name: "Brasil" }],
       shopping_cart: [],
-      affiliate: undefined,
       cupom: undefined,
     };
   },
@@ -284,6 +282,8 @@ export default {
     ...mapState({
       totalPrice: "totalPrice",
       shippingPrice: "shippingPrice",
+      affiliate: "affiliate",
+      installment: "installment",
     }),
     formattedDate() {
       return moment(this.transaction.credit_card_validate).format("MM/YYYY");
@@ -298,6 +298,10 @@ export default {
     paymentMethodValue(params) {
       console.log("retorno", params);
       this.transaction.payment_method = params;
+    },
+    installmentSelect(params) {
+      console.log("retorno emit ", params);
+      this.transaction.installments = params;
     },
     onSubmit() {
       this.isLoading = true;

@@ -122,14 +122,17 @@ export default {
   },
   methods: {
     ...mapActions(["getProduct", "addShoppingCart"]),
+    ...mapState({
+      state_afilliate: "affiliate"}),
     addCart() {
       console.log("QTY ", this.product_qty_select)
+ 
       this.cart_item = {
         amount: this.product.price,
         qty: this.product_qty_select,
         product_id: this.product.id,
         product_name: this.product.name,
-        affiliate: this.affiliate,
+        affiliate: this.state_afilliate,
         tangible: true,
       };
       this.addShoppingCart(this.cart_item);

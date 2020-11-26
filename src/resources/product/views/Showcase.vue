@@ -11,11 +11,7 @@
         xl="12"
         v-if="products.length > 0"
       >
-        <ProductCard
-          v-for="product in products"
-          :key="product.id"
-          :product="product"
-        ></ProductCard>
+        <ProductCard v-for="product in products" :key="product.id" :product="product"></ProductCard>
       </v-col>
       <v-col v-else>
         <h2>Não há produtos nessa sessão!</h2>
@@ -53,11 +49,14 @@ export default {
     this.getShowcase();
   },
   methods: {
-    ...mapActions(["setShowcase"]),
+    ...mapActions(["setShowcase", "setAffiliate"]),
     ...mapGetters(["getShowcase"]),
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
     this.cupom = to.query.cupom;
     this.products = this.getShowcase();
     next();
@@ -65,6 +64,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.affiliate = to.query.afil;
+      console.log(vm.affiliate);
+      if (vm.affiliate) {
+        vm.setAffiliate(vm.affiliate);
+      }
       vm.cupom = to.query.cupom;
       vm.products = vm.setShowcase();
     });

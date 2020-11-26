@@ -23,7 +23,7 @@
                     <tr v-for="item in shopping_cart" :key="item.product_id">
                       <th>#</th>
                       <td>{{ item.product_name }}</td>
-                      <td>{{ item.amount }}</td>
+                      <td>{{ formatCurrency(item.amount/100) }}</td>
                       <td>
                         <span>{{ item.qty }}</span>
                       </td>
@@ -36,7 +36,7 @@
                       <td></td>
                       <td v-if="shippingPrice === -1">-</td>
                       <td v-else-if="shippingPrice === 0">Frete Grátis</td>
-                      <td v-else>{{ formatCurrency(shippingPrice) }}</td>
+                      <td v-else>{{ formatCurrency(shippingPrice/100) }}</td>
                     </tr>
                     <tr>
                       <td></td>

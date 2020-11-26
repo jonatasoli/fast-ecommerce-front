@@ -16,6 +16,7 @@ import {
   SET_ZIP_CODE,
   SET_INSTALLMENTS,
   RESPONSE_CHECKOUT,
+  SET_AFFILIATE,
 } from "./mutations_types";
 import productService from "./../services/product-service";
 
@@ -27,7 +28,7 @@ const productModule = {
     erro: undefined,
     shopping_cart: [],
     totalPrice: 0,
-    shippingPrice: 0,
+    shippingPrice: -1,
     zipCode: "",
     installments: [],
     transaction: [],
@@ -35,6 +36,8 @@ const productModule = {
     products: [],
     checkout_response: [],
     upsell: [],
+    affiliate: undefined,
+    cupom: undefined,
   },
   mutations: {
     [SET_SHOWCASE]: (state, { products }) => {
@@ -78,10 +81,15 @@ const productModule = {
     [SET_INSTALLMENTS]: (state, { installments }) => {
       state.installments = installments;
     },
-  [RESPONSE_CHECKOUT]: (state, { checkout_response }) => {
-    console.log(checkout_response);
-    state.checkout_response = checkout_response;
-  },
+    [RESPONSE_CHECKOUT]: (state, { checkout_response }) => {
+      console.log(checkout_response);
+      state.checkout_response = checkout_response;
+    },
+    [SET_AFFILIATE]: (state, affiliate) => {
+      console.log("ZIP", affiliate);
+      state.affiliate = affiliate;
+      console.log("state affiliate ", state.affiliate);
+    },
   },
   actions: {
     setShowcase: async ({ commit }) => {
@@ -169,7 +177,8 @@ const productModule = {
     },
     setInstallments: async ({ state, commit }) => {
       try {
-        const cart = state.shopping_cart;
+        const cart = JSON.parse(JSON.stringify(state.shopping_cart));
+        cart.push({amount: state.shippingPrice, qty: 1})
         console.log("INSTALL ACT", cart)
         const response = await productService.postInstallments(cart);
         commit(types.SET_INSTALLMENTS, { installments: response.data })
@@ -178,7 +187,8 @@ const productModule = {
       }
     },
     getAsyncInstallment: ({ state, commit }) => {
-      const cart = state.shopping_cart;
+      const cart = JSON.parse(JSON.stringify(state.shopping_cart));
+      cart.push({amount: state.shippingPrice, qty: 1})
       return productService.postInstallments(cart)
         .then((response) =>
           commit(types.SET_INSTALLMENTS, { installments: response.data })
@@ -199,10 +209,16 @@ const productModule = {
     postCalculateShipping: ({ commit }, payload) => {
       return productService.calculateShipping(payload)
         .then((response) =>
-          commit(types.SET_SHIPPING_PRICE, { 
-            shippingPrice: response.data})
+          commit(types.SET_SHIPPING_PRICE, response.data.shipping)
         )
         .catch((error) => commit(types.SET_ERROR, { error }));
+    },
+    setAffiliate: ({ commit }, affiliate) => {
+      try {
+        commit(types.SET_AFFILIATE, affiliate)
+      } catch (error) {
+        commit(types.SET_ERROR, { error });
+      }
     },
   },
 
@@ -215,7 +231,7 @@ const productModule = {
     },
     getTotalPrice: (state) => {
       if (state.totalPrice) {
-      return (state.totalPrice / 100);
+        return (state.totalPrice / 100);
       } else {
         return 0
       }
