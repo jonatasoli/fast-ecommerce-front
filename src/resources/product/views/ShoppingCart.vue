@@ -15,7 +15,7 @@
                 label="Insira o Frete"
                 :rules="rules"
                 hide-details="auto"
-                v-model.number="shipping"
+                v-model="shipping"
                 type="text"
               ></v-text-field>
               <v-btn color="light green" @click="calcShipping()">
