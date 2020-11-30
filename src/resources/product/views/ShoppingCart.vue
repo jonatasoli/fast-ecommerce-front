@@ -123,7 +123,7 @@ export default {
       rules: [
         (value) => !!value || "Frete é necessário para processeguir!",
         (value) =>
-          (value && value.length <= 7) ||
+          (value && value.length <= 8) ||
           "Frete precisa ter 8 digitos e apenas números",
       ],
       shopping_cart: this.getShoppingCart(),
