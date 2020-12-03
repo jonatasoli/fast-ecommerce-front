@@ -14,16 +14,16 @@
                 <template v-slot:default>
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Item:</th>
-                      <th>Preço Unitário:</th>
-                      <th>Quantidade:</th>
-                      <th>Total:</th>
+                      <th scope="col">#</th>
+                      <th scope="col">Item:</th>
+                      <th scope="col">Preço Unitário:</th>
+                      <th scope="col">Quantidade:</th>
+                      <th scope="col">Total:</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="item in shopping_cart" :key="item.product_id">
-                      <th>#</th>
+                      <th scope="row">#</th>
                       <td>{{ item.product_name }}</td>
                       <td>{{ formatCurrency(item.amount / 100) }}</td>
                       <td>
@@ -32,8 +32,8 @@
                       <td>{{ formatCurrency(getPrice(item)) }}</td>
                     </tr>
                     <tr>
-                      <th>#</th>
-                      <td>Frete</td>
+                      <th scope="row">#</th>
+                      <td >Frete</td>
                       <td></td>
                       <td></td>
                       <td v-if="shippingPrice === -1">-</td>
@@ -42,13 +42,13 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <th>Total a pagar</th>
+                      <th scope="row">Total a pagar</th>
                       <td></td>
                       <td></td>
                       <td>{{ formatCurrency(totalPrice) }}</td>
                     </tr>
                     <tr>
-                      <th></th>
+                      <th scope="row"></th>
                       <td></td>
                       <td></td>
                       <td></td>

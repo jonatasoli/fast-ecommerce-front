@@ -28,6 +28,6 @@ export default {
     display: flex
     flex-flow: row wrap
     color:"white"
-    background-color: "white"
     background: "white"
+    background-color: "white"  
 </style>
