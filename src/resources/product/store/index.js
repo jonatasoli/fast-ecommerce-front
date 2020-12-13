@@ -100,6 +100,14 @@ const productModule = {
         commit(types.SET_ERROR, { error });
       }
     },
+    setProductsCategory: async ({ commit }, { id }) => {
+      try {
+          const response = await productService.getProductCategory(id);
+          commit(types.SET_SHOWCASE, {products: response});
+      } catch (error) {
+          commit(types.SET_ERROR, {error});
+      }
+    },
     getProduct: async ({ commit }, { id }) => {
       try {
         console.log("ACTION ID ", id);
