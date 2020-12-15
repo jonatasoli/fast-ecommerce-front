@@ -3,6 +3,7 @@
     <div class="home-style">
       <v-row>
         <NavBar />
+        <h1>{{id}}</h1>
       </v-row>
       <v-row>
         <SecondaryNavBar 
@@ -12,10 +13,12 @@
       </v-row>
       <router-view></router-view>
     </div>
+      <Footer/>
   </v-container>
 </template>
 
 <script>
+import Footer from "@/components/shared/Footer.vue";
 import NavBar from "@/components/shared/NavBar.vue";
 import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
 import { createNamespacedHelpers } from "vuex";
@@ -25,6 +28,7 @@ export default {
   components: {
     NavBar,
     SecondaryNavBar,
+    Footer,
   },
   computed: {
     ...mapState({

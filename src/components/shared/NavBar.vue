@@ -8,7 +8,7 @@
       </v-toolbar-items>
       <v-spacer />
       <v-img
-        src="./assets/img/logo.png"
+        src="./assets/img/logo2.png"
         class="mr-3 hidden-xs-only"
         max-width="250"
         contain

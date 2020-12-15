@@ -104,6 +104,7 @@ const productModule = {
       try {
           const response = await productService.getProductCategory(id);
           commit(types.SET_SHOWCASE, {products: response});
+          console.log(response)
       } catch (error) {
           commit(types.SET_ERROR, {error});
       }

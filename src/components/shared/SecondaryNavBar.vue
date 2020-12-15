@@ -7,8 +7,12 @@
       class="center-items"
     >
       <v-toolbar-items class="hidden-sm-and-down">
-        <router-link 
-        :to="{name: 'product-category', params: category.id}">{{category.name}}</router-link>
+        <v-btn x-large color="#233237" elevation="0">
+          <router-link 
+          tag="v-btn"
+          :to="{name: 'product-category', 
+          params:{id: category.id}}">{{category.name}}</router-link>
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </div>
