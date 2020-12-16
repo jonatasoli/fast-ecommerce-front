@@ -23,6 +23,13 @@ export default {
     });
     return products.data.products;
   },
+  async getProductCategory(id) {
+    let products;
+    products = await apiClient.get(`/product/category/${id}`, {
+      crossDomain: true,
+    });
+    return products.data.products
+  },
   postInstallments(cart) {
     console.log("POST _______");
     console.log(cart);

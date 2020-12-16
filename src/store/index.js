@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import productModule from "@/resources/product/store";
+import homeModule from "@/resources/home/store";
 
 Vue.use(Vuex);
 
@@ -117,6 +118,7 @@ const getters = {
 export default new Vuex.Store({
   modules: {
     product: productModule,
+    category: homeModule,
   },
   state,
   mutations,

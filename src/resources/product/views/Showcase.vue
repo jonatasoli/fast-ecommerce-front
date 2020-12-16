@@ -38,6 +38,7 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       affiliate: undefined,
       cupom: undefined,
       uri: undefined,
@@ -48,32 +49,46 @@ export default {
       products: "products",
     }),
   },
-  watch: {},
+  watch: {
+    $route(to) {
+      this.id = to.params.id;
+    }
+  },
   created() {
     this.getShowcase();
   },
   methods: {
-    ...mapActions(["setShowcase", "setAffiliate"]),
+    ...mapActions(["setShowcase","setAffiliate", "setProductsCategory"]),
     ...mapGetters(["getShowcase"]),
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
+    this.id = to.params.id;
     if (this.affiliate) {
       this.setAffiliate(this.affiliate);
     }
     this.cupom = to.query.cupom;
-    this.products = this.getShowcase();
+    if (this.$route.path == '/destaque') {
+      this.getShowcase();
+    }
+    this.products = this.setProductsCategory({id: this.id});
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.affiliate = to.query.afil;
+      vm.id = to.params.id;
       console.log(vm.affiliate);
       if (vm.affiliate) {
         vm.setAffiliate(vm.affiliate);
       }
       vm.cupom = to.query.cupom;
-      vm.products = vm.setShowcase();
+      if (vm.$route.path == '/destaque') {
+        vm.products = vm.setShowcase();
+      }
+      vm.products = vm.setProductsCategory({id: vm.id});
+      
+      
     });
   },
 };
