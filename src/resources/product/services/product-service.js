@@ -54,5 +54,4 @@ export default {
       crossDomain: true,
     });
   },
->>>>>>> 679ac1fe98f0e8ec658473cf74745c732eefa804
 };
