@@ -92,7 +92,7 @@
 const validateCVV = (value) => value.length >= 3 || value.length <= 4;
 
 import { createNamespacedHelpers } from "vuex";
-const { mapActions, mapGetters } = createNamespacedHelpers("product");
+const { mapActions, mapGetters } = createNamespacedHelpers("cart");
 import { required, requiredIf, numeric } from "vuelidate/lib/validators";
 import moment from "moment";
 
@@ -123,11 +123,6 @@ export default {
       console.log("emitindo evendo ", this.installment);
       this.$emit("installment-select", this.installment);
     },
-    /* async installments_select_local() { */
-    /*     console.log("WATCH ", this.installments_select_local) */
-    /*     this.installments_select_local = await this.getAsyncInstallment(); */
-    /*     console.log("WATCH ", this.installments_select_local) */
-    /*     }, */
   },
   computed: {
     formattedDate() {

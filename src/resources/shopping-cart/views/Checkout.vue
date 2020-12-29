@@ -27,23 +27,13 @@
                 @payment-method="paymentMethodValue"
                 @installment-select="installmentSelect"
               />
-              <v-btn
-                color="#46cb18"
-                :disabled="isDisabled"
-                dark
-                large
-                @click.prevent="onSubmit"
-              >
+              <v-btn color="#46cb18" :disabled="isDisabled" dark large @click.prevent="onSubmit">
                 Comprar
                 <v-spacer></v-spacer>
                 <v-icon>fa-money-bill-alt</v-icon>
               </v-btn>
             </v-form>
-            <v-progress-linear
-              v-show="isLoading"
-              indeterminate
-              color="yellow darken-2"
-            ></v-progress-linear>
+            <v-progress-linear v-show="isLoading" indeterminate color="yellow darken-2"></v-progress-linear>
           </v-container>
           <v-card-text></v-card-text>
         </v-card>
@@ -58,7 +48,7 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 
-const { mapActions, mapState, mapGetters } = createNamespacedHelpers("product");
+const { mapActions, mapState, mapGetters } = createNamespacedHelpers("cart");
 const validateDocument = (value) => value.length == 11 || value.length == 14;
 const validateZipCode = (value) => value.length == 8;
 const validateCVV = (value) => value.length >= 3 || value.length <= 4;
@@ -71,11 +61,11 @@ import {
   requiredIf,
 } from "vuelidate/lib/validators";
 
-import NavBar from "@/resources/product/components/Header.vue";
-import Order from "@/resources/product/components/Order.vue";
-import CheckoutUserFields from "@/resources/product/components/CheckoutUserFields.vue";
-import CheckoutShippingFields from "@/resources/product/components/CheckoutShippingFields.vue";
-import CheckoutBillingFields from "@/resources/product/components/CheckoutBillingFields.vue";
+import NavBar from "@/resources/shopping-cart/components/Header.vue";
+import Order from "@/resources/shopping-cart/components/Order.vue";
+import CheckoutUserFields from "@/resources/shopping-cart/components/CheckoutUserFields.vue";
+import CheckoutShippingFields from "@/resources/shopping-cart/components/CheckoutShippingFields.vue";
+import CheckoutBillingFields from "@/resources/shopping-cart/components/CheckoutBillingFields.vue";
 import moment from "moment";
 /* No leave da pagina tem que zerar o totalPrice e shippingPrice */
 export default {
@@ -283,6 +273,7 @@ export default {
   computed: {
     isDisabled() {
       let cart = this.getShoppingCart();
+      console.log("BOTAO", cart);
       if (cart.length === 0) {
         return true;
       } else {

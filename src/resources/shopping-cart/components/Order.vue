@@ -2,9 +2,7 @@
   <v-container>
     <NavBar />
     <v-container v-if="shopping_cart.length > 0">
-      <v-row
-        class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8"
-      >
+      <v-row class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8">
         <v-col class="md-12">
           <v-card color="blue-grey darken-4">
             <v-card-title>Carrinho de Compras</v-card-title>
@@ -62,10 +60,10 @@
       </v-row>
     </v-container>
     <v-container v-else>
-      <v-alert dense type="info"
-        >Seu carrinho está vazio no momento volte para fazer suas
-        compras!</v-alert
-      >
+      <v-alert dense type="info">
+        Seu carrinho está vazio no momento volte para fazer suas
+        compras!
+      </v-alert>
     </v-container>
   </v-container>
 </template>
@@ -75,7 +73,7 @@ import { createNamespacedHelpers } from "vuex";
 import NavBar from "@/resources/product/components/Header.vue";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 
-const { mapActions, mapState, mapGetters } = createNamespacedHelpers("product");
+const { mapActions, mapState, mapGetters } = createNamespacedHelpers("cart");
 
 export default {
   name: "ShoppingCart",
