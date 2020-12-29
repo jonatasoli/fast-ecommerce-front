@@ -23,4 +23,36 @@ export default {
     });
     return products.data.products;
   },
+  async getProductCategory(id) {
+    let products;
+    products = await apiClient.get(`/product/category/${id}`, {
+      crossDomain: true,
+    });
+    return products.data.products
+  },
+  postInstallments(cart) {
+    console.log("POST _______");
+    console.log(cart);
+    return apiClient.post(
+      "/product/cart/installments",
+      { cart: cart },
+      {
+        crossDomain: true,
+      }
+    );
+  },
+  postCheckout(checkout) {
+    console.log("POST _______");
+    console.log(checkout);
+    return apiClient.post("/direct-sales/checkout", checkout, {
+      crossDomain: true,
+    });
+  },
+  calculateShipping(payload) {
+    console.log("CART SHIP ", payload);
+    return apiClient.post("/zip_code/shipping/calc", payload, {
+      crossDomain: true,
+    });
+  },
+>>>>>>> 679ac1fe98f0e8ec658473cf74745c732eefa804
 };

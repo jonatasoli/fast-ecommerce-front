@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../components/Home/views/Home.vue";
+import Home from "../resources/home/views/Home.vue";
 
 import Error404 from "../views/Error404.vue";
 
@@ -8,6 +8,7 @@ import DirectSales from "../views/direct_sales/DirectSales.vue";
 import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
 import PaymentProccess from "../components/payment/PaymentProccess.vue";
 import PaymentError from "../components/payment/PaymentError.vue";
+import Showcase from "../resources/product/views/Showcase.vue"
 import ProductRoutes from "@/resources/product/router";
 import ShoppingCartRoutes from "@/resources/shopping-cart/router"
 
@@ -18,6 +19,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    children : [{path:":id", component: Showcase, name: "product-category"}]
   },
   ...ProductRoutes,
   ...ShoppingCartRoutes,

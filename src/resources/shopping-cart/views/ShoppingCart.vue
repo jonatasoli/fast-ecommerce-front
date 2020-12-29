@@ -32,11 +32,11 @@
                 <template v-slot:default>
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Item:</th>
-                      <th>Preço Unitário:</th>
-                      <th>Quantidade:</th>
-                      <th>Total:</th>
+                      <th scope="col">#</th>
+                      <th scope="col">Item:</th>
+                      <th scope="col">Preço Unitário:</th>
+                      <th scope="col">Quantidade:</th>
+                      <th scope="col">Total:</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -56,7 +56,7 @@
                       <td>{{ formatCurrency(getPrice(item)) }}</td>
                     </tr>
                     <tr>
-                      <th>#</th>
+                      <th scope="row">#</th>
                       <td>Frete</td>
                       <td></td>
                       <td></td>
@@ -66,14 +66,14 @@
                       <td v-else>{{ formatCurrency(shippingPrice / 100) }}</td>
                     </tr>
                     <tr>
-                      <th></th>
+                      <th scope="row"></th>
                       <td></td>
                       <td></td>
                       <td></td>
                       <td>{{ formatCurrency(getTotalPrice) }}</td>
                     </tr>
                     <tr>
-                      <th></th>
+                      <th scope="row"></th>
                       <td></td>
                       <td></td>
                       <td>
