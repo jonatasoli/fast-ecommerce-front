@@ -69,9 +69,8 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
+import { mapState, mapActions } from "vuex";
 import FormatCurrencyMixin from "@/mixins/format-currency";
-const { mapState, mapActions } = createNamespacedHelpers("product");
 
 import NavBar from "@/resources/product/components/Header.vue";
 export default {
@@ -91,7 +90,7 @@ export default {
     };
   },
   computed: {
-    ...mapState({
+    ...mapState("product", {
       product: "product",
     }),
     productAvailable() {
@@ -113,13 +112,13 @@ export default {
       return _available;
     },
   },
-  watch: {},
   created() {
     this.getProductPage(this.id);
   },
   methods: {
-    ...mapActions(["getProduct", "addShoppingCart"]),
-    ...mapState({
+    ...mapActions("product", ["getProduct"]),
+    ...mapActions("cart", ["addShoppingCart"]),
+    ...mapState("product", {
       state_afilliate: "affiliate",
     }),
     addCart() {
@@ -152,13 +151,6 @@ export default {
     this.product = this.getProductPage(this.id);
     next();
   },
-  /* beforeRouteEnter(to, from, next) { */
-  /*   next((vm) => { */
-  /*     vm.affiliate = to.query.afil; */
-  /*     vm.cupom = to.query.cupom; */
-  /*     vm.product = vm.getProductPage(to.params.id); */
-  /*   }); */
-  /* }, */
 };
 </script>
 

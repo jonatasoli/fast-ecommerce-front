@@ -9,6 +9,7 @@ import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
 import PaymentProccess from "../components/payment/PaymentProccess.vue";
 import PaymentError from "../components/payment/PaymentError.vue";
 import ProductRoutes from "@/resources/product/router";
+import ShoppingCartRoutes from "@/resources/shopping-cart/router"
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,7 @@ const routes = [
     component: Home,
   },
   ...ProductRoutes,
+  ...ShoppingCartRoutes,
   {
     path: "/lancamentos",
     name: "DirectSales",

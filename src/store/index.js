@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import productModule from "@/resources/product/store";
+import shoppingCartModule from "@/resources/shopping-cart/store";
+
 
 Vue.use(Vuex);
 
@@ -117,6 +119,7 @@ const getters = {
 export default new Vuex.Store({
   modules: {
     product: productModule,
+    cart: shoppingCartModule,
   },
   state,
   mutations,

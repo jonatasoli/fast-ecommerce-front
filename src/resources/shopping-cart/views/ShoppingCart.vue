@@ -107,10 +107,10 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-import NavBar from "@/resources/product/components/Header.vue";
+import NavBar from "@/resources/shopping-cart/components/Header.vue";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 
-const { mapActions, mapGetters, mapState } = createNamespacedHelpers("product");
+const { mapActions, mapGetters, mapState } = createNamespacedHelpers("cart");
 
 export default {
   name: "ShoppingCart",
