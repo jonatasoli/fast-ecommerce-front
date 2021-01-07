@@ -22,7 +22,7 @@ RUN npm run build
 
 
 FROM nginx:alpine AS prod-stage
-ARG ARG_VUE_BASE_URL=https://stgapi.gattorosa.com.br/
+ARG ARG_VUE_BASE_URL=https://api.domain.com.br/
 ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 RUN echo $VUE_APP_BASE_URL
 
