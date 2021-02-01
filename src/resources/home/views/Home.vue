@@ -1,15 +1,28 @@
 <template>
   <v-container>
+    <v-row>
+      <NavBar />
+    </v-row>
     <div class="home-style">
       <v-row>
-        <NavBar />
-        <h1>{{id}}</h1>
-      </v-row>
-      <v-row>
-        <SecondaryNavBar 
-        v-for="category in categorys" 
-        :key="category.id" 
-        :category="category"/>
+        <v-col
+          class="d-flex align-center justify-space-around flex-wrap"
+          xs="12"
+          sm="12"
+          md="12"
+          lg="12"
+          xl="12"
+          v-if="products.length > 0"
+        >
+          <ProductCard
+            v-for="product in products"
+            :key="product.id"
+            :product="product"
+          ></ProductCard>
+        </v-col>
+        <v-col v-else>
+          <h2>Não há produtos nessa sessão!</h2>
+        </v-col>
       </v-row>
       <router-view></router-view>
     </div>
@@ -20,33 +33,62 @@
 <script>
 import Footer from "@/components/shared/Footer.vue";
 import NavBar from "@/components/shared/NavBar.vue";
-import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
+import ProductCard from "@/resources/product/components/ProductCard.vue";
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers("category");
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
 export default {
   name: "Home",
   components: {
     NavBar,
-    SecondaryNavBar,
+    ProductCard,
     Footer,
+  },
+  data() {
+    return {
+      id: this.$route.params.id,
+      affiliate: undefined,
+      cupom: undefined,
+      uri: undefined,
+    };
   },
   computed: {
     ...mapState({
-      categorys: "categorys",
+      products: "products",
     }),
   },
-  watch: {},
+  watch: {
+    $route(to) {
+      this.id = to.params.id;
+    }
+  },
   created() {
-    this.getCategory();
+    this.getShowcase();
   },
   methods: {
-    ...mapGetters(["getCategory"]),
-    ...mapActions(["setCategorys"]),
+    ...mapActions(["setShowcase","setAffiliate"]),
+    ...mapGetters(["getShowcase"]),
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.affiliate = to.query.afil;
+    this.id = to.params.id;
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
+    this.cupom = to.query.cupom;
+    this.getShowcase();
+    next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.categorys = vm.setCategorys();
-    })
+      vm.affiliate = to.query.afil;
+      vm.id = to.params.id;
+      console.log("affiliate", vm.affiliate);
+      if (vm.affiliate) {
+        vm.setAffiliate(vm.affiliate);
+      }
+      vm.cupom = to.query.cupom;
+      vm.products = vm.setShowcase();
+    });
   }
 };
 </script>
