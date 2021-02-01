@@ -4,10 +4,6 @@
 
     <v-card-title>{{ product.name }}</v-card-title>
 
-    <v-card-subtitle v-html="product.description">{{
-      product.description
-    }}</v-card-subtitle>
-
     <v-card-actions>
       <v-btn @click="productDetail">Ver oferta</v-btn>
     </v-card-actions>
