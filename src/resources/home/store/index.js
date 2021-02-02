@@ -21,7 +21,6 @@ const homeModule = {
         [SET_CATEGORYS]: (state, { categorys }) => {
             state.categorys = [];
             state.categorys = categorys;
-            console.log(state.categorys)
         },
         [SET_ERROR]: (state, { error }) => {
             state.error = error;
@@ -31,7 +30,6 @@ const homeModule = {
         setCategorys: async ({commit}) => {
             try {
                 const response = await homeService.getCategorys();
-                console.log(response)
                 commit(types.SET_CATEGORYS, {categorys: response});
             } catch (error) {
                 commit(types.SET_ERROR, {error});
