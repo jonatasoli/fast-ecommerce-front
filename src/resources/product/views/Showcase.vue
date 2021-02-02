@@ -1,11 +1,6 @@
 <template>
   <v-container>
-    <div class="home-style">
-      <v-row>
-        <NavBar />
-      </v-row>
-    >
-    </div>
+    <NavBar />
     <v-row>
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
@@ -34,13 +29,11 @@ import { createNamespacedHelpers } from "vuex";
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
 
 import NavBar from "@/resources/product/components/Header.vue";
-
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 export default {
   name: "Showcase",
   components: {
     NavBar,
-    
     ProductCard,
   },
   data() {

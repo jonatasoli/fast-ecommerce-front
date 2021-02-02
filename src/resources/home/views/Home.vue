@@ -90,10 +90,10 @@ export default {
       vm.products = vm.setShowcase();
     });
   }
-}
+};
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .home-style
     display: flex
     flex-flow: row wrap

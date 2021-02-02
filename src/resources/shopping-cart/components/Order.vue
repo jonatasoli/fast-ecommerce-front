@@ -83,7 +83,7 @@ export default {
   },
   data() {
     return {
-      shopping_cart: this.getShoppingCart()
+      shopping_cart: this.getShoppingCart(),
     };
   },
   computed: {
