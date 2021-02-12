@@ -1,8 +1,13 @@
 <template>
-  <v-container>
+  <v-container >
+    <div class="home-style">
     <v-row>
       <NavBar />
     </v-row>
+    <v-row>
+        <SecondaryNavBar />
+    </v-row>
+    </div>
     <div class="home-style">
       <v-row>
         <v-col
@@ -32,6 +37,7 @@
 
 <script>
 import Footer from "@/components/shared/Footer.vue";
+import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
 import NavBar from "@/components/shared/NavBar.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 import { createNamespacedHelpers } from "vuex";
@@ -40,6 +46,7 @@ export default {
   name: "Home",
   components: {
     NavBar,
+    SecondaryNavBar,
     ProductCard,
     Footer,
   },
@@ -93,11 +100,15 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .home-style
     display: flex
     flex-flow: row wrap
     color:"white"
     background: "white"
-    background-color: "white"  
+    background-color: "white" 
+
+.menu
+  display: inline
+  margin: 0 auto
 </style>
