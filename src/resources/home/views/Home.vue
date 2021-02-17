@@ -41,7 +41,6 @@ import Footer from "@/components/shared/Footer.vue";
 import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
 import NavBar from "@/components/shared/NavBar.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
-import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
 export default {
