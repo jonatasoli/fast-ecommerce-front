@@ -7,6 +7,7 @@ import DirectSales from "../views/direct_sales/DirectSales.vue";
 import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
 import PaymentProccess from "../components/payment/PaymentProccess.vue";
 import PaymentError from "../components/payment/PaymentError.vue";
+import LoginRoutes from "@/resources/login/router";
 import HomeRoutes from "@/resources/home/router"
 import ProductRoutes from "@/resources/product/router";
 import ShoppingCartRoutes from "@/resources/shopping-cart/router"
@@ -14,6 +15,7 @@ import ShoppingCartRoutes from "@/resources/shopping-cart/router"
 Vue.use(VueRouter);
 
 const routes = [
+  ...LoginRoutes,
   ...HomeRoutes,
   ...ProductRoutes,
   ...ShoppingCartRoutes,
