@@ -1513,12 +1513,19 @@
     webpack "^4.0.0"
     yorkie "^2.0.0"
 
-"@vue/cli-plugin-router@^4.5.8", "@vue/cli-plugin-router@~4.5.8":
+"@vue/cli-plugin-router@^4.5.8":
   version "4.5.8"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-router/-/cli-plugin-router-4.5.8.tgz#db70a69df4edc90690765f8c25749a68b20dd850"
   integrity sha512-tJwVLdX4jj0Ia/1hsBejRbo4gs0hb2z1z5ert+4Ve5RNdpOKUG69OaPQgXPqvuYSQh9MW7bqG0iJmYtVD+KBNw==
   dependencies:
     "@vue/cli-shared-utils" "^4.5.8"
+
+"@vue/cli-plugin-router@~4.5.0":
+  version "4.5.11"
+  resolved "https://registry.npm.taobao.org/@vue/cli-plugin-router/download/@vue/cli-plugin-router-4.5.11.tgz?cache=0&sync_timestamp=1611327514430&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcli-plugin-router%2Fdownload%2F%40vue%2Fcli-plugin-router-4.5.11.tgz#3b6df738c5a1a5f50376822bf661d9a3b0c3fa62"
+  integrity sha1-O233OMWhpfUDdoIr9mHZo7DD+mI=
+  dependencies:
+    "@vue/cli-shared-utils" "^4.5.11"
 
 "@vue/cli-plugin-unit-jest@~4.5.8":
   version "4.5.8"
@@ -1608,6 +1615,24 @@
     webpack-merge "^4.2.2"
   optionalDependencies:
     vue-loader-v16 "npm:vue-loader@^16.0.0-beta.7"
+
+"@vue/cli-shared-utils@^4.5.11":
+  version "4.5.11"
+  resolved "https://registry.npm.taobao.org/@vue/cli-shared-utils/download/@vue/cli-shared-utils-4.5.11.tgz?cache=0&sync_timestamp=1611327532221&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcli-shared-utils%2Fdownload%2F%40vue%2Fcli-shared-utils-4.5.11.tgz#fff71673ee9128f998c691515b9d327071b4f41e"
+  integrity sha1-//cWc+6RKPmYxpFRW50ycHG09B4=
+  dependencies:
+    "@hapi/joi" "^15.0.1"
+    chalk "^2.4.2"
+    execa "^1.0.0"
+    launch-editor "^2.2.1"
+    lru-cache "^5.1.1"
+    node-ipc "^9.1.1"
+    open "^6.3.0"
+    ora "^3.4.0"
+    read-pkg "^5.1.1"
+    request "^2.88.2"
+    semver "^6.1.0"
+    strip-ansi "^6.0.0"
 
 "@vue/cli-shared-utils@^4.5.8":
   version "4.5.8"
@@ -9843,6 +9868,11 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
+tiny-cookie@^2.1.1:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/tiny-cookie/-/tiny-cookie-2.3.2.tgz#3b5fb4e0888cfa0b4728d5f6b7be3d3a88e6a5f0"
+  integrity sha512-qbymkVh+6+Gc/c9sqnvbG+dOHH6bschjphK3SHgIfT6h/t+63GBL37JXNoXEc6u/+BcwU6XmaWUuf19ouLVtPg==
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -10300,6 +10330,13 @@ vue-cli-plugin-vuetify@~2.0.7:
     null-loader "^3.0.0"
     semver "^7.1.2"
     shelljs "^0.8.3"
+
+vue-cookie-law@^1.13.3:
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/vue-cookie-law/-/vue-cookie-law-1.13.3.tgz#c4fc5d9dd66772d4043c4f140790a0e502caabbc"
+  integrity sha512-n5ef5/dAB4cyUz6OaolYZEeyfV/fcsVU/RCTT/aHXcyjNbXf7EU2TgaOlMwu+cTOjdn5tBJKyKP6lr6IOUf9bg==
+  dependencies:
+    tiny-cookie "^2.1.1"
 
 vue-eslint-parser@^7.1.1:
   version "7.1.1"
