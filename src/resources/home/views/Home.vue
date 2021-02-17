@@ -3,10 +3,9 @@
     <div class="home-style">
     <v-row>
       <NavBar />
-      <SecondaryNavBar />
     </v-row>
     <v-row>
-        <SecondaryNavBar />
+      <SecondaryNavBar />
     </v-row>
     </div>
     <div class="home-style">

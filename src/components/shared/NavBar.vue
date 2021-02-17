@@ -3,6 +3,7 @@
     <v-app-bar id="home-app-bar" app elevation="1" color="#18121E" height="80">
       
       <v-toolbar-items>
+        <slot></slot>
         <v-btn @click="login">ENTRE</v-btn>
         <v-btn>CADASTRE-SE</v-btn>
       </v-toolbar-items>
