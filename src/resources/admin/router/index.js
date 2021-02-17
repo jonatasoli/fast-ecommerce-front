@@ -2,7 +2,7 @@ import adminDashboard from "./../views/AdminDashboard.vue"
 
 export default [
   {
-    path: "/",
+    path: "/admdash",
     component: adminDashboard,
     name: "ADMIN",
   },
