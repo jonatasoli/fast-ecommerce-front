@@ -1,5 +1,5 @@
 FROM node:10.15.3-alpine AS dev-stage
-ARG ARG_VUE_BASE_URL=https://api.domain.com.br/
+ARG ARG_VUE_BASE_URL=https://stgapi.gattorosa.com.br/
 ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 RUN echo $VUE_APP_BASE_URL
 
@@ -14,7 +14,7 @@ COPY . .
 
 FROM dev-stage AS build-stage
 
-ARG ARG_VUE_BASE_URL=https://api.domain.com.br/
+ARG ARG_VUE_BASE_URL=https://api.gattorosa.com.br/
 ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 RUN echo $VUE_APP_BASE_URL
 
@@ -22,6 +22,8 @@ RUN npm run build
 
 
 FROM nginx:alpine AS prod-stage
+ARG ARG_VUE_BASE_URL=https://stgapi.gattorosa.com.br/
+ENV VUE_APP_BASE_URL=${ARG_VUE_BASE_URL}
 RUN echo $VUE_APP_BASE_URL
 
 COPY --from=build-stage /usr/app/dist /usr/share/nginx/html

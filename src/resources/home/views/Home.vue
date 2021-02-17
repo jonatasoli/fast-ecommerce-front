@@ -5,7 +5,7 @@
       <NavBar />
     </v-row>
     <v-row>
-        <SecondaryNavBar />
+      <SecondaryNavBar />
     </v-row>
     </div>
     <div class="home-style">

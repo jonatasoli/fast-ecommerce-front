@@ -3,7 +3,8 @@
     <v-app-bar id="home-app-bar" app elevation="1" color="#18121E" height="80">
       
       <v-toolbar-items>
-        <v-btn>ENTRE</v-btn>
+        <slot></slot>
+        <v-btn @click="login">ENTRE</v-btn>
         <v-btn>CADASTRE-SE</v-btn>
       </v-toolbar-items>
       <v-spacer />
@@ -47,6 +48,11 @@ export default {
       console.log("entrou");
       this.$router.push({
         name: "Showcase",
+      });
+    },
+    login() {
+      this.$router.push({
+        name: "Login",
       });
     },
   },
