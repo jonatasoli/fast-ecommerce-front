@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import productModule from "@/resources/product/store";
 import shoppingCartModule from "@/resources/shopping-cart/store";
 import homeModule from "@/resources/home/store";
+import userModule from "@/resources/user/store";
 
 
 Vue.use(Vuex);
@@ -122,6 +123,7 @@ export default new Vuex.Store({
     product: productModule,
     cart: shoppingCartModule,
     category: homeModule,
+    user: userModule,
   },
   state,
   mutations,
