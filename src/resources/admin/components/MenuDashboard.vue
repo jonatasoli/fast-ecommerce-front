@@ -1,10 +1,7 @@
 <template>
 <div class="home-style">
-      <v-btn color="#233237" x-large 
-        @click.stop="sidebarMenu = !sidebarMenu">
-        <v-icon left>mdi-menu</v-icon></v-btn>
     <v-navigation-drawer 
-            v-model="sidebarMenu" 
+            v-model="this.sidebar" 
             app
             floating
             :permanent="sidebarMenu"
@@ -38,8 +35,14 @@
 
 <script>
 export default {
+    props: ['sidebarMenu'],
+    computed: {
+        sidebar: {
+        get () { return this.sidebarMenu },
+        set (value) { this.$emit('update:sidebarMenup', value) },
+        },
+    },
     data:() => ({
-        sidebarMenu: false,
         toggleMenu: false,
         items: [
             { title:"Produtos", icon:"mdi-cart" },
