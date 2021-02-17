@@ -82,6 +82,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("user");
+
 import { required, email, minLength } from "vuelidate/lib/validators";
 import AuthService from "./../services/auth-service";
 import { formatError } from "@/utils";
@@ -126,6 +129,7 @@ export default {
     };
   },
   computed: {
+    ...mapState({ userRole: "userRole" }),
     texts() {
       return this.isLogin
         ? { toolbar: "Entrar", button: "Criar conta" }
@@ -172,13 +176,17 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["loginClient"]),
     async submit() {
       this.isLoading = true;
       try {
         this.isLogin
-          ? await AuthService.login(this.user)
+          ? await this.loginClient(this.user)
           : await AuthService.signup(this.user);
-        this.$router.push(this.$route.query.redirect || "/dashboard");
+        console.log("ROLA", this.userRole);
+        this.$router.push(
+          this.$route.query.redirect || { name: this.userRole }
+        );
       } catch (error) {
         console.log(error);
         this.error = formatError(error.message);

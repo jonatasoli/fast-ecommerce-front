@@ -10,11 +10,13 @@ import PaymentError from "../components/payment/PaymentError.vue";
 import LoginRoutes from "@/resources/login/router";
 import HomeRoutes from "@/resources/home/router"
 import ProductRoutes from "@/resources/product/router";
-import ShoppingCartRoutes from "@/resources/shopping-cart/router"
+import ShoppingCartRoutes from "@/resources/shopping-cart/router";
+import AdminRoutes from "@/resources/admin/router";
 
 Vue.use(VueRouter);
 
 const routes = [
+  ...AdminRoutes,
   ...LoginRoutes,
   ...HomeRoutes,
   ...ProductRoutes,
