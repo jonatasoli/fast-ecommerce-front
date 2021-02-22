@@ -29,7 +29,7 @@
         <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
-          max-width="500px"
+          max-width="700px"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -47,13 +47,13 @@
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
 
-            <v-card-text>
+            <v-card-text class="card">
               <v-container>
                 <v-row>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
+                    cols="15"
+                    sm="8"
+                    md="6"
                   >
                     <v-text-field
                       v-model="editedItem.name"
@@ -63,7 +63,7 @@
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4"
+                    md="3"
                   >
                     <v-text-field
                       v-model="editedItem.uri"
@@ -71,9 +71,9 @@
                     ></v-text-field>
                   </v-col>
                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
+                    cols="5"
+                    sm="7"
+                    md="3"
                   >
                     <v-text-field
                       v-model="editedItem.price"
@@ -83,8 +83,8 @@
                  
                   <v-col
                     cols="2"
-                    sm="2"
-                    md="6"
+                    sm="4"
+                    md="8"
                   >
                     <v-textarea
                       rows="4"
@@ -108,7 +108,11 @@
                       label="Desconto"
                     ></v-text-field>
                   </v-col>
-                  
+                  <v-select
+                  v-model="editedItem.showcase"
+                  :items="selectItems"
+                  label="Produto ativo"> 
+                  </v-select>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -186,6 +190,10 @@ export default {
   },
   data(){
     return {
+      selectItems: [
+        {text:'Sim', value: 'true'},
+        {text:'Não', value: 'false'}
+      ],
       sidebarMenu: false,
       headers: [
             { text: 'Id', value: 'id'},
@@ -205,6 +213,7 @@ export default {
         image_path: 'null',
         category_id: 1,
         quantity: 0,
+        showcase: false
         
       }, // empty holder for create/update ops
     }
@@ -216,7 +225,7 @@ export default {
         "id": item.id,
         "name": item.name,
         "quantity": item.quantity,
-        "showcase": item.showcase,
+        "showcase": item.showcase?'Sim':'Não',
         "price": item.price,
         "uri": item.uri,
         "description": item.description,
@@ -253,6 +262,12 @@ export default {
           this.items.push(this.editedItem)
           this.postProduct(this.editedItem)
         }
+        if (this.editedItem.showcase == "Sim") {
+          return this.editedItem.showcase = true
+        }
+        if (this.editedItem.showcase == "Não") {
+          return this.editedItem.showcase = false
+        }
         this.updateProduct(this.editedItem)
         this.close()
         location.reload()
@@ -276,6 +291,7 @@ export default {
 </script>
 
 <style>
+
 .v-data-table > .v-data-table__wrapper > table > tbody > tr >  td{
     font-size: 20px !important;
 }
