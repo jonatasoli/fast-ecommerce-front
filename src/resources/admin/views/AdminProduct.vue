@@ -12,7 +12,10 @@
         <v-card>
                <v-data-table 
                 :headers="headers" 
-                :items="items">
+                :items="items"
+                :pagination.sync="pagination"
+                 sortBy="id"
+                update: sort-asc>
                 <template v-slot:top>
       <v-toolbar
         flat
@@ -95,6 +98,7 @@
                     md="4"
                   >
                     <v-text-field
+                      type="number"
                       v-model="editedItem.quantity"
                       label="Quantidade"
                     ></v-text-field>
@@ -160,7 +164,6 @@
     <template >
       <v-btn
         color="primary"
-        @click="initialize"
       >
         Reset
       </v-btn>
@@ -186,12 +189,12 @@ export default {
       sidebarMenu: false,
       headers: [
             { text: 'Id', value: 'id'},
-            { text: 'Nome', value: 'Name' },
+            { text: 'Nome', value: 'name' },
             { text: 'Quantidade', value: 'quantity', sortable: false},
+            { text: 'Ativo', value: 'showcase'},
             { text: 'Actions', value: 'actions', sortable: false },
           
       ],
-      items: [],
       editedIndex: -1,
       dialog: false, // used to toggle the dialog
       editedItem: {
@@ -201,11 +204,28 @@ export default {
         description: '',
         image_path: 'null',
         category_id: 1,
-        quantity: 0
+        quantity: 0,
+        
       }, // empty holder for create/update ops
     }
   },
   computed: {
+    items() {
+      return this.productsAll.map((item) =>{
+        return {
+        "id": item.id,
+        "name": item.name,
+        "quantity": item.quantity,
+        "showcase": item.showcase,
+        "price": item.price,
+        "uri": item.uri,
+        "description": item.description,
+        "discount": item.discount,
+        "category_id": item.category_id,
+        "image_path": item.image_path
+       }
+      })
+    },
     ...mapState({
       productsAll: "products_all"
     }),
@@ -213,13 +233,12 @@ export default {
   created() {
     this.getProductsAll()
   },
-  beforeUpdate() {
-    this.loadItems()
-    console.log(this.items)
-  },
   methods: {
     ...mapGetters(["getProductsAll"]),
-    ...mapActions(["setProductsAll", "postProduct"]),
+    ...mapActions([
+      "setProductsAll", 
+      "postProduct",
+      "updateProduct"]),
     close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -232,30 +251,25 @@ export default {
           Object.assign(this.items[this.editedIndex], this.editedItem)
         } else {
           this.items.push(this.editedItem)
+          this.postProduct(this.editedItem)
         }
-        this.postProduct(this.editedItem)
+        this.updateProduct(this.editedItem)
         this.close()
-    },
-    loadItems() {
-    this.item = []
-    this.items = this.productsAll.map((item) => {
-      return {
-        "id": item.id,
-        "Name": item.name,
-        "quantity": item.quantity
-      }
-    })
-  }
+        location.reload()
+  },
+  editItem (item) {
+        this.editedIndex = this.items.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
   },
    beforeRouteUpdate(to, from, next){
     this.productsAll = this.setProductsAll();
-    this.items = this.loadItems()
     next()
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.productsAll = vm.setProductsAll();
-      vm.items = vm.loadItems();
       })
     }
 };

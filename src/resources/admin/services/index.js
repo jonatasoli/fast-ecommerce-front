@@ -25,6 +25,14 @@ const apiClient = axios.create({
         return apiClient.post("/create-product", payload , {
           crossDomain: true,
         })
+      },
+
+      updateProduct(payload) {
+        console.log("PUT _______");
+        console.log(payload);
+        return apiClient.put(`/product/update/${payload.id}`, payload, {
+          crossDomain: true,
+        })
       }
 
   }
