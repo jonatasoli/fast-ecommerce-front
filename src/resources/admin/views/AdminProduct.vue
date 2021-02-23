@@ -9,110 +9,112 @@
     <MenuDashboard :sidebarMenu="sidebarMenu"/>
     </v-row>
     <v-container class="table">
-        <v-card>
-               <v-data-table 
-                :headers="headers" 
-                :items="items"
-                :pagination.sync="pagination"
-                 sortBy="id"
-                update: sort-asc>
-                <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Produtos</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog
-          v-model="dialog"
-          max-width="700px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
+      <v-card>
+        <v-data-table 
+        :headers="headers" 
+        :items="items"
+        :pagination.sync="pagination"
+          sortBy="id"
+        update: sort-asc>
+          <template v-slot:top>
+            <v-toolbar
+              flat
             >
-              Adicionar
-            </v-btn>
-          </template>
+              <v-toolbar-title>Produtos</v-toolbar-title>
+              <v-divider
+                class="mx-4"
+                inset
+                vertical
+              ></v-divider>
+              <v-spacer></v-spacer>
+                <v-dialog
+                  v-model="dialog"
+                  max-width="700px"
+                        >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      dark
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                    Adicionar
+                    </v-btn>
+                  </template>
           <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+          <v-card-title>
+            <span class="headline">{{ formTitle }}</span>
+          </v-card-title>
 
-            <v-card-text class="card">
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="15"
-                    sm="8"
-                    md="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Nome"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="3"
-                  >
-                    <v-text-field
-                      v-model="editedItem.uri"
-                      label="URI"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="5"
-                    sm="7"
-                    md="3"
-                  >
-                    <v-text-field
-                      v-model="editedItem.price"
-                      label="Preço"
-                    ></v-text-field>
-                  </v-col>
-                 
-                  <v-col
-                    cols="2"
-                    sm="4"
-                    md="8"
-                  >
-                    <v-textarea
-                      rows="4"
-                      v-model="editedItem.description"
-                      label="Descrição"
-                    ></v-textarea>
-                  </v-col>
-                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      type="number"
-                      v-model="editedItem.quantity"
-                      label="Quantidade"
-                    ></v-text-field>
+          <v-card-text class="card">
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="15"
+                  sm="8"
+                  md="6"
+                >
+                <v-text-field
+                  v-model="editedItem.name"
+                  label="Nome"
+                ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="3"
+            >
+              <v-text-field
+                v-model="editedItem.uri"
+                label="URI"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="5"
+              sm="7"
+              md="3"
+            >
+              <v-text-field
+                v-model="editedItem.price"
+                label="Preço"
+              ></v-text-field>
+            </v-col>
+            
+            <v-col
+              cols="2"
+              sm="4"
+              md="8"
+            >
+              <Editor :editedItem="editedItem"/>
+            </v-col>
+              <v-col
+              cols="12"
+              sm="6"
+              md="4"
+            >
+              <v-text-field
+                type="number"
+                v-model="editedItem.quantity"
+                label="Quantidade"
+              ></v-text-field>
 
-                    <v-text-field
-                      v-model="editedItem.discount"
-                      label="Desconto"
-                    ></v-text-field>
-                  </v-col>
-                  <v-select
-                  v-model="editedItem.showcase"
-                  :items="selectItems"
-                  label="Produto ativo"> 
-                  </v-select>
+              <v-text-field
+                v-model="editedItem.discount"
+                label="Desconto"
+              ></v-text-field>
+              </v-col>
+            <template>
+            <v-container fluid >
+              <v-radio-group 
+              class="radio_group"
+              label="Exibir Produto?" 
+              v-model="editedItem.showcase" row mandatory>
+                <v-radio  label="Sim" :value="true"></v-radio>
+                <v-radio  label="Não" :value="false"></v-radio>                
+              </v-radio-group>
+          </v-container>
+          </template>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -183,10 +185,12 @@ import { createNamespacedHelpers } from "vuex";
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers("productAdmin");
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuDashboard from "../components/MenuDashboard.vue"
+import Editor from "../components/Editor.vue"
 export default {
   components: {
     NavBar,
-    MenuDashboard
+    MenuDashboard,
+    Editor
   },
   data(){
     return {
@@ -194,6 +198,7 @@ export default {
         {text:'Sim', value: 'true'},
         {text:'Não', value: 'false'}
       ],
+      active: null,
       sidebarMenu: false,
       headers: [
             { text: 'Id', value: 'id'},
@@ -209,11 +214,11 @@ export default {
         name: '',
         uri: '',
         price: 0,
-        description: '',
+        description: ``,
         image_path: 'null',
         category_id: 1,
         quantity: 0,
-        showcase: false
+        showcase: null
         
       }, // empty holder for create/update ops
     }
@@ -262,12 +267,6 @@ export default {
           this.items.push(this.editedItem)
           this.postProduct(this.editedItem)
         }
-        if (this.editedItem.showcase == "Sim") {
-          return this.editedItem.showcase = true
-        }
-        if (this.editedItem.showcase == "Não") {
-          return this.editedItem.showcase = false
-        }
         this.updateProduct(this.editedItem)
         this.close()
         location.reload()
@@ -275,6 +274,7 @@ export default {
   editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        console.log(item)
         this.dialog = true
       },
   },
@@ -291,7 +291,9 @@ export default {
 </script>
 
 <style>
-
+.v-input .v-label {
+  font-size: 20px;
+}
 .v-data-table > .v-data-table__wrapper > table > tbody > tr >  td{
     font-size: 20px !important;
 }
