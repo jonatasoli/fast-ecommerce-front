@@ -45,6 +45,8 @@ const AssociateModule = {
     getProfit(state) {
       return state.profits;
     },
+    getAvailableAmount(state) {
+      return state.avilable_amount;
   },
   },
   },
