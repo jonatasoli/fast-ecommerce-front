@@ -59,4 +59,20 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  // const privatePages = ['/events'];
+  const privateAdminPages = ['/admdash'];
+  // const authRequired = privatePages.includes(to.path);
+  const authAdminRequired = privateAdminPages.includes(to.path);
+  // const loggedIn = localStorage.getItem('user')
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authAdminRequired && !['ADMIN', 'USER', 'PARTNER'].includes('loggedIn.role')){
+    next('/login')
+  } else {
+    next();
+  }
+});
+
 export default router;
