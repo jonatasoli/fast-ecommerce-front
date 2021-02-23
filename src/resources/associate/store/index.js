@@ -41,6 +41,13 @@ const AssociateModule = {
       },
     ],
   },
+  getters: {
+    getProfit(state) {
+      return state.profits;
+    },
+  },
+  },
+  },
 };
 
 export default AssociateModule;
