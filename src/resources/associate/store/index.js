@@ -53,6 +53,9 @@ const AssociateModule = {
     [GET_AVAILABLE_AMOUNT]: (state, { available_amount }) => {
       state.available_amount = available_amount;
     },
+    [GET_TODAYS_PROFIT]: (state, { todays_profit }) => {
+      state.available_amount = todays_profit;
+    },
   },
 };
 
