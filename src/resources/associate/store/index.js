@@ -12,13 +12,13 @@ import productAdminService from "@resources/admin/services";
 
 Vue.use(Vuex);
 
-const AssociateModule = {
+const associateModule = {
   namespaced: true,
   state: {
     error: [],
     available_amount: {
       total: null,
-      refunt: null,
+      refund: null,
     },
     todays_profit: {
       daily_gain: null,
@@ -42,7 +42,7 @@ const AssociateModule = {
     ],
   },
   getters: {
-    getProfit(state) {
+    getProfits(state) {
       return state.profits;
     },
     getAvailableAmount(state) {
@@ -62,4 +62,4 @@ const AssociateModule = {
   },
 };
 
-export default AssociateModule;
+export default associateModule;
