@@ -49,6 +49,10 @@ const AssociateModule = {
       return state.avilable_amount;
   },
   },
+  mutations: {
+    [GET_AVAILABLE_AMOUNT]: (state, { available_amount }) => {
+      state.available_amount = available_amount;
+    },
   },
 };
 
