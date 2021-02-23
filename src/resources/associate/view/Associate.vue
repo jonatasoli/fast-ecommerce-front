@@ -6,23 +6,16 @@
       >
     </nav-bar>
     <MenuAssociate :sidebarMenu="sidebarMenu"></MenuAssociate>
-    <v-container>
-      <v-row no-gutters>
-        <v-col md="4">
-          <v-card>
-            <h2 class="ml-3">Painel</h2>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+    <Panel />
   </div>
 </template>
 
 <script>
 import NavBar from "../../../components/shared/NavBar.vue";
 import MenuAssociate from "../components/MenuAssociate";
+import Panel from "../components/Panel";
 export default {
-  components: { NavBar, MenuAssociate },
+  components: { NavBar, MenuAssociate, Panel },
   data() {
     return {
       sidebarMenu: false,

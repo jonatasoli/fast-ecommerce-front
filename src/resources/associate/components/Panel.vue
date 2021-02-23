@@ -61,14 +61,10 @@ export default {
   },
   methods: {
     labelOffsetY(profit) {
-      // chart is 100 unit height
-      // we divide 100 by the number of items and multiply by index to get offset
       const offset = 5;
       return profit / offset - 366;
     },
     labelOffsetX(index) {
-      // chart is 100 unit height
-      // we divide 100 by the number of items and multiply by index to get offset
       const offset = 30;
       return 110 + offset * index;
     },
