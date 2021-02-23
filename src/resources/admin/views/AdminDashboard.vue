@@ -27,12 +27,5 @@ export default {
 </script>
 
 <style scoped>
-#menu {
-  width: 500px im !important;
-}
-.navbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
+
 </style>

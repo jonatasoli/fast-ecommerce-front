@@ -4,6 +4,7 @@ import productModule from "@/resources/product/store";
 import shoppingCartModule from "@/resources/shopping-cart/store";
 import homeModule from "@/resources/home/store";
 import userModule from "@/resources/user/store";
+import productAdminModule from "@/resources/admin/store";
 
 
 Vue.use(Vuex);
@@ -124,6 +125,7 @@ export default new Vuex.Store({
     cart: shoppingCartModule,
     category: homeModule,
     user: userModule,
+    productAdmin: productAdminModule,
   },
   state,
   mutations,
