@@ -46,7 +46,8 @@ const associateModule = {
       return state.profits;
     },
     getAvailableAmount(state) {
-      return state.avilable_amount;
+      return state.available_amount;
+    },
   },
   },
   mutations: {
