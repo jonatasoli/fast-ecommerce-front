@@ -52,16 +52,6 @@ const associateModule = {
         refund: null,
         day: null,
       },
-      {
-        daily_gain: null,
-        refund: null,
-        day: null,
-      },
-      {
-        daily_gain: null,
-        refund: null,
-        day: null,
-      },
     ],
   },
   getters: {
@@ -72,7 +62,7 @@ const associateModule = {
       return state.available_amount;
     },
     products(state) {
-      return state.products;
+      return state.associateProducts;
     },
     transactions(state) {
       return state.transactions;
