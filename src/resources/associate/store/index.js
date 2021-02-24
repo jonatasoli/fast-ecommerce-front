@@ -67,7 +67,7 @@ const associateModule = {
     [GET_PRODUCTS]: (state, { products }) => {
       state.products = products;
     },
-    [GET_ERROR]: (state, { error }) => {
+    [SET_ERROR]: (state, { error }) => {
       state.error = error;
     },
   },
@@ -77,7 +77,7 @@ const associateModule = {
         const response = await getProducts();
         commit(GET_PRODUCTS, { products: response });
       } catch (error) {
-        commit(GET_ERROR, { error });
+        commit(SET_ERROR, { error });
       }
     },
   },
