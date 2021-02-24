@@ -18,10 +18,8 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ProductCard from "@/resources/product/components/ProductCard.vue";
 
 export default {
-  components: { ProductCard },
   computed: {
     ...mapGetters("associate", ["products"]),
   },
