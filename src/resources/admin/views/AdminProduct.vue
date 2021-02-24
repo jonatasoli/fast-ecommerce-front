@@ -13,8 +13,7 @@
         <v-data-table 
         :headers="headers" 
         :items="items"
-        :pagination.sync="pagination"
-          sortBy="id"
+        sortBy="id"
         update: sort-asc>
           <template v-slot:top>
             <v-toolbar
@@ -107,7 +106,6 @@
             <template>
             <v-container fluid >
               <v-radio-group 
-              class="radio_group"
               label="Exibir Produto?" 
               v-model="editedItem.showcase" row mandatory>
                 <v-radio  label="Sim" :value="true"></v-radio>
@@ -126,7 +124,7 @@
                 text
                 @click="close"
               >
-                Cancel
+                Cancelar
               </v-btn>
               <v-btn
                 color="blue darken-1"
@@ -134,14 +132,14 @@
                 @click="save"
                 
               >
-                Save
+                Salvar
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+            <v-card-title class="headline">Deseja excluir esse produto?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -162,19 +160,12 @@
       </v-icon>
       <v-icon
         small
-        
+        @click="deleteItem(item)"  
       >
         mdi-delete
       </v-icon>
     </template>
-    <template >
-      <v-btn
-        color="primary"
-      >
-        Reset
-      </v-btn>
-    </template>
-                </v-data-table>
+          </v-data-table>
         </v-card>
     </v-container>
   </div>
@@ -194,11 +185,6 @@ export default {
   },
   data(){
     return {
-      selectItems: [
-        {text:'Sim', value: 'true'},
-        {text:'Não', value: 'false'}
-      ],
-      active: null,
       sidebarMenu: false,
       headers: [
             { text: 'Id', value: 'id'},
@@ -210,6 +196,7 @@ export default {
       ],
       editedIndex: -1,
       dialog: false, // used to toggle the dialog
+      dialogDelete: false,
       editedItem: {
         name: '',
         uri: '',
@@ -218,12 +205,15 @@ export default {
         image_path: 'null',
         category_id: 1,
         quantity: 0,
-        showcase: null
+        showcase: ''
         
       }, // empty holder for create/update ops
     }
   },
   computed: {
+    formTitle () {
+        return this.editedIndex === -1 ? 'Adicionar Produto' : 'Editar Produto'
+      },
     items() {
       return this.productsAll.map((item) =>{
         return {
@@ -247,12 +237,21 @@ export default {
   created() {
     this.getProductsAll()
   },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+  },
   methods: {
     ...mapGetters(["getProductsAll"]),
     ...mapActions([
       "setProductsAll", 
       "postProduct",
-      "updateProduct"]),
+      "updateProduct",
+      "deleteProduct"]),
     close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -267,26 +266,46 @@ export default {
           this.items.push(this.editedItem)
           this.postProduct(this.editedItem)
         }
-        this.updateProduct(this.editedItem)
         this.close()
+        this.updateProduct(this.editedItem)
         location.reload()
   },
-  editItem (item) {
-        this.editedIndex = this.items.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        console.log(item)
-        this.dialog = true
-      },
+    editItem(item) {
+          this.editedIndex = this.items.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.dialog = true
   },
-   beforeRouteUpdate(to, from, next){
-    this.productsAll = this.setProductsAll();
-    next()
+    deleteItem(item) {
+    this.editedIndex = this.items.indexOf(item)
+    this.editedItem = Object.assign({}, item)
+    this.dialogDelete = true
+  },
+    deleteItemConfirm () {
+          this.items.splice(this.editedIndex, 1)
+          this.deleteProduct(this.editedItem.id)
+          this.closeDelete()
+          location.reload()
+  },
+    
+    closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      }
+    },
+
+  beforeRouteUpdate(to, from, next){
+  this.productsAll = this.setProductsAll();
+  next()
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.productsAll = vm.setProductsAll();
       })
     }
+  
 };
 </script>
 

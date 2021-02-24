@@ -1,7 +1,7 @@
 <template>
   <div>
     <tiptap-vuetify 
-    v-model="editedItem.description" 
+    v-model="content.description" 
     :extensions="extensions"
     :toolbar-attributes="{ color: 'black' }"/>
   </div>
@@ -55,7 +55,14 @@ export default {
       HorizontalRule,
       Paragraph,
       HardBreak // line break on Shift + Ctrl + Enter
-    ]
-  })
+    ],
+  }),
+  computed: {
+    content: {
+        get () { return this.editedItem },
+        set (content) { this.$emit('update:editedItem', content) },
+        },
+  }
+
 };
 </script>
