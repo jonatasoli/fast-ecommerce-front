@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { getProducts } from "../services/products";
 
 import {
   GET_AVAILABLE_AMOUNT,
@@ -47,6 +48,9 @@ const associateModule = {
     },
     getAvailableAmount(state) {
       return state.available_amount;
+    },
+    products(state) {
+      return state.products;
     },
   },
   },
