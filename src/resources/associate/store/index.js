@@ -23,7 +23,7 @@ const associateModule = {
     todays_profit: {
       daily_gain: null,
     },
-    products: [],
+    associateProducts: [],
     transactions: [
       {
         code: null,
@@ -64,6 +64,9 @@ const associateModule = {
     products(state) {
       return state.products;
     },
+    transactions(state) {
+      return state.transactions;
+    },
   },
   mutations: {
     [GET_AVAILABLE_AMOUNT]: (state, { available_amount }) => {
@@ -76,7 +79,7 @@ const associateModule = {
       state.available_amount = profits;
     },
     [GET_PRODUCTS]: (state, { products }) => {
-      state.products = products;
+      state.associateProducts = products;
     },
     [SET_ERROR]: (state, { error }) => {
       state.error = error;
