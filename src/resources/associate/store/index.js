@@ -24,6 +24,7 @@ const associateModule = {
     todays_profit: {
       daily_gain: null,
     },
+    products: [],
     profits: [
       {
         daily_gain: null,
