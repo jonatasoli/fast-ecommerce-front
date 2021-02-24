@@ -1,5 +1,6 @@
 const Associate = () => import("../view/Associate.vue");
 const Panel = () => import("../components/Panel.vue");
+const Products = () => import("../components/Products.vue");
 
 export default [
   {
@@ -12,5 +13,11 @@ export default [
         component: Panel,
         name: "Parceiro",
       },
+      {
+        path: "produtos",
+        component: Products,
+        name: "Parceiro-Produtos",
+      },
+    ],
   },
 ];
