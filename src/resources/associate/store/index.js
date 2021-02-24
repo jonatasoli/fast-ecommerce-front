@@ -64,6 +64,22 @@ const associateModule = {
     [GET_PROFIT]: (state, { profits }) => {
       state.available_amount = profits;
     },
+    [GET_PRODUCTS]: (state, { products }) => {
+      state.products = products;
+    },
+    [GET_ERROR]: (state, { error }) => {
+      state.error = error;
+    },
+  },
+  actions: {
+    async PopulateProducts({ commit }) {
+      try {
+        const response = await getProducts();
+        commit(GET_PRODUCTS, { products: response });
+      } catch (error) {
+        commit(GET_ERROR, { error });
+      }
+    },
   },
 };
 
