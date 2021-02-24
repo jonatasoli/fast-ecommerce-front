@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { getProducts } from "../services/products";
 
 import {
   GET_AVAILABLE_AMOUNT,
@@ -8,7 +9,6 @@ import {
   GET_PRODUCTS,
   SET_ERROR,
 } from "./mutations_types";
-import productAdminService from "@resources/admin/services";
 
 Vue.use(Vuex);
 
@@ -23,6 +23,19 @@ const associateModule = {
     todays_profit: {
       daily_gain: null,
     },
+    products: [],
+    transactions: [
+      {
+        code: null,
+        product: null,
+        value: null,
+        buyerName: null,
+        sellerName: null,
+        comission: null,
+        status: null,
+        actions: null,
+      },
+    ],
     profits: [
       {
         daily_gain: null,
@@ -46,8 +59,11 @@ const associateModule = {
       return state.profits;
     },
     getAvailableAmount(state) {
-      return state.avilable_amount;
-  },
+      return state.available_amount;
+    },
+    products(state) {
+      return state.products;
+    },
   },
   mutations: {
     [GET_AVAILABLE_AMOUNT]: (state, { available_amount }) => {
@@ -58,6 +74,22 @@ const associateModule = {
     },
     [GET_PROFIT]: (state, { profits }) => {
       state.available_amount = profits;
+    },
+    [GET_PRODUCTS]: (state, { products }) => {
+      state.products = products;
+    },
+    [SET_ERROR]: (state, { error }) => {
+      state.error = error;
+    },
+  },
+  actions: {
+    async PopulateProducts({ commit }) {
+      try {
+        const response = await getProducts();
+        commit(GET_PRODUCTS, { products: response });
+      } catch (error) {
+        commit(SET_ERROR, { error });
+      }
     },
   },
 };

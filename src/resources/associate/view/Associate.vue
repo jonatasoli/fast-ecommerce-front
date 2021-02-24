@@ -6,16 +6,15 @@
       >
     </nav-bar>
     <MenuAssociate :sidebarMenu="sidebarMenu"></MenuAssociate>
-    <Panel />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import NavBar from "../../../components/shared/NavBar.vue";
 import MenuAssociate from "../components/MenuAssociate";
-import Panel from "../components/Panel";
 export default {
-  components: { NavBar, MenuAssociate, Panel },
+  components: { NavBar, MenuAssociate },
   data() {
     return {
       sidebarMenu: false,
