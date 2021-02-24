@@ -49,7 +49,8 @@ export default {
   data: () => ({
     items: [
       { title: "Painel", to: "/parceiro", icon: "mdi-monitor" },
-      { title: "Produtos", to: "/parceiro/products", icon: "mdi-cart" },
+      { title: "Produtos", to: "/parceiro/produtos", icon: "mdi-cart" },
+      { title: "Vendas", to: "/parceiro/vendas", icon: "mdi-poll" },
     ],
   }),
 };
