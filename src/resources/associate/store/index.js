@@ -27,8 +27,18 @@ const associateModule = {
     transactions: [
       {
         code: null,
-        product: null,
-        value: null,
+        product: {
+          name: null,
+          uri: null,
+          price: 0,
+          direct_sell: null,
+          upsell: null,
+          description: null,
+          image_path: null,
+          active: null,
+          discount: null,
+        },
+        price: 0,
         buyerName: null,
         sellerName: null,
         comission: null,
