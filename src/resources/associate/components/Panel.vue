@@ -42,17 +42,25 @@
             </g>
             <g
               class="labels x-labels"
-              v-for="index in 30"
-              :key="`profit-day-${showDays(index)}`"
+              v-for="(profit, index) in profits"
+              :key="`profit-day-${index}`"
             >
               <text :x="labelOffsetX(index)" y="400">
-                {{ showDays(index) }}
+                {{ profit.day }}
               </text>
               <text x="400" y="440" class="label-title">Dias</text>
             </g>
             <g class="labels y-labels">
               <text x="50" y="-26">2000</text>
+              <text x="50" y="17">1800</text>
+              <text x="50" y="56">1600</text>
+              <text x="50" y="97">1400</text>
+              <text x="50" y="136">1200</text>
               <text x="50" y="174">1000</text>
+              <text x="50" y="215">800</text>
+              <text x="50" y="255">600</text>
+              <text x="50" y="293">400</text>
+              <text x="50" y="334">200</text>
               <text x="50" y="373">0</text>
               <text x="-20" y="200" class="label-title">Ganhos</text>
             </g>
@@ -97,9 +105,11 @@ export default {
       return 110 + offset * index;
     },
     showDays(index) {
-      if (this.profits[index] && this.profits[index].length < index)
-        return this.profits[index].day;
-      else return null;
+      // if (this.profits[index]) {
+      //   console.log(this.profits[index].day);
+      //   return this.profits[index].day;
+      // } else return null;
+      return this.profits[index] ? this.profits[index].day : null;
     },
   },
 };
