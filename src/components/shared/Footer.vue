@@ -2,7 +2,8 @@
   <v-footer
     color="#18121E"
     padless
-    absolute
+    class="mt-auto"
+    width="auto"
   >
   <v-card color="#18121E" elevation="0" class="mx-auto lighten-6 py-4 text-center">
        <p>Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2020</p>
