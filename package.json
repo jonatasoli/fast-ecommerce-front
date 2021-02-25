@@ -9,6 +9,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@sentry/tracing": "^6.2.0",
+    "@sentry/vue": "^6.2.0",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
     "v-mask": "^2.2.3",
