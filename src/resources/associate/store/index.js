@@ -20,6 +20,10 @@ const associateModule = {
       total: null,
       refund: null,
     },
+    balance: {
+      totalBalance: 0,
+      toBeAvailable: 0,
+    },
     todays_profit: {
       daily_gain: null,
     },
@@ -66,6 +70,9 @@ const associateModule = {
     },
     transactions(state) {
       return state.transactions;
+    },
+    balance(state) {
+      return state.balance;
     },
   },
   mutations: {
