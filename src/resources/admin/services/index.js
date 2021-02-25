@@ -33,6 +33,15 @@ const apiClient = axios.create({
         return apiClient.put(`/product/update/${payload.id}`, payload, {
           crossDomain: true,
         })
+      },
+
+      deleteProduct(id) {
+        console.log("DELETE _______");
+        console.log('produto excluido');
+        return apiClient.delete(`/product/delete/${id}`, {
+          crossDomain: true
+        })
+
       }
 
   }
