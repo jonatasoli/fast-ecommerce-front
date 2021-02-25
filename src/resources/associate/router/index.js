@@ -3,7 +3,7 @@ const Panel = () => import("../components/Panel.vue");
 const Products = () => import("../components/Products.vue");
 const Sales = () => import("../components/Sales.vue");
 const Balance = () => import("../components/Balance.vue");
-
+const Report = () => import("../components/Report.vue");
 export default [
   {
     path: "/parceiro",
@@ -29,6 +29,11 @@ export default [
         path: "saldo",
         component: Balance,
         name: "Parceiro-saldo",
+      },
+      {
+        path: "relatórios",
+        component: Report,
+        name: "Parceiro-relatórios",
       },
     ],
   },

@@ -52,6 +52,11 @@ export default {
       { title: "Produtos", to: "/parceiro/produtos", icon: "mdi-cart" },
       { title: "Vendas", to: "/parceiro/vendas", icon: "mdi-poll" },
       { title: "Saldo", to: "/parceiro/saldo", icon: "mdi-request_quote" },
+      {
+        title: "Relatórios",
+        to: "/parceiro/relatórios",
+        icon: "mdi-report",
+      },
     ],
   }),
 };
