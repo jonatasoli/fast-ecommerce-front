@@ -2,6 +2,7 @@ const Associate = () => import("../view/Associate.vue");
 const Panel = () => import("../components/Panel.vue");
 const Products = () => import("../components/Products.vue");
 const Sales = () => import("../components/Sales.vue");
+const Balance = () => import("../components/Balance.vue");
 
 export default [
   {
@@ -23,6 +24,11 @@ export default [
         path: "vendas",
         component: Sales,
         name: "Parceiro-Vendas",
+      },
+      {
+        path: "saldo",
+        component: Balance,
+        name: "Parceiro-saldo",
       },
     ],
   },
