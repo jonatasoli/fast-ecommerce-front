@@ -6,7 +6,8 @@ import {
     GET_PRODUCTS,
     SET_ERROR,
     SET_ITEM_CREATE,
-    SET_ITEM_UPDATE
+    SET_ITEM_UPDATE,
+    SET_ITEM_DELETE
 } from "./mutations_types"
 
 import productAdminService from "../services/index.js"
@@ -31,6 +32,11 @@ const productAdminModule = {
         },
 
         [SET_ITEM_UPDATE]: (state, {products_all}) => {
+            state.products_all = [];
+            state.products_all = products_all;
+        },
+
+        [SET_ITEM_DELETE]: (state, {products_all}) => {
             state.products_all = [];
             state.products_all = products_all;
         },
@@ -69,6 +75,15 @@ const productAdminModule = {
             )
             .catch((error) => commit(types.SET_ERROR, { error }));
 
+        },
+
+        deleteProduct: async ({commit}, id) => {
+            try {
+                const response = await productAdminService.deleteProduct(id);
+                commit(types.GET_PRODUCTS, {products_all: response});
+            } catch (error) {
+                commit(types.SET_ERROR, {error})
+            }
         }
     },
     getters: {

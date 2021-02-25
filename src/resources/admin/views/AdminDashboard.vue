@@ -21,7 +21,7 @@ export default {
   }),
   components: {
     NavBar,
-    MenuDashboard
+    MenuDashboard,
   },
 };
 </script>

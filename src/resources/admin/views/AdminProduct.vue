@@ -9,110 +9,110 @@
     <MenuDashboard :sidebarMenu="sidebarMenu"/>
     </v-row>
     <v-container class="table">
-        <v-card>
-               <v-data-table 
-                :headers="headers" 
-                :items="items"
-                :pagination.sync="pagination"
-                 sortBy="id"
-                update: sort-asc>
-                <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Produtos</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog
-          v-model="dialog"
-          max-width="700px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
+      <v-card>
+        <v-data-table 
+        :headers="headers" 
+        :items="items"
+        sortBy="id"
+        update: sort-asc>
+          <template v-slot:top>
+            <v-toolbar
+              flat
             >
-              Adicionar
-            </v-btn>
-          </template>
+              <v-toolbar-title>Produtos</v-toolbar-title>
+              <v-divider
+                class="mx-4"
+                inset
+                vertical
+              ></v-divider>
+              <v-spacer></v-spacer>
+                <v-dialog
+                  v-model="dialog"
+                  max-width="700px"
+                        >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      dark
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                    Adicionar
+                    </v-btn>
+                  </template>
           <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+          <v-card-title>
+            <span class="headline">{{ formTitle }}</span>
+          </v-card-title>
 
-            <v-card-text class="card">
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="15"
-                    sm="8"
-                    md="6"
-                  >
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Nome"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="3"
-                  >
-                    <v-text-field
-                      v-model="editedItem.uri"
-                      label="URI"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="5"
-                    sm="7"
-                    md="3"
-                  >
-                    <v-text-field
-                      v-model="editedItem.price"
-                      label="Preço"
-                    ></v-text-field>
-                  </v-col>
-                 
-                  <v-col
-                    cols="2"
-                    sm="4"
-                    md="8"
-                  >
-                    <v-textarea
-                      rows="4"
-                      v-model="editedItem.description"
-                      label="Descrição"
-                    ></v-textarea>
-                  </v-col>
-                   <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      type="number"
-                      v-model="editedItem.quantity"
-                      label="Quantidade"
-                    ></v-text-field>
+          <v-card-text class="card">
+            <v-container>
+              <v-row>
+                <v-col
+                  cols="15"
+                  sm="8"
+                  md="6"
+                >
+                <v-text-field
+                  v-model="editedItem.name"
+                  label="Nome"
+                ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="3"
+            >
+              <v-text-field
+                v-model="editedItem.uri"
+                label="URI"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="5"
+              sm="7"
+              md="3"
+            >
+              <v-text-field
+                v-model="editedItem.price"
+                label="Preço"
+              ></v-text-field>
+            </v-col>
+            
+            <v-col
+              cols="2"
+              sm="4"
+              md="8"
+            >
+              <Editor :editedItem="editedItem"/>
+            </v-col>
+              <v-col
+              cols="12"
+              sm="6"
+              md="4"
+            >
+              <v-text-field
+                type="number"
+                v-model="editedItem.quantity"
+                label="Quantidade"
+              ></v-text-field>
 
-                    <v-text-field
-                      v-model="editedItem.discount"
-                      label="Desconto"
-                    ></v-text-field>
-                  </v-col>
-                  <v-select
-                  v-model="editedItem.showcase"
-                  :items="selectItems"
-                  label="Produto ativo"> 
-                  </v-select>
+              <v-text-field
+                v-model="editedItem.discount"
+                label="Desconto"
+              ></v-text-field>
+              </v-col>
+            <template>
+            <v-container fluid >
+              <v-radio-group 
+              label="Exibir Produto?" 
+              v-model="editedItem.showcase" row mandatory>
+                <v-radio  label="Sim" :value="true"></v-radio>
+                <v-radio  label="Não" :value="false"></v-radio>                
+              </v-radio-group>
+          </v-container>
+          </template>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -124,7 +124,7 @@
                 text
                 @click="close"
               >
-                Cancel
+                Cancelar
               </v-btn>
               <v-btn
                 color="blue darken-1"
@@ -132,14 +132,14 @@
                 @click="save"
                 
               >
-                Save
+                Salvar
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+            <v-card-title class="headline">Deseja excluir esse produto?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -160,19 +160,12 @@
       </v-icon>
       <v-icon
         small
-        
+        @click="deleteItem(item)"  
       >
         mdi-delete
       </v-icon>
     </template>
-    <template >
-      <v-btn
-        color="primary"
-      >
-        Reset
-      </v-btn>
-    </template>
-                </v-data-table>
+          </v-data-table>
         </v-card>
     </v-container>
   </div>
@@ -183,17 +176,15 @@ import { createNamespacedHelpers } from "vuex";
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers("productAdmin");
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuDashboard from "../components/MenuDashboard.vue"
+import Editor from "../components/Editor.vue"
 export default {
   components: {
     NavBar,
-    MenuDashboard
+    MenuDashboard,
+    Editor
   },
   data(){
     return {
-      selectItems: [
-        {text:'Sim', value: 'true'},
-        {text:'Não', value: 'false'}
-      ],
       sidebarMenu: false,
       headers: [
             { text: 'Id', value: 'id'},
@@ -205,20 +196,24 @@ export default {
       ],
       editedIndex: -1,
       dialog: false, // used to toggle the dialog
+      dialogDelete: false,
       editedItem: {
         name: '',
         uri: '',
         price: 0,
-        description: '',
+        description: ``,
         image_path: 'null',
         category_id: 1,
         quantity: 0,
-        showcase: false
+        showcase: ''
         
       }, // empty holder for create/update ops
     }
   },
   computed: {
+    formTitle () {
+        return this.editedIndex === -1 ? 'Adicionar Produto' : 'Editar Produto'
+      },
     items() {
       return this.productsAll.map((item) =>{
         return {
@@ -242,12 +237,21 @@ export default {
   created() {
     this.getProductsAll()
   },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+  },
   methods: {
     ...mapGetters(["getProductsAll"]),
     ...mapActions([
       "setProductsAll", 
       "postProduct",
-      "updateProduct"]),
+      "updateProduct",
+      "deleteProduct"]),
     close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -262,36 +266,53 @@ export default {
           this.items.push(this.editedItem)
           this.postProduct(this.editedItem)
         }
-        if (this.editedItem.showcase == "Sim") {
-          return this.editedItem.showcase = true
-        }
-        if (this.editedItem.showcase == "Não") {
-          return this.editedItem.showcase = false
-        }
-        this.updateProduct(this.editedItem)
         this.close()
+        this.updateProduct(this.editedItem)
         location.reload()
   },
-  editItem (item) {
-        this.editedIndex = this.items.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
+    editItem(item) {
+          this.editedIndex = this.items.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.dialog = true
   },
-   beforeRouteUpdate(to, from, next){
-    this.productsAll = this.setProductsAll();
-    next()
+    deleteItem(item) {
+    this.editedIndex = this.items.indexOf(item)
+    this.editedItem = Object.assign({}, item)
+    this.dialogDelete = true
+  },
+    deleteItemConfirm () {
+          this.items.splice(this.editedIndex, 1)
+          this.deleteProduct(this.editedItem.id)
+          this.closeDelete()
+          location.reload()
+  },
+    
+    closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      }
+    },
+
+  beforeRouteUpdate(to, from, next){
+  this.productsAll = this.setProductsAll();
+  next()
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.productsAll = vm.setProductsAll();
       })
     }
+  
 };
 </script>
 
 <style>
-
+.v-input .v-label {
+  font-size: 20px;
+}
 .v-data-table > .v-data-table__wrapper > table > tbody > tr >  td{
     font-size: 20px !important;
 }

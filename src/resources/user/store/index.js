@@ -28,10 +28,12 @@ const userModule = {
     [ADD_USER_STATE]: (state, credentials ) => {
       state.userRole = credentials.role;
       state.accessToken = credentials.access_token;
+      localStorage.setItem('user', JSON.stringify(credentials));
     },
     [RESET_USER_STATE]: (state) => {
       state.userState = undefined;
       state.userRole = undefined;
+      localStorage.removeItem('user');
     },
   },
 
@@ -46,14 +48,13 @@ const userModule = {
         commit(types.RESET_USER_STATE);
       }
     },
-
-    resetUserState: ({ commit }) => {
+    logoutClient: async ({ commit }) => {
       try {
-        commit(types.RESET_SHOPPING_CART);
+        commit(types.RESET_USER_STATE)
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
-    },
+    }
   },
 
   getters: { },
