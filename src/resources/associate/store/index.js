@@ -20,6 +20,7 @@ const associateModule = {
       total: null,
       refund: null,
     },
+    reports: [],
     balance: {
       totalBalance: 0,
       toBeAvailable: 0,
@@ -73,6 +74,9 @@ const associateModule = {
     },
     balance(state) {
       return state.balance;
+    },
+    reports(state) {
+      return state.reports;
     },
   },
   mutations: {
