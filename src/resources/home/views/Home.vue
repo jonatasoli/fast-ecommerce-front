@@ -1,5 +1,5 @@
 <template>
-  <v-container >
+  <v-app >
     <div class="home-style">
     <v-row>
       <NavBar />
@@ -32,7 +32,7 @@
       <router-view></router-view>
     </div>
       <Footer/>
-  </v-container>
+  </v-app>
 </template>
 
 <script>
