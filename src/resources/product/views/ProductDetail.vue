@@ -112,13 +112,10 @@ export default {
       return _available;
     },
   },
-  created() {
-    this.getProductPage(this.id);
-  },
   methods: {
     ...mapActions("product", ["getProduct"]),
-    ...mapActions("cart", ["addShoppingCart"]),
-    ...mapState("product", {
+    ...mapActions("cart", ["addShoppingCart", "setAffiliate"]),
+    ...mapState("cart", {
       state_afilliate: "affiliate",
     }),
     addCart() {
@@ -144,10 +141,28 @@ export default {
       return this.getProduct({ id: this.id });
     },
   },
+  created() {
+    this.getProductPage(this.id);
+    this.affiliate = this.$route.query.afil;
+    console.log("CREATED", this.affiliate);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
+  },
+  updated() {
+    this.affiliate = this.$route.query.afil;
+    console.log("UPDATE", this.affiliate);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
+  },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
     this.id = to.params.id;
     this.cupom = to.query.cupom;
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
     this.product = this.getProductPage(this.id);
     next();
   },

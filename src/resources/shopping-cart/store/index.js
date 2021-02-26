@@ -190,6 +190,7 @@ const productModule = {
     },
     setAffiliate: ({ commit }, affiliate) => {
       try {
+        console.log("Affiliate --->", affiliate);
         commit(types.SET_AFFILIATE, affiliate);
       } catch (error) {
         commit(types.SET_ERROR, { error });
