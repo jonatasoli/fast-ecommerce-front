@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
+import { mapState, mapGetters, mapActions } from "vuex";
 
 import NavBar from "@/resources/product/components/Header.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
@@ -45,21 +44,35 @@ export default {
     };
   },
   computed: {
-    ...mapState({
+    ...mapState("product", {
       products: "products",
     }),
   },
   watch: {
     $route(to) {
       this.id = to.params.id;
-    }
+    },
   },
   created() {
     this.getShowcase();
+    this.getProductPage(this.id);
+    this.affiliate = this.$route.query.afil;
+    console.log("CREATED", this.affiliate);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
+  },
+  updated() {
+    this.affiliate = this.$route.query.afil;
+    console.log("UPDATE", this.affiliate);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
   },
   methods: {
-    ...mapActions(["setShowcase","setAffiliate", "setProductsCategory"]),
-    ...mapGetters(["getShowcase"]),
+    ...mapActions("product", ["setShowcase", "setProductsCategory"]),
+    ...mapActions("cart", ["setAffiliate"]),
+    ...mapGetters("product", ["getShowcase"]),
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
@@ -68,10 +81,10 @@ export default {
       this.setAffiliate(this.affiliate);
     }
     this.cupom = to.query.cupom;
-    if (this.$route.path == '/destaque') {
+    if (this.$route.path == "/destaque") {
       this.getShowcase();
     }
-    this.products = this.setProductsCategory({id: this.id});
+    this.products = this.setProductsCategory({ id: this.id });
     next();
   },
   beforeRouteEnter(to, from, next) {
@@ -83,12 +96,10 @@ export default {
         vm.setAffiliate(vm.affiliate);
       }
       vm.cupom = to.query.cupom;
-      if (vm.$route.path == '/destaque') {
+      if (vm.$route.path == "/destaque") {
         vm.products = vm.setShowcase();
       }
-      vm.products = vm.setProductsCategory({id: vm.id});
-      
-      
+      vm.products = vm.setProductsCategory({ id: vm.id });
     });
   },
 };

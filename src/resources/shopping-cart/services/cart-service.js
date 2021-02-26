@@ -24,7 +24,7 @@ export default {
   postCheckout(checkout) {
     console.log("POST _______");
     console.log(checkout);
-    return apiClient.post("/direct-sales/checkout", checkout, {
+    return apiClient.post("/checkout", checkout, {
       crossDomain: true,
     });
   },
