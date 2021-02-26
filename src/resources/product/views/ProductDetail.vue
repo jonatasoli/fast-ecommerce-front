@@ -81,10 +81,10 @@ export default {
   },
   data() {
     return {
-      id: this.$route.params.id,
+      uri: this.$route.params.uri,
       affiliate: undefined,
       cupom: undefined,
-      uri: undefined,
+      id: undefined,
       cart_item: undefined,
       product_qty_select: undefined,
     };
@@ -140,15 +140,15 @@ export default {
       this.$router.push({ name: "ShoppingCart" });
     },
     getProductPage() {
-      console.log("ID ----", this.id);
-      return this.getProduct({ id: this.id });
+      console.log("URI ----", this.uri);
+      return this.getProduct({ uri: this.uri });
     },
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
-    this.id = to.params.id;
+    this.uri = to.params.uri;
     this.cupom = to.query.cupom;
-    this.product = this.getProductPage(this.id);
+    this.product = this.getProductPage(this.uri);
     next();
   },
 };

@@ -9,7 +9,7 @@ export default [
     name: "Showcase",
   },
   {
-    path: "/produto/:id",
+    path: "/produto/:uri",
     component: ProductDetail,
     name: "ProductDetail",
   }

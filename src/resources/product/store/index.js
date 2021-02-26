@@ -59,10 +59,10 @@ const productModule = {
           commit(types.SET_ERROR, {error});
       }
     },
-    getProduct: async ({ commit }, { id }) => {
+    getProduct: async ({ commit }, { uri }) => {
       try {
-        console.log("ACTION ID ", id);
-        const response = await productService.getProductDetail(id);
+        console.log("ACTION URI ", uri);
+        const response = await productService.getProductDetail(uri);
         console.log(response.data);
         commit(types.GET_PRODUCT_DETAIL, { product: response.data });
       } catch (error) {
