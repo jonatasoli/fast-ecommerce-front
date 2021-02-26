@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 export default {
   async getProductDetail(uri) {
-    console.log("SERVER ID ", uri);
+    console.log("SERVER URI", uri);
     let product = await apiClient.get(`/product/${uri}`, { crossDomain: true });
     console.log("PRODUCT --- ", product);
     return product;
