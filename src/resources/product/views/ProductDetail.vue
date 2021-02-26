@@ -84,6 +84,7 @@ export default {
       uri: this.$route.params.uri,
       affiliate: undefined,
       cupom: undefined,
+
       id: undefined,
       cart_item: undefined,
       product_qty_select: undefined,
@@ -163,7 +164,7 @@ export default {
     if (this.affiliate) {
       this.setAffiliate(this.affiliate);
     }
-    this.product = this.getProductPage(this.id);
+    this.product = this.getProductPage(this.uri);
     next();
   },
 };
