@@ -77,6 +77,8 @@
               <v-text-field
                 v-model="editedItem.price"
                 label="Preço"
+                @blur="focusOut"
+                @focus="focusIn"
               ></v-text-field>
             </v-col>
             
@@ -99,8 +101,11 @@
               ></v-text-field>
 
               <v-text-field
+                type="text"
                 v-model="editedItem.discount"
                 label="Desconto"
+                @blur="focusOutDiscount"
+                @focus="focusInDiscount"
               ></v-text-field>
               </v-col>
             <template>
@@ -172,140 +177,205 @@
 </template>
 
 <script>
+import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers("productAdmin");
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers(
+  "productAdmin"
+);
 import NavBar from "@/components/shared/NavBar.vue";
-import MenuDashboard from "../components/MenuDashboard.vue"
-import Editor from "../components/Editor.vue"
+import MenuDashboard from "../components/MenuDashboard.vue";
+import Editor from "../components/Editor.vue";
 export default {
+  name: "AdminProduct",
+  mixins: [FormatCurrencyMixin],
   components: {
     NavBar,
     MenuDashboard,
-    Editor
+    Editor,
   },
-  data(){
+  data() {
     return {
       sidebarMenu: false,
       headers: [
-            { text: 'Id', value: 'id'},
-            { text: 'Nome', value: 'name' },
-            { text: 'Quantidade', value: 'quantity', sortable: false},
-            { text: 'Ativo', value: 'showcase'},
-            { text: 'Actions', value: 'actions', sortable: false },
-          
+        { text: "Id", value: "id" },
+        { text: "Nome", value: "name" },
+        { text: "Valor", value: "price" },
+        { text: "Quantidade", value: "quantity", sortable: false },
+        { text: "Ativo", value: "showcase" },
+        { text: "Categoria", value: "category_id" },
+        { text: "Actions", value: "actions", sortable: false },
       ],
+      formattedCurrencyValue: "R$ 0,00",
       editedIndex: -1,
       dialog: false, // used to toggle the dialog
       dialogDelete: false,
       editedItem: {
-        name: '',
-        uri: '',
+        name: "",
+        uri: "",
         price: 0,
         description: ``,
-        image_path: 'null',
+        image_path: "null",
         category_id: 1,
         quantity: 0,
-        showcase: ''
-        
+        showcase: "",
       }, // empty holder for create/update ops
-    }
+    };
   },
   computed: {
-    formTitle () {
-        return this.editedIndex === -1 ? 'Adicionar Produto' : 'Editar Produto'
-      },
+    formTitle() {
+      return this.editedIndex === -1 ? "Adicionar Produto" : "Editar Produto";
+    },
     items() {
-      return this.productsAll.map((item) =>{
+      return this.productsAll.map((item) => {
         return {
-        "id": item.id,
-        "name": item.name,
-        "quantity": item.quantity,
-        "showcase": item.showcase?'Sim':'Não',
-        "price": item.price,
-        "uri": item.uri,
-        "description": item.description,
-        "discount": item.discount,
-        "category_id": item.category_id,
-        "image_path": item.image_path
-       }
-      })
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          showcase: item.showcase ? "Sim" : "Não",
+          price: this.formatCurrency(item.price / 100),
+          uri: item.uri,
+          description: item.description,
+          discount: this.formatCurrency(item.discount / 100),
+          category_id: item.category_id,
+          image_path: item.image_path,
+        };
+      });
     },
     ...mapState({
-      productsAll: "products_all"
+      productsAll: "products_all",
     }),
   },
   created() {
-    this.getProductsAll()
+    this.getProductsAll();
   },
   watch: {
-    dialog (val) {
-      val || this.close()
+    dialog(val) {
+      val || this.close();
     },
-    dialogDelete (val) {
-      val || this.closeDelete()
+    dialogDelete(val) {
+      val || this.closeDelete();
     },
   },
   methods: {
     ...mapGetters(["getProductsAll"]),
     ...mapActions([
-      "setProductsAll", 
+      "setProductsAll",
       "postProduct",
       "updateProduct",
-      "deleteProduct"]),
-    close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+      "deleteProduct",
+    ]),
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
     save() {
+      let price_int = 0;
+      let discont_int = 0;
       if (this.editedIndex > -1) {
-          Object.assign(this.items[this.editedIndex], this.editedItem)
-        } else {
-          this.items.push(this.editedItem)
-          this.postProduct(this.editedItem)
-        }
-        this.close()
-        this.updateProduct(this.editedItem)
-        location.reload()
-  },
-    editItem(item) {
-          this.editedIndex = this.items.indexOf(item)
-          this.editedItem = Object.assign({}, item)
-          this.dialog = true
-  },
-    deleteItem(item) {
-    this.editedIndex = this.items.indexOf(item)
-    this.editedItem = Object.assign({}, item)
-    this.dialogDelete = true
-  },
-    deleteItemConfirm () {
-          this.items.splice(this.editedIndex, 1)
-          this.deleteProduct(this.editedItem.id)
-          this.closeDelete()
-          location.reload()
-  },
-    
-    closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
+        Object.assign(this.items[this.editedIndex], this.editedItem);
+
+        price_int = this.editedItem.price;
+        price_int = Number(price_int.replace(/[^0-9.]+/g, ""));
+        this.editedItem.price = price_int;
+        discont_int = this.editedItem.discount;
+        discont_int = Number(discont_int.replace(/[^0-9.]+/g, ""));
+        this.editedItem.discount = discont_int;
+      } else {
+        price_int = this.editedItem.price;
+        price_int = Number(price_int.replace(/[^0-9.]+/g, ""));
+        this.editedItem.price = price_int;
+        discont_int = this.editedItem.discount;
+        discont_int = Number(discont_int.replace(/[^0-9.]+/g, ""));
+        this.editedItem.discount = discont_int;
+
+        this.items.push(this.editedItem);
+        this.postProduct(this.editedItem);
       }
+      this.close();
+      this.updateProduct(this.editedItem);
+      location.reload();
+    },
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      this.items.splice(this.editedIndex, 1);
+      this.deleteProduct(this.editedItem.id);
+      this.closeDelete();
+      location.reload();
     },
 
-  beforeRouteUpdate(to, from, next){
-  this.productsAll = this.setProductsAll();
-  next()
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    focusOut: function () {
+      // Recalculate the currencyValue after ignoring "$" and "," in user input
+      this.editedItem.price = parseInt(
+        this.editedItem.price.replace(/[^\d.]/g, "")
+      );
+      // Ensure that it is not NaN. If so, initialize it to zero.
+      // This happens if user provides a blank input or non-numeric input like "abc"
+      if (isNaN(this.editedItem.price)) {
+        this.editedItem.price = 0;
+      }
+      this.editedItem.price = this.formatCurrency(
+        parseInt(this.editedItem.price) / 100
+      );
+    },
+    focusIn: function () {
+      // Unformat display value before user starts modifying it
+      if (this.editedItem.price) {
+        this.editedItem.price = this.editedItem.price.replace(/[^0-9]+/g, "");
+      }
+    },
+    focusOutDiscount() {
+      // Recalculate the currencyValue after ignoring "$" and "," in user input
+      this.editedItem.discount = parseInt(
+        this.editedItem.discount.replace(/[^\d.]/g, "")
+      );
+      // Ensure that it is not NaN. If so, initialize it to zero.
+      // This happens if user provides a blank input or non-numeric input like "abc"
+      if (isNaN(this.editedItem.discount)) {
+        this.editedItem.discount = "0";
+      }
+      this.editedItem.discount = this.formatCurrency(
+        parseInt(this.editedItem.discount) / 100
+      );
+    },
+    focusInDiscount() {
+      console.log(typeof this.editedItem.discount, "desconto");
+      if (this.editedItem.discount) {
+        this.editedItem.discount = this.editedItem.discount.replace(
+          /[^0-9]+/g,
+          ""
+        );
+      }
+    },
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.productsAll = this.setProductsAll();
+    next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.productsAll = vm.setProductsAll();
-      })
-    }
-  
+    });
+  },
 };
 </script>
 
@@ -313,14 +383,14 @@ export default {
 .v-input .v-label {
   font-size: 20px;
 }
-.v-data-table > .v-data-table__wrapper > table > tbody > tr >  td{
-    font-size: 20px !important;
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+  font-size: 20px !important;
 }
-.v-data-table > .v-data-table__wrapper > table > thead> tr >  th{
-    font-size: 18px !important;
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  font-size: 18px !important;
 }
 
 .table {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 </style>
