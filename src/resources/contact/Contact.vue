@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-app>
       <div class="home-style">
           <v-row>
             <NavBar />
@@ -17,7 +17,7 @@
           </v-btn>
       </div>
       <Footer />
-  </v-container>
+  </v-app>
 </template>
 
 <script>
