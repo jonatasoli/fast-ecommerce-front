@@ -2,11 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import * as types from "./mutations_types";
-import {
-  SET_SHOWCASE,
-  SET_ERROR,
-  GET_PRODUCT_DETAIL,
-} from "./mutations_types";
+import { SET_SHOWCASE, SET_ERROR, GET_PRODUCT_DETAIL } from "./mutations_types";
 import productService from "./../services/product-service";
 
 Vue.use(Vuex);
@@ -45,11 +41,11 @@ const productModule = {
     },
     setProductsCategory: async ({ commit }, { id }) => {
       try {
-          const response = await productService.getProductCategory(id);
-          commit(types.SET_SHOWCASE, {products: response});
-          console.log(response)
+        const response = await productService.getProductCategory(id);
+        commit(types.SET_SHOWCASE, { products: response });
+        console.log(response);
       } catch (error) {
-          commit(types.SET_ERROR, {error});
+        commit(types.SET_ERROR, { error });
       }
     },
     getProduct: async ({ commit }, { uri }) => {

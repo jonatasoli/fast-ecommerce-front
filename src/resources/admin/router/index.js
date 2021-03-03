@@ -1,7 +1,7 @@
-import adminDashboard from "./../views/AdminDashboard.vue"
-import adminOrders from "./../views/AdminOrders.vue"
-import adminTracking from "./../views/AdminTracking.vue"
-import adminProduct from "./../views/AdminProduct.vue"
+import adminDashboard from "./../views/AdminDashboard.vue";
+import adminOrders from "./../views/AdminOrders.vue";
+import adminTracking from "./../views/AdminTracking.vue";
+import adminProduct from "./../views/AdminProduct.vue";
 
 export default [
   {
@@ -23,5 +23,5 @@ export default [
     path: "/admdash/produtos",
     component: adminProduct,
     name: "AdminProduct",
-  }
+  },
 ];

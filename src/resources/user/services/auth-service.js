@@ -9,26 +9,23 @@ import axios from "axios";
 //   },
 // });
 
-import qs from 'qs';
+import qs from "qs";
 const loginClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
-  headers: {'Content-Type': 'application/x-www-form-urlencoded' },
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
 });
 
 const login = async (user) => {
-  const response = await loginClient.post(
-    "/user/token",
-    qs.stringify(user)
-  )
-  return response.data
+  const response = await loginClient.post("/user/token", qs.stringify(user));
+  return response.data;
 };
 
-const signup = "response"
+const signup = "response";
 
-const user = "response"
+const user = "response";
 
 export default {
   login,
   signup,
-  user
-}
+  user,
+};

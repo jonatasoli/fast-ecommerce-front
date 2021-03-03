@@ -205,7 +205,6 @@ export default {
         { text: "Categoria", value: "category_id" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      formattedCurrencyValue: "R$ 0,00",
       editedIndex: -1,
       dialog: false, // used to toggle the dialog
       dialogDelete: false,
@@ -248,6 +247,9 @@ export default {
   created() {
     this.getProductsAll();
   },
+  updated() {
+    this.getProductsAll();
+  },
   watch: {
     dialog(val) {
       val || this.close();
@@ -278,17 +280,26 @@ export default {
         Object.assign(this.items[this.editedIndex], this.editedItem);
 
         price_int = this.editedItem.price;
-        price_int = Number(price_int.replace(/[^0-9.]+/g, ""));
+        price_int = Number(price_int.replace(/[^0-9]+/g, ""));
         this.editedItem.price = price_int;
         discont_int = this.editedItem.discount;
-        discont_int = Number(discont_int.replace(/[^0-9.]+/g, ""));
+        discont_int = this.editedItem.discount;
+        if (!discont_int) {
+          discont_int = 0;
+        } else {
+          discont_int = Number(discont_int.replace(/[^0-9]+/g, ""));
+        }
         this.editedItem.discount = discont_int;
       } else {
         price_int = this.editedItem.price;
-        price_int = Number(price_int.replace(/[^0-9.]+/g, ""));
+        price_int = Number(price_int.replace(/[^0-9]+/g, ""));
         this.editedItem.price = price_int;
         discont_int = this.editedItem.discount;
-        discont_int = Number(discont_int.replace(/[^0-9.]+/g, ""));
+        if (!discont_int) {
+          discont_int = 0;
+        } else {
+          discont_int = Number(discont_int.replace(/[^0-9]+/g, ""));
+        }
         this.editedItem.discount = discont_int;
 
         this.items.push(this.editedItem);

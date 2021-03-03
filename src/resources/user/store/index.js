@@ -2,11 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import * as types from "./mutations_types";
-import {
-  SET_ERROR,
-  ADD_USER_STATE,
-  RESET_USER_STATE,
-} from "./mutations_types";
+import { SET_ERROR, ADD_USER_STATE, RESET_USER_STATE } from "./mutations_types";
 
 import authService from "./../services/auth-service";
 
@@ -18,22 +14,22 @@ const userModule = {
   state: {
     erro: undefined,
     userRole: undefined,
-    accessToken: undefined
+    accessToken: undefined,
   },
 
   mutations: {
     [SET_ERROR]: (state, { error }) => {
       state.error = error;
     },
-    [ADD_USER_STATE]: (state, credentials ) => {
+    [ADD_USER_STATE]: (state, credentials) => {
       state.userRole = credentials.role;
       state.accessToken = credentials.access_token;
-      localStorage.setItem('user', JSON.stringify(credentials));
+      localStorage.setItem("user", JSON.stringify(credentials));
     },
     [RESET_USER_STATE]: (state) => {
       state.userState = undefined;
       state.userRole = undefined;
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
     },
   },
 
@@ -41,7 +37,7 @@ const userModule = {
     loginClient: async ({ commit }, user) => {
       try {
         const user_credentials = await authService.login(user);
-        console.log("User CREDENTIAL ", user_credentials)
+        console.log("User CREDENTIAL ", user_credentials);
         commit(types.ADD_USER_STATE, user_credentials);
       } catch (error) {
         commit(types.SET_ERROR, { error });
@@ -50,14 +46,14 @@ const userModule = {
     },
     logoutClient: async ({ commit }) => {
       try {
-        commit(types.RESET_USER_STATE)
+        commit(types.RESET_USER_STATE);
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
-    }
+    },
   },
 
-  getters: { },
+  getters: {},
 };
 
 export default userModule;
