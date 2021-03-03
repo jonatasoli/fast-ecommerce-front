@@ -29,5 +29,5 @@ export default {
     flex-flow: row wrap
     color:"white"
     background: "white"
-    background-color: "white"  
+    background-color: "white"
 </style>

@@ -10,12 +10,12 @@ const apiClient = axios.create({
 });
 
 export default {
-    async getCategorys() {
-        let categorys;
-        categorys = await apiClient.get(`/product/category/all`, {
-            crossDomain: true,
-        });
-        console.log(categorys.data)
-        return categorys.data.category
-      },
-}
+  async getCategorys() {
+    let categorys;
+    categorys = await apiClient.get(`/product/category/all`, {
+      crossDomain: true,
+    });
+    console.log(categorys.data);
+    return categorys.data.category;
+  },
+};

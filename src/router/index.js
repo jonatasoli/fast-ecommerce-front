@@ -8,7 +8,7 @@ import DirectSalesDetail from "../views/direct_sales/DirectSalesDetail.vue";
 import PaymentProccess from "../components/payment/PaymentProccess.vue";
 import PaymentError from "../components/payment/PaymentError.vue";
 import LoginRoutes from "@/resources/login/router";
-import HomeRoutes from "@/resources/home/router"
+import HomeRoutes from "@/resources/home/router";
 import ProductRoutes from "@/resources/product/router";
 import ShoppingCartRoutes from "@/resources/shopping-cart/router";
 import AdminRoutes from "@/resources/admin/router";
@@ -60,26 +60,30 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const privatePages = ['/events'];
-  const privateAdminPages = ['/admdash'];
-  const privatePartnerPages = ['/dashboard'];
+  const privatePages = ["/events"];
+  const privateAdminPages = ["/admdash"];
+  const privatePartnerPages = ["/dashboard"];
 
   const authRequired = privatePages.includes(to.path);
   const authAdminRequired = privateAdminPages.includes(to.path);
   const authPartnerRequired = privatePartnerPages.includes(to.path);
 
-  const loggedIn = JSON.parse(localStorage.getItem('user'))
+  const loggedIn = JSON.parse(localStorage.getItem("user"));
 
   // trying to access a restricted page + not logged in
   // redirect to login page
-  if (loggedIn){
+  if (loggedIn) {
     console.log("logado");
-    if ((authAdminRequired && !(loggedIn.role == 'ADMIN')) || (authRequired && !(loggedIn.role == 'USER')) || (authPartnerRequired && !(loggedIn.role == 'PARTNER'))){
-        next('/login');
+    if (
+      (authAdminRequired && !(loggedIn.role == "ADMIN")) ||
+      (authRequired && !(loggedIn.role == "USER")) ||
+      (authPartnerRequired && !(loggedIn.role == "PARTNER"))
+    ) {
+      next("/login");
     }
     next();
   } else {
-    console.log("passou", authAdminRequired, typeof(loggedIn));
+    console.log("passou", authAdminRequired, typeof loggedIn);
     next();
   }
 });

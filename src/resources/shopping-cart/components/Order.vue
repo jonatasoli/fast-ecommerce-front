@@ -2,7 +2,9 @@
   <v-container>
     <NavBar />
     <v-container v-if="shopping_cart.length > 0">
-      <v-row class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8">
+      <v-row
+        class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8"
+      >
         <v-col class="md-12">
           <v-card color="blue-grey darken-4">
             <v-card-title>Carrinho de Compras</v-card-title>
@@ -31,7 +33,7 @@
                     </tr>
                     <tr>
                       <th scope="row">#</th>
-                      <td >Frete</td>
+                      <td>Frete</td>
                       <td></td>
                       <td></td>
                       <td v-if="shippingPrice === -1">-</td>
@@ -61,8 +63,7 @@
     </v-container>
     <v-container v-else>
       <v-alert dense type="info">
-        Seu carrinho está vazio no momento volte para fazer suas
-        compras!
+        Seu carrinho está vazio no momento volte para fazer suas compras!
       </v-alert>
     </v-container>
   </v-container>

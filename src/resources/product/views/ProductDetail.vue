@@ -121,9 +121,9 @@ export default {
     }),
     addCart() {
       console.log("QTY ", this.product_qty_select);
-      if (!this.product_qty_select){
+      if (!this.product_qty_select) {
         this.product_qty_select = 1;
-          }
+      }
 
       this.cart_item = {
         amount: this.product.price,

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <tiptap-vuetify 
-    v-model="content.description" 
-    :extensions="extensions"
-    :toolbar-attributes="{ color: 'black' }"/>
+    <tiptap-vuetify
+      v-model="content.description"
+      :extensions="extensions"
+      :toolbar-attributes="{ color: 'black' }"
+    />
   </div>
 </template>
 
@@ -29,7 +30,7 @@ import {
 } from "tiptap-vuetify";
 
 export default {
-  props: ['editedItem'],
+  props: ["editedItem"],
   components: { TiptapVuetify },
   data: () => ({
     extensions: [
@@ -46,23 +47,26 @@ export default {
         {
           // Options that fall into the tiptap's extension
           options: {
-            levels: [1, 2, 3]
-          }
-        }
+            levels: [1, 2, 3],
+          },
+        },
       ],
       Bold,
       Code,
       HorizontalRule,
       Paragraph,
-      HardBreak // line break on Shift + Ctrl + Enter
+      HardBreak, // line break on Shift + Ctrl + Enter
     ],
   }),
   computed: {
     content: {
-        get () { return this.editedItem },
-        set (content) { this.$emit('update:editedItem', content) },
-        },
-  }
-
+      get() {
+        return this.editedItem;
+      },
+      set(content) {
+        this.$emit("update:editedItem", content);
+      },
+    },
+  },
 };
 </script>

@@ -27,13 +27,23 @@
                 @payment-method="paymentMethodValue"
                 @installment-select="installmentSelect"
               />
-              <v-btn color="#46cb18" :disabled="isDisabled" dark large @click.prevent="onSubmit">
+              <v-btn
+                color="#46cb18"
+                :disabled="isDisabled"
+                dark
+                large
+                @click.prevent="onSubmit"
+              >
                 Comprar
                 <v-spacer></v-spacer>
                 <v-icon>fa-money-bill-alt</v-icon>
               </v-btn>
             </v-form>
-            <v-progress-linear v-show="isLoading" indeterminate color="yellow darken-2"></v-progress-linear>
+            <v-progress-linear
+              v-show="isLoading"
+              indeterminate
+              color="yellow darken-2"
+            ></v-progress-linear>
           </v-container>
           <v-card-text></v-card-text>
         </v-card>

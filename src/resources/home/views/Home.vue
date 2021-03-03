@@ -1,12 +1,12 @@
 <template>
-  <v-app >
+  <v-app>
     <div class="home-style">
-    <v-row>
-      <NavBar />
-    </v-row>
-    <v-row>
-      <SecondaryNavBar />
-    </v-row>
+      <v-row>
+        <NavBar />
+      </v-row>
+      <v-row>
+        <SecondaryNavBar />
+      </v-row>
     </div>
     <div class="home-style">
       <v-row>
@@ -31,7 +31,7 @@
       </v-row>
       <router-view></router-view>
     </div>
-      <Footer/>
+    <Footer />
   </v-app>
 </template>
 
@@ -66,13 +66,13 @@ export default {
   watch: {
     $route(to) {
       this.id = to.params.id;
-    }
+    },
   },
   created() {
     this.getShowcase();
   },
   methods: {
-    ...mapActions(["setShowcase","setAffiliate"]),
+    ...mapActions(["setShowcase", "setAffiliate"]),
     ...mapGetters(["getShowcase"]),
   },
   beforeRouteUpdate(to, from, next) {
@@ -96,7 +96,7 @@ export default {
       vm.cupom = to.query.cupom;
       vm.products = vm.setShowcase();
     });
-  }
+  },
 };
 </script>
 
@@ -106,7 +106,7 @@ export default {
     flex-flow: row wrap
     color:"white"
     background: "white"
-    background-color: "white" 
+    background-color: "white"
 
 .menu
   display: inline

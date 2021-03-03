@@ -28,7 +28,7 @@ export default {
     products = await apiClient.get(`/product/category/${id}`, {
       crossDomain: true,
     });
-    return products.data.products
+    return products.data.products;
   },
   postInstallments(cart) {
     console.log("POST _______");

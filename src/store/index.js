@@ -6,7 +6,6 @@ import homeModule from "@/resources/home/store";
 import userModule from "@/resources/user/store";
 import productAdminModule from "@/resources/admin/store";
 
-
 Vue.use(Vuex);
 
 const state = {
