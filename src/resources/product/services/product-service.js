@@ -10,9 +10,9 @@ const apiClient = axios.create({
 });
 
 export default {
-  async getProductDetail(id) {
-    console.log("SERVER ID ", id);
-    let product = await apiClient.get(`/product/${id}`, { crossDomain: true });
+  async getProductDetail(uri) {
+    console.log("SERVER URI", uri);
+    let product = await apiClient.get(`/product/${uri}`, { crossDomain: true });
     console.log("PRODUCT --- ", product);
     return product;
   },
@@ -28,7 +28,7 @@ export default {
     products = await apiClient.get(`/product/category/${id}`, {
       crossDomain: true,
     });
-    return products.data.products
+    return products.data.products;
   },
   postInstallments(cart) {
     console.log("POST _______");

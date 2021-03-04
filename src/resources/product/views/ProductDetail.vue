@@ -81,10 +81,11 @@ export default {
   },
   data() {
     return {
-      id: this.$route.params.id,
+      uri: this.$route.params.uri,
       affiliate: undefined,
       cupom: undefined,
-      uri: undefined,
+
+      id: undefined,
       cart_item: undefined,
       product_qty_select: undefined,
     };
@@ -112,20 +113,17 @@ export default {
       return _available;
     },
   },
-  created() {
-    this.getProductPage(this.id);
-  },
   methods: {
     ...mapActions("product", ["getProduct"]),
-    ...mapActions("cart", ["addShoppingCart"]),
-    ...mapState("product", {
+    ...mapActions("cart", ["addShoppingCart", "setAffiliate"]),
+    ...mapState("cart", {
       state_afilliate: "affiliate",
     }),
     addCart() {
       console.log("QTY ", this.product_qty_select);
-      if (!this.product_qty_select){
+      if (!this.product_qty_select) {
         this.product_qty_select = 1;
-          }
+      }
 
       this.cart_item = {
         amount: this.product.price,
@@ -140,15 +138,33 @@ export default {
       this.$router.push({ name: "ShoppingCart" });
     },
     getProductPage() {
-      console.log("ID ----", this.id);
-      return this.getProduct({ id: this.id });
+      console.log("URI ----", this.uri);
+      return this.getProduct({ uri: this.uri });
     },
+  },
+  created() {
+    this.getProductPage(this.id);
+    this.affiliate = this.$route.query.afil;
+    console.log("CREATED", this.affiliate);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
+  },
+  updated() {
+    this.affiliate = this.$route.query.afil;
+    console.log("UPDATE", this.affiliate);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
-    this.id = to.params.id;
+    this.uri = to.params.uri;
     this.cupom = to.query.cupom;
-    this.product = this.getProductPage(this.id);
+    if (this.affiliate) {
+      this.setAffiliate(this.affiliate);
+    }
+    this.product = this.getProductPage(this.uri);
     next();
   },
 };

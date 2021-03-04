@@ -2,12 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import * as types from "./mutations_types";
-import {
-  SET_SHOWCASE,
-  SET_ERROR,
-  GET_PRODUCT_DETAIL,
-  SET_AFFILIATE,
-} from "./mutations_types";
+import { SET_SHOWCASE, SET_ERROR, GET_PRODUCT_DETAIL } from "./mutations_types";
 import productService from "./../services/product-service";
 
 Vue.use(Vuex);
@@ -20,7 +15,6 @@ const productModule = {
     totalPrice: 0,
     product: [],
     products: [],
-    affiliate: undefined,
     cupom: undefined,
   },
   mutations: {
@@ -35,11 +29,6 @@ const productModule = {
       state.product = [];
       state.product = product;
     },
-    [SET_AFFILIATE]: (state, affiliate) => {
-      console.log("ZIP", affiliate);
-      state.affiliate = affiliate;
-      console.log("state affiliate ", state.affiliate);
-    },
   },
   actions: {
     setShowcase: async ({ commit }) => {
@@ -52,26 +41,19 @@ const productModule = {
     },
     setProductsCategory: async ({ commit }, { id }) => {
       try {
-          const response = await productService.getProductCategory(id);
-          commit(types.SET_SHOWCASE, {products: response});
-          console.log(response)
-      } catch (error) {
-          commit(types.SET_ERROR, {error});
-      }
-    },
-    getProduct: async ({ commit }, { id }) => {
-      try {
-        console.log("ACTION ID ", id);
-        const response = await productService.getProductDetail(id);
-        console.log(response.data);
-        commit(types.GET_PRODUCT_DETAIL, { product: response.data });
+        const response = await productService.getProductCategory(id);
+        commit(types.SET_SHOWCASE, { products: response });
+        console.log(response);
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
     },
-    setAffiliate: ({ commit }, affiliate) => {
+    getProduct: async ({ commit }, { uri }) => {
       try {
-        commit(types.SET_AFFILIATE, affiliate);
+        console.log("ACTION URI ", uri);
+        const response = await productService.getProductDetail(uri);
+        console.log(response.data);
+        commit(types.GET_PRODUCT_DETAIL, { product: response.data });
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }

@@ -2,15 +2,17 @@
   <v-container>
     <NavBar />
     <v-container v-if="shopping_cart.length > 0">
-      <v-row class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8">
+      <v-row
+        class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8"
+      >
         <v-col class="md-12">
           <v-card>
             <v-card-title>Calcular Frete</v-card-title>
             <v-card-text>
-              <v-alert
-                info
-                v-if="shippingPrice === -2"
-              >Cep incorreto, verifique se usou apenas números e no máximo 8 números!</v-alert>
+              <v-alert info v-if="shippingPrice === -2"
+                >Cep incorreto, verifique se usou apenas números e no máximo 8
+                números!</v-alert
+              >
               <v-text-field
                 label="Insira o Frete"
                 :rules="rules"
@@ -45,11 +47,23 @@
                       <td>{{ item.product_name }}</td>
                       <td>{{ formatCurrency(item.amount / 100) }}</td>
                       <td>
-                        <v-btn class="mx-2" fab dark small @click="decrementProduct(item)">
+                        <v-btn
+                          class="mx-2"
+                          fab
+                          dark
+                          small
+                          @click="decrementProduct(item)"
+                        >
                           <v-icon dark>fa-minus-circle</v-icon>
                         </v-btn>
                         <span>{{ item.qty }}</span>
-                        <v-btn class="mx-2" fab dark small @click="increaseProduct(item)">
+                        <v-btn
+                          class="mx-2"
+                          fab
+                          dark
+                          small
+                          @click="increaseProduct(item)"
+                        >
                           <v-icon dark>fa-plus-circle</v-icon>
                         </v-btn>
                       </td>
@@ -88,12 +102,18 @@
               </v-simple-table>
             </v-card-text>
             <v-card-actions class="d-flex justify-space-between align-center">
-              <v-btn @click="goToCheckout" :disabled="isDisabled" color="light-green">
+              <v-btn
+                @click="goToCheckout"
+                :disabled="isDisabled"
+                color="light-green"
+              >
                 Ir para pagamento
                 <v-icon dark>fa-dollar-sign</v-icon>
               </v-btn>
               <v-spacer />
-              <v-btn color="blue darken-1" @click="goToShowcase">Continuar comprando</v-btn>
+              <v-btn color="blue darken-1" @click="goToShowcase"
+                >Continuar comprando</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-col>

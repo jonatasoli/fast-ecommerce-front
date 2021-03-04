@@ -1,7 +1,6 @@
 const Showcase = () => import("./../views/Showcase.vue");
 const ProductDetail = () => import("./../views/ProductDetail.vue");
 
-
 export default [
   {
     path: "/destaque",
@@ -9,8 +8,8 @@ export default [
     name: "Showcase",
   },
   {
-    path: "/produto/:id",
+    path: "/produto/:uri",
     component: ProductDetail,
     name: "ProductDetail",
-  }
+  },
 ];
