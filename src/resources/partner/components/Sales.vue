@@ -60,7 +60,7 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters("associate", ["transactions"]),
+    ...mapGetters("partner", ["transactions"]),
   },
 };
 </script>

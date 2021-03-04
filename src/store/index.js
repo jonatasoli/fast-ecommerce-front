@@ -5,7 +5,7 @@ import shoppingCartModule from "@/resources/shopping-cart/store";
 import homeModule from "@/resources/home/store";
 import userModule from "@/resources/user/store";
 import productAdminModule from "@/resources/admin/store";
-import associateModule from "@/resources/partner/store";
+import partnerModule from "@/resources/partner/store";
 
 Vue.use(Vuex);
 
@@ -126,7 +126,7 @@ export default new Vuex.Store({
     category: homeModule,
     user: userModule,
     productAdmin: productAdminModule,
-    associate: associateModule,
+    partner: partnerModule,
   },
   state,
   mutations,

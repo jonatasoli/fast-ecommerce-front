@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-if="products.length > 0" class="associate">
+    <v-row v-if="products.length > 0" class="partner">
       <v-col
         xs="12"
         sm="7"
@@ -35,7 +35,7 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters("associate", ["products"]),
+    ...mapGetters("partner", ["products"]),
   },
 };
 </script>
@@ -46,11 +46,11 @@ img {
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 }
-.associate {
+.partner {
   display: flex;
   flex-flow: row wrap;
 }
-.associate .column {
+.partner .column {
   max-width: 50%;
 }
 </style>

@@ -85,7 +85,7 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters("associate", {
+    ...mapGetters("partner", {
       profits: "getProfits",
       availableAmount: "getAvailableAmount",
     }),

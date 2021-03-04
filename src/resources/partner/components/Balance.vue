@@ -29,7 +29,7 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters("associate", ["balance"]),
+    ...mapGetters("partner", ["balance"]),
   },
 };
 </script>
