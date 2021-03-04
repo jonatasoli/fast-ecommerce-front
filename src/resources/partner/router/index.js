@@ -1,4 +1,4 @@
-const Associate = () => import("../view/Associate.vue");
+const Partner = () => import("../view/Partner.vue");
 const Panel = () => import("../components/Panel.vue");
 const Products = () => import("../components/Products.vue");
 const Sales = () => import("../components/Sales.vue");
@@ -7,11 +7,11 @@ const Report = () => import("../components/Report.vue");
 export default [
   {
     path: "/parceiro",
-    component: Associate,
-    name: "Associate",
+    component: Partner,
+    name: "Partner",
     children: [
       {
-        path: "/parceiro",
+        path: "",
         component: Panel,
         name: "Parceiro",
       },
@@ -31,7 +31,7 @@ export default [
         name: "Parceiro-saldo",
       },
       {
-        path: "relatórios",
+        path: "relatorios",
         component: Report,
         name: "Parceiro-relatórios",
       },

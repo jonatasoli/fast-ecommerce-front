@@ -12,7 +12,7 @@
               <v-card-title>Transações</v-card-title>
               <v-card-text>Código: {{ transaction.code }}</v-card-text>
               <v-card-text
-                >{{ transaction.product.name }}: R${{
+                >{{ transaction.product.name }} R${{
                   transaction.product.price
                     .toFixed(2)
                     .toString()

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { getProducts } from "../services/products";
+import { getProducts } from "../services/partner";
 
 import {
   GET_AVAILABLE_AMOUNT,

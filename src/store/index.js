@@ -5,7 +5,7 @@ import shoppingCartModule from "@/resources/shopping-cart/store";
 import homeModule from "@/resources/home/store";
 import userModule from "@/resources/user/store";
 import productAdminModule from "@/resources/admin/store";
-import associateModule from "@/resources/associate/store";
+import associateModule from "@/resources/partner/store";
 
 Vue.use(Vuex);
 
