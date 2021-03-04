@@ -33,7 +33,7 @@ export default [
       {
         path: "relatorios",
         component: Report,
-        name: "Parceiro-relatórios",
+        name: "Parceiro-relatorios",
       },
     ],
   },

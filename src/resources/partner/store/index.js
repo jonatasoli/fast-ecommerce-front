@@ -12,7 +12,7 @@ import {
 
 Vue.use(Vuex);
 
-const associateModule = {
+const partnerModule = {
   namespaced: true,
   state: {
     error: [],
@@ -27,7 +27,7 @@ const associateModule = {
     todays_profit: {
       daily_gain: null,
     },
-    associateProducts: [],
+    partnerProducts: [],
     transactions: [
       {
         code: null,
@@ -66,7 +66,7 @@ const associateModule = {
       return state.available_amount;
     },
     products(state) {
-      return state.associateProducts;
+      return state.partnerProducts;
     },
     transactions(state) {
       return state.transactions;
@@ -86,7 +86,7 @@ const associateModule = {
       state.available_amount = profits;
     },
     [GET_PRODUCTS]: (state, { products }) => {
-      state.associateProducts = products;
+      state.partnerProducts = products;
     },
     [SET_ERROR]: (state, { error }) => {
       state.error = error;
@@ -104,4 +104,4 @@ const associateModule = {
   },
 };
 
-export default associateModule;
+export default partnerModule;

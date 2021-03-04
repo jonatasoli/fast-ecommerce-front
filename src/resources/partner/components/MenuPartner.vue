@@ -54,7 +54,7 @@ export default {
       { title: "Saldo", to: "/parceiro/saldo", icon: "mdi-scale-balance" },
       {
         title: "Relatórios",
-        to: "/parceiro/relatórios",
+        to: "/parceiro/relatorios",
         icon: "mdi-file-chart",
       },
     ],

@@ -5,16 +5,16 @@
         <v-icon left> mdi-menu</v-icon></v-btn
       >
     </nav-bar>
-    <MenuAssociate :sidebarMenu="sidebarMenu"></MenuAssociate>
+    <MenuPartner :sidebarMenu="sidebarMenu"></MenuPartner>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import NavBar from "../../../components/shared/NavBar.vue";
-import MenuAssociate from "../components/MenuAssociate";
+import MenuPartner from "../components/MenuPartner";
 export default {
-  components: { NavBar, MenuAssociate },
+  components: { NavBar, MenuPartner },
   data() {
     return {
       sidebarMenu: false,
