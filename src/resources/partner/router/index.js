@@ -8,7 +8,6 @@ export default [
   {
     path: "/parceiro",
     component: Partner,
-    name: "Partner",
     children: [
       {
         path: "",
