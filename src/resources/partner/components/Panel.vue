@@ -67,7 +67,7 @@
             <g class="data" data-setname="Our first data set">
               <circle
                 v-for="(profit, index) of profits"
-                :key="`day-value-${profit.day}`"
+                :key="`day-value-${index}`"
                 :cx="labelOffsetX(index) + 4"
                 :cy="labelOffsetY(profit.daily_gain - profit.refund)"
                 data-value="7.2"
