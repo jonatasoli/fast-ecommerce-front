@@ -8,6 +8,7 @@ import {
   SET_ITEM_CREATE,
   SET_ITEM_UPDATE,
   SET_ITEM_DELETE,
+  GET_ORDERS,
 } from "./mutations_types";
 
 import productAdminService from "../services/index.js";
@@ -18,6 +19,7 @@ const productAdminModule = {
   namespaced: true,
   state: {
     products_all: [],
+    orders: [],
     error: [],
   },
   mutations: {
@@ -40,6 +42,10 @@ const productAdminModule = {
       state.products_all = [];
       state.products_all = products_all;
     },
+    [GET_ORDERS]: (state, { orders }) => {
+      state.orders = [];
+      state.orders = orders
+    },
 
     [SET_ERROR]: (state, { error }) => {
       state.error = [];
@@ -51,6 +57,16 @@ const productAdminModule = {
       try {
         const response = await productAdminService.getProducts();
         commit(types.GET_PRODUCTS, { products_all: response });
+      } catch (error) {
+        commit(types.SET_ERROR, { error });
+      }
+    },
+    setOrders: async ({commit}, date) => {
+      try {
+        console.log("ACTION URI ", date);
+        const response = await productAdminService.getOrders(date);
+        console.log(response.data);
+        commit(types.GET_ORDERS, {orders: response});
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
@@ -91,6 +107,9 @@ const productAdminModule = {
     getProductsAll: (state) => {
       return state.products_all;
     },
+    getOrders: (state) => {
+      return state.orders;
+    }
   },
 };
 export default productAdminModule;

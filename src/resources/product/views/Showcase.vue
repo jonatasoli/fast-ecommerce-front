@@ -26,7 +26,6 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-
 import NavBar from "@/resources/product/components/Header.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 export default {
@@ -55,7 +54,7 @@ export default {
   },
   created() {
     this.getShowcase();
-    this.getProductPage(this.id);
+    
     this.affiliate = this.$route.query.afil;
     console.log("CREATED", this.affiliate);
     if (this.affiliate) {
@@ -82,7 +81,7 @@ export default {
     }
     this.cupom = to.query.cupom;
     if (this.$route.path == "/destaque") {
-      this.getShowcase();
+      this.products = this.getShowcase();
     }
     this.products = this.setProductsCategory({ id: this.id });
     next();

@@ -4,7 +4,7 @@ const apiClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
   headers: {
     Accept: "application/json",
-    //   Authorization: `Bearer ${access_token}`,
+      // Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
   },
@@ -44,4 +44,13 @@ export default {
       crossDomain: true,
     });
   },
+
+  async getOrders(date) {
+    let orders;
+    orders = await apiClient.get(`/orders/paid/${date}`, {
+      crossDomain: true,
+    });
+    console.log(orders.data.orders)
+    return orders.data.orders
+  }
 };

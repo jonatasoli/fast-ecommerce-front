@@ -47,7 +47,10 @@ export default {
     },
   },
   data: () => ({
-    items: [{ title: "Produtos", to: "/admdash/produtos", icon: "mdi-cart" }],
+    items: [
+      { title: "Produtos", to: "/admdash/produtos", icon: "mdi-cart" },
+      { title: "Pedidos", to: "/adm/orders", icon: "mdi-currency-usd"}
+      ],
   }),
 };
 </script>
