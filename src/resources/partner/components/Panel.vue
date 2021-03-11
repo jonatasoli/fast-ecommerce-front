@@ -12,13 +12,13 @@
           >
           <v-col
             ><v-card class="fixed-height">
-              <p>Reembolsos</p>
+              <p>Reembolsos:</p>
               <p>{{ availableAmount.refund }}</p></v-card
             ></v-col
           >
           <v-col
             ><v-card class="fixed-height">
-              <p>Porcentagem de reembolsos</p>
+              <p>Porcentagem de reembolsos:</p>
               <p>{{ refundPercentage }}</p></v-card
             ></v-col
           >
