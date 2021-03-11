@@ -22,8 +22,8 @@ describe("Panel", () => {
         day: 1,
       }),
       getAvailableAmount: () => ({
-        total: 0,
-        refund: 0,
+        total: 100,
+        refund: 50,
       }),
     };
     store = new Vuex.Store({
@@ -39,5 +39,25 @@ describe("Panel", () => {
 
   it("should render", () => {
     expect(wrapper.exists()).toBeTruthy();
+  });
+
+  it("should have available amount total", () => {
+    const value = wrapper.findAll(".fixed-height").at(0);
+    expect(value.text()).toBe(`Total: ${getters.getAvailableAmount().total}`);
+  });
+  it("should have available amount refund", () => {
+    const value = wrapper.findAll(".fixed-height").at(1);
+    expect(value.text()).toBe(
+      `Reembolsos: ${getters.getAvailableAmount().refund}`
+    );
+  });
+  it("should have refund percentage", () => {
+    const value = wrapper.findAll(".fixed-height").at(2);
+    expect(value.text()).toBe(
+      `Porcentagem de reembolsos: ${
+        (getters.getAvailableAmount().refund * 100) /
+        getters.getAvailableAmount().total
+      }%`
+    );
   });
 });
