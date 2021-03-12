@@ -21,6 +21,7 @@ export default {
     products = await apiClient.get(`/product/showcase/all`, {
       crossDomain: true,
     });
+    console.log(products.data.products)
     return products.data.products;
   },
   async getProductCategory(id) {

@@ -48,11 +48,16 @@ export default {
   },
   data: () => ({
     items: [
-      { title: "Produtos", to: "/admdash/produtos", icon: "mdi-cart" },
-      { title: "Pedidos", to: "/admdash/pedidos", icon: "mdi-currency-usd"}
-      ],
+      { title: "Painel", to: "/parceiro", icon: "mdi-monitor" },
+      { title: "Produtos", to: "/parceiro/produtos", icon: "mdi-cart" },
+      { title: "Vendas", to: "/parceiro/vendas", icon: "mdi-poll" },
+      { title: "Saldo", to: "/parceiro/saldo", icon: "mdi-request_quote" },
+      {
+        title: "Relatórios",
+        to: "/parceiro/relatórios",
+        icon: "mdi-report",
+      },
+    ],
   }),
 };
 </script>
-
-<style></style>
