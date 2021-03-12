@@ -4,7 +4,7 @@
         :items="items"
         :single-expand="singleExpand"
         :expanded.sync="expanded"
-        item-key="user_name"
+        item-key="id"
         show-expand
         class="elevation-1"
       > 
@@ -108,6 +108,7 @@ export default {
         },
         { text: "Rastreio", value: "tracking" },
         { text: "Cliente", value: "user_name" },
+        { text: "Produto", value: "product_name"},
         { text: "Documento", value: "user_document" },
         { text: "Vendedor", value: "affiliate"}
       ],
@@ -138,9 +139,11 @@ export default {
           user_neighborhood: item.neighborhood,
           user_address_complement: item.address_complement,
           user_user_zip_code: item.zip_code,
-          affiliate: item.affiliate,
+          affiliate: item.user_affiliate,
           amount: item.amount,
-          products: item.products
+          products: item.products,
+          product_name: item.products.map(value => value.product_name),
+          id: item.id
         }
       });
     },

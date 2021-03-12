@@ -11,7 +11,7 @@ export default [
     name: "ADMIN",
   },
   {
-    path: "/adm/orders",
+    path: "/admdash/pedidos",
     component: adminOrders,
     name: "adminOrders",
     children: [

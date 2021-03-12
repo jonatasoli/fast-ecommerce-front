@@ -49,7 +49,7 @@ export default {
   data: () => ({
     items: [
       { title: "Produtos", to: "/admdash/produtos", icon: "mdi-cart" },
-      { title: "Pedidos", to: "/adm/orders", icon: "mdi-currency-usd"}
+      { title: "Pedidos", to: "/admdash/pedidos", icon: "mdi-currency-usd"}
       ],
   }),
 };
