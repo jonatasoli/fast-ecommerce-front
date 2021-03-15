@@ -9,6 +9,7 @@ import {
   SET_ITEM_UPDATE,
   SET_ITEM_DELETE,
   GET_ORDERS,
+  SET_ORDER_TRACKING_NUMBER,
 } from "./mutations_types";
 
 import productAdminService from "../services/index.js";
@@ -42,7 +43,13 @@ const productAdminModule = {
       state.products_all = [];
       state.products_all = products_all;
     },
+
     [GET_ORDERS]: (state, { orders }) => {
+      state.orders = [];
+      state.orders = orders
+    },
+
+    [SET_ORDER_TRACKING_NUMBER]: (state, { orders }) => {
       state.orders = [];
       state.orders = orders
     },
@@ -102,6 +109,15 @@ const productAdminModule = {
         commit(types.SET_ERROR, { error });
       }
     },
+
+    postTrackingNumber: async({commit}, payload) => {
+      try {
+        const response = await productAdminService.postTrackingNumber(payload);
+        commit(types.SET_ORDER_TRACKING_NUMBER, {orders: response});
+      } catch (error) {
+        commit(types.SET_ERROR, { error });
+      }
+    }
   },
   getters: {
     getProductsAll: (state) => {

@@ -52,5 +52,13 @@ export default {
     });
     console.log(orders.data.orders)
     return orders.data.orders
+  },
+
+
+  postTrackingNumber(payload) {
+    return apiClient.put(`/tracking_number/${payload.order_id}`, 
+      {"tracking_number":payload.tracking_number}, {
+      crossDomain: true,
+    });
   }
 };
