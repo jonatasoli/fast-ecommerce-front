@@ -30,7 +30,7 @@
               <th>Número:</th>
               <th>Cidade:</th>
               <th>Bairro:</th>
-              <th>CEP:</th>
+              <th scope="col">CEP:</th>
               <th>Estado:</th>
               <th>Pais:</th>
               <th>Complemento:</th>
