@@ -30,6 +30,7 @@
               <th>Número:</th>
               <th>Cidade:</th>
               <th>Bairro:</th>
+              <th>CEP:</th>
               <th>Estado:</th>
               <th>Pais:</th>
               <th>Complemento:</th>
@@ -42,6 +43,7 @@
               <td>{{item.user_street_number}}</td>
               <td>{{item.user_city}}</td>
               <td>{{item.user_neighborhood}}</td>
+              <td>{{item.user_zip_code}}</td>
               <td>{{item.user_state}}</td>
               <td>{{item.user_country}}</td>
               <td>{{item.user_address_complement}}</td>
@@ -138,7 +140,7 @@ export default {
           user_street_number: item.street_number,
           user_neighborhood: item.neighborhood,
           user_address_complement: item.address_complement,
-          user_user_zip_code: item.zip_code,
+          user_zip_code: item.zipcode,
           affiliate: item.user_affiliate,
           amount: item.amount,
           products: item.products,
