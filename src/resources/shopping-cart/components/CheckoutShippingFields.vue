@@ -198,6 +198,7 @@ export default {
         { value: "Mato Grosso do Sul", name: "Mato Grosso do Sul" },
         { value: "Minas Gerais", name: "Minas Gerais" },
         { value: "Pará", name: "Pará" },
+        { value: "Paraná", name: "Paraná" },
         { value: "Paraíba", name: "Paraíba" },
         { value: "Pernambuco", name: "Pernambuco" },
         { value: "Piauí", name: "Piauí" },
