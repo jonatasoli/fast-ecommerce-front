@@ -4,7 +4,7 @@
         :items="items"
         :single-expand="singleExpand"
         :expanded.sync="expanded"
-        item-key="id"
+        item-key="id_payment"
         show-expand
         class="elevation-1"
       > 
@@ -23,8 +23,6 @@
       <td :colspan="headers.length">
         <v-simple-table>
           <thead>
-            <h4>Dados de envio:</h4>
-            
             <tr>
               <th>Rua:</th>
               <th>Número:</th>
@@ -60,26 +58,26 @@
               <th>Valor Unitario</th>
             </tr>
           </thead>
-          <tbody >
-            <tr  v-for="(product, i) in item.products" :key="i">
-              <td>{{product.product_name}}</td>
-              <td>{{product.qty}}</td>
-              <td>{{formatCurrency(product.price / 100)}}</td>
+          <tbody>
+            <tr v-for="(products, i) in item.products" :key="i">
+              <td>{{products.product_name}}</td>
+              <td>{{products.qty}}</td>
+              <td>{{formatCurrency(products.price / 100)}}</td>
             </tr>
           </tbody>
             
-          <thead>
+          <thead >
             <tr>
-              <!-- <th>Frete:</th> -->
+              <th></th>
+              <th></th>
               <th>Valor Total:</th>
-              <th>Valor Total com frete:</th>
             </tr>
           </thead>
           <tbody>
-            <tr  v-for="(product, i) in item.products" :key="i">
-              <!-- <td>{{formatCurrency((item.amount / 100) - getTotalPrice )}}</td> -->
-              <td>{{formatCurrency((product.price * product.qty) / 100)}}</td>
-              <td>{{formatCurrency(item.amount / 100)}}</td>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>{{formatCurrency(getTotalPrice(item.products))}}</td>
             </tr>
           </tbody>
         </v-simple-table>
@@ -108,11 +106,12 @@ export default {
           align: "start",
           value: "id_payment",
         },
-        { text: "Rastreio", value: "tracking" },
+        { text: "ID Pagarme", value: "id_pagarme"},
+        { text: "Status", value: "status"},
         { text: "Cliente", value: "user_name" },
-        { text: "Produto", value: "product_name"},
         { text: "Documento", value: "user_document" },
-        { text: "Vendedor", value: "affiliate"}
+        { text: "Vendedor", value: "affiliate"},
+        { text: "Rastreio", value: "tracking" },
       ],
     }
   },
@@ -129,6 +128,8 @@ export default {
       return this.orders.map((item) => {
         return {
           id_payment: item.payment_id,
+          id_pagarme: item.id_pagarme,
+          status: item.status,
           tracking: item.tracking_number,
           user_name: item.user_name,
           user_document: item.document,
@@ -142,20 +143,10 @@ export default {
           user_address_complement: item.address_complement,
           user_zip_code: item.zipcode,
           affiliate: item.user_affiliate,
-          amount: item.amount,
-          products: item.products,
-          product_name: item.products.map(value => value.product_name),
-          id: item.id
+          products: item.products
         }
       });
     },
-    // getTotalPrice() {
-    //   let price = 0
-    //   this.items.products.forEach(function (value) {
-    //     price += value.price * value.qty
-    //   })
-    //   return price / 100
-    // },
   },
   created() {
     this.getOrders();
@@ -164,7 +155,28 @@ export default {
   },
   methods: {
     ...mapActions(["setOrders"]),
-    ...mapGetters(["getOrders"])
+    ...mapGetters(["getOrders"]),
+    getTotalPrice(item) {
+      console.log(item)
+      const prices = this.reducePrices(item);
+      console.log('sum', prices);
+      return prices / 100;
+    },
+    reducePrices(product) {
+      const reducer = (accumulator, currentValue = 0) => {
+      console.log('accumulator', accumulator);
+      console.log('currentValue', currentValue);
+          return (currentValue.price * currentValue.qty) + accumulator;
+      };
+
+      const arrayIndexes = Object.values(product);
+      console.log('arrayIndexes', arrayIndexes);
+
+      const prices = arrayIndexes.reduce(reducer, 0);
+
+      console.log('prices', prices);
+      return prices
+    }
   },
   beforeRouteUptade(to, from, next) {
     this.date = to.params.date;
@@ -177,6 +189,7 @@ export default {
       vm.orders = vm.setOrders(vm.date)
     })
   }
+
 
 }
 </script>
