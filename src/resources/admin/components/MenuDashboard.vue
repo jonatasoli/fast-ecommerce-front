@@ -49,8 +49,7 @@ export default {
   data: () => ({
     items: [
       { title: "Produtos", to: "/admdash/produtos", icon: "mdi-cart" },
-      { title: "Pedidos", to: "/admdash/pedidos", icon: "mdi-currency-usd"},
-      { title: "Código de rastreio", to: "/admdash/codigo-rastreio", icon: "mdi-mailbox-open-up"}
+      { title: "Pedidos", to: "/admdash/pedidos", icon: "mdi-currency-usd"}
       ],
   }),
 };

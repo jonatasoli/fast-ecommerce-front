@@ -54,10 +54,15 @@ export default {
     return orders.data.orders
   },
 
-
   postTrackingNumber(payload) {
     return apiClient.put(`/tracking_number/${payload.order_id}`, 
-      {"tracking_number":payload.tracking_number}, {
+      {"tracking_number":payload.tracking}, {
+      crossDomain: true,
+    });
+  },
+
+  mailSendTrackingNumber(payload) {
+    return apiClient.post('/mail/send-mail-tracking-number', payload, {
       crossDomain: true,
     });
   }
