@@ -83,16 +83,21 @@
         </v-simple-table>
       </td>
     </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      <Tracking :item="item" :items="items"/>
+    </template>
       </v-data-table>
 </template>
 
 <script>
+import Tracking from "../components/Tracking.vue"
 import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapActions, mapGetters } = createNamespacedHelpers(
   "productAdmin"
 );
 export default {
+  components:{ Tracking },
   mixins: [FormatCurrencyMixin],
   data() {
     return {
@@ -103,15 +108,16 @@ export default {
       headers: [
         {
           text: "ID Pagamento",
-          align: "start",
           value: "id_payment",
+          width: 50
         },
         { text: "ID Pagarme", value: "id_pagarme"},
-        { text: "Status", value: "status"},
-        { text: "Cliente", value: "user_name" },
+        { text: "Status", value: "status", width:150 ,align: "center"},
+        { text: "Cliente", value: "user_name" , align: "start"},
         { text: "Documento", value: "user_document" },
-        { text: "Vendedor", value: "affiliate"},
+        { text: "Vendedor", value: "affiliate", width: 150},
         { text: "Rastreio", value: "tracking" },
+        { value: "actions", width: 100}
       ],
     }
   },
@@ -128,6 +134,7 @@ export default {
       return this.orders.map((item) => {
         return {
           id_payment: item.payment_id,
+          order_id: item.order_id,
           id_pagarme: item.id_pagarme,
           status: item.status,
           tracking: item.tracking_number,
