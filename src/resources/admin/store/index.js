@@ -10,6 +10,7 @@ import {
   SET_ITEM_DELETE,
   GET_ORDERS,
   SET_ORDER_TRACKING_NUMBER,
+  SET_MAIL_TRACKING_NUMBER
 } from "./mutations_types";
 
 import productAdminService from "../services/index.js";
@@ -21,6 +22,7 @@ const productAdminModule = {
   state: {
     products_all: [],
     orders: [],
+    email: undefined,
     error: [],
   },
   mutations: {
@@ -52,6 +54,11 @@ const productAdminModule = {
     [SET_ORDER_TRACKING_NUMBER]: (state, { orders }) => {
       state.orders = [];
       state.orders = orders
+    },
+
+    [SET_MAIL_TRACKING_NUMBER]: (state, {email}) => {
+      state.email = undefined;
+      state.email = email;
     },
 
     [SET_ERROR]: (state, { error }) => {
@@ -114,6 +121,14 @@ const productAdminModule = {
       try {
         const response = await productAdminService.postTrackingNumber(payload);
         commit(types.SET_ORDER_TRACKING_NUMBER, {orders: response});
+      } catch (error) {
+        commit(types.SET_ERROR, { error });
+      }
+    },
+    sendEmailTrackingNumber: async({commit}, payload) => {
+      try {
+        const response = await productAdminService.mailSendTrackingNumber(payload);
+        commit(types.SET_MAIL_TRACKING_NUMBER, {email: response});
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
