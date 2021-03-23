@@ -139,6 +139,7 @@ export default {
           status: item.status,
           tracking: item.tracking_number,
           user_name: item.user_name,
+          user_email: item.email,
           user_document: item.document,
           user_address_type: item.address_type,
           user_country: item.country,
