@@ -10,7 +10,7 @@
       > 
       <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Pedidos</v-toolbar-title>
+        <v-toolbar-title>Pedidos <br/> {{dateRangeText}}</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -101,7 +101,7 @@ export default {
   mixins: [FormatCurrencyMixin],
   data() {
     return {
-      date: this.$route.params.date,
+      dates: this.$route.params.dates,
       expanded: [],
       singleExpand: false,
       order: this.getOrders(),
@@ -123,13 +123,23 @@ export default {
   },
   watch:{
     $route(to) {
-      this.date = to.params.date;
+      this.dates = to.params.dates;
     }
   },
   computed: {
 ...mapState({
       orders: "orders"
     }),
+    dateRangeText () {
+      return JSON.parse(this.dates).map(value => this.formatDate(value)).sort().join("-")
+    },
+    new_dates() {
+      const new_dates = JSON.parse(this.dates)
+      return {
+        "date_start": new_dates[0],
+        "date_end": new_dates[1]
+      }
+    },
     items() {
       return this.orders.map((item) => {
         return {
@@ -158,7 +168,7 @@ export default {
   },
   created() {
     this.getOrders();
-    console.log(this.date)
+    console.log(this.new_dates)
 
   },
   methods: {
@@ -184,17 +194,26 @@ export default {
 
       console.log('prices', prices);
       return prices
+    },
+    formatDate (date) {
+        if (!date) return null
+
+        const [year, month, day] = date.split('-')
+        return `${day}/${month}/${year}`
+      },
+    a() {
+      this.setOrders(JSON.stringify(this.new_dates));
     }
   },
   beforeRouteUptade(to, from, next) {
-    this.date = to.params.date;
-    this.orders = this.setOrders(this.date);
+    this.dates = to.params.dates;
+    this.orders = this.setOrders(JSON.stringify(this.new_dates));
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.date = to.params.date;
-      vm.orders = vm.setOrders(vm.date)
+      vm.dates = to.params.dates;
+      vm.orders = vm.a()
     })
   }
 

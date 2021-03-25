@@ -7,11 +7,12 @@
     </NavBar>
     <MenuDashboard :sidebarMenu="sidebarMenu"/>
     <v-container class="buscar">
-    <Date @datenew="date = $event"/>
+    <Date @dates="dates = $event"/>
+    
     <v-btn x-large @click="loadData">Buscar</v-btn>
     </v-container>
     <v-container>
-      <router-view></router-view>
+      <router-view :key="$route.path"/>
     </v-container>
   </div>
 </template>
@@ -24,19 +25,17 @@ import Date from "../components/Date.vue";
 export default {
   components: { NavBar, MenuDashboard, Date },
   data: () => ({
-    date: '',
+    dates: '',
     sidebarMenu: false,
   }),
   methods: {
     loadData() {
-      console.log(this.date)
+      console.log(this.dates)
       this.$router.push({
         name:"tableOrders",
-        params: {date: this.date},
+        params: {dates: JSON.stringify(this.dates)},
       }).catch (() => {});
       location.reload()
-      
- 
     },
   },
 };

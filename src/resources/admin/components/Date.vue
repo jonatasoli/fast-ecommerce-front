@@ -16,7 +16,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="dateFormatted"
+              v-model="dateRangeText"
               label="Data"
                hint="DD/MM/AAAA formato"
               persistent-hint
@@ -29,9 +29,9 @@
           </template>
           <v-date-picker
             locale="pt-br"
-            v-model="date"
+            v-model="dates"
+            range
             no-title
-            @input="menu1 = false"
             @click="enviarDate"
             
           ></v-date-picker>
@@ -44,7 +44,7 @@
 <script>
   export default {
     data: vm => ({
-      date: new Date().toISOString().substr(0, 10),
+      dates:[ new Date().toISOString().substr(0, 10)],
       dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
       menu1: false,
     }),
@@ -54,8 +54,11 @@
         return this.formatDate(this.date)
       },
       enviarDate() {
-        return this.$emit('datenew', this.date)
-      }
+        return this.$emit('dates', this.dates.map(value => value).sort())
+      },
+      dateRangeText () {
+        return this.dates.map(value => this.formatDate(value)).sort().join("-")
+      },
     },
     watch: {
       date () {
