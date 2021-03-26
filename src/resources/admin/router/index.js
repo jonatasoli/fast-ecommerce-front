@@ -15,7 +15,7 @@ export default [
     name: "adminOrders",
     children: [
       {
-        path: "table/:date",
+        path: "table/:dates",
         component: TableOrders,
         name:"tableOrders"
         
@@ -26,5 +26,5 @@ export default [
     path: "/admdash/produtos",
     component: adminProduct,
     name: "AdminProduct",
-  },
+  }
 ];
