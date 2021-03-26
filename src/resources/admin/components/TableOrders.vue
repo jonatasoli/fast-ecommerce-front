@@ -124,7 +124,7 @@ export default {
   watch:{
     $route(to) {
       this.dates = to.params.dates;
-    }
+    },
   },
   computed: {
 ...mapState({
@@ -168,7 +168,7 @@ export default {
   },
   created() {
     this.getOrders();
-    console.log(this.new_dates)
+    console.log(this.orders)
 
   },
   methods: {
@@ -201,19 +201,17 @@ export default {
         const [year, month, day] = date.split('-')
         return `${day}/${month}/${year}`
       },
-    a() {
-      this.setOrders(JSON.stringify(this.new_dates));
-    }
+
   },
   beforeRouteUptade(to, from, next) {
     this.dates = to.params.dates;
-    this.orders = this.setOrders(JSON.stringify(this.new_dates));
+    this.setOrders(JSON.stringify(this.new_dates));
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.dates = to.params.dates;
-      vm.orders = vm.a()
+      vm.setOrders(JSON.stringify(vm.new_dates))
     })
   }
 
