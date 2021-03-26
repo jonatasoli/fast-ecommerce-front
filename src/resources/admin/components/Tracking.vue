@@ -45,7 +45,7 @@
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
-const { mapActions} = createNamespacedHelpers(
+const { mapActions, mapState} = createNamespacedHelpers(
   "productAdmin"
 );
 export default {
@@ -64,6 +64,14 @@ export default {
       editedIndex: -1
     }
   },
+  computed: {
+    ...mapState(['error'])
+  },
+  watch: {
+    tracking(){
+      console.log(this.editedItem.tracking)
+    }
+  },
   methods: {
     ...mapActions([
       "postTrackingNumber",
@@ -75,17 +83,15 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.items[this.editedIndex], this.editedItem)
-        // this.sendEmailTrackingNumber(
-        //   {
-        //     "mail_to": this.editedItem.user_email,
-        //     "order_id": this.editedItem.order_id,
-        //     "tracking_number": this.editedItem.tracking
-        //   }
-        // )
-        this.postTrackingNumber(this.editedItem)
+        if (this.editedItem.tracking == null) {
+          window.alert("Adicione um código")
+        } else {
+          this.postTrackingNumber(this.editedItem)
+          this.dialog = false
+        }
+     
       }
-      this.dialog = false;
-      location.reload()
+      
     },
     editItem(item) {
       if (item.tracking == null) {

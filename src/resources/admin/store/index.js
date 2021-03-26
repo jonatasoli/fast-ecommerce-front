@@ -22,6 +22,7 @@ const productAdminModule = {
   state: {
     products_all: [],
     orders: [],
+    tracking_number: [],
     email: undefined,
     error: [],
   },
@@ -51,9 +52,9 @@ const productAdminModule = {
       state.orders = orders
     },
 
-    [SET_ORDER_TRACKING_NUMBER]: (state, { orders }) => {
-      state.orders = [];
-      state.orders = orders
+    [SET_ORDER_TRACKING_NUMBER]: (state, { tracking_number }) => {
+      state.tracking_number = [];
+      state.tracking_number = tracking_number
     },
 
     [SET_MAIL_TRACKING_NUMBER]: (state, {email}) => {
@@ -119,8 +120,9 @@ const productAdminModule = {
 
     postTrackingNumber: async({commit}, payload) => {
       try {
+        console.log(payload)
         const response = await productAdminService.postTrackingNumber(payload);
-        commit(types.SET_ORDER_TRACKING_NUMBER, {orders: response});
+        commit(types.SET_ORDER_TRACKING_NUMBER, {tracking_number: response});
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
