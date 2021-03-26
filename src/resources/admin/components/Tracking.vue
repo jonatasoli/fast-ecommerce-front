@@ -75,13 +75,13 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.items[this.editedIndex], this.editedItem)
-        this.sendEmailTrackingNumber(
-          {
-            "mail_to": this.editedItem.user_email,
-            "order_id": this.editedItem.order_id,
-            "tracking_number": this.editedItem.tracking
-          }
-        )
+        // this.sendEmailTrackingNumber(
+        //   {
+        //     "mail_to": this.editedItem.user_email,
+        //     "order_id": this.editedItem.order_id,
+        //     "tracking_number": this.editedItem.tracking
+        //   }
+        // )
         this.postTrackingNumber(this.editedItem)
       }
       this.dialog = false;
