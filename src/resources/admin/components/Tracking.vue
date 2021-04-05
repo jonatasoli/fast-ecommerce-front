@@ -86,6 +86,13 @@ export default {
         if (this.editedItem.tracking == null) {
           window.alert("Adicione um código")
         } else {
+          this.sendEmailTrackingNumber(
+            {
+              "mail_to":this.editedItem.user_email,
+              "order_id":this.editedItem.order_id,
+              "tracking_number": this.editedItem.tracking
+            }
+          )
           this.postTrackingNumber(this.editedItem)
           this.dialog = false
         }
