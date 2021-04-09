@@ -81,6 +81,16 @@
                 @focus="focusIn"
               ></v-text-field>
             </v-col>
+            <v-col
+              cols="5"
+              sm="7"
+              md="9">
+              Imagem:
+              <UploadImage/>
+              <v-text-field
+              v-model="editedItem.image_path">
+              </v-text-field>
+            </v-col>
             
             <v-col
               cols="2"
@@ -185,6 +195,7 @@ const { mapState, mapGetters, mapActions } = createNamespacedHelpers(
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuDashboard from "../components/MenuDashboard.vue";
 import Editor from "../components/Editor.vue";
+import UploadImage from "../components/UploadImage.vue";
 export default {
   name: "AdminProduct",
   mixins: [FormatCurrencyMixin],
@@ -192,6 +203,7 @@ export default {
     NavBar,
     MenuDashboard,
     Editor,
+    UploadImage
   },
   data() {
     return {
