@@ -36,13 +36,7 @@ export default {
     console.log("retorno", output.data);
     return output;
   },
-  async getSignature() {
-    let signature;
-    signature = await apiClient.get("/product/upload-image", {
-      crossDomain: true,
-    });
-    return signature;
-  },
+
   deleteProduct(id) {
     console.log("DELETE _______");
     console.log("produto excluido");

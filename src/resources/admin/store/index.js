@@ -4,7 +4,6 @@ import Vuex from "vuex";
 import * as types from "./mutations_types";
 import {
   GET_PRODUCTS,
-  GET_SIGNATURE,
   SET_ERROR,
   SET_ITEM_CREATE,
   SET_ITEM_UPDATE,
@@ -25,18 +24,12 @@ const productAdminModule = {
     orders: [],
     tracking_number: [],
     email: undefined,
-    signature: [],
     error: [],
   },
   mutations: {
     [GET_PRODUCTS]: (state, { products_all }) => {
       state.products_all = [];
       state.products_all = products_all;
-    },
-
-    [GET_SIGNATURE]: (state, {signature}) => {
-      state.signature = [];
-      state.signature = signature;
     },
 
     [SET_ITEM_CREATE]: (state, { products_all }) => {
@@ -89,14 +82,6 @@ const productAdminModule = {
         const response = await productAdminService.getOrders(date);
         console.log(response.data);
         commit(types.GET_ORDERS, {orders: response});
-      } catch (error) {
-        commit(types.SET_ERROR, { error });
-      }
-    },
-    setSignature: async({commit}) => {
-      try {
-        const response = await productAdminService.getSignature();
-        commit(types.GET_SIGNATURE, {signature: response});
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }

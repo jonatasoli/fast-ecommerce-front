@@ -276,9 +276,6 @@ export default {
 };
 </script>
 <style scoped>
-.container {
-  width: 100%
-}
 .calc_shipping{
   display: flex;
   align-items: flex-end;
@@ -338,16 +335,5 @@ hr {
 .empty_cart {
   margin-left: -10px;
   margin-top: 30px;
-}
-
-@media  screen and (max-width:580px) {
-  >>> .v-card__actions {
-    flex-direction: column;
-  }
-
-  >>> .v-card__actions button {
-    margin:10px
-  }
-  
 }
 </style>
