@@ -280,9 +280,7 @@ export default {
   display: flex;
   align-items: flex-end;
 }
-.calc_shipping v-text-field {
-  width: 10px
-}
+
 .items {
   display: flex;
   align-items: center;
@@ -335,5 +333,16 @@ hr {
 .empty_cart {
   margin-left: -10px;
   margin-top: 30px;
+}
+
+@media screen and (max-width:580px) {
+  >>> .v-card__actions {
+    flex-direction: column;
+  }
+  
+  >>> .v-card__actions button {
+    margin: 10px
+  }
+  
 }
 </style>
