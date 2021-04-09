@@ -1,6 +1,7 @@
 <template>
   <div width="500">
     <v-toolbar
+      v-if="$vuetify.breakpoint.lgOnly"
       id="categories-app-bar"
       color="#233237"
       height="30"
