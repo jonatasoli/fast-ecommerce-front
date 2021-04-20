@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-row class="navbar">
-    <NavBar> 
-       <v-btn  x-large 
-        @click.stop="sidebarMenu = !sidebarMenu">
-        <v-icon left> mdi-menu</v-icon></v-btn>
-    </NavBar>
-    <MenuDashboard :sidebarMenu="sidebarMenu"/>
+      <NavBar>
+        <v-btn x-large @click.stop="sidebarMenu = !sidebarMenu">
+          <v-icon left> mdi-menu</v-icon></v-btn
+        >
+      </NavBar>
+      <MenuDashboard :sidebarMenu="sidebarMenu" />
     </v-row>
     <v-container class="table">
       <v-card>
@@ -15,163 +15,70 @@
         :items="items"
         sortBy="id"
         update: sort-asc>
-          <template v-slot:top>
-            <v-toolbar
-              flat
-            >
-              <v-toolbar-title>Produtos</v-toolbar-title>
-              <v-divider
-                class="mx-4"
-                inset
-                vertical
-              ></v-divider>
-              <v-spacer></v-spacer>
-                <v-dialog
-                  v-model="dialog"
-                  max-width="700px"
-                        >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="primary"
-                      dark
-                      class="mb-2"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                    Adicionar
-                    </v-btn>
-                  </template>
-          <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
-
-          <v-card-text class="card">
-            <v-container>
-              <v-row>
-                <v-col
-                  cols="15"
-                  sm="8"
-                  md="6"
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Produtos</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="700px">
+              <template
+                v-slot:activator="{
+                  on,
+                  attrs,
+                }"
+              >
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
                 >
-                <v-text-field
-                  v-model="editedItem.name"
-                  label="Nome"
-                ></v-text-field>
-            </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              md="3"
-            >
-              <v-text-field
-                v-model="editedItem.uri"
-                label="URI"
-              ></v-text-field>
-            </v-col>
-            <v-col
-              cols="5"
-              sm="7"
-              md="3"
-            >
-              <v-text-field
-                v-model="editedItem.price"
-                label="Preço"
-                @blur="focusOut"
-                @focus="focusIn"
-              ></v-text-field>
-            </v-col>
-            
-            <v-col
-              cols="2"
-              sm="4"
-              md="8"
-            >
-              <Editor :editedItem="editedItem"/>
-            </v-col>
-              <v-col
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <v-text-field
-                type="number"
-                v-model="editedItem.quantity"
-                label="Quantidade"
-              ></v-text-field>
-
-              <v-text-field
-                type="text"
-                v-model="editedItem.discount"
-                label="Desconto"
-                @blur="focusOutDiscount"
-                @focus="focusInDiscount"
-              ></v-text-field>
-              </v-col>
-            <template>
-            <v-container fluid >
-              <v-radio-group 
-              label="Exibir Produto?" 
-              v-model="editedItem.showcase" row mandatory>
-                <v-radio  label="Sim" :value="true"></v-radio>
-                <v-radio  label="Não" :value="false"></v-radio>                
-              </v-radio-group>
-          </v-container>
-          </template>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancelar
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-                
-              >
-                Salvar
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline">Deseja excluir esse produto?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"  
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-          </v-data-table>
-        </v-card>
+                  Adicionar
+                </v-btn>
+              </template>
+              <DialogProduct
+                :editedItem="editedItem"
+                :editedIndex="editedIndex"
+                :items="items"
+                @setdialog="dialog = $event"
+              />
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="headline"
+                  >Deseja excluir esse produto?</v-card-title
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="closeDelete"
+                    >Cancel</v-btn
+                  >
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="deleteItemConfirm"
+                    >OK</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteItem(item)">
+            mdi-delete
+          </v-icon>
+        </template>
+        </v-data-table>
+      </v-card>
     </v-container>
   </div>
 </template>
@@ -179,20 +86,20 @@
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers(
+const { mapState, mapActions } = createNamespacedHelpers(
   "productAdmin"
 );
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuDashboard from "../components/MenuDashboard.vue";
-import Editor from "../components/Editor.vue";
+import DialogProduct from "../components/DialogProduct.vue";
 export default {
   name: "AdminProduct",
-  mixins: [FormatCurrencyMixin],
   components: {
     NavBar,
     MenuDashboard,
-    Editor,
+    DialogProduct,
   },
+  mixins: [FormatCurrencyMixin],
   data() {
     return {
       sidebarMenu: false,
@@ -205,25 +112,25 @@ export default {
         { text: "Categoria", value: "category_id" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      editedIndex: -1,
-      dialog: false, // used to toggle the dialog
-      dialogDelete: false,
       editedItem: {
         name: "",
         uri: "",
         price: 0,
         description: ``,
-        image_path: "null",
+        image_path: "",
         category_id: 1,
         quantity: 0,
         showcase: "",
-      }, // empty holder for create/update ops
+      },
+      editedIndex: -1,
+      dialogDelete: false,
+      dialog: false,
     };
   },
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "Adicionar Produto" : "Editar Produto";
-    },
+    ...mapState({
+      productsAll: "products_all",
+    }),
     items() {
       return this.productsAll.map((item) => {
         return {
@@ -240,75 +147,9 @@ export default {
         };
       });
     },
-    ...mapState({
-      productsAll: "products_all",
-    }),
-  },
-  created() {
-    this.getProductsAll();
-  },
-  updated() {
-    this.getProductsAll();
-  },
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
   },
   methods: {
-    ...mapGetters(["getProductsAll"]),
-    ...mapActions([
-      "setProductsAll",
-      "postProduct",
-      "updateProduct",
-      "deleteProduct",
-    ]),
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-    save() {
-      let price_int = 0;
-      let discont_int = 0;
-      if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem);
-
-        price_int = this.editedItem.price;
-        price_int = Number(price_int.replace(/[^0-9]+/g, ""));
-        this.editedItem.price = price_int;
-        discont_int = this.editedItem.discount;
-        discont_int = this.editedItem.discount;
-        if (!discont_int) {
-          discont_int = 0;
-        } else {
-          discont_int = Number(discont_int.replace(/[^0-9]+/g, ""));
-        }
-        this.editedItem.discount = discont_int;
-      } else {
-        price_int = this.editedItem.price;
-        price_int = Number(price_int.replace(/[^0-9]+/g, ""));
-        this.editedItem.price = price_int;
-        discont_int = this.editedItem.discount;
-        if (!discont_int) {
-          discont_int = 0;
-        } else {
-          discont_int = Number(discont_int.replace(/[^0-9]+/g, ""));
-        }
-        this.editedItem.discount = discont_int;
-
-        this.items.push(this.editedItem);
-        this.postProduct(this.editedItem);
-      }
-      this.close();
-      this.updateProduct(this.editedItem);
-      location.reload();
-    },
+    ...mapActions(["setProductsAll"]),
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -325,7 +166,6 @@ export default {
       this.closeDelete();
       location.reload();
     },
-
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
@@ -333,58 +173,14 @@ export default {
         this.editedIndex = -1;
       });
     },
-    focusOut: function () {
-      // Recalculate the currencyValue after ignoring "$" and "," in user input
-      this.editedItem.price = parseInt(
-        this.editedItem.price.replace(/[^\d.]/g, "")
-      );
-      // Ensure that it is not NaN. If so, initialize it to zero.
-      // This happens if user provides a blank input or non-numeric input like "abc"
-      if (isNaN(this.editedItem.price)) {
-        this.editedItem.price = 0;
-      }
-      this.editedItem.price = this.formatCurrency(
-        parseInt(this.editedItem.price) / 100
-      );
-    },
-    focusIn: function () {
-      // Unformat display value before user starts modifying it
-      if (this.editedItem.price) {
-        this.editedItem.price = this.editedItem.price.replace(/[^0-9]+/g, "");
-      }
-    },
-    focusOutDiscount() {
-      // Recalculate the currencyValue after ignoring "$" and "," in user input
-      this.editedItem.discount = parseInt(
-        this.editedItem.discount.replace(/[^\d.]/g, "")
-      );
-      // Ensure that it is not NaN. If so, initialize it to zero.
-      // This happens if user provides a blank input or non-numeric input like "abc"
-      if (isNaN(this.editedItem.discount)) {
-        this.editedItem.discount = "0";
-      }
-      this.editedItem.discount = this.formatCurrency(
-        parseInt(this.editedItem.discount) / 100
-      );
-    },
-    focusInDiscount() {
-      console.log(typeof this.editedItem.discount, "desconto");
-      if (this.editedItem.discount) {
-        this.editedItem.discount = this.editedItem.discount.replace(
-          /[^0-9]+/g,
-          ""
-        );
-      }
-    },
   },
-
   beforeRouteUpdate(to, from, next) {
-    this.productsAll = this.setProductsAll();
+    this.setProductsAll();
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.productsAll = vm.setProductsAll();
+      vm.setProductsAll();
     });
   },
 };

@@ -246,14 +246,24 @@ export default {
       });
       console.log("SHIPP", sh);
     },
+    isSmallZero(currentValue) {
+      return currentValue <= 0;
+    },
     goToCheckout() {
       let _total = this.shopping_cart;
+      let _qty = this.shopping_cart.map(product => product.qty)
       console.log("TOTRAL", _total);
-      this.setShippingPrice(this.shippingPrice);
-      this.setTotalPrice(this.getTotalPrice);
-      this.setZipCode(this.shipping);
-      this.setInstallments(this.shopping_cart);
-      this.$router.push({ name: "Checkout" });
+      console.log(_qty)
+      if (_qty.some(this.isSmallZero)) {
+        return alert("Adicione uma quantidade maior que 0")
+      } else {
+        this.setShippingPrice(this.shippingPrice);
+        this.setTotalPrice(this.getTotalPrice);
+        this.setZipCode(this.shipping);
+        this.setInstallments(this.shopping_cart);
+        this.$router.push({ name: "Checkout" });
+      }
+      
     },
     goToShowcase() {
       this.$router.push({ name: "Showcase" });

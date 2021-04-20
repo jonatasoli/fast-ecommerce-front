@@ -4,7 +4,7 @@ const apiClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
   headers: {
     Accept: "application/json",
-      // Authorization: `Bearer ${access_token}`,
+    // Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
   },
@@ -50,20 +50,23 @@ export default {
     orders = await apiClient.get(`/orders/paid/${date}`, {
       crossDomain: true,
     });
-    console.log(orders.data.orders)
-    return orders.data.orders
+    console.log(orders.data.orders);
+    return orders.data.orders;
   },
 
   postTrackingNumber(payload) {
-    return apiClient.put(`/tracking_number/${payload.order_id}`, 
-      {"tracking_number":payload.tracking}, {
-      crossDomain: true,
-    });
+    return apiClient.put(
+      `/tracking_number/${payload.order_id}`,
+      { tracking_number: payload.tracking },
+      {
+        crossDomain: true,
+      }
+    );
   },
 
   mailSendTrackingNumber(payload) {
-    return apiClient.post('/mail/send-mail-tracking-number', payload, {
+    return apiClient.post("/mail/send-mail-tracking-number", payload, {
       crossDomain: true,
     });
-  }
+  },
 };

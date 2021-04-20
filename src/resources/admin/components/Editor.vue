@@ -1,7 +1,7 @@
 <template>
   <div>
     <tiptap-vuetify
-      v-model="content.description"
+      v-model="text.description"
       :extensions="extensions"
       :toolbar-attributes="{ color: 'black' }"
     />
@@ -30,7 +30,7 @@ import {
 } from "tiptap-vuetify";
 
 export default {
-  props: ["editedItem"],
+  props: ["content"],
   components: { TiptapVuetify },
   data: () => ({
     extensions: [
@@ -59,12 +59,12 @@ export default {
     ],
   }),
   computed: {
-    content: {
+    text: {
       get() {
-        return this.editedItem;
+        return this.content;
       },
-      set(content) {
-        this.$emit("update:editedItem", content);
+      set(text) {
+        this.$emit("update:content", text);
       },
     },
   },
