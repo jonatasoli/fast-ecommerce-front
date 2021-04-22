@@ -1,25 +1,24 @@
 <template>
   <v-data-table
-        :headers="headers"
-        :items="items"
-        :single-expand="singleExpand"
-        :expanded.sync="expanded"
-        item-key="id_payment"
-        show-expand
-        class="elevation-1"
-      > 
-      <template v-slot:top>
+    :headers="headers"
+    :items="items"
+    :single-expand="singleExpand"
+    :expanded.sync="expanded"
+    item-key="id_payment"
+    show-expand
+    class="elevation-1"
+  >
+    <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Pedidos <br/> {{dateRangeText}}</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
+        <v-toolbar-title
+          >Pedidos <br />
+          {{ dateRangeText }}</v-toolbar-title
+        >
+        <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
       </v-toolbar>
-      </template>
-      <template v-slot:expanded-item="{  headers, item }">
+    </template>
+    <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
         <v-simple-table>
           <thead>
@@ -37,21 +36,21 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{item.user_street}}</td>
-              <td>{{item.user_street_number}}</td>
-              <td>{{item.user_city}}</td>
-              <td>{{item.user_neighborhood}}</td>
-              <td>{{item.user_zip_code}}</td>
-              <td>{{item.user_state}}</td>
-              <td>{{item.user_country}}</td>
-              <td>{{item.user_address_complement}}</td>
-              <td>{{item.user_address_type}}</td>
+              <td>{{ item.user_street }}</td>
+              <td>{{ item.user_street_number }}</td>
+              <td>{{ item.user_city }}</td>
+              <td>{{ item.user_neighborhood }}</td>
+              <td>{{ item.user_zip_code }}</td>
+              <td>{{ item.user_state }}</td>
+              <td>{{ item.user_country }}</td>
+              <td>{{ item.user_address_complement }}</td>
+              <td>{{ item.user_address_type }}</td>
             </tr>
           </tbody>
         </v-simple-table>
         <v-simple-table>
           <thead>
-             <h4>Produtos:</h4>
+            <h4>Produtos:</h4>
             <tr>
               <th>Nome:</th>
               <th>Quantidade:</th>
@@ -60,13 +59,13 @@
           </thead>
           <tbody>
             <tr v-for="(products, i) in item.products" :key="i">
-              <td>{{products.product_name}}</td>
-              <td>{{products.qty}}</td>
-              <td>{{formatCurrency(products.price / 100)}}</td>
+              <td>{{ products.product_name }}</td>
+              <td>{{ products.qty }}</td>
+              <td>{{ formatCurrency(products.price / 100) }}</td>
             </tr>
           </tbody>
-            
-          <thead >
+
+          <thead>
             <tr>
               <th></th>
               <th></th>
@@ -77,27 +76,29 @@
             <tr>
               <td></td>
               <td></td>
-              <td>{{formatCurrency(getTotalPrice(item.products))}}</td>
+              <td>
+                {{ formatCurrency(getTotalPrice(item.products)) }}
+              </td>
             </tr>
           </tbody>
         </v-simple-table>
       </td>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <Tracking :item="item" :items="items"/>
+      <Tracking :item="item" :items="items" />
     </template>
-      </v-data-table>
+  </v-data-table>
 </template>
 
 <script>
-import Tracking from "../components/Tracking.vue"
+import Tracking from "../components/Tracking.vue";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapActions, mapGetters } = createNamespacedHelpers(
   "productAdmin"
 );
 export default {
-  components:{ Tracking },
+  components: { Tracking },
   mixins: [FormatCurrencyMixin],
   data() {
     return {
@@ -109,36 +110,44 @@ export default {
         {
           text: "ID Pagamento",
           value: "id_payment",
-          width: 50
+          width: 50,
         },
-        { text: "ID Pagarme", value: "id_pagarme"},
-        { text: "Status", value: "status", width:150 ,align: "center"},
-        { text: "Cliente", value: "user_name" , align: "start"},
+        { text: "ID Pagarme", value: "id_pagarme" },
+        {
+          text: "Status",
+          value: "status",
+          width: 150,
+          align: "center",
+        },
+        { text: "Cliente", value: "user_name", align: "start" },
         { text: "Documento", value: "user_document" },
-        { text: "Vendedor", value: "affiliate", width: 150},
+        { text: "Vendedor", value: "affiliate", width: 150 },
         { text: "Rastreio", value: "tracking" },
-        { value: "actions", width: 100}
+        { value: "actions", width: 100 },
       ],
-    }
+    };
   },
-  watch:{
+  watch: {
     $route(to) {
       this.dates = to.params.dates;
     },
   },
   computed: {
-...mapState({
-      orders: "orders"
+    ...mapState({
+      orders: "orders",
     }),
-    dateRangeText () {
-      return JSON.parse(this.dates).map(value => this.formatDate(value)).sort().join("-")
+    dateRangeText() {
+      return JSON.parse(this.dates)
+        .map((value) => this.formatDate(value))
+        .sort()
+        .join("-");
     },
     new_dates() {
-      const new_dates = JSON.parse(this.dates)
+      const new_dates = JSON.parse(this.dates);
       return {
-        "date_start": new_dates[0],
-        "date_end": new_dates[1]
-      }
+        date_start: new_dates[0],
+        date_end: new_dates[1],
+      };
     },
     items() {
       return this.orders.map((item) => {
@@ -161,47 +170,45 @@ export default {
           user_address_complement: item.address_complement,
           user_zip_code: item.zipcode,
           affiliate: item.user_affiliate,
-          products: item.products
-        }
+          products: item.products,
+        };
       });
     },
   },
   created() {
     this.getOrders();
-    console.log(this.orders)
-
+    console.log(this.orders);
   },
   methods: {
     ...mapActions(["setOrders"]),
     ...mapGetters(["getOrders"]),
     getTotalPrice(item) {
-      console.log(item)
+      console.log(item);
       const prices = this.reducePrices(item);
-      console.log('sum', prices);
+      console.log("sum", prices);
       return prices / 100;
     },
     reducePrices(product) {
       const reducer = (accumulator, currentValue = 0) => {
-      console.log('accumulator', accumulator);
-      console.log('currentValue', currentValue);
-          return (currentValue.price * currentValue.qty) + accumulator;
+        console.log("accumulator", accumulator);
+        console.log("currentValue", currentValue);
+        return currentValue.price * currentValue.qty + accumulator;
       };
 
       const arrayIndexes = Object.values(product);
-      console.log('arrayIndexes', arrayIndexes);
+      console.log("arrayIndexes", arrayIndexes);
 
       const prices = arrayIndexes.reduce(reducer, 0);
 
-      console.log('prices', prices);
-      return prices
+      console.log("prices", prices);
+      return prices;
     },
-    formatDate (date) {
-        if (!date) return null
+    formatDate(date) {
+      if (!date) return null;
 
-        const [year, month, day] = date.split('-')
-        return `${day}/${month}/${year}`
-      },
-
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    },
   },
   beforeRouteUptade(to, from, next) {
     this.dates = to.params.dates;
@@ -211,14 +218,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.dates = to.params.dates;
-      vm.setOrders(JSON.stringify(vm.new_dates))
-    })
-  }
-
-
-}
+      vm.setOrders(JSON.stringify(vm.new_dates));
+    });
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

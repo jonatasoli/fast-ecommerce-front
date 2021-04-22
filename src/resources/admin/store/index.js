@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import * as types from "./mutations_types";
 import {
   GET_PRODUCTS,
+  SET_IMAGE,
   SET_ERROR,
   SET_ITEM_CREATE,
   SET_ITEM_UPDATE,
@@ -14,6 +15,7 @@ import {
 } from "./mutations_types";
 
 import productAdminService from "../services/index.js";
+import ImageService from "../services/imageService.js"
 
 Vue.use(Vuex);
 
@@ -21,6 +23,7 @@ const productAdminModule = {
   namespaced: true,
   state: {
     products_all: [],
+    image: '',
     orders: [],
     tracking_number: [],
     email: undefined,
@@ -30,6 +33,11 @@ const productAdminModule = {
     [GET_PRODUCTS]: (state, { products_all }) => {
       state.products_all = [];
       state.products_all = products_all;
+    },
+
+    [SET_IMAGE]: (state, { image }) => {
+      state.image = '';
+      state.image = image;
     },
 
     [SET_ITEM_CREATE]: (state, { products_all }) => {
@@ -75,6 +83,17 @@ const productAdminModule = {
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
+    },
+
+    setImage: async ({commit}, image) => {
+      try {
+        const response = await ImageService.upload_image(image);
+        console.log(response.data)
+        commit(types.SET_IMAGE, {image: response.data});
+      } catch (error) {
+        commit(types.SET_ERROR, { error })
+      }
+        
     },
     setOrders: async ({commit}, date) => {
       try {
@@ -142,6 +161,9 @@ const productAdminModule = {
     },
     getOrders: (state) => {
       return state.orders;
+    },
+    getImage: (state) => {
+      return state.image;
     }
   },
 };

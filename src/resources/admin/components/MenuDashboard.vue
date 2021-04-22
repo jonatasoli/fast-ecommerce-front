@@ -15,7 +15,12 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-for="item in items" :key="item.title" link :to="item.to">
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          :to="item.to"
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -48,9 +53,17 @@ export default {
   },
   data: () => ({
     items: [
-      { title: "Produtos", to: "/admdash/produtos", icon: "mdi-cart" },
-      { title: "Pedidos", to: "/admdash/pedidos", icon: "mdi-currency-usd"}
-      ],
+      {
+        title: "Produtos",
+        to: "/admdash/produtos",
+        icon: "mdi-cart",
+      },
+      {
+        title: "Pedidos",
+        to: "/admdash/pedidos",
+        icon: "mdi-currency-usd",
+      },
+    ],
   }),
 };
 </script>
