@@ -1,6 +1,6 @@
 <template>
-  <v-card max-width="344">
-    <v-img :src="product.image_path" height="200px"></v-img>
+  <v-card max-width="344" class="card">
+    <v-img :src="product.image_path" class="img"></v-img>
 
     <v-card-title>{{ product.name }}</v-card-title>
 
@@ -24,3 +24,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.card {
+  float: left;
+  overflow: hidden;
+}
+.img {
+  object-fit: contain;
+}
+</style>
