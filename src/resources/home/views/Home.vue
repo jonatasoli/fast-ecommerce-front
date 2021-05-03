@@ -100,15 +100,18 @@ export default {
 };
 </script>
 
-<style lang="sass">
-.home-style
-    display: flex
-    flex-flow: row wrap
-    color:"white"
-    background: "white"
-    background-color: "white"
+<style scoped>
+/* .home-style {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    color:"white";
+    background: "white";
+    background-color: "white";
+} */
 
-.menu
-  display: inline
-  margin: 0 auto
+.menu {
+  display: inline;
+  margin: 0 auto;
+}
 </style>
