@@ -74,20 +74,26 @@ router.beforeEach((to, from, next) => {
 
   // trying to access a restricted page + not logged in
   // redirect to login page
-  if (loggedIn) {
-    console.log("logado");
     if (
-      (authAdminRequired && !(loggedIn.role == "ADMIN")) ||
-      (authRequired && !(loggedIn.role == "USER")) ||
-      (authPartnerRequired && !(loggedIn.role == "PARTNER"))
-    ) {
-      next("/login");
+      (authAdminRequired && !loggedIn) ||
+      (authRequired && !loggedIn) ||
+      (authPartnerRequired && !loggedIn)) {
+      next("/login")
+      }
+    if (loggedIn) {
+      console.log("logado");
+      if (
+        (authAdminRequired && !(loggedIn.role == "ADMIN")) ||
+        (authRequired && !(loggedIn.role == "USER")) ||
+        (authPartnerRequired && !(loggedIn.role == "PARTNER"))
+      ) {
+        next("/login");
+      }
+      next();
+    } else {
+      console.log("passou", authAdminRequired, typeof loggedIn);
+      next();
     }
-    next();
-  } else {
-    console.log("passou", authAdminRequired, typeof loggedIn);
-    next();
-  }
 });
 
 export default router;

@@ -18,6 +18,16 @@
             <v-form>
               <v-text-field
                 v-if="!isLogin"
+                prepend-icon="fa-user"
+                name="name"
+                label="Nome"
+                type="text"
+                :error-messages="nameErrors"
+                :success="!$v.user.name.$invalid"
+                v-model.trim="$v.user.name.$model"
+              ></v-text-field>
+              <v-text-field
+                v-if="!isLogin"
                 prepend-icon="fa-envelope"
                 name="email"
                 label="Email"
@@ -34,6 +44,16 @@
                 :error-messages="usernameErrors"
                 :success="!$v.user.username.$invalid"
                 v-model.trim="$v.user.username.$model"
+              ></v-text-field>
+              <v-text-field
+                v-if="!isLogin"
+                prepend-icon="fa-phone"
+                name="phone"
+                label="Telefone"
+                type="phone"
+                :error-messages="phoneErrors"
+                :success="!$v.user.phone.$invalid"
+                v-model.trim="$v.user.phone.$model"
               ></v-text-field>
               <v-text-field
                 prepend-icon="fa-lock"
@@ -56,7 +76,12 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn justify-center align-center color="primary" text>
+            <v-btn
+              class="redefine"
+              color="primary"
+              text
+              @click="dialog = true"
+            >
               Esqueci minha senha
             </v-btn>
             <v-spacer></v-spacer>
@@ -71,10 +96,34 @@
 
           <v-snackbar v-model="showSnackbar" top>
             {{ error }}
-            <v-btn color="pink" flat icon @click="showSnackbar = false">
+            <v-btn
+              class="buttonSubmit"
+              color="pink"
+              text
+              icon
+              @click="showSnackbar = false"
+            >
               <v-icon>fa-window-close</v-icon>
             </v-btn>
           </v-snackbar>
+          <v-dialog v-model="dialog" max-width="500">
+            <template v-slot:default="dialog">
+              <v-card>
+                <v-card-text>
+                  <div class="text-h4 pa-12">
+                    Deseja redefinir sua senha?
+                  </div>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn text @click="dialog.value = false"
+                    >Não</v-btn
+                  >
+                  <v-btn 
+                  @click="goResetPassword" text>Sim</v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
         </v-card>
       </v-flex>
     </v-layout>
@@ -91,12 +140,15 @@ import { formatError } from "@/utils";
 export default {
   name: "Login",
   data: () => ({
+    dialog: false,
     error: undefined,
     isLogin: true,
     isLoading: false,
     showSnackbar: false,
     user: {
+      name: "",
       email: "",
+      phone: "",
       username: "",
       password: "",
     },
@@ -120,10 +172,17 @@ export default {
     return {
       user: {
         ...validations.user,
+        name: {
+          required,
+        },
         email: {
           required,
           email,
           minLength: minLength(3),
+        },
+        phone: {
+          required,
+          minLength: minLength(11),
         },
       },
     };
@@ -141,10 +200,32 @@ export default {
       if (!email.$dirty) {
         return errors;
       }
-      !email.required && errors.push("Nome é obrigatório!");
+      !email.required && errors.push("Email é obrigatório!");
       !email.minLength &&
         errors.push(
           `Insira pelo menos ${email.$params.minLength.min} caracteres!`
+        );
+      return errors;
+    },
+    nameErrors() {
+      const errors = [];
+      const name = this.$v.user.name;
+      if (!name.$dirty) {
+        return errors;
+      }
+      !name.required && errors.push("Nome é obrigatório!");
+      return errors;
+    },
+    phoneErrors() {
+      const errors = [];
+      const phone = this.$v.user.phone;
+      if (!phone.$dirty) {
+        return errors;
+      }
+      !phone.required && errors.push("Telefone é obrigatório!");
+      !phone.minLength &&
+        errors.push(
+          `Insira pelo menos ${phone.$params.minLength.min} caracteres!`
         );
       return errors;
     },
@@ -176,14 +257,18 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["loginClient"]),
+    ...mapActions(["loginClient", "getUser"]),
     async submit() {
       this.isLoading = true;
       try {
         this.isLogin
           ? await this.loginClient(this.user)
           : await AuthService.signup(this.user);
-        console.log("ROLA", this.userRole);
+        if (!this.isLogin) {
+          return (this.isLogin = true);
+        }
+        await this.getUser(this.user.username);
+        console.log("ROLE", this.userRole);
         this.$router.push(
           this.$route.query.redirect || { name: this.userRole }
         );
@@ -195,6 +280,26 @@ export default {
         this.isLoading = false;
       }
     },
+    goResetPassword() {
+      if (!this.user.username) {
+        this.dialog = false;
+        return alert("Insira o documento para continuar")
+      }
+      AuthService.userTokenResetPassword(this.user.username)
+      this.$router.push( {
+        name: "ResetPassword",
+        params:{"document": this.user.username}})
+    }
   },
 };
 </script>
+
+<style scoped>
+>>> .v-card__actions {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.redefine {
+  margin-left: 40px;
+}
+</style>

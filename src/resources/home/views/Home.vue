@@ -101,14 +101,14 @@ export default {
 </script>
 
 <style scoped>
-/* .home-style {
+.home-style {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     color:"white";
     background: "white";
     background-color: "white";
-} */
+}
 
 .menu {
   display: inline;
