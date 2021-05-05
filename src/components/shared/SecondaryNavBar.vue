@@ -54,7 +54,7 @@ export default {
     ...mapActions(["setCategorys"]),
     goHome() {
       this.$router.push({
-        name: "Home",
+        name: "USER",
       });
     },
     goAbout() {

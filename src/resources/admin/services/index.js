@@ -1,14 +1,18 @@
 import axios from "axios";
 
+const token = JSON.parse(localStorage.getItem("user"));
+
 const apiClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
   headers: {
     Accept: "application/json",
-    // Authorization: `Bearer ${access_token}`,
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
   },
 });
+if (token && token.role == "ADMIN") {
+  apiClient.defaults.headers.common["Authorization"] = 'Bearer' + token["access_token"]
+}
 
 export default {
   async getProducts() {

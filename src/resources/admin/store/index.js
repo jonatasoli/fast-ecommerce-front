@@ -23,6 +23,7 @@ const productAdminModule = {
   namespaced: true,
   state: {
     products_all: [],
+    product: [],
     image: '',
     orders: [],
     tracking_number: [],
@@ -41,17 +42,16 @@ const productAdminModule = {
     },
 
     [SET_ITEM_CREATE]: (state, { products_all }) => {
-      state.products_all = [];
-      state.products_all = products_all;
+      console.log(products_all)
+      state.products_all.push(products_all)
     },
 
-    [SET_ITEM_UPDATE]: (state, { products_all }) => {
-      state.products_all = [];
-      state.products_all = products_all;
+    [SET_ITEM_UPDATE]: (state, { product}) => {
+      state.product = [];
+      state.product= product;
     },
 
     [SET_ITEM_DELETE]: (state, { products_all }) => {
-      state.products_all = [];
       state.products_all = products_all;
     },
 
@@ -111,22 +111,22 @@ const productAdminModule = {
         .postProduct(payload)
         .then((response) =>
           commit(types.SET_ITEM_CREATE, {
-            payload_response: response.data,
+            products_all: response.data,
           })
         )
         .catch((error) => commit(types.SET_ERROR, { error }));
     },
+    
     updateProduct: ({ commit }, payload) => {
-      console.log("UPDATE", payload);
-      return productAdminService
-        .updateProduct(payload)
-        .then((response) =>
-          commit(types.SET_ITEM_UPDATE, {
-            payload_response: response.data,
-          })
-        )
-        .catch((error) => commit(types.SET_ERROR, { error }));
-    },
+      try {
+        console.log("UPDATE", payload);
+        const response =  productAdminService.updateProduct(payload)
+        commit(types.SET_ITEM_UPDATE, {product: response});
+        } catch (error) {
+          commit(types.SET_ERROR, { error });
+        }
+      },
+      
 
     deleteProduct: async ({ commit }, id) => {
       try {

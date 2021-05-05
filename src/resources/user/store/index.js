@@ -2,9 +2,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import * as types from "./mutations_types";
-import { SET_ERROR, ADD_USER_STATE, RESET_USER_STATE } from "./mutations_types";
+import { 
+  SET_ERROR, 
+  ADD_USER_STATE, 
+  RESET_USER_STATE,
+  GET_USER, } from "./mutations_types";
 
 import authService from "./../services/auth-service";
+import userService from "./../services/index";
 
 Vue.use(Vuex);
 
@@ -12,6 +17,7 @@ const userModule = {
   namespaced: true,
 
   state: {
+    user: [],
     erro: undefined,
     userRole: undefined,
     accessToken: undefined,
@@ -30,10 +36,25 @@ const userModule = {
       state.userState = undefined;
       state.userRole = undefined;
       localStorage.removeItem("user");
+      localStorage.removeItem("user_data");
     },
+    [GET_USER]: (state, user) => {
+      state.user = [];
+      state.user = user;
+      localStorage.setItem("user_data", JSON.stringify(user));
+    }
   },
 
   actions: {
+    getUser: async ({commit}, document) => {
+      try {
+        const response = await userService.getUser(document);
+        console.log("User DATA", response)
+        commit(types.GET_USER,  response)
+      } catch (error) {
+        commit(types.SET_ERROR, { error })
+      }
+    },
     loginClient: async ({ commit }, user) => {
       try {
         const user_credentials = await authService.login(user);

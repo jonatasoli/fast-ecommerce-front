@@ -86,7 +86,7 @@
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions } = createNamespacedHelpers(
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers(
   "productAdmin"
 );
 import NavBar from "@/components/shared/NavBar.vue";
@@ -113,6 +113,7 @@ export default {
         { text: "Actions", value: "actions", sortable: false },
       ],
       editedItem: {
+        id: "",
         name: "",
         uri: "",
         price: 0,
@@ -120,7 +121,7 @@ export default {
         image_path: "",
         category_id: 1,
         quantity: 0,
-        showcase: "",
+        showcase: "" ,
       },
       editedIndex: -1,
       dialogDelete: false,
@@ -149,6 +150,7 @@ export default {
     },
   },
   methods: {
+    ...mapGetters(["getProductsAll"]),
     ...mapActions(["setProductsAll"]),
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);

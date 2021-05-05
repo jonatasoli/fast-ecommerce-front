@@ -1,6 +1,7 @@
 <template>
-  <v-container>
+  <v-app>
     <NavBar />
+    <v-container >
     <v-row>
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
@@ -21,7 +22,8 @@
         <h2>Não há produtos nessa sessão!</h2>
       </v-col>
     </v-row>
-  </v-container>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -103,3 +105,6 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+</style>

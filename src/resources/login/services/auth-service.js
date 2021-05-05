@@ -20,12 +20,26 @@ const login = async (user) => {
   return response.data;
 };
 
-const signup = "response";
+const signup = async (user) => {
+  console.log("__POST")
+  console.log(user)
+  return await loginClient.post("/user/signup", user)
+};
 
 const user = "response";
+
+const userTokenResetPassword = async (document) => {
+  return await loginClient.post(`/user/request-reset-password?document=${document}`)
+}
+
+const resetPassword = async (user) => {
+  return await loginClient.put("/user/reset-password", user)
+}
 
 export default {
   login,
   signup,
   user,
+  userTokenResetPassword,
+  resetPassword
 };
