@@ -143,9 +143,6 @@ export default {
   created() {
     this.getProductsAll();
   },
-  updated() {
-    this.getProductsAll();
-  },
   watch: {
     dialog(val) {
       val || this.close();
@@ -161,6 +158,7 @@ export default {
       "postProduct",
       "updateProduct",
       "deleteProduct",
+      "setProductsAll"
     ]),
     close() {
       console.log((this.dialogModel = false));
@@ -185,7 +183,6 @@ export default {
       if (this.editIndex > -1) {
         
         Object.assign(this.items[this.editIndex], this.content);
-
         price_int = this.content.price;
         price_int = Number(price_int.replace(/[^0-9]+/g, ""));
         this.content.price = price_int;
@@ -197,6 +194,8 @@ export default {
           discont_int = Number(discont_int.replace(/[^0-9]+/g, ""));
         }
         this.content.discount = discont_int;
+        this.updateProduct(this.content);
+        this.setProductsAll();
       } else {
         price_int = this.content.price;
         price_int = Number(price_int.replace(/[^0-9]+/g, ""));
@@ -214,8 +213,6 @@ export default {
       }
       console.log(this.image);
       console.log(this.editIndex)
-
-      this.updateProduct(this.content);
       this.close();
       location.reload();
     },
@@ -269,6 +266,7 @@ export default {
         );
       }
     },
+    
   },
 };
 </script>
