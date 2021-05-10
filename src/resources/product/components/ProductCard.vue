@@ -1,20 +1,26 @@
 <template>
-  <v-card width="300" class="card">
+  <v-card width="310" class="card">
     <div class="box">
-    <v-img :src="product.image_path" class="img"></v-img>
+      <v-img :src="product.image_path" class="img"></v-img>
     </div>
+    <div class="box-content">
+      <v-card-title class="product-name">{{ product.name }}</v-card-title>
+      <div class="box-price">
+      <span class="price">{{ formatCurrency(product.price / 100) }}</span>
+      <v-card-actions>
+        <v-btn color="orange lighten-2" text @click="productDetail">Compre agora</v-btn>
+      </v-card-actions>
 
-    <v-card-title>{{ product.name }}</v-card-title>
-
-    <v-card-actions>
-      <v-btn @click="productDetail">Ver oferta</v-btn>
-    </v-card-actions>
+      </div>
+    </div>
   </v-card>
 </template>
 
 <script>
+import FormatCurrencyMixin from "@/mixins/format-currency";
 export default {
   name: "ProductCard",
+  mixins: [FormatCurrencyMixin],
   props: ["product"],
   methods: {
     productDetail() {
@@ -30,13 +36,29 @@ export default {
 .card {
   margin-top: 30px;
   margin-left: 40px;
-  }
+}
+.product-name {
+  font-size: 17px;
+}
 .box {
-  width: 300px;
+  width: 310px;
   height: 300px;
   overflow: hidden;
 }
 .img {
-  object-fit: cover;
+  object-fit: contain;
+}
+.price {
+  margin-left: 20px;
+  color: orange;
+  font-weight: bold;
+}
+.box-price {
+  position: absolute;
+  bottom: 0
+}
+
+.box-content {
+  height: 215px;
 }
 </style>
