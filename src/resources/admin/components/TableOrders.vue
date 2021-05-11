@@ -103,6 +103,7 @@ export default {
   data() {
     return {
       dates: this.$route.params.dates,
+      status: this.$route.params.status,
       expanded: [],
       singleExpand: false,
       order: this.getOrders(),
@@ -212,13 +213,13 @@ export default {
   },
   beforeRouteUptade(to, from, next) {
     this.dates = to.params.dates;
-    this.setOrders(JSON.stringify(this.new_dates));
+    this.setOrders(JSON.stringify(this.new_dates), status);
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.dates = to.params.dates;
-      vm.setOrders(JSON.stringify(vm.new_dates));
+      vm.setOrders(JSON.stringify(vm.new_dates), status);
     });
   },
 };

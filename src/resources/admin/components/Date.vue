@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12" lg="9">
+  <v-container class="container-date">
         <v-menu
           ref="menu1"
           v-model="menu1"
@@ -32,8 +30,6 @@
             @click="enviarDate"
           ></v-date-picker>
         </v-menu>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
@@ -88,3 +84,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container-date { 
+  width: 500px;
+  padding: 0px;
+  margin: 0px;
+}
+</style>
