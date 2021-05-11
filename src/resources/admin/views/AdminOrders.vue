@@ -8,6 +8,18 @@
     <MenuDashboard :sidebarMenu="sidebarMenu"/>
     <v-container class="buscar">
     <Date @dates="dates = $event"/>
+    <div class="select-status">
+
+        <v-select
+          :items="items"
+          item-text="name"
+          v-model=status
+          label="Status"
+          solo
+        ></v-select>
+     
+      
+    </div>
     
     <v-btn x-large @click="loadData">Buscar</v-btn>
     </v-container>
@@ -25,25 +37,39 @@ import Date from "../components/Date.vue";
 export default {
   components: { NavBar, MenuDashboard, Date },
   data: () => ({
+    status: '',
     dates: '',
     sidebarMenu: false,
+    items: [
+      {name: "Pagamento Aprovado", value: "paid"},
+      {name: "Pagamento Recusado", value: "refused"},
+      {name: "Pagamento Não Concluído", value: "null"}
+    ]
   }),
   methods: {
     loadData() {
       console.log(this.dates)
       this.$router.push({
         name:"tableOrders",
-        params: {dates: JSON.stringify(this.dates)},
+        params: {dates: JSON.stringify(this.dates),
+                status: this.status},
       }).catch (() => {});
       location.reload()
+      return this.status
     },
   },
 };
 </script>
 <style scoped>
 .buscar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 20px;
 }
+.select-status {
+  width: 300px;
+  margin: 30px 20px 0px 50px;
+}
+
 </style>

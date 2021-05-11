@@ -46,9 +46,9 @@ const productAdminModule = {
       state.products_all.push(products_all)
     },
 
-    [SET_ITEM_UPDATE]: (state, { product}) => {
+    [SET_ITEM_UPDATE]: (state, { product_all}) => {
       state.product = [];
-      state.product= product;
+      state.product= product_all;
     },
 
     [SET_ITEM_DELETE]: (state, { products_all }) => {
@@ -117,10 +117,10 @@ const productAdminModule = {
         .catch((error) => commit(types.SET_ERROR, { error }));
     },
     
-    updateProduct: ({ commit }, payload) => {
+    updateProduct: async ({ commit }, payload) => {
       try {
         console.log("UPDATE", payload);
-        const response =  productAdminService.updateProduct(payload)
+        const response = await productAdminService.updateProduct(payload)
         commit(types.SET_ITEM_UPDATE, {product: response});
         } catch (error) {
           commit(types.SET_ERROR, { error });

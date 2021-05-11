@@ -101,6 +101,9 @@ export default {
         return arr[arr.length - 1];
       }
     },
+    orders() {
+      return this.setProductsAll();
+    },
     receive_items: {
       get() {
         return this.items;
@@ -156,6 +159,7 @@ export default {
         this.content = Object.assign({}, this.defaultItem);
         this.editIndex = -1;
       });
+      this.content.price = 0
     },
     async insert_image() {
       let formData = new FormData();
@@ -184,7 +188,6 @@ export default {
         }
         this.content.discount = discont_int;
         this.updateProduct(this.content);
-        this.setProductsAll();
       } else {
         price_int = this.content.price;
         price_int = Number(price_int.replace(/[^0-9]+/g, ""));
@@ -202,8 +205,10 @@ export default {
       }
       console.log(this.image);
       console.log(this.editIndex);
+
+      setTimeout(() =>{this.setProductsAll()}, 1000)
       this.close();
-      location.reload();
+      
     },
     imageName() {
       this.image_name = this.content.image_path.split("/").end();
