@@ -118,7 +118,6 @@ export default {
         uri: "",
         price: 0,
         description: ``,
-        image_path: "",
         category_id: 1,
         quantity: 0,
         showcase: "" ,

@@ -7,16 +7,10 @@
       <v-container>
         <v-row>
           <v-col cols="15" sm="8" md="6">
-            <v-text-field
-              v-model="content.name"
-              label="Nome"
-            ></v-text-field>
+            <v-text-field v-model="content.name" label="Nome"></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="3">
-            <v-text-field
-              v-model="content.uri"
-              label="URI"
-            ></v-text-field>
+            <v-text-field v-model="content.uri" label="URI"></v-text-field>
           </v-col>
           <v-col cols="5" sm="7" md="3">
             <v-text-field
@@ -27,12 +21,13 @@
             ></v-text-field>
           </v-col>
           <v-col cols="5" sm="7" md="12">
-            <v-file-input
-              label="Imagem"
-              prepend-icon="mdi-camera"
-              v-model="image"
-            >
-            </v-file-input>
+            <v-row>
+              <v-file-input label="Imagem" prepend-icon="mdi-camera" v-model="image">
+              </v-file-input>
+              <v-btn class="mt-5" fab small dark color="indigo" @click="insert_image">
+                <v-icon dark> mdi-plus </v-icon>
+              </v-btn>
+            </v-row>
             <div class="text_img">Imagem inserida: {{ image_name }}</div>
           </v-col>
 
@@ -73,9 +68,7 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="close">
-        Cancelar
-      </v-btn>
+      <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
       <v-btn color="blue darken-1" text @click="save"> Salvar </v-btn>
     </v-card-actions>
   </v-card>
@@ -84,12 +77,10 @@
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers(
-  "productAdmin"
-);
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers("productAdmin");
 import Editor from "../components/Editor";
 export default {
-  props: ["editedItem","editedIndex", "items"],
+  props: ["editedItem", "editedIndex", "items"],
   components: { Editor },
   mixins: [FormatCurrencyMixin],
   data() {
@@ -100,14 +91,14 @@ export default {
     };
   },
   computed: {
-    ...mapState({image_url: "image"}),
+    ...mapState({ image_url: "image" }),
     image_name() {
+      console.log(this.content.image_path);
       if (this.content.image_path == null) {
-        return null
-      }
-      else {
+        return null;
+      } else {
         let arr = this.content.image_path.split("/");
-        return arr[arr.length - 1]
+        return arr[arr.length - 1];
       }
     },
     receive_items: {
@@ -131,13 +122,11 @@ export default {
         return this.editedIndex;
       },
       set(val) {
-        this.$emit("update:editedIndex", val)
-      }
+        this.$emit("update:editedIndex", val);
+      },
     },
     formTitle() {
-      return this.editedIndex === -1
-        ? "Adicionar Produto"
-        : "Editar Produto";
+      return this.editedIndex === -1 ? "Adicionar Produto" : "Editar Produto";
     },
   },
   created() {
@@ -158,11 +147,9 @@ export default {
       "postProduct",
       "updateProduct",
       "deleteProduct",
-      "setProductsAll"
+      "setProductsAll",
     ]),
     close() {
-      console.log((this.dialogModel = false));
-      console.log(this.dialog);
       this.dialog = false;
       this.$emit("setdialog", this.dialog);
       this.$nextTick(() => {
@@ -170,18 +157,20 @@ export default {
         this.editIndex = -1;
       });
     },
-    async save() {
-      let price_int = 0;
-      let discont_int = 0;
+    async insert_image() {
       let formData = new FormData();
 
       formData.append("image", this.image)
 
       await this.setImage(formData);
       this.content.image_path = this.image_url
+    },
+    save() {
+      let price_int = 0;
+      let discont_int = 0;
       
+
       if (this.editIndex > -1) {
-        
         Object.assign(this.items[this.editIndex], this.content);
         price_int = this.content.price;
         price_int = Number(price_int.replace(/[^0-9]+/g, ""));
@@ -208,65 +197,50 @@ export default {
         }
         this.content.discount = discont_int;
         this.receive_items.push(this.content);
-        console.log(this.receive_items)
+        console.log(this.receive_items);
         this.postProduct(this.content);
       }
       console.log(this.image);
-      console.log(this.editIndex)
+      console.log(this.editIndex);
       this.close();
       location.reload();
     },
     imageName() {
-      this.image_name = this.content.image_path.split("/").end()
+      this.image_name = this.content.image_path.split("/").end();
     },
 
     focusOut: function () {
       // Recalculate the currencyValue after ignoring "$" and "," in user input
-      this.content.price = parseInt(
-        this.content.price.replace(/[^\d.]/g, "")
-      );
+      this.content.price = parseInt(this.content.price.replace(/[^\d.]/g, ""));
       // Ensure that it is not NaN. If so, initialize it to zero.
       // This happens if user provides a blank input or non-numeric input like "abc"
       if (isNaN(this.content.price)) {
         this.content.price = 0;
       }
-      this.content.price = this.formatCurrency(
-        parseInt(this.content.price) / 100
-      );
+      this.content.price = this.formatCurrency(parseInt(this.content.price) / 100);
     },
     focusIn: function () {
       // Unformat display value before user starts modifying it
       if (this.content.price) {
-        this.content.price = this.content.price.replace(
-          /[^0-9]+/g,
-          ""
-        );
+        this.content.price = this.content.price.replace(/[^0-9]+/g, "");
       }
     },
     focusOutDiscount() {
       // Recalculate the currencyValue after ignoring "$" and "," in user input
-      this.content.discount = parseInt(
-        this.content.discount.replace(/[^\d.]/g, "")
-      );
+      this.content.discount = parseInt(this.content.discount.replace(/[^\d.]/g, ""));
       // Ensure that it is not NaN. If so, initialize it to zero.
       // This happens if user provides a blank input or non-numeric input like "abc"
       if (isNaN(this.content.discount)) {
         this.content.discount = "0";
       }
-      this.content.discount = this.formatCurrency(
-        parseInt(this.content.discount) / 100
-      );
+      this.content.discount = this.formatCurrency(parseInt(this.content.discount) / 100);
     },
     focusInDiscount() {
       console.log(typeof this.content.discount, "desconto");
       if (this.content.discount) {
-        this.content.discount = this.content.discount.replace(
-          /[^0-9]+/g,
-          ""
-        );
+        this.content.discount = this.content.discount.replace(/[^0-9]+/g, "");
       }
     },
-    
   },
 };
 </script>
