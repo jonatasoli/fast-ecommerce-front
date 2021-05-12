@@ -206,7 +206,7 @@ export default {
       console.log(this.image);
       console.log(this.editIndex);
 
-      setTimeout(() =>{this.setProductsAll()}, 1000)
+      setTimeout(() =>{this.setProductsAll()}, 200)
       this.close();
       
     },
