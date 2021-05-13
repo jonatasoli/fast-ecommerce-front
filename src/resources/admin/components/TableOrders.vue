@@ -6,7 +6,7 @@
     :expanded.sync="expanded"
     item-key="id_payment"
     show-expand
-    class="elevation-1"
+    class="elevation-1 table-orders"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -20,6 +20,26 @@
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
+        <v-simple-table>
+          <thead>
+            <tr>
+              <th>Id Pagarme:</th>
+              <th>Status:</th>
+              <th>Documento:</th>
+              <th>Email:</th>
+              <th>Telefone:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{item.id_pagarme}}</td>
+              <td>{{mutation_status(item)}}</td>
+              <td>{{item.user_document}}</td>
+              <td>{{item.user_email}}</td>
+              <td>{{item.user_phone}}</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
         <v-simple-table>
           <thead>
             <tr>
@@ -68,14 +88,14 @@
           <thead>
             <tr>
               <th></th>
-              <th></th>
+              <th>Valor Total com Frete:</th>
               <th>Valor Total:</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td></td>
-              <td></td>
+              <td>{{formatCurrency(item.amount /100)}}</td>
               <td>
                 {{ formatCurrency(getTotalPrice(item.products)) }}
               </td>
@@ -113,15 +133,10 @@ export default {
           value: "id_payment",
           width: 50,
         },
+        { text: "Data Pedido", value: "order_date", width: 150},
         { text: "ID Pagarme", value: "id_pagarme" },
-        {
-          text: "Status",
-          value: "status",
-          width: 150,
-          align: "center",
-        },
+
         { text: "Cliente", value: "user_name", align: "start" },
-        { text: "Documento", value: "user_document" },
         { text: "Vendedor", value: "affiliate", width: 150 },
         { text: "Rastreio", value: "tracking" },
         { value: "actions", width: 100 },
@@ -130,8 +145,14 @@ export default {
   },
   watch: {
     $route(to) {
+      console.log(to)
       this.dates = to.params.dates;
+      this.status = to.params.status;
     },
+  },
+  mounted() {
+    const payload = {date: JSON.stringify(this.new_dates), status: this.status}
+    this.setOrders(payload);
   },
   computed: {
     ...mapState({
@@ -154,12 +175,15 @@ export default {
       return this.orders.map((item) => {
         return {
           id_payment: item.payment_id,
+          amount: item.amount,
           order_id: item.order_id,
           id_pagarme: item.id_pagarme,
+          order_date: item.order_date,
           status: item.status,
           tracking: item.tracking_number,
           user_name: item.user_name,
           user_email: item.email,
+          user_phone: item.phone,
           user_document: item.document,
           user_address_type: item.address_type,
           user_country: item.country,
@@ -175,6 +199,7 @@ export default {
         };
       });
     },
+    
   },
   created() {
     this.getOrders();
@@ -210,19 +235,39 @@ export default {
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
     },
+    mutation_status(item) {
+      console.log(item.id_payment)
+      let id_payment = item.id_pagarme
+      let status = item.status
+      if(status == "paid") {
+        return status = "Pagamento Aprovado"
+      } else if (status == "refused" && id_payment == null) {
+        return status = "Pagamento não concluido"
+      } else if (status == "waiting_payment") {
+        return status = "Aguardando pagamento"
+      } else {
+        return status = "Pagamento recusado"
+      }
+    }
   },
   beforeRouteUptade(to, from, next) {
     this.dates = to.params.dates;
-    this.setOrders(JSON.stringify(this.new_dates), status);
+    this.status = to.params.status;
+    console.log(to)
+    const payload = {date: JSON.stringify(this.new_dates), status: this.status}
+    this.setOrders(payload);
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.dates = to.params.dates;
-      vm.setOrders(JSON.stringify(vm.new_dates), status);
+      vm.status = to.params.status;
+      const payload = {date: JSON.stringify(vm.new_dates), status: vm.status}
+      vm.setOrders(payload);
     });
   },
 };
 </script>
 
-<style></style>
+<style>
+</style>

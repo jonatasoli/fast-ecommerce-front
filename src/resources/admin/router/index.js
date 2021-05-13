@@ -15,9 +15,10 @@ export default [
     name: "adminOrders",
     children: [
       {
-        path: "table/:dates",
+        path: "table/:dates/:status",
         component: TableOrders,
-        name:"tableOrders"
+        name:"tableOrders",
+        props: true,
         
       }
     ]
