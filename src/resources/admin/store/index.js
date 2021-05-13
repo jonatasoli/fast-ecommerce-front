@@ -95,10 +95,10 @@ const productAdminModule = {
       }
         
     },
-    setOrders: async ({commit}, date) => {
+    setOrders: async ({commit}, payload) => {
       try {
-        console.log("ACTION URI ", date);
-        const response = await productAdminService.getOrders(date);
+        console.log("ACTION URI ", payload);
+        const response = await productAdminService.getOrders(payload.date, payload.status);
         console.log(response.data);
         commit(types.GET_ORDERS, {orders: response});
       } catch (error) {

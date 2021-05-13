@@ -9,10 +9,23 @@
       <MenuDashboard :sidebarMenu="sidebarMenu" />
     </v-row>
     <v-container class="table">
+      <div class="search">
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Pesquisar produto"
+        single-line
+        hide-details
+        solo
+        outlined
+      ></v-text-field>
+
+      </div>
       <v-card>
         <v-data-table 
         :headers="headers" 
         :items="items"
+        :search="search"
         sortBy="id"
         update: sort-asc>
         <template v-slot:top>
@@ -102,6 +115,7 @@ export default {
   mixins: [FormatCurrencyMixin],
   data() {
     return {
+      search: "",
       sidebarMenu: false,
       headers: [
         { text: "Id", value: "id" },
@@ -187,18 +201,21 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .v-input .v-label {
-  font-size: 20px;
+  font-size: 18px;
 }
 .v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
-  font-size: 18px !important;
+  font-size: 15px !important;
 }
 
 .table {
   margin-top: 50px;
+}
+.search {
+  margin-bottom: 30px;
 }
 </style>

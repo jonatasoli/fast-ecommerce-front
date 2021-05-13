@@ -16,6 +16,10 @@
           v-model=status
           label="Status"
           solo
+           :required="!status"
+          menu-props="auto"
+          hide-details
+          single-line
         ></v-select>
      
       
@@ -24,7 +28,7 @@
     <v-btn x-large @click="loadData">Buscar</v-btn>
     </v-container>
     <v-container>
-      <router-view :key="$route.path"/>
+      <router-view :key="$route.fullPath"/>
     </v-container>
   </div>
 </template>
@@ -37,13 +41,14 @@ import Date from "../components/Date.vue";
 export default {
   components: { NavBar, MenuDashboard, Date },
   data: () => ({
-    status: '',
+    status: "paid",
     dates: '',
     sidebarMenu: false,
     items: [
       {name: "Pagamento Aprovado", value: "paid"},
       {name: "Pagamento Recusado", value: "refused"},
-      {name: "Pagamento Não Concluído", value: "null"}
+      {name: "Aguardando Pagamento", value: "waiting_payment"},
+      {name: "Pendente", value: "pending"},
     ]
   }),
   methods: {
@@ -54,8 +59,7 @@ export default {
         params: {dates: JSON.stringify(this.dates),
                 status: this.status},
       }).catch (() => {});
-      location.reload()
-      return this.status
+      // location.reload()
     },
   },
 };
