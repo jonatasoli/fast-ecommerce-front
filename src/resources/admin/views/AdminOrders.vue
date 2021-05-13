@@ -48,7 +48,6 @@ export default {
       {name: "Pagamento Aprovado", value: "paid"},
       {name: "Pagamento Recusado", value: "refused"},
       {name: "Aguardando Pagamento", value: "waiting_payment"},
-      {name: "Pendente", value: "pending"},
     ]
   }),
   methods: {
