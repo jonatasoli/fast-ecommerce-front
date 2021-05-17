@@ -33,8 +33,8 @@
                 label="Email"
                 type="text"
                 :error-messages="emailErrors"
-                :success="!$v.user.email.$invalid"
-                v-model.trim="$v.user.email.$model"
+                :success="!$v.user.mail.$invalid"
+                v-model.trim="$v.user.mail.$model"
               ></v-text-field>
               <v-text-field
                 prepend-icon="fa-id-card"
@@ -42,8 +42,8 @@
                 label="Documento"
                 type="username"
                 :error-messages="usernameErrors"
-                :success="!$v.user.username.$invalid"
-                v-model.trim="$v.user.username.$model"
+                :success="!$v.user.document.$invalid"
+                v-model.trim="$v.user.document.$model"
               ></v-text-field>
               <v-text-field
                 v-if="!isLogin"
@@ -147,16 +147,16 @@ export default {
     showSnackbar: false,
     user: {
       name: "",
-      email: "",
+      mail: "",
       phone: "",
-      username: "",
+      document: "",
       password: "",
     },
   }),
   validations() {
     const validations = {
       user: {
-        username: {
+        document: {
           required,
           minLength: minLength(11),
         },
@@ -175,7 +175,7 @@ export default {
         name: {
           required,
         },
-        email: {
+        mail: {
           required,
           email,
           minLength: minLength(3),
@@ -196,14 +196,14 @@ export default {
     },
     emailErrors() {
       const errors = [];
-      const email = this.$v.user.email;
-      if (!email.$dirty) {
+      const mail = this.$v.user.mail;
+      if (!mail.$dirty) {
         return errors;
       }
-      !email.required && errors.push("Email é obrigatório!");
-      !email.minLength &&
+      !mail.required && errors.push("Email é obrigatório!");
+      !mail.minLength &&
         errors.push(
-          `Insira pelo menos ${email.$params.minLength.min} caracteres!`
+          `Insira pelo menos ${mail.$params.minLength.min} caracteres!`
         );
       return errors;
     },
@@ -231,7 +231,7 @@ export default {
     },
     usernameErrors() {
       const errors = [];
-      const username = this.$v.user.username;
+      const username = this.$v.user.document;
       if (!username.$dirty) {
         return errors;
       }
@@ -262,12 +262,17 @@ export default {
       this.isLoading = true;
       try {
         this.isLogin
-          ? await this.loginClient(this.user)
+          ? await this.loginClient(
+            {
+              "username": this.user.document,
+              "password": this.user.password,
+            }
+          )
           : await AuthService.signup(this.user);
         if (!this.isLogin) {
           return (this.isLogin = true);
         }
-        await this.getUser(this.user.username);
+        await this.getUser(this.user.document);
         console.log("ROLE", this.userRole);
         this.$router.push(
           this.$route.query.redirect || { name: this.userRole }
@@ -281,14 +286,14 @@ export default {
       }
     },
     goResetPassword() {
-      if (!this.user.username) {
+      if (!this.user.document) {
         this.dialog = false;
         return alert("Insira o documento para continuar")
       }
-      AuthService.userTokenResetPassword(this.user.username)
+      AuthService.userTokenResetPassword(this.user.document)
       this.$router.push( {
         name: "ResetPassword",
-        params:{"document": this.user.username}})
+        params:{"document": this.user.document}})
     }
   },
 };
