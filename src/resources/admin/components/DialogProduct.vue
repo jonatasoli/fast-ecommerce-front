@@ -21,6 +21,16 @@
             ></v-text-field>
           </v-col>
           <v-col cols="5" sm="7" md="12">
+            
+              <div class="select-category">
+
+              <span>Categoria do Produto:</span>
+              <v-select 
+              :items="itemsCategorys"
+              item-text="name"
+              v-model="content.category_id"></v-select>
+              </div>
+            
             <v-row>
               <v-file-input label="Imagem" prepend-icon="mdi-camera" v-model="image">
               </v-file-input>
@@ -28,7 +38,12 @@
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
             </v-row>
-            <div class="text_img">Imagem inserida: {{ image_name }}</div>
+            <div class="text_img">
+              <v-img max-height="80"
+              max-width="80"
+              :src=content.image_path>
+              </v-img>
+              <span>{{image_name}}</span></div>
           </v-col>
 
           <v-col cols="2" sm="4" md="8">
@@ -76,8 +91,7 @@
 
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
-import { createNamespacedHelpers } from "vuex";
-const { mapState, mapGetters, mapActions } = createNamespacedHelpers("productAdmin");
+import { mapState, mapGetters, mapActions } from "vuex";
 import Editor from "../components/Editor";
 export default {
   props: ["editedItem", "editedIndex", "items"],
@@ -88,12 +102,21 @@ export default {
       dialog: false,
       image: [],
       image_path: "",
+      
     };
   },
   computed: {
-    ...mapState({ image_url: "image" }),
+    ...mapState("productAdmin", { image_url: "image" }),
+    ...mapState("category", ["categorys"]),
+    itemsCategorys() {
+      return this.categorys.map((item) => {
+        return {
+          name:item.name,
+          value: item.id
+        }
+      })
+    },
     image_name() {
-      console.log(this.content.image_path);
       if (this.content.image_path == null) {
         return null;
       } else {
@@ -144,14 +167,15 @@ export default {
     },
   },
   methods: {
-    ...mapGetters(["getProductsAll"]),
-    ...mapActions([
+    ...mapGetters("productAdmin", ["getProductsAll"]),
+    ...mapActions("productAdmin",[
       "setImage",
       "postProduct",
       "updateProduct",
       "deleteProduct",
       "setProductsAll",
     ]),
+    ...mapActions("category", ["setCategorys"]),
     close() {
       this.dialog = false;
       this.$emit("setdialog", this.dialog);
@@ -160,6 +184,7 @@ export default {
         this.editIndex = -1;
       });
       this.content.price = 0
+      this.image = []
     },
     async insert_image() {
       let formData = new FormData();
@@ -210,9 +235,6 @@ export default {
       this.close();
       
     },
-    imageName() {
-      this.image_name = this.content.image_path.split("/").end();
-    },
 
     focusOut: function () {
       // Recalculate the currencyValue after ignoring "$" and "," in user input
@@ -247,12 +269,28 @@ export default {
       }
     },
   },
+  mounted() {
+    this.setCategorys()
+  },
 };
 </script>
 
 <style>
 .text_img {
   color: white;
-  font-size: 16px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  
+}
+.text_img span {
+  margin-left: 20px;
+}
+
+.select-category {
+  display:flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 20px
 }
 </style>

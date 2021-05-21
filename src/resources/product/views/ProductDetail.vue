@@ -1,6 +1,13 @@
 <template>
   <v-container>
-    <NavBar />
+    <div class="home-style">
+      <v-row>
+        <NavBar />
+      </v-row>
+      <v-row>
+        <MenuCategorys />
+      </v-row>
+    </div>
     <v-row>
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
@@ -72,12 +79,14 @@
 import { mapState, mapActions } from "vuex";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 
-import NavBar from "@/resources/product/components/Header.vue";
+import NavBar from "@/components/shared/NavBar.vue";
+import MenuCategorys from "@/components/shared/MenuCategorys.vue";
 export default {
   name: "Showcase",
   mixins: [FormatCurrencyMixin],
   components: {
     NavBar,
+    MenuCategorys,
   },
   data() {
     return {

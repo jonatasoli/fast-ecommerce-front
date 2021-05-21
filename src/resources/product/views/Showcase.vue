@@ -1,44 +1,57 @@
 <template>
   <v-app>
-    <NavBar />
-    <v-container >
-    <v-row>
-      <v-col
-        class="d-flex align-center justify-space-around flex-wrap"
-        xs="12"
-        sm="12"
-        md="12"
-        lg="12"
-        xl="12"
-        v-if="products.length > 0"
-      >
-        <ProductCard
-          v-for="product in products"
-          :key="product.id"
-          :product="product"
-        ></ProductCard>
-      </v-col>
-      <v-col v-else>
-        <h2>Não há produtos nessa sessão!</h2>
-      </v-col>
-    </v-row>
-    </v-container>
+    <div class="home-style">
+      <v-row>
+        <NavBar />
+      </v-row>
+      <v-row>
+        <MenuCategorys />
+      </v-row>
+    </div>
+    <div class="home-style">
+      <v-row>
+        <v-col
+          class="d-flex align-center justify-space-around flex-wrap"
+          xs="12"
+          sm="12"
+          md="12"
+          lg="12"
+          xl="12"
+          v-if="products.length > 0"
+        >
+          <ProductCard
+            v-for="product in products"
+            :key="product.id"
+            :product="product"
+          ></ProductCard>
+        </v-col>
+        <v-col v-else>
+          <h2>Não há produtos nessa sessão!</h2>
+        </v-col>
+      </v-row>
+      <router-view></router-view>
+    </div>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-import NavBar from "@/resources/product/components/Header.vue";
+import NavBar from "@/components/shared/NavBar.vue";
+import Footer from "@/components/shared/Footer.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
+import MenuCategorys from "@/components/shared/MenuCategorys";
 export default {
   name: "Showcase",
   components: {
     NavBar,
+    MenuCategorys,
     ProductCard,
+    Footer,
   },
   data() {
     return {
-      id: this.$route.params.id,
+      path: undefined,
       affiliate: undefined,
       cupom: undefined,
       uri: undefined,
@@ -46,12 +59,12 @@ export default {
   },
   computed: {
     ...mapState("product", {
-      products: "products",
+      products: "products"
     }),
   },
   watch: {
     $route(to) {
-      this.id = to.params.id;
+      this.path = to.params.path;
     },
   },
   created() {
@@ -62,6 +75,7 @@ export default {
     if (this.affiliate) {
       this.setAffiliate(this.affiliate);
     }
+    console.log(this.$route.name)
   },
   updated() {
     this.affiliate = this.$route.query.afil;
@@ -77,7 +91,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
-    this.id = to.params.id;
+    this.path = to.params.path;
     if (this.affiliate) {
       this.setAffiliate(this.affiliate);
     }
@@ -85,22 +99,26 @@ export default {
     if (this.$route.path == "/destaque") {
       this.products = this.getShowcase();
     }
-    this.products = this.setProductsCategory({ id: this.id });
+    this.products = this.setProductsCategory(this.path);
+
+    
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.affiliate = to.query.afil;
-      vm.id = to.params.id;
+      vm.path = to.params.path;
       console.log(vm.affiliate);
       if (vm.affiliate) {
         vm.setAffiliate(vm.affiliate);
       }
       vm.cupom = to.query.cupom;
-      if (vm.$route.path == "/destaque") {
-        vm.products = vm.setShowcase();
+     if (vm.$route.name == "ProductCategory") {
+        vm.setProductsCategory(vm.path);
+      } else {
+        vm.setShowcase();
       }
-      vm.products = vm.setProductsCategory({ id: vm.id });
+
     });
   },
 };

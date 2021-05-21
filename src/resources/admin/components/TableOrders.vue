@@ -237,12 +237,9 @@ export default {
     },
     mutation_status(item) {
       console.log(item.id_payment)
-      let id_payment = item.id_pagarme
       let status = item.status
       if(status == "paid") {
         return status = "Pagamento Aprovado"
-      } else if (status == "refused" && id_payment == null) {
-        return status = "Pagamento não concluido"
       } else if (status == "waiting_payment") {
         return status = "Aguardando pagamento"
       } else {
@@ -250,7 +247,7 @@ export default {
       }
     }
   },
-  beforeRouteUptade(to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     this.dates = to.params.dates;
     this.status = to.params.status;
     console.log(to)

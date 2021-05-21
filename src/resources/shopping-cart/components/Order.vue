@@ -71,7 +71,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-import NavBar from "@/resources/product/components/Header.vue";
+import NavBar from "@/components/shared/NavBar.vue";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 
 const { mapActions, mapState, mapGetters } = createNamespacedHelpers("cart");

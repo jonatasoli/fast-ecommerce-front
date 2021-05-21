@@ -2,6 +2,7 @@
   <div class="home">
     <NavBar />
     <SecondaryNavBar />
+    <MenuCategorys />
     <v-row>
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
@@ -30,12 +31,14 @@ const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
 
 import NavBar from "@/components/shared/NavBar.vue";
 import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
+import MenuCategorys from "@/components/shared/MenuCategorys.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 export default {
   name: "Home",
   components: {
     NavBar,
     SecondaryNavBar,
+    MenuCategorys,
     ProductCard,
   },
   data() {
