@@ -24,12 +24,13 @@ export default {
     console.log(products.data.products)
     return products.data.products;
   },
-  async getProductCategory(id) {
+  async getProductCategory(path) {
     let products;
-    products = await apiClient.get(`/product/category/${id}`, {
+    products = await apiClient.get(`/product/category/products/${path}`, {
       crossDomain: true,
     });
-    return products.data.products;
+    console.log(products.data.products)
+    return products.data.product;
   },
   postInstallments(cart) {
     console.log("POST _______");

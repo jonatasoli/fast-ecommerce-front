@@ -10,7 +10,7 @@ export default [
     name: "USER",
   },
   {
-    path: "/produtos/:id",
+    path: "/produtos/:path",
     component: Showcase,
     name: "ProductCategory",
   },

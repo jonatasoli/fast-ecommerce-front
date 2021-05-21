@@ -1,11 +1,12 @@
 <template>
   <v-app>
     <div class="home-style">
+      <SecondaryNavBar/>
       <v-row>
         <NavBar />
       </v-row>
       <v-row>
-        <SecondaryNavBar />
+        <MenuCategorys />
       </v-row>
     </div>
     <div class="home-style">
@@ -37,8 +38,9 @@
 
 <script>
 import Footer from "@/components/shared/Footer.vue";
-import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
+import MenuCategorys from "@/components/shared/MenuCategorys.vue";
 import NavBar from "@/components/shared/NavBar.vue";
+import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue"
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
@@ -47,6 +49,7 @@ export default {
   components: {
     NavBar,
     SecondaryNavBar,
+    MenuCategorys,
     ProductCard,
     Footer,
   },
@@ -100,7 +103,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .home-style {
     display: flex;
     justify-content: space-around;

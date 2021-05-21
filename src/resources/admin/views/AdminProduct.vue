@@ -98,10 +98,11 @@
 
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
-import { createNamespacedHelpers } from "vuex";
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers(
-  "productAdmin"
-);
+// import { createNamespacedHelpers } from "vuex";
+// const { mapState, mapActions, mapGetters } = createNamespacedHelpers(
+//   "productAdmin"
+// );
+import { mapState, mapActions, mapGetters } from "vuex";
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuDashboard from "../components/MenuDashboard.vue";
 import DialogProduct from "../components/DialogProduct.vue";
@@ -135,6 +136,7 @@ export default {
         category_id: 1,
         quantity: 0,
         showcase: "" ,
+        installments_config: 1,
       },
       editedIndex: -1,
       dialogDelete: false,
@@ -142,9 +144,9 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      productsAll: "products_all",
-    }),
+    ...mapState("productAdmin", {productsAll: "products_all"}),
+    ...mapState("category", ["categorys"]),
+
     items() {
       return this.productsAll.map((item) => {
         return {
@@ -156,15 +158,17 @@ export default {
           uri: item.uri,
           description: item.description,
           discount: this.formatCurrency(item.discount / 100),
-          category_id: item.category_id,
+          category_id: this.categoryName(item.category_id),
           image_path: item.image_path,
+          installments_config: item.installments_config
         };
       });
     },
   },
   methods: {
-    ...mapGetters(["getProductsAll"]),
-    ...mapActions(["setProductsAll"]),
+    ...mapGetters("productAdmin",["getProductsAll"]),
+    ...mapActions("productAdmin",["setProductsAll"]),
+    ...mapActions("category", ["setCategorys"]),
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -188,14 +192,23 @@ export default {
         this.editedIndex = -1;
       });
     },
+    categoryName(item) {
+      var categoryName = this.categorys.filter((value) => value.id == item)
+      for(var category in categoryName) {
+        return (categoryName[category].name)
+
+      }
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.setProductsAll();
+    this.setCategorys();
     next();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.setProductsAll();
+      vm.setCategorys();
     });
   },
 };

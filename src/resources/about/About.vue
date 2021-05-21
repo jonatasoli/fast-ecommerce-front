@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import NavBar from "@/resources/product/components/Header.vue";
+import NavBar from "@/components/shared/NavBar.vue";
 import Footer from "@/components/shared/Footer.vue";
 import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
 export default {

@@ -39,9 +39,9 @@ const productModule = {
         commit(types.SET_ERROR, { error });
       }
     },
-    setProductsCategory: async ({ commit }, { id }) => {
+    setProductsCategory: async ({ commit }, path ) => {
       try {
-        const response = await productService.getProductCategory(id);
+        const response = await productService.getProductCategory(path);
         commit(types.SET_SHOWCASE, { products: response });
         console.log(response);
       } catch (error) {
