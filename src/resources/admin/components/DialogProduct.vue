@@ -184,7 +184,6 @@ export default {
         this.editIndex = -1;
       });
       this.content.price = 0
-      this.image = []
     },
     async insert_image() {
       let formData = new FormData();
