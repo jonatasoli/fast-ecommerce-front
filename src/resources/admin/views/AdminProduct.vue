@@ -124,7 +124,7 @@ export default {
         { text: "Valor", value: "price" },
         { text: "Quantidade", value: "quantity", sortable: false },
         { text: "Ativo", value: "showcase" },
-        { text: "Categoria", value: "category_id" },
+        { text: "Categoria", value: "category_name" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       editedItem: {
@@ -158,7 +158,8 @@ export default {
           uri: item.uri,
           description: item.description,
           discount: this.formatCurrency(item.discount / 100),
-          category_id: this.categoryName(item.category_id),
+          category_name: this.categoryName(item.category_id),
+          category_id: item.category_id,
           image_path: item.image_path,
           installments_config: item.installments_config
         };
