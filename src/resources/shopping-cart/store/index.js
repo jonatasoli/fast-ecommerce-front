@@ -46,7 +46,7 @@ const productModule = {
       state.shopping_cart.push(item);
     },
     [REMOVE_PRODUCT_TO_CART]: (state, { item }) => {
-      state.shopping_cart.splice(item, 1)
+      state.shopping_cart.splice(item)
     },
     [INCREMENT_PRODUCT_TO_CART]: (state, { cartItem }) => {
       // console.log(state)
@@ -107,9 +107,12 @@ const productModule = {
     },
     removeShoppingCart: ({ state, commit }, cart_item) => {
       try {
-        const cartItem = state.shopping_cart.indexOf(
+        const Item = state.shopping_cart.find(
           (item) => item.product_id === cart_item.product_id
         );
+        const cartItem = state.shopping_cart.indexOf(Item);
+        console.log(cartItem)
+        console.log(state.shopping_cart)
         state.shopping_cart.splice(cartItem, 1)
         commit(types.REMOVE_PRODUCT_TO_CART);
       } catch (error) {
