@@ -139,6 +139,7 @@ export default {
         qty: this.product_qty_select,
         product_id: this.product.id,
         product_name: this.product.name,
+        image_path: this.product.image_path,
         affiliate: this.state_afilliate,
         tangible: true,
       };

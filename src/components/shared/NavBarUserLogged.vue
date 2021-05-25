@@ -95,7 +95,7 @@ export default {
   methods: {
     ...mapActions(["logoutClient"]),
     handleScroll() {
-      if (window.scrollY > 10) {
+      if (window.scrollY > 100) {
         return setTimeout(() => {
           this.app = "app";
         }, 10);

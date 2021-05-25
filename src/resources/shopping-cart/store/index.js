@@ -5,6 +5,7 @@ import * as types from "./mutations_types";
 import {
   SET_ERROR,
   ADD_PRODUCT_TO_CART,
+  REMOVE_PRODUCT_TO_CART,
   INCREMENT_PRODUCT_TO_CART,
   DECREMENT_PRODUCT_TO_CART,
   DECREMENT_PRODUCT_QUANTITY,
@@ -43,6 +44,9 @@ const productModule = {
     },
     [ADD_PRODUCT_TO_CART]: (state, { item }) => {
       state.shopping_cart.push(item);
+    },
+    [REMOVE_PRODUCT_TO_CART]: (state, { item }) => {
+      state.shopping_cart.splice(item, 1)
     },
     [INCREMENT_PRODUCT_TO_CART]: (state, { cartItem }) => {
       // console.log(state)
@@ -97,6 +101,17 @@ const productModule = {
           // commit(types.INCREMENT_PRODUCT_TO_CART, cartItem)
         }
         commit(types.DECREMENT_PRODUCT_QUANTITY, cart_item);
+      } catch (error) {
+        commit(types.SET_ERROR, { error });
+      }
+    },
+    removeShoppingCart: ({ state, commit }, cart_item) => {
+      try {
+        const cartItem = state.shopping_cart.indexOf(
+          (item) => item.product_id === cart_item.product_id
+        );
+        state.shopping_cart.splice(cartItem, 1)
+        commit(types.REMOVE_PRODUCT_TO_CART);
       } catch (error) {
         commit(types.SET_ERROR, { error });
       }
