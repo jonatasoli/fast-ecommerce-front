@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     handleScroll() {
-      if (window.scrollY > 80) {
+      if (window.scrollY > 100) {
         return setTimeout(() =>{this.app = "app"}, 100)
       } else {
         return setTimeout(() =>{this.app = undefined}, 100  )

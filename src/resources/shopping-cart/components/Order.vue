@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <NavBar />
     <v-container v-if="shopping_cart.length > 0">
       <v-row
         class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8"
@@ -71,7 +70,6 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-import NavBar from "@/components/shared/NavBar.vue";
 import FormatCurrencyMixin from "@/mixins/format-currency";
 
 const { mapActions, mapState, mapGetters } = createNamespacedHelpers("cart");
@@ -79,9 +77,6 @@ const { mapActions, mapState, mapGetters } = createNamespacedHelpers("cart");
 export default {
   name: "ShoppingCart",
   mixins: [FormatCurrencyMixin],
-  components: {
-    NavBar,
-  },
   data() {
     return {
       shopping_cart: this.getShoppingCart(),

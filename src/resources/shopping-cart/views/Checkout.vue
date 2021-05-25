@@ -1,6 +1,7 @@
 <template>
-  <v-container class="mt-2">
+  <v-app>
     <NavBar />
+  <v-container class="mt-2">
     <v-row class="mb-12 sm-12 xs-12">
       <v-col cols="12" mt="5" md="6" order="1" align="center" justify="center">
         <v-card color="#233237" dark>
@@ -53,6 +54,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -71,7 +73,7 @@ import {
   requiredIf,
 } from "vuelidate/lib/validators";
 
-import NavBar from "@/resources/shopping-cart/components/Header.vue";
+import NavBar from "@/components/shared/NavBar.vue";
 import Order from "@/resources/shopping-cart/components/Order.vue";
 import CheckoutUserFields from "@/resources/shopping-cart/components/CheckoutUserFields.vue";
 import CheckoutShippingFields from "@/resources/shopping-cart/components/CheckoutShippingFields.vue";
