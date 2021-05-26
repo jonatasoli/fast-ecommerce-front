@@ -42,11 +42,11 @@ export default {
 }
 .box {
   width: 310px;
-  height: 300px;
+  height: 310px;
   overflow: hidden;
 }
 .img {
-  object-fit: contain;
+
 }
 .price {
   margin-left: 20px;
