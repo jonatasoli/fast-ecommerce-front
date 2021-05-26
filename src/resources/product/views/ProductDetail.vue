@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-app>
     <div class="home-style">
       <v-row>
         <NavBar />
@@ -8,6 +8,8 @@
         <MenuCategorys />
       </v-row>
     </div>
+    <v-container>
+
     <v-row>
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
@@ -72,7 +74,8 @@
         <v-row class="related"></v-row>
       </v-col>
     </v-row>
-  </v-container>
+    </v-container>
+  </v-app>
 </template>
 
 <script>

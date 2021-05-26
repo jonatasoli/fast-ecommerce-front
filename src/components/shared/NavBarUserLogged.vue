@@ -94,16 +94,15 @@ export default {
   },
   methods: {
     ...mapActions(["logoutClient"]),
-    handleScroll() {
-      if (window.scrollY > 100) {
-        return setTimeout(() => {
-          this.app = "app";
-        }, 10);
-      } else {
-        return setTimeout(() => {
-          this.app = undefined;
-        }, 10);
-      }
+   handleScroll() {
+     if (document.body.scrollHeight > 900) {
+       if (window.scrollY > 60) {
+         return setTimeout(() =>{this.app = "app"}, 100)
+       } else {
+         return setTimeout(() =>{this.app = undefined}, 100  )
+ 
+       }
+     }
     },
     home() {
       this.$router
