@@ -5,6 +5,8 @@ import * as types from "./mutations_types";
 import {
   GET_PRODUCTS,
   SET_IMAGE,
+  GET_IMAGES,
+  DELETE_IMAGE,
   SET_ERROR,
   SET_ITEM_CREATE,
   SET_ITEM_UPDATE,
@@ -39,6 +41,15 @@ const productAdminModule = {
     [SET_IMAGE]: (state, { image }) => {
       state.image = '';
       state.image = image;
+    },
+    [GET_IMAGES]: (state, { images }) => {
+      console.log(`IMAGES  ${state.images}`)
+      state.images = []
+      state.images = images
+    },
+    [DELETE_IMAGE]: ({id, image} ) => {
+      var index = image.findIndex(image => image.id == id)
+      image.splice(index, 1)
     },
 
     [SET_ITEM_CREATE]: (state, { products_all }) => {
@@ -85,15 +96,36 @@ const productAdminModule = {
       }
     },
 
-    setImage: async ({commit}, image) => {
+    setImage: async ({commit}, payload) => {
       try {
-        const response = await ImageService.upload_image(image);
+        console.log(payload.image)
+        const response = await ImageService.upload_image(payload);
         console.log(response.data)
         commit(types.SET_IMAGE, {image: response.data});
       } catch (error) {
         commit(types.SET_ERROR, { error })
       }
         
+    },
+    postImageGallery: async ({commit}, payload) => {
+      try {
+        console.log(payload)
+        const response = await ImageService.upload_image_gallery(payload.product_id, payload.image);
+        console.log(response.data)
+        commit(types.GET_IMAGES, {images : response.data});
+      } catch (error) {
+        commit(types.SET_ERROR, { error })
+      }
+    },
+    deleteImageGallery: async ({commit, rootState}, id) => {
+      try {
+        await productAdminService.deleteImage(id)
+        console.log(`IMAGES  ${rootState.product.images}`)
+        const image = rootState.product.images
+        commit(types.DELETE_IMAGE, {id: id, image: image})
+      } catch (error) {
+        commit(types.SET_ERROR, { error })
+      }
     },
     setOrders: async ({commit}, payload) => {
       try {
