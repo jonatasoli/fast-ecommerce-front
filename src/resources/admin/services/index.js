@@ -73,4 +73,10 @@ export default {
       crossDomain: true,
     });
   },
+
+  deleteImage(id) {
+    return apiClient.delete(`product/delete/image-gallery/${id}`, {
+      crossDomain: true,
+    })
+  }
 };

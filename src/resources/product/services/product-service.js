@@ -16,6 +16,12 @@ export default {
     console.log("PRODUCT --- ", product);
     return product;
   },
+  async getImages(product_id) {
+    console.log("SERVER PRODUCT_ID", product_id);
+    let images = await apiClient.get(`/product/images/gallery/${product_id}`, { crossDomain: true });
+    console.log(images.data.images)
+    return images.data.images;
+  },
   async getProductShowcase() {
     let products;
     products = await apiClient.get(`/product/showcase/all`, {

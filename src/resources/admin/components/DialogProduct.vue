@@ -30,20 +30,7 @@
               item-text="name"
               v-model="content.category_id"></v-select>
               </div>
-            
-            <v-row>
-              <v-file-input label="Imagem" prepend-icon="mdi-camera" v-model="image">
-              </v-file-input>
-              <v-btn class="mt-5" fab small dark color="indigo" @click="insert_image">
-                <v-icon dark> mdi-plus </v-icon>
-              </v-btn>
-            </v-row>
-            <div class="text_img">
-              <v-img max-height="80"
-              max-width="80"
-              :src=content.image_path>
-              </v-img>
-              <span>{{image_name}}</span></div>
+
           </v-col>
 
           <v-col cols="2" sm="4" md="8">
@@ -99,14 +86,10 @@ export default {
   mixins: [FormatCurrencyMixin],
   data() {
     return {
-      dialog: false,
-      image: [],
-      image_path: "",
-      
+      dialog: false,  
     };
   },
   computed: {
-    ...mapState("productAdmin", { image_url: "image" }),
     ...mapState("category", ["categorys"]),
     itemsCategorys() {
       return this.categorys.map((item) => {
@@ -115,14 +98,6 @@ export default {
           value: item.id
         }
       })
-    },
-    image_name() {
-      if (this.content.image_path == null) {
-        return null;
-      } else {
-        let arr = this.content.image_path.split("/");
-        return arr[arr.length - 1];
-      }
     },
     orders() {
       return this.setProductsAll();
@@ -169,7 +144,6 @@ export default {
   methods: {
     ...mapGetters("productAdmin", ["getProductsAll"]),
     ...mapActions("productAdmin",[
-      "setImage",
       "postProduct",
       "updateProduct",
       "deleteProduct",
@@ -184,15 +158,6 @@ export default {
         this.editIndex = -1;
       });
       this.content.price = 0
-      this.image = []
-    },
-    async insert_image() {
-      let formData = new FormData();
-
-      formData.append("image", this.image)
-
-      await this.setImage(formData);
-      this.content.image_path = this.image_url
     },
     save() {
       let price_int = 0;
@@ -275,18 +240,7 @@ export default {
 };
 </script>
 
-<style>
-.text_img {
-  color: white;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  
-}
-.text_img span {
-  margin-left: 20px;
-}
-
+<style scoped>
 .select-category {
   display:flex;
   align-items: center;

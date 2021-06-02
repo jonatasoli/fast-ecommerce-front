@@ -57,6 +57,12 @@
                 @setdialog="dialog = $event"
               />
             </v-dialog>
+            <v-dialog v-model="dialogImage" max-width="700px">
+              <DialogImage
+                :editedItem="editedItem"
+                :images="images"
+                @setdialogimage="dialogImage = $event" />
+            </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
                 <v-card-title class="headline"
@@ -83,6 +89,9 @@
           </v-toolbar>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editImage(item)">
+            mdi-camera
+          </v-icon>
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
@@ -98,20 +107,18 @@
 
 <script>
 import FormatCurrencyMixin from "@/mixins/format-currency";
-// import { createNamespacedHelpers } from "vuex";
-// const { mapState, mapActions, mapGetters } = createNamespacedHelpers(
-//   "productAdmin"
-// );
 import { mapState, mapActions, mapGetters } from "vuex";
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuDashboard from "../components/MenuDashboard.vue";
 import DialogProduct from "../components/DialogProduct.vue";
+import DialogImage from "../components/DialogImage.vue";
 export default {
   name: "AdminProduct",
   components: {
     NavBar,
     MenuDashboard,
     DialogProduct,
+    DialogImage,
   },
   mixins: [FormatCurrencyMixin],
   data() {
@@ -125,7 +132,7 @@ export default {
         { text: "Quantidade", value: "quantity", sortable: false },
         { text: "Ativo", value: "showcase" },
         { text: "Categoria", value: "category_name" },
-        { text: "Actions", value: "actions", sortable: false },
+        { text: "Actions", value: "actions", sortable: false, width: 100 },
       ],
       editedItem: {
         id: "",
@@ -141,11 +148,13 @@ export default {
       editedIndex: -1,
       dialogDelete: false,
       dialog: false,
+      dialogImage: false,
     };
   },
   computed: {
     ...mapState("productAdmin", {productsAll: "products_all"}),
     ...mapState("category", ["categorys"]),
+    ...mapState("product", ["images"]),
 
     items() {
       return this.productsAll.map((item) => {
@@ -170,10 +179,17 @@ export default {
     ...mapGetters("productAdmin",["getProductsAll"]),
     ...mapActions("productAdmin",["setProductsAll"]),
     ...mapActions("category", ["setCategorys"]),
+    ...mapActions("product", ["setImagesGallery"]),
     editItem(item) {
       this.editedIndex = this.items.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+    },
+     editImage(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.setImagesGallery({product_id: item.uri})
+      this.dialogImage = true;
     },
     deleteItem(item) {
       this.editedIndex = this.items.indexOf(item);

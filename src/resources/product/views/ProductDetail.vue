@@ -1,3 +1,4 @@
+
 <template>
   <v-app>
     <div class="home-style">
@@ -9,7 +10,6 @@
       </v-row>
     </div>
     <v-container>
-
     <v-row>
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
@@ -19,47 +19,66 @@
         lg="8"
         xl="8"
       >
-        <v-row class="galery d-flex align-center justify-center">
+        <v-row class="galery d-flex align-start justify-center">
           <v-col
             class="d-flex align-center justify-center"
             xs="12"
-            sm="7"
-            md="7"
-            lg="7"
-            xl="7"
+            sm="8"
+            md="8"
+            lg="8"
+            xl="8"
           >
-            <v-img
-              :src="product.image_path"
-              height="100%"
-              max-width="300px"
-            ></v-img>
+          <div v-if="product.uri">
+          <lingallery :width="width" :height="height" :items="items" :addons="{ enableLargeView: true }"/>
+          </div>
           </v-col>
           <v-col
-            class="d-flex align-center justify-center"
+            class="d-flex align-center "
             xs="12"
-            sm="5"
-            md="5"
-            lg="5"
-            xl="5"
+            sm="4"
+            md="4"
+            lg="4"
+            xl="4"
           >
             <v-form @submit.prevent="addCart">
-              <h1>{{ product.name }}</h1>
-              <p>{{ formatCurrency(product.price / 100) }}</p>
+              <h2 class="product-name">{{ product.name }}</h2>
+              <p class="product-price">{{ formatCurrency(product.price / 100) }}</p>
               <div v-if="product.quantity === 0">
                 <v-alert inf>Produto Esgotado</v-alert>
               </div>
-              <div v-else>
+              <div v- else class="product-quanty">
                 <v-select
                   :items="productAvailable"
                   label="Quantidade"
                   solo
                   v-model="product_qty_select"
                 ></v-select>
-                <v-btn color="#46cb18" dark large @click.prevent="addCart">
+                <v-btn color="orange" text dark large @click.prevent="addCart">
                   Adicionar ao Carrinho
                   <v-spacer></v-spacer>
                   <v-icon>fa-shopping-cart</v-icon>
                 </v-btn>
+              </div>
+            <div class="calc-shipping">
+                <v-text-field
+                  label="Insira o Frete"
+                  :rules="rules"
+                  solo
+                  hide-details="auto"
+                  v-model="shipping"
+                  type="text"
+                ></v-text-field>
+                <v-btn color="orange" text @click="calcShipping()">
+                  Calcular Frete
+                  <v-spacer></v-spacer>
+                  <v-icon>fa-truck</v-icon>
+                </v-btn>
+              </div>
+                 <div class="shipping">
+                <span v-if="shippingPrice === -1"></span>
+                <span v-else-if="shippingPrice === 0"><h3>Frete:</h3>Frete Grátis</span>
+                <span v-else-if="shippingPrice === -2">Cep Incorreto!</span>
+                <span v-else><h3>Frete:</h3>{{ formatCurrency(shippingPrice / 100) }}</span>
               </div>
             </v-form>
             <v-divider inset></v-divider>
@@ -81,18 +100,26 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import FormatCurrencyMixin from "@/mixins/format-currency";
-
+import Lingallery from 'lingallery';
 import NavBar from "@/components/shared/NavBar.vue";
 import MenuCategorys from "@/components/shared/MenuCategorys.vue";
+
+
 export default {
   name: "Showcase",
   mixins: [FormatCurrencyMixin],
   components: {
     NavBar,
     MenuCategorys,
+    Lingallery
   },
   data() {
     return {
+      rules: [
+        (value) => !!value || "Frete é necessário para processeguir!",
+        (value) =>
+          (value && value.length <= 8) || "Frete precisa ter 8 digitos e apenas números",
+      ],
       uri: this.$route.params.uri,
       affiliate: undefined,
       cupom: undefined,
@@ -100,12 +127,38 @@ export default {
       id: undefined,
       cart_item: undefined,
       product_qty_select: undefined,
+      shipping: "",
+      width: 400,
+      height: 400,
+      itemss: [{
+        src: 'https://gattorosa.nyc3.digitaloceanspaces.com/VIBRANCE%20CONDICIONADOR.png',
+        thumbnail: 'https://gattorosa.nyc3.digitaloceanspaces.com/VIBRANCE%20CONDICIONADOR.png',
+      },
+      {
+        src: 'https://gattorosa.nyc3.digitaloceanspaces.com/WONDER%20LISS%20SHAMPOO.png',
+        thumbnail: 'https://gattorosa.nyc3.digitaloceanspaces.com/WONDER%20LISS%20SHAMPOO.png'
+      }],
     };
   },
   computed: {
     ...mapState("product", {
       product: "product",
-    }),
+      images: "images"
+    },),
+    ...mapState("cart",{ shippingPrice: "shippingPrice" }),
+    items() {
+      let img = this.images
+      let img2 = {
+        url: this.product.image_path,
+      }
+      img.unshift(img2)
+      return img.map((item) => {
+        return {
+          src: item.url,
+          thumbnail: item.url,
+        }
+      })
+    },
     productAvailable() {
       let _available = [];
       console.log("QTY DETAIL", this.product.quantity);
@@ -126,8 +179,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions("product", ["getProduct"]),
-    ...mapActions("cart", ["addShoppingCart", "setAffiliate"]),
+    ...mapActions("product", ["getProduct", "setImagesGallery"]),
+    ...mapActions("cart", ["addShoppingCart", "setAffiliate", "postCalculateShipping"]),
     ...mapState("cart", {
       state_afilliate: "affiliate",
     }),
@@ -154,9 +207,29 @@ export default {
       console.log("URI ----", this.uri);
       return this.getProduct({ uri: this.uri });
     },
+    async calcShipping() {
+      this.cart_item = {
+        amount: this.product.price,
+        qty: this.product_qty_select,
+        product_id: this.product.id,
+        product_name: this.product.name,
+        image_path: this.product.image_path,
+        affiliate: this.state_afilliate,
+        tangible: true,
+      };
+      console.log(this.shipping);
+      const sh = await this.postCalculateShipping({
+        shipping: this.shipping,
+        cart: [this.cart_item],
+      });
+      console.log("SHIPP", sh);
+    },
+    isSmallZero(currentValue) {
+      return currentValue <= 0;
+    },
   },
   created() {
-    this.getProductPage(this.id);
+    this.getProductPage(this.uri);
     this.affiliate = this.$route.query.afil;
     console.log("CREATED", this.affiliate);
     if (this.affiliate) {
@@ -169,6 +242,10 @@ export default {
     if (this.affiliate) {
       this.setAffiliate(this.affiliate);
     }
+   
+  },
+  mounted() {
+    this.setImagesGallery({product_id: this.uri})
   },
   beforeRouteUpdate(to, from, next) {
     this.affiliate = to.query.afil;
@@ -178,12 +255,31 @@ export default {
       this.setAffiliate(this.affiliate);
     }
     this.product = this.getProductPage(this.uri);
+    
     next();
   },
 };
 </script>
 
-<style lang="sass" scoped>
-img
-  height:100vh
+<style  scoped>
+.product-name {
+  width: 500px
+}
+.product-price {
+  font-size: 35px;
+  color: orange;
+  font-weight: bold;
+}
+.calc-shipping {
+  display: flex;
+  margin-top: 30px;
+}
+
+@media  screen and (max-width: 550px) {
+  .product-name {
+  width: 400px
+}
+  
+}
+
 </style>

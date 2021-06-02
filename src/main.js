@@ -8,6 +8,7 @@ import "./assets/scss/app.scss";
 import Vuelidate from "vuelidate";
 import vuetify from "./plugins/vuetify";
 import VueMask from "v-mask";
+import Lingallery from 'lingallery';
 import { TiptapVuetifyPlugin } from "tiptap-vuetify";
 // não se esqueça de importar estilos CSS
 import "tiptap-vuetify/dist/main.css";
@@ -32,6 +33,7 @@ Vue.config.productionTip = false;
 Vue.config.errorHandler = "debugger";
 Vue.use(Vuelidate);
 Vue.use(VueMask);
+Vue.use(Lingallery);
 Vue.use(TiptapVuetifyPlugin, {
   // a próxima linha é importante! Você precisa fornecer o objeto Vuetify para este lugar.
   vuetify, // o mesmo que "vuetify: vuetify"
