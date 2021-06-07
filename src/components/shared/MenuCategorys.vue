@@ -1,5 +1,6 @@
 <template>
-  <v-app-bar color="#18121E" elevation="12">
+  <v-app-bar v-if="$vuetify.breakpoint.mobile"></v-app-bar>
+  <v-app-bar color="#18121E" elevation="12" v-else>
     <v-toolbar-items v-for="item in categorys" :key="item.id">
       <router-link
         elevation="0"
@@ -10,6 +11,7 @@
       </router-link>
     </v-toolbar-items>
   </v-app-bar>
+  
 </template>
 
 <script>

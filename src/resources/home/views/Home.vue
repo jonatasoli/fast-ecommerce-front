@@ -6,7 +6,7 @@
         <NavBar />
       </v-row>
       <v-row>
-        <MenuCategorys />
+        <MenuCategorys/>
       </v-row>
       <Carousel />
       <Banner />
