@@ -7,6 +7,8 @@
       <v-row>
         <MenuCategorys />
       </v-row>
+      <Carousel />
+      <Banner />
     </div>
     <div class="home-style">
       <v-row>
@@ -41,11 +43,15 @@ import NavBar from "@/components/shared/NavBar.vue";
 import Footer from "@/components/shared/Footer.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 import MenuCategorys from "@/components/shared/MenuCategorys";
+import Carousel from "@/components/shared/Carousel.vue"
+import Banner from "@/components/shared/Banner.vue"
 export default {
   name: "Showcase",
   components: {
     NavBar,
     MenuCategorys,
+    Carousel,
+    Banner,
     ProductCard,
     Footer,
   },
