@@ -8,6 +8,8 @@
       <v-row>
         <MenuCategorys />
       </v-row>
+      <Carousel />
+      <Banner />
     </div>
     <div class="home-style">
       <v-row>
@@ -40,7 +42,9 @@
 import Footer from "@/components/shared/Footer.vue";
 import MenuCategorys from "@/components/shared/MenuCategorys.vue";
 import NavBar from "@/components/shared/NavBar.vue";
-import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue"
+import SecondaryNavBar from "@/components/shared/SecondaryNavBar.vue";
+import Carousel from "@/components/shared/Carousel.vue";
+import Banner from "@/components/shared/Banner.vue";
 import ProductCard from "@/resources/product/components/ProductCard.vue";
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapGetters, mapActions } = createNamespacedHelpers("product");
@@ -50,6 +54,8 @@ export default {
     NavBar,
     SecondaryNavBar,
     MenuCategorys,
+    Carousel,
+    Banner,
     ProductCard,
     Footer,
   },
