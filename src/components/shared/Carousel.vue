@@ -57,7 +57,7 @@ export default {
 
 @media only screen and (max-width: 600px) {
   .carousel {
-    margin-top: -150px;
+    margin-top: -100px;
     height: 500px !important;
   }
   >>> .v-image__image {
