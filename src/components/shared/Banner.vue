@@ -1,5 +1,5 @@
 <template>
-  <v-banner color="#FAA500" width="100%" height="90" class="banner" single-line>
+  <v-banner color="#FAA500"  height="90" class="banner" single-line>
     <div class="banner">
       <div>
         <v-img src="./assets/fast-time.png" width="100" height="100"></v-img>
@@ -38,7 +38,7 @@ br {
 @media only screen and (max-width: 600px) {
     h3 {
         margin-left: 0px;
-        width: auto
+        width: 90vw
         
     }
 

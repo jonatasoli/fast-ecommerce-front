@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="home-style">
+    <div >
       <SecondaryNavBar/>
       <v-row>
         <NavBar />
@@ -111,8 +111,9 @@ export default {
 
 <style>
 .home-style {
+    width: 90%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
     color:"white";
     background: "white";
