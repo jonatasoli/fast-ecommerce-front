@@ -37,6 +37,7 @@ br {
 }
 @media only screen and (max-width: 600px) {
     h3 {
+        font-size: 14px;
         margin-left: 0px;
         width: 90vw
         
@@ -46,7 +47,7 @@ br {
         display: unset
     }
   #title {
-    font-size: 20px;
+    font-size: 15px;
   }
 
   .v-banner {

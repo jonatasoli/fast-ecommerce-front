@@ -1,14 +1,9 @@
 
 <template>
   <v-app>
+    <NavBar />
+    <MenuCategorys /> 
     <div class="home-style">
-      <v-row>
-        <NavBar />
-      </v-row>
-      <v-row>
-        <MenuCategorys />
-      </v-row>
-    </div>
     <v-container>
     <v-row>
       <v-col
@@ -22,8 +17,8 @@
         <v-row class="galery d-flex align-start justify-center">
           <v-col
             class="d-flex align-center justify-center"
-            xs="4"
-            sm="4"
+            xs="12"
+            sm="12"
             md="8"
             lg="8"
             xl="8"
@@ -33,9 +28,9 @@
           </div>
           </v-col>
           <v-col
-            class="d-flex align-center "
-            xs="1"
-            sm="1"
+            class="d-flex align-center  container"
+            xs="12"
+            sm="12"
             md="4"
             lg="4"
             xl="4"
@@ -84,8 +79,8 @@
             <v-divider inset></v-divider>
           </v-col>
         </v-row>
-        <v-row class="details" sm="12" md="12">
-          <v-col sm="12" md="12">
+        <v-row class="details" sm="12" md="12" xs="12">
+          <v-col xs="5" sm="12" md="12">
             <h2>Descrição</h2>
             <p v-html="product.description">{{ product.description }}</p>
           </v-col>
@@ -94,6 +89,7 @@
       </v-col>
     </v-row>
     </v-container>
+    </div>
   </v-app>
 </template>
 
@@ -262,6 +258,16 @@ export default {
 </script>
 
 <style  scoped>
+.home-style {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color:"white";
+    background: "white";
+    background-color: "white";
+}
+
 .product-name {
   width: 500px
 }
@@ -277,7 +283,10 @@ export default {
 
 @media  screen and (max-width: 550px) {
   .product-name {
-  width: 400px
+  width: 280px
+}
+.container {
+  margin-left: 20px;
 }
   
 }

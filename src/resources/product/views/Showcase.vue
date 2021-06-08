@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="home-style">
+    <div>
       <v-row>
         <NavBar />
       </v-row>
@@ -131,4 +131,13 @@ export default {
 </script>
 
 <style scoped>
+.home-style {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color:"white";
+    background: "white";
+    background-color: "white";
+}
 </style>
