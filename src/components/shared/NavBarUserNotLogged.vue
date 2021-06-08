@@ -6,6 +6,7 @@
         elevation="1"
         color="#18121E"
         height="80"
+        
         v-if="$vuetify.breakpoint.xsOnly"
       >
         <v-toolbar-items link @click="home">

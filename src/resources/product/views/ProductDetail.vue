@@ -14,7 +14,7 @@
       <v-col
         class="d-flex align-center justify-space-around flex-wrap"
         xs="12"
-        sm="8"
+        sm="12"
         md="8"
         lg="8"
         xl="8"
@@ -22,8 +22,8 @@
         <v-row class="galery d-flex align-start justify-center">
           <v-col
             class="d-flex align-center justify-center"
-            xs="12"
-            sm="8"
+            xs="4"
+            sm="4"
             md="8"
             lg="8"
             xl="8"
@@ -34,8 +34,8 @@
           </v-col>
           <v-col
             class="d-flex align-center "
-            xs="12"
-            sm="4"
+            xs="1"
+            sm="1"
             md="4"
             lg="4"
             xl="4"

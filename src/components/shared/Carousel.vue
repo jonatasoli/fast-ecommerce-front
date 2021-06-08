@@ -5,10 +5,11 @@
     hide-delimiter-background
     interval="4000"
     height="auto"
+    width="100vw"
     show-arrows-on-hover
   >
     <v-carousel-item v-for="(item, i) in items" :key="i">
-      <v-img class="img" :src="item.src" cover max-width="100%" height="600"></v-img
+      <v-img class="img" :src="item.src" cover width="100vw" height="600"></v-img
     ></v-carousel-item>
     <!-- <v-carousel-item ><v-img  src="./assets/0002.jpg" cover max-width="100%" height="600"></v-img></v-carousel-item> -->
   </v-carousel>
@@ -43,9 +44,9 @@ export default {
 </script>
 
 <style scoped>
-/* .carousel {
+.carousel {
   height: 600px !important;
-} */
+}
 >>> .v-image__image {
   background: no-repeat center;
   background-size: 100% 600px;
@@ -59,10 +60,11 @@ export default {
   .carousel {
     margin-top: -100px;
     height: 500px !important;
+    width: 100% !important;
   }
   >>> .v-image__image {
     background: no-repeat center;
-    background-size: 100% 400px;
+    background-size: 100%  400px;
   }
 }
 </style>

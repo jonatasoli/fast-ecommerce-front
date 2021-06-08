@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar v-if="$vuetify.breakpoint.mobile"></v-app-bar>
+  <div v-if="$vuetify.breakpoint.mobile"></div>
   <v-app-bar color="#18121E" elevation="12" v-else>
     <v-toolbar-items v-for="item in categorys" :key="item.id">
       <router-link
