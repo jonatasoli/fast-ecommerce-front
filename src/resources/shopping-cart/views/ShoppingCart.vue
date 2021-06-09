@@ -2,7 +2,7 @@
   <v-app>
     <NavBar />
     <v-container v-if="shopping_cart.length > 0" class="container">
-      <v-row class="d-flex flex-row justify-center align-center xs-12 sm-10 md-8">
+      <v-row class="d-flex flex-row justify-center align-center xs-4 sm-10 md-8">
         <v-col class="md-12">
           <v-card>
             <v-card-title>Calcular Frete</v-card-title>
@@ -274,6 +274,15 @@ hr {
 
   >>> .v-card__actions button {
     margin: 10px;
+  }
+
+  .product_name {
+    font-size: 14px;
+    width: 300px;
+    margin-top: 20px;
+  }
+  .cart {
+    flex-direction: column;
   }
 }
 </style>
