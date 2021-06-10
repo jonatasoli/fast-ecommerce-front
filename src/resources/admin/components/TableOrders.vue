@@ -7,6 +7,7 @@
     item-key="id_payment"
     show-expand
     class="elevation-1 table-orders"
+    id="printMe"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -105,7 +106,10 @@
       </td>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
+      <v-row>
       <Tracking :item="item" :items="items" />
+      <v-icon @click="print(item)">mdi-printer</v-icon>
+      </v-row>
     </template>
   </v-data-table>
 </template>
@@ -139,7 +143,7 @@ export default {
         { text: "Cliente", value: "user_name", align: "start" },
         { text: "Vendedor", value: "affiliate", width: 150 },
         { text: "Rastreio", value: "tracking" },
-        { value: "actions", width: 100 },
+        { value: "actions", width: 100},
       ],
     };
   },
@@ -216,17 +220,13 @@ export default {
     },
     reducePrices(product) {
       const reducer = (accumulator, currentValue = 0) => {
-        console.log("accumulator", accumulator);
-        console.log("currentValue", currentValue);
         return currentValue.price * currentValue.qty + accumulator;
       };
 
       const arrayIndexes = Object.values(product);
-      console.log("arrayIndexes", arrayIndexes);
-
+      
       const prices = arrayIndexes.reduce(reducer, 0);
 
-      console.log("prices", prices);
       return prices;
     },
     formatDate(date) {
@@ -245,6 +245,11 @@ export default {
       } else {
         return status = "Pagamento recusado"
       }
+    },
+    print(item) {
+      console.log(item)
+      let routeData = this.$router.resolve({name: 'OrderPrint' , query: {item: JSON.stringify(item)}});
+      window.open(routeData.href);
     }
   },
   beforeRouteUpdate(to, from, next) {

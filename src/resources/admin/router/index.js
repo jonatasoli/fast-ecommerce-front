@@ -2,6 +2,7 @@ import adminDashboard from "./../views/AdminDashboard.vue";
 import adminOrders from "./../views/AdminOrders.vue";
 import adminProduct from "./../views/AdminProduct.vue";
 import TableOrders from "./../components/TableOrders.vue";
+import OrderPrint from "./../components/OrderPrint.vue";
 
 export default [
   {
@@ -20,8 +21,14 @@ export default [
         name:"tableOrders",
         props: true,
         
-      }
+      },
     ]
+  },
+  {
+    path: "/pedido/print",
+    component: OrderPrint,
+    name: "OrderPrint",
+    props: true,
   },
   {
     path: "/admdash/produtos",
