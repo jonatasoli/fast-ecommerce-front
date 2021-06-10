@@ -12,6 +12,10 @@ export default new Vuetify({
       primary: "#EAC67A",
       info: "#233237",
     },
+    light: {
+      background: "withe",
+      color: "black"
+    }
   },
   icons: {
     iconfont: "mdi",
