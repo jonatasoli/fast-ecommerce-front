@@ -12,6 +12,7 @@ import {
   RESET_SHOPPING_CART,
   SET_TOTAL_PRICE,
   SET_SHIPPING_PRICE,
+  SET_TYPES_SHIPPING,
   SET_ZIP_CODE,
   SET_INSTALLMENTS,
   RESPONSE_CHECKOUT,
@@ -28,6 +29,7 @@ const productModule = {
     shopping_cart: [],
     totalPrice: 0,
     shippingPrice: -1,
+    types_shipping: [],
     zipCode: "",
     installments: [],
     transaction: [],
@@ -57,6 +59,10 @@ const productModule = {
     },
     [SET_SHIPPING_PRICE]: (state, shippingPrice) => {
       state.shippingPrice = shippingPrice;
+      console.log("STATE SHIPPIN", state.shippingPrice);
+    },
+    [SET_TYPES_SHIPPING]: (state, shippingPrice) => {
+      state.types_shipping = shippingPrice;
       console.log("STATE SHIPPIN", state.shippingPrice);
     },
     [DECREMENT_PRODUCT_TO_CART]: (state, cartItem) => {
@@ -202,7 +208,7 @@ const productModule = {
       return productService
         .calculateShipping(payload)
         .then((response) =>
-          commit(types.SET_SHIPPING_PRICE, response.data.shipping)
+          commit(types.SET_TYPES_SHIPPING, response.data.shipping)
         )
         .catch((error) => commit(types.SET_ERROR, { error }));
     },

@@ -46,16 +46,24 @@
                     </div>
                     <h3 class="price_item">{{ formatCurrency(getPrice(item)) }}</h3>
                   </div>
-                <v-btn text @click="removeShoppingCart(item)"><v-icon>mdi-delete</v-icon>excluir</v-btn>
+                  <v-btn text @click="removeShoppingCart(item)"
+                    ><v-icon>mdi-delete</v-icon>excluir</v-btn
+                  >
                 </div>
                 <hr />
               </div>
               <div class="shipping">
                 <h3>Frete:</h3>
-                <span v-if="shippingPrice === -1">-</span>
-                <span v-else-if="shippingPrice === 0">Frete Grátis</span>
-                <span v-else-if="shippingPrice === -2">Cep Incorreto!</span>
-                <span v-else>{{ formatCurrency(shippingPrice / 100) }}</span>
+                <span v-if="shippingPrice === 0">Frete Grátis</span>
+                <span v-else-if="types_shipping === -2">Cep Incorreto!</span>
+                <v-radio-group v-else v-model="shippingprice">
+                  <v-radio
+                    v-for="(n, i) in types_shipping"
+                    :key="i"
+                    :label="`${n.serviço}  ${formatCurrency(n.frete / 100)}`"
+                    :value="n.frete"
+                  ></v-radio>
+                </v-radio-group>
               </div>
               <div class="total_price">
                 <h3>Total:</h3>
@@ -110,28 +118,29 @@ export default {
       ],
       shopping_cart: this.getShoppingCart(),
       shipping: "",
+      shippingprice: 0,
     };
   },
   computed: {
-    ...mapState({ shippingPrice: "shippingPrice" }),
+    ...mapState({types_shipping: "types_shipping"}),
     getTotalPrice() {
       let price = 0;
       console.log(price);
       console.log("CART SHOPPING", this.shopping_cart);
-      console.log("PRICE SH", this.shippingPrice);
+      console.log("PRICE SH", this.shippingprice);
       this.shopping_cart.forEach(function (value) {
         price += value.amount * value.qty;
         console.log("Total ", price);
       });
-      if (this.shippingPrice > 0) {
-        return price / 100 + this.shippingPrice / 100;
+      if (this.shippingprice > 0) {
+        return price / 100 + this.shippingprice / 100;
       }
       return price / 100;
     },
     isDisabled() {
-      if (this.shippingPrice === -1) {
+      if (this.shippingprice === -1) {
         return true;
-      } else if (this.shippingPrice === -2) {
+      } else if (this.shippingprice === -2) {
         return true;
       } else {
         return false;
@@ -171,7 +180,7 @@ export default {
       if (_qty.some(this.isSmallZero)) {
         return alert("Adicione uma quantidade maior que 0");
       } else {
-        this.setShippingPrice(this.shippingPrice);
+        this.setShippingPrice(this.shippingprice);
         this.setTotalPrice(this.getTotalPrice);
         this.setZipCode(this.shipping);
         this.setInstallments(this.shopping_cart);
@@ -246,13 +255,12 @@ export default {
 .shipping span {
   color: white;
   font-size: 20px;
-  
 }
 
 .cart {
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 
 hr {

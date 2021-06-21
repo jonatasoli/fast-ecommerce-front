@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-app>
     <NavBar />
     <v-row>
       <v-col sm-12 v-if="checkout_response.boleto_barcode">
@@ -43,11 +43,11 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </v-app>
 </template>
 
 <script>
-import NavBar from "@/resources/shopping-cart/components/Header.vue";
+import NavBar from "@/components/shared/NavBar.vue";
 import { createNamespacedHelpers } from "vuex";
 const { mapState } = createNamespacedHelpers("cart");
 export default {
