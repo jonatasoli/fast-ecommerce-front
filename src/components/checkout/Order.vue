@@ -2,6 +2,7 @@
   <v-row>
     <v-col v-for="product in cart" :key="product.id">
       <v-card color="#233237" dark>
+        <v-img :src="product.image_path"></v-img>
         <v-card-title class="headline">{{ product.name }}</v-card-title>
 
         <v-card-subtitle v-html="product.description">{{

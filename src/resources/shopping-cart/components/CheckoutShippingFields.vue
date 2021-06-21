@@ -49,8 +49,9 @@
       :success="!$v.transaction.city.$invalid"
       :error="$v.transaction.city.$invalid"
     ></v-text-field>
+    <div v-if="transaction.country == 'br'">
     <v-select
-      :items="state_select"
+      :items="state_select_brasil"
       item-text="name"
       item-value="value"
       label="Estado"
@@ -59,6 +60,19 @@
       :success="!$v.transaction.state.$invalid"
       :error="$v.transaction.state.$invalid"
     ></v-select>
+    </div>
+    <div v-else>
+       <v-select
+      :items="state_select_portugal"
+      item-text="name"
+      item-value="value"
+      label="Estado"
+      v-model="$v.transaction.state.$model"
+      :error-messages="stateErrors"
+      :success="!$v.transaction.state.$invalid"
+      :error="$v.transaction.state.$invalid"
+    ></v-select>
+    </div>
     <v-select
       :items="country_select"
       item-text="name"
@@ -137,8 +151,9 @@
         :success="!$v.transaction.ship_city.$invalid"
         :error="$v.transaction.ship_city.$invalid"
       ></v-text-field>
+     
       <v-select
-        :items="state_select"
+        :items="state_select_br"
         item-text="name"
         item-value="value"
         label="Estado"
@@ -147,6 +162,9 @@
         :success="!$v.transaction.ship_state.$invalid"
         :error="$v.transaction.ship_state.$invalid"
       ></v-select>
+      
+      <h2>{{transaction.ship_country}}</h2>
+      
       <v-select
         :items="country_select"
         item-text="name"
@@ -182,8 +200,31 @@ export default {
   props: ["transaction"],
   data() {
     return {
-      country_select: [{ value: "br", name: "Brasil" }],
-      state_select: [
+      country_select: [
+      { value: "br", name: "Brasil" }, 
+      { value: "pt", name: "Portugal" }],
+      state_select_portugal: [
+        { value: "Aveiro", name: "Aveiro" },
+        { value: "Beja", name: "Beja" },
+        { value: "Braga", name: "Braga" },
+        { value: "Bragança", name: "Bragança" },
+        { value: "Castelo Branco", name: "Castelo Branco" },
+        { value: "Coimbra", name: "Coimbra" },
+        { value: "Évora", name: "Évora" },
+        { value: "Faro", name: "Faro" },
+        { value: "Guarda", name: "Guarda" },
+        { value: "Leira", name: "Leira" },
+        { value: "Lisboa", name: "Lisboa" },
+        { value: "Portalegre", name: "Portalegre" },
+        { value: "Porto", name: "Porto" },
+        { value: "Santarém", name: "Santarém" },
+        { value: "Setúbal", name: "Setúbal" },
+        { value: "Viana de Castelo", name: "Viana de Castelo" },
+        { value: "Vila Real", name: "Vila Real" },
+        { value: "Viseu", name: "Viseu" },
+
+      ],
+      state_select_brasil: [
         { value: "São Paulo", name: "São Paulo" },
         { value: "Acre", name: "Acre" },
         { value: "Alagoas", name: "Alagoas" },
