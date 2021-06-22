@@ -155,8 +155,9 @@ export default {
     },
   },
   mounted() {
-    const payload = {date: JSON.stringify(this.new_dates), status: this.status}
-    this.setOrders(payload);
+    // const payload = {date: JSON.parse(this.new_dates), status: this.status}
+    // this.setOrders(payload);
+    console.log(this.new_dates)
   },
   computed: {
     ...mapState({
@@ -170,10 +171,10 @@ export default {
     },
     new_dates() {
       const new_dates = JSON.parse(this.dates);
-      return {
+      const date = {  
         date_start: new_dates[0],
-        date_end: new_dates[1],
-      };
+        date_end: new_dates[1], }
+      return JSON.stringify(date)
     },
     items() {
       return this.orders.map((item) => {
@@ -256,7 +257,7 @@ export default {
     this.dates = to.params.dates;
     this.status = to.params.status;
     console.log(to)
-    const payload = {date: JSON.stringify(this.new_dates), status: this.status}
+    const payload = {dates: this.new_dates, status: this.status}
     this.setOrders(payload);
     next();
   },
@@ -264,7 +265,7 @@ export default {
     next((vm) => {
       vm.dates = to.params.dates;
       vm.status = to.params.status;
-      const payload = {date: JSON.stringify(vm.new_dates), status: vm.status}
+      const payload = {dates: vm.new_dates, status: vm.status}
       vm.setOrders(payload);
     });
   },

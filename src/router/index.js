@@ -13,6 +13,7 @@ import ProductRoutes from "@/resources/product/router";
 import ShoppingCartRoutes from "@/resources/shopping-cart/router";
 import AdminRoutes from "@/resources/admin/router";
 import AssociateRoutes from "@/resources/associate/router";
+import UserRoutes from "@/resources/user/router";
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,7 @@ const routes = [
   ...ProductRoutes,
   ...ShoppingCartRoutes,
   ...AssociateRoutes,
+  ...UserRoutes,
   {
     path: "/lancamentos",
     name: "DirectSales",
