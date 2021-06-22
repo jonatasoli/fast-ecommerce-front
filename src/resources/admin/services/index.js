@@ -49,9 +49,11 @@ export default {
     });
   },
 
-  async getOrders(date, status) {
+  async getOrders(dates, status) {
     let orders;
-    orders = await apiClient.get(`/orders/${date}?status=${status}`, {
+    console.log(dates)
+    console.log(status)
+    orders = await apiClient.get(`/orders?dates=${dates}&status=${status}`, {
       crossDomain: true,
     });
     console.log(orders.data.orders);

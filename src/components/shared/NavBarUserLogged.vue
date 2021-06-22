@@ -13,6 +13,7 @@
     </v-toolbar-items>
     <v-spacer />
     <v-toolbar-items>
+      <h5 class="username">Olá {{ user_name }}</h5>
       <v-menu offset-y>
         <template v-slot:activator="{ attrs, on }">
           <v-btn v-bind="attrs" v-on="on"><v-icon>mdi-menu</v-icon></v-btn>
@@ -33,11 +34,19 @@
       <v-system-bar color="#FAA500" height="40">
         <div class="contacts">
           <div class="icons">
-            <v-icon large color="#18121E">mdi-instagram </v-icon>
-            <v-icon large color="#18121E">mdi-facebook </v-icon>
+            <v-btn
+              href="https://www.instagram.com/hairschoolinternational/"
+              target="_blank"
+              text
+            >
+              <v-icon large color="#18121E">mdi-instagram </v-icon>
+            </v-btn>
+            <v-btn href="https://www.facebook.com/hsgraciellegatto/" target="_blank" text>
+              <v-icon large color="#18121E">mdi-facebook </v-icon>
+            </v-btn>
           </div>
           <div>
-            <v-btn text color="#18121E"
+            <v-btn text color="#18121E" href="mailto:comercial@gattorosa.com.br"
               ><v-icon dense color="#18121E">fa-envelope</v-icon>Fale Conosco</v-btn
             >
           </div>
@@ -49,14 +58,19 @@
         <slot></slot>
         <v-btn @click="logout">Sair</v-btn>
         <h4 class="username">Olá {{ user_name }}</h4>
+        <v-btn text @click="goMyOrders"
+          > Meus Pedidos</v-btn
+        >
       </v-toolbar-items>
       <v-spacer />
-      <v-img
-        src="./assets/img/logo2.png"
-        class="mr-3 hidden-xs-only"
-        max-width="250"
-        contain
-      />
+      <v-toolbar-items link @click="home">
+        <v-img
+          src="./assets/img/logo2.png"
+          class="mr-3 hidden-xs-only"
+          max-width="250"
+          contain
+        />
+      </v-toolbar-items>
 
       <v-spacer />
       <v-toolbar-items>
@@ -80,8 +94,9 @@ export default {
       app: undefined,
       user: localStorage.getItem("user_data"),
       items: [
-        { title: "ENTRE", to: this.login },
+        { title: "SAIR", to: this.logout },
         { title: "OFERTAS", to: this.goToSales },
+        { title: "MEUS PEDIDOS", to: this.goMyOrders },
       ],
     };
   },
@@ -95,15 +110,18 @@ export default {
   },
   methods: {
     ...mapActions(["logoutClient"]),
-   handleScroll() {
-     if (document.body.scrollHeight > 900) {
-       if (window.scrollY > 60) {
-         return setTimeout(() =>{this.app = "app"}, 100)
-       } else {
-         return setTimeout(() =>{this.app = undefined}, 100  )
- 
-       }
-     }
+    handleScroll() {
+      if (document.body.scrollHeight > 900) {
+        if (window.scrollY > 60) {
+          return setTimeout(() => {
+            this.app = "app";
+          }, 100);
+        } else {
+          return setTimeout(() => {
+            this.app = undefined;
+          }, 100);
+        }
+      }
     },
     home() {
       this.$router
@@ -111,6 +129,11 @@ export default {
           name: "USER",
         })
         .catch(() => {});
+    },
+    goMyOrders() {
+      this.$router.push({
+        name: "MyOrders",
+      });
     },
     goToShoppingCart() {
       console.log("Cart");
@@ -156,7 +179,7 @@ export default {
 }
 .username {
   margin-left: 22px;
-  margin-top: 22px;
+  margin-top: 28.5px;
 }
 .contacts {
   color: #18121e;

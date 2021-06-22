@@ -6,7 +6,8 @@ import {
   SET_ERROR, 
   ADD_USER_STATE, 
   RESET_USER_STATE,
-  GET_USER, } from "./mutations_types";
+  GET_USER,
+  GET_ORDERS } from "./mutations_types";
 
 import authService from "./../services/auth-service";
 import userService from "./../services/index";
@@ -21,6 +22,7 @@ const userModule = {
     erro: undefined,
     userRole: undefined,
     accessToken: undefined,
+    myOrders: [],
   },
 
   mutations: {
@@ -42,6 +44,10 @@ const userModule = {
       state.user = [];
       state.user = user;
       localStorage.setItem("user_data", JSON.stringify(user));
+    },
+    [GET_ORDERS]: (state, orders) => {
+      state.myOrders = [];
+      state.myOrders = orders;
     }
   },
 
@@ -72,9 +78,22 @@ const userModule = {
         commit(types.SET_ERROR, { error });
       }
     },
+    setMyOrders: async ({commit}, user_id) => {
+      try {
+        console.log("ACTION URI ", user_id);
+        const response = await userService.getMyOrders(user_id);
+        commit(types.GET_ORDERS, response);
+      } catch (error) {
+        commit(types.SET_ERROR, { error });
+      }
+    },
   },
 
-  getters: {},
+  getters: {
+    getMyOrders: (state) => {
+      return state.myOrders;
+    }
+  },
 };
 
 export default userModule;

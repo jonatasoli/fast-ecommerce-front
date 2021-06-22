@@ -130,8 +130,7 @@ const productAdminModule = {
     setOrders: async ({commit}, payload) => {
       try {
         console.log("ACTION URI ", payload);
-        const response = await productAdminService.getOrders(payload.date, payload.status);
-        console.log(response.data);
+        const response = await productAdminService.getOrders(payload.dates, payload.status);
         commit(types.GET_ORDERS, {orders: response});
       } catch (error) {
         commit(types.SET_ERROR, { error });
