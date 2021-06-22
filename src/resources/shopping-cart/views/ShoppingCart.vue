@@ -7,7 +7,7 @@
           <v-card>
             <v-card-title>Calcular Frete</v-card-title>
             <v-card-text>
-              <v-alert info v-if="shippingPrice === -2"
+              <v-alert info v-if="types_shipping === -2"
                 >Cep incorreto, verifique se usou apenas números e no máximo 8
                 números!</v-alert
               >
@@ -54,9 +54,9 @@
               </div>
               <div class="shipping">
                 <h3>Frete:</h3>
-                <span v-if="shippingPrice === 0">Frete Grátis</span>
+                <span v-if="types_shipping === 0">Frete Grátis</span>
                 <span v-else-if="types_shipping === -2">Cep Incorreto!</span>
-                <v-radio-group v-else v-model="shippingprice">
+                <v-radio-group v-else v-model="shippingprice" :mandatory="true">
                   <v-radio
                     v-for="(n, i) in types_shipping"
                     :key="i"
@@ -172,6 +172,7 @@ export default {
     isSmallZero(currentValue) {
       return currentValue <= 0;
     },
+  
     goToCheckout() {
       let _total = this.shopping_cart;
       let _qty = this.shopping_cart.map((product) => product.qty);
@@ -199,6 +200,7 @@ export default {
       this.shopping_cart = [];
       this.totalPrice = 0;
     },
+    
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
