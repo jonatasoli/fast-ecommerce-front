@@ -105,6 +105,12 @@
         </v-simple-table>
       </td>
     </template>
+     <template v-slot:[`item.checked`]="{ item }">
+      <v-checkbox
+      v-model="item.checkbox"
+      @click="checkedOrder(item)"
+    ></v-checkbox>
+    </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-row>
       <Tracking :item="item" :items="items" />
@@ -130,6 +136,9 @@ export default {
       status: this.$route.params.status,
       expanded: [],
       singleExpand: false,
+      editedItem: {
+        checkbox: false
+      },
       order: this.getOrders(),
       headers: [
         {
@@ -143,6 +152,7 @@ export default {
         { text: "Cliente", value: "user_name", align: "start" },
         { text: "Vendedor", value: "affiliate", width: 150 },
         { text: "Rastreio", value: "tracking" },
+        { text: "Verificado", value: "checked"},
         { value: "actions", width: 100},
       ],
     };
@@ -200,6 +210,7 @@ export default {
           user_address_complement: item.address_complement,
           user_zip_code: item.zipcode,
           affiliate: item.user_affiliate,
+          checkbox: item.checked,
           products: item.products,
         };
       });
@@ -211,8 +222,11 @@ export default {
     console.log(this.orders);
   },
   methods: {
-    ...mapActions(["setOrders"]),
+    ...mapActions(["setOrders", "postCheckedOrder"]),
     ...mapGetters(["getOrders"]),
+    checkedOrder(item) {
+      return this.postCheckedOrder({order_id: item.order_id, check: item.checkbox})
+    },
     getTotalPrice(item) {
       console.log(item);
       const prices = this.reducePrices(item);

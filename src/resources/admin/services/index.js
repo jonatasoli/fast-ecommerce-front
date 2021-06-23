@@ -70,6 +70,11 @@ export default {
     );
   },
 
+  postCheckedOrder(payload) {
+    return apiClient.post(
+      `/check_order/${payload.order_id}?check=${payload.check}`);
+  },
+
   mailSendTrackingNumber(payload) {
     return apiClient.post("/mail/send-mail-tracking-number", payload, {
       crossDomain: true,
