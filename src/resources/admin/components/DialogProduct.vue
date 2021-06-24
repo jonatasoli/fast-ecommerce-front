@@ -42,6 +42,10 @@
               v-model="content.quantity"
               label="Quantidade"
             ></v-text-field>
+            <v-text-field
+              v-model="content.weigth"
+              label="Peso"
+            ></v-text-field>
 
             <v-text-field
               type="text"
