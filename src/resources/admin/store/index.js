@@ -105,7 +105,7 @@ const productAdminModule = {
     setImage: async ({commit}, payload) => {
       try {
         console.log(payload.image)
-        const response = await ImageService.upload_image(payload);
+        const response = await ImageService.upload_image(payload.product_id, payload.image);
         console.log(response.data)
         commit(types.SET_IMAGE, {image: response.data});
       } catch (error) {

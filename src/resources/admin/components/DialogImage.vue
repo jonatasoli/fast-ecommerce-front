@@ -92,10 +92,8 @@ export default {
     async insert_image() {
       let formData = new FormData();
 
-
-
       formData.append("image", this.image);  
-      
+      console.log(this.content.id)
       await this.setImage({"product_id":this.content.id, "image": formData});
       this.content.image_path = this.image_url;
     },
@@ -104,7 +102,7 @@ export default {
 
       formData.append("imageGallery", this.imageGallery);  
       
-      await this.postImageGallery({"image": formData, "product_id":this.content.id});
+      await this.postImageGallery({"product_id":this.content.id , "image": formData});
       this.setImagesGallery({product_id: this.content.uri})
       this.imageGallery = []
     },
