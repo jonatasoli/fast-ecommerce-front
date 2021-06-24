@@ -11,13 +11,14 @@ const apiClientUpload = axios.create({
 });
 
 export default {
-  upload_image(produtc_id, image) {
-    return apiClientUpload.post(`/product/upload-image/${produtc_id}`, image, {
+  upload_image(product_id, image) {
+    console.log(image)
+    return apiClientUpload.post(`/product/upload-image/${product_id}`, image, {
       crossDomain: true,
     });
   },
-  upload_image_gallery(produtc_id, image) {
-    return apiClientUpload.post(`/product/upload-image-gallery/?product_id=${produtc_id}`, image, {
+  upload_image_gallery(product_id, image) {
+    return apiClientUpload.post(`/product/upload-image-gallery/?product_id=${product_id}`, image, {
       crossDomain: true,
     }) ;
   }
