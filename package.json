@@ -23,7 +23,7 @@
     "vue-router": "^3.4.7",
     "vue-trumbowyg": "^4.0.0",
     "vuelidate": "^0.7.5",
-    "vuetify": "^2.3.14",
+    "vuetify": "^2.6.10",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
