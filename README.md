@@ -1,6 +1,4 @@
-# personal-finances-front
-Personal Finances frontend in Nuxt
-
+# Fast Ecommerce Front
 
 ## Style Guide
 [HTML / CSS](https://google.github.io/styleguide/htmlcssguide.html)
