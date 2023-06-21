@@ -10,6 +10,9 @@ export default <Partial<Config>>{
           primary: '#DA9A39',
         },
       },
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
     },
   },
 }
