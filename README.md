@@ -1,36 +1,49 @@
- # Fast Ecommerce 
+# Fast Ecommerce Front
 
-Ecommerce Front End application under construction.
-## Technologies
-+ Vue Js
-+ Yarn
-+ Axios
+## Style Guide
+[HTML / CSS](https://google.github.io/styleguide/htmlcssguide.html)
 
-## Install
-```
-git clone https://github.com/jonatasoli/fast-ecommerce-front
-```
-```
+[Typescript](https://google.github.io/styleguide/tsguide.html)
+
+# Nuxt 3 Minimal Starter
+
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+## Setup
+
+Make sure to install the dependencies:
+
+```bash
+# yarn
 yarn install
-```
-```
-yarn serve
-``` 
 
-## Compiles ans minfieis for production
-```
-yarn build
+# npm
+npm install
+
+# pnpm
+pnpm install
 ```
 
-## Run your init tests
-```
-yarn test:unit
+## Development Server
+
+Start the development server on http://localhost:3000
+
+```bash
+npm run dev
 ```
 
-## Linsts and fixes files
+## Production
 
+Build the application for production:
+
+```bash
+npm run build
 ```
-yarn lint
+
+Locally preview production build:
+
+```bash
+npm run preview
 ```
-## Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
