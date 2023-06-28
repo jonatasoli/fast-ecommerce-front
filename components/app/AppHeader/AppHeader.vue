@@ -5,8 +5,19 @@ import {
   ShoppingCartIcon,
   UserCircleIcon,
 } from '@heroicons/vue/24/outline'
+import { useDevice, useI18n, useLocalePath } from '#imports'
 
 const { isMobile } = useDevice()
+const { t } = useI18n()
+const localePath = useLocalePath()
+
+const navLinks = [
+  { label: t('navigation.news'), route: localePath('/') },
+  { label: t('navigation.sales'), route: localePath('/') },
+  { label: t('navigation.celebrity'), route: localePath('/') },
+  { label: t('navigation.diamonds'), route: localePath('/') },
+  { label: t('navigation.overdoseColor'), route: localePath('/') },
+]
 </script>
 
 <template>
@@ -42,12 +53,12 @@ const { isMobile } = useDevice()
         </button>
       </div>
     </div>
-    <nav v-if="!isMobile" class="bg-gattoRosa-primary font-semibold py-2">
-      <ul class="flex justify-center gap-12 uppercase md:w-4/5 mx-auto">
-        <li class="text-sm">
-          <nuxt-link to="/">
-            Home
-          </nuxt-link>
+    <nav v-if="!isMobile" class="bg-gattoRosa-primary font-semibold px-4">
+      <ul class="flex justify-center gap-8 md:w-4/5 mx-auto">
+        <li v-for="{ label, route } in navLinks" :key="label">
+          <NuxtLink :to="route" class="text-black inline-flex leading-4 text-sm px-4 h-[42px] items-center transition bg-transparent hover:opacity-50">
+            {{ label }}
+          </NuxtLink>
         </li>
       </ul>
     </nav>
