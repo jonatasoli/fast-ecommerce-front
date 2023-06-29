@@ -27,6 +27,8 @@
   "rules": {
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
     "@typescript-eslint/brace-style": ["error", "1tbs", { "allowSingleLine": false }],
+    "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

@@ -21,7 +21,7 @@ const navLinks = [
 </script>
 
 <template>
-  <header class="bg-black fixed top-0 w-full">
+  <header class="bg-black top-0 w-full">
     <div class="grid grid-cols-3 p-2 md:w-4/5 mx-auto">
       <button v-if="isMobile" class="col-start-1 text-gattoRosa-primary">
         <bars3-icon class="w-6 h-6" />

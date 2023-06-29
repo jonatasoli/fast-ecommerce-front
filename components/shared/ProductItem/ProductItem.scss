@@ -1,0 +1,33 @@
+.product-item {
+  @apply flex-1 rounded-[1.25rem] border border-solid border-gattoRosa-primary overflow-hidden;
+
+  &__buy {
+    @apply w-full
+      inline-flex
+      justify-center
+      items-center
+      text-white
+      bg-gattoRosa-primary
+      cursor-pointer
+      text-xl
+      font-montserrat
+      p-[18px]
+      transition-all
+      hover:bg-gattoRosa-primary/80;
+    }
+  &__content {
+    @apply p-3 pb-4;
+
+    a {
+      @apply uppercase text-black mb-1 line-clamp-2 text-sm transition-all font-montserrat hover:text-gattoRosa-primary;
+    }
+
+    p {
+      @apply text-xl text-gattoRosa-primary font-semibold font-montserrat;
+    }
+  }
+
+  &__image {
+    @apply block bg-no-repeat bg-cover bg-center w-full h-0 pb-[76.03%];
+  }
+}

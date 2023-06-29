@@ -1,0 +1,41 @@
+<script setup lang="ts">
+import { RouteLocationRaw } from 'vue-router'
+import { computed, useI18n } from '#imports'
+import { currencyFormat } from '@/utils/helpers'
+import { ProductItem } from '@/utils/types'
+
+type Props = {
+  product: ProductItem
+  route: RouteLocationRaw
+}
+
+const props = defineProps<Props>()
+
+const { t } = useI18n()
+
+const productImage = computed(() => ({ backgroundImage: `url('${props.product.image}')` }))
+const price = computed(() => currencyFormat(props.product.value))
+</script>
+
+<template>
+  <div class="product-item">
+    <NuxtLink
+      class="product-item__image"
+      :style="productImage"
+      :to="route"
+    />
+    <div class="product-item__content">
+      <NuxtLink :to="route">
+        {{ product.name }}
+      </NuxtLink>
+      <p>{{ price }}</p>
+    </div>
+    <button class="product-item__buy">
+      {{ t('productItem.buy') }}
+    </button>
+  </div>
+</template>
+
+<style scoped>
+@import './ProductItem.scss';
+</style>
