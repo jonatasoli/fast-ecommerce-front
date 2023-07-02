@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import { datePtBR, ptBR } from 'naive-ui'
 import { useLocaleHead, useNuxtApp, useRuntimeConfig } from '#imports'
 import { AppHeader } from '@/components/app'
+import { breakpoints, theme } from '@/naive.style'
 
 const nuxtApp = useNuxtApp()
 const config = useRuntimeConfig()
@@ -32,7 +34,18 @@ nuxtApp.hook('page:finish', () => {
     </Head>
   </Html>
   <Body>
-    <app-header />
-    <slot />
+    <n-config-provider
+      :locale="ptBR"
+      :date-locale="datePtBR"
+      :theme-overrides="theme"
+      :breakpoints="breakpoints"
+    >
+      <app-header />
+      <slot />
+    </n-config-provider>
   </Body>
 </template>
+
+<style lang="scss">
+@import '@/assets/scss/main.scss';
+</style>

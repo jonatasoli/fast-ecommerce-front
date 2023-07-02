@@ -1,33 +1,61 @@
 .product-item {
-  @apply flex-1 rounded-[1.25rem] border border-solid border-gattoRosa-primary overflow-hidden;
+  flex: 1;
+  border-radius: 1.25rem;
+  border: 1px solid $primary-color;
+  overflow: hidden;
 
   &__buy {
-    @apply w-full
-      inline-flex
-      justify-center
-      items-center
-      text-white
-      bg-gattoRosa-primary
-      cursor-pointer
-      text-xl
-      font-montserrat
-      p-[18px]
-      transition-all
-      hover:bg-gattoRosa-primary/80;
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    background-color: $primary-color;
+    cursor: pointer;
+    font-size: 1.25rem;
+    font-family: Montserrat, sans-serif;
+    padding: 1.125rem;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: rgba(218, 154, 57, 0.8);
     }
+  }
+
   &__content {
-    @apply p-3 pb-4;
+    padding: 0.75rem;
+    padding-bottom: 1rem;
 
     a {
-      @apply uppercase text-black mb-1 line-clamp-2 text-sm transition-all font-montserrat hover:text-gattoRosa-primary;
+      text-transform: uppercase;
+      color: #000000;
+      margin-bottom: 0.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      font-family: Montserrat, sans-serif;
+      &:hover {
+        color: $primary-color;
+      }
     }
 
     p {
-      @apply text-xl text-gattoRosa-primary font-semibold font-montserrat;
+      font-size: 1.25rem;
+      color: $primary-color;
+      font-weight: 600;
+      font-family: Montserrat, sans-serif;
     }
   }
 
   &__image {
-    @apply block bg-no-repeat bg-cover bg-center w-full h-0 pb-[76.03%];
+    display: block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 0;
+    padding-bottom: 76.03%;
   }
 }

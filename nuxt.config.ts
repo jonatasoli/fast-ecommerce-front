@@ -37,8 +37,9 @@ export default defineNuxtConfig({
         ? [
             'naive-ui',
             '@css-render/vue3-ssr',
+            '@nuxtjs/i18n',
           ]
-        : [],
+        : ['@nuxtjs/i18n'],
   },
   vite: {
     optimizeDeps: {
