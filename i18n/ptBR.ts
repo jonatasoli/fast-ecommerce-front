@@ -16,4 +16,13 @@ export default {
       title: 'Novidades',
     },
   },
+
+  productPage: {
+    installments: {
+      term1: 'em até',
+      term2: 'de',
+      term3: 'sem juros',
+    },
+    variants: 'Selecione uma opção:',
+  },
 }

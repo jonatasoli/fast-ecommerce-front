@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { RouteLocationRaw } from 'vue-router'
 import { computed, useI18n } from '#imports'
 import { currencyFormat } from '@/utils/helpers'
 import { ProductItem } from '@/utils/types'
 
 type Props = {
   product: ProductItem
-  route: RouteLocationRaw
 }
 
 const props = defineProps<Props>()
@@ -15,6 +13,7 @@ const { t } = useI18n()
 
 const productImage = computed(() => ({ backgroundImage: `url('${props.product.image}')` }))
 const price = computed(() => currencyFormat(props.product.value))
+const route = `/products/${props.product.uri}`
 </script>
 
 <template>
@@ -36,6 +35,6 @@ const price = computed(() => currencyFormat(props.product.value))
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @import './ProductItem.scss';
 </style>

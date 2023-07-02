@@ -1,16 +1,17 @@
 <script lang="ts" setup>
 import { useI18n } from '#imports'
 import { ProductItem } from '@/components/shared'
-import ProductImage from '@/assets/images/product-item-example.png'
+import ProductImage from '@/assets/images/product-item-example.jpeg'
 
 const { t } = useI18n()
 const exampleProduct = {
   product: {
+    uri: 'celebrity-ox-premium-gatto-rosa-900ml',
     name: 'Celebrity Ox Premium Gatto Rosa 900ml',
     image: ProductImage,
     value: 7990,
   },
-  route: '/',
+
 }
 </script>
 
@@ -30,5 +31,5 @@ const exampleProduct = {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/index-page.scss';
+@import '@/assets/scss/pages/index.scss';
 </style>
