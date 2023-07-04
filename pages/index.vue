@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useI18n } from '#imports'
 import { ProductItem } from '@/components/shared'
+import FeatureCard from '~/components/home/FeatureCard/FeatureCard.vue'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 
 const { t } = useI18n()
@@ -11,7 +12,14 @@ const exampleProduct = {
     image: ProductImage,
     value: 7990,
   },
+}
 
+const exampleFeature = {
+  item: {
+    image: ProductImage,
+    uri: 'celebrity-ox-premium-gatto-rosa-900ml',
+    label: t('home.features.treatments'),
+  },
 }
 </script>
 
@@ -25,6 +33,15 @@ const exampleProduct = {
           :key="n"
           v-bind="exampleProduct"
         />
+      </div>
+    </div>
+    <div class="home__features container">
+      <div
+        v-for="n in 3"
+        :key="`f_${n}`"
+        class="home__features-item"
+      >
+        <feature-card v-bind="exampleFeature" />
       </div>
     </div>
   </main>

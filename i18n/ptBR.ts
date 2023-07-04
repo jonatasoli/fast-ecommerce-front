@@ -15,6 +15,10 @@ export default {
     news: {
       title: 'Novidades',
     },
+
+    features: {
+      treatments: 'Tratamentos',
+    },
   },
 
   productPage: {

@@ -23,3 +23,9 @@ export type ProductItem = {
   installments?: Installments
   variants?: Variant[]
 }
+
+export type FeatureItem = {
+  label: string
+  image: string
+  uri: string
+}

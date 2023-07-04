@@ -1,6 +1,6 @@
 .home {
   background-color: #000000;
-  padding: 1rem 0;
+  padding-bottom: 1rem;
   min-height: 100vh;
 
   &__news {
@@ -33,6 +33,39 @@
 
     @media (min-width: 1024px) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  &__features {
+    &-item {
+      margin-bottom: 1rem;
+
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+
+    @media screen and (min-width: 640px) {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+
+      &-item {
+        margin: 0;
+        flex: 0 1 calc(50% - 1rem);
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      justify-content: unset;
+      gap: 3rem;
+      flex-wrap: nowrap;
+
+      &-item {
+        flex: 1;
+      }
     }
   }
 }
