@@ -29,3 +29,8 @@ export type FeatureItem = {
   image: string
   uri: string
 }
+
+export type CartItem = {
+  product: ProductItem
+  quantity: number
+}
