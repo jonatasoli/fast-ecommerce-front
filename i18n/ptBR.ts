@@ -29,4 +29,34 @@ export default {
     },
     variants: 'Selecione uma opção:',
   },
+
+  cart: {
+    title: 'Meu Carrinho',
+    empty: 'Seu carrinho está vazio',
+    total: 'Total',
+    finish: 'Finalizar Compra',
+    continue: 'Continuar Comprando',
+    products: {
+      title: 'Produto',
+      quantity: 'Quantidade',
+      unitPrice: 'Preço Unitário',
+    },
+    summary: {
+      products: 'Produtos',
+      shipping: 'Frete',
+      discount: 'Desconto',
+      total: 'Total',
+    },
+    inputs: {
+      shipping: {
+        title: 'Insira seu CEP para calcular o frete e o prazo de entrega',
+        buttonText: 'OK',
+      },
+      discount: {
+        title: 'Cupom de desconto',
+        buttonText: 'Adicionar',
+      },
+    },
+  },
+
 }

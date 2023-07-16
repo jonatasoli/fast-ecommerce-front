@@ -8,6 +8,7 @@ export const theme: GlobalThemeOverrides = {
     borderRadius: '10px',
   },
   Button: {
+    fontWeightStrong: 'bold',
     borderRadiusLarge: '10px',
     borderRadiusMedium: '10px',
     borderRadiusSmall: '10px',
@@ -30,8 +31,8 @@ export const theme: GlobalThemeOverrides = {
     colorFocusPrimary: '#AC7C34',
     borderFocusPrimary: '1px solid #AC7C34',
     // Quaternary button
-    colorQuaternaryHover: '#363949',
-    colorQuaternaryPressed: '#363949',
+    colorQuaternaryHover: '#F9E9D2',
+    colorQuaternaryPressed: '#F9E9D2',
   },
   Radio: {
     buttonBorderColor: '#DA9A39',

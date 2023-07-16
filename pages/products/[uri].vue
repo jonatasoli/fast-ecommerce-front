@@ -1,12 +1,15 @@
 <script lang="ts" setup>
+import { useCartStore } from '@/stores/cart'
 import { currencyFormat } from '@/utils/helpers'
-import { computed, ref, useI18n, useRoute } from '#imports'
+import { computed, ref, useI18n, useRoute, useRouter } from '#imports'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 import { ProductItem } from '@/utils/types'
 
 const route = useRoute()
+const router = useRouter()
 const productUri = route.params.uri
 const { t } = useI18n()
+const cartStore = useCartStore()
 
 const exampleProduct = [{
   product: {
@@ -48,6 +51,11 @@ const product: ProductItem = exampleProduct.find(p => p.product.uri === productU
 const price = computed(() => currencyFormat(product.value))
 const installments = computed(() => currencyFormat(product?.installments?.value || 0))
 const value = ref(null)
+
+function addProductToCart() {
+  cartStore.addToCart(product)
+  router.push('/cart')
+}
 </script>
 
 <template>
@@ -97,6 +105,7 @@ const value = ref(null)
             size="large"
             strong
             block
+            @click="addProductToCart"
           >
             {{ t('productItem.buy') }}
           </n-button>

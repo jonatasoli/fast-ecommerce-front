@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/device',
     '@nuxtjs/google-fonts',
+    '@pinia/nuxt',
   ],
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,

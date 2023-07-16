@@ -31,13 +31,12 @@ const navLinks = [
         size="large"
       >
         <template #icon>
-          <n-icon :size="35">
+          <n-icon :size="30">
             <bars3-icon />
           </n-icon>
         </template>
       </n-button>
       <img
-        width="250"
         src="~/assets/logo-gold.png"
         alt=""
       >
@@ -54,7 +53,7 @@ const navLinks = [
             size="large"
           >
             <template #icon>
-              <n-icon :size="35">
+              <n-icon :size="30">
                 <magnifying-glass-icon />
               </n-icon>
             </template>
@@ -68,7 +67,7 @@ const navLinks = [
           size="large"
         >
           <template #icon>
-            <n-icon :size="35">
+            <n-icon :size="30">
               <user-circle-icon />
             </n-icon>
           </template>
@@ -81,7 +80,7 @@ const navLinks = [
           size="large"
         >
           <template #icon>
-            <n-icon :size="35">
+            <n-icon :size="30">
               <magnifying-glass-icon />
             </n-icon>
           </template>
@@ -93,9 +92,11 @@ const navLinks = [
           size="large"
         >
           <template #icon>
-            <n-icon :size="35">
-              <shopping-cart-icon />
-            </n-icon>
+            <nuxt-link to="/cart">
+              <n-icon :size="30">
+                <shopping-cart-icon />
+              </n-icon>
+            </nuxt-link>
           </template>
         </n-button>
       </div>
