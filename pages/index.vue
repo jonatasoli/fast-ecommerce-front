@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useI18n } from '#imports'
 import { ProductItem } from '@/components/shared'
-import FeatureCard from '~/components/home/FeatureCard/FeatureCard.vue'
+import { FeatureCard, FeatureHero } from '~/components/home'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 
 const { t } = useI18n()
@@ -43,6 +43,10 @@ const exampleFeature = {
       >
         <feature-card v-bind="exampleFeature" />
       </div>
+    </div>
+    <div class="home__heros container">
+      <feature-hero :item="{ label: 'Pó Poderoso', image: ProductImage, uri: 'teste' }" />
+      <feature-hero :item="{ label: 'Overdose Color', image: ProductImage, uri: 'teste' }" inverse />
     </div>
   </main>
 </template>

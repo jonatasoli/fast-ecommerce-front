@@ -18,11 +18,9 @@ const route = `/products/${props.product.uri}`
 
 <template>
   <div class="product-item">
-    <NuxtLink
-      class="product-item__image"
-      :style="productImage"
-      :to="route"
-    />
+    <div class="product-item__image">
+      <NuxtLink :style="productImage" :to="route" />
+    </div>
     <div class="product-item__content">
       <NuxtLink :to="route">
         {{ product.name }}
