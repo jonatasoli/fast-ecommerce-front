@@ -1,0 +1,150 @@
+.cart  {
+  &__empty {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      font-size: 1.5rem;
+    }
+
+   :deep(.n-button) {
+    text-decoration: underline;
+    padding: 0.5rem 1rem;
+    
+    .n-button__content {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+   }
+  }
+
+  &__not-empty {
+    padding: 1rem 2rem;
+
+    @media(max-width: 840px) {
+      padding: 1rem;
+    }
+
+    &--container {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      @media(max-width: 840px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &--products {
+      border-radius: 8px;
+      border: 1px solid #CDCACA; 
+
+      h1 {
+        text-align: center;
+
+        strong {
+          color: $primary-color;
+          font-size: 2.5rem;
+        }
+      }
+      .table-container {
+        padding: 1rem;
+
+        .table-header {
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 3rem;
+          font-size: 1.15rem;
+
+          @media(max-width: 840px) {
+            display: none;
+          }
+        }
+
+        .table-body {
+          margin-top: 1rem;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+          .table-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+
+            @media(max-width: 840px) {
+              grid-template-columns: 1fr 1fr;
+            }
+
+            .product {
+              display: flex;
+              gap: 1rem;
+
+              @media(max-width: 840px) {
+                grid-column-start: 1;
+                grid-column-end: 3;
+              }
+            }
+
+            .quantity {
+              width: 30%;
+              text-align: center;
+
+              @media(max-width: 840px) {
+                width: 100%;
+              }
+            }
+
+            .value {
+              font-size: 1.15rem;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+
+    &--summary {
+      border-radius: 8px;
+      border: 1px solid #CDCACA; 
+      padding: 1rem;
+      max-height: 20rem;
+
+      hr {
+        height: 1px;
+        background-color: #CDCACA;
+        border: none;
+      }
+
+      .summary-values {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .amount {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .btn-checkout {
+        margin-top: 1rem;
+        width: 100%;
+        
+      }
+
+      .btn-continue-buying {
+        width: 100%;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+}
