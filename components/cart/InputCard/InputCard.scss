@@ -1,0 +1,17 @@
+.card {
+  color: $primary-color;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #CDCACA; 
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__input {
+    display: flex;
+    gap: 1rem;
+  }
+}
