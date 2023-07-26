@@ -1,10 +1,24 @@
 export default {
   navigation: {
     news: 'Novidades',
+    categories: 'Categorias',
+    kits: 'Combos',
+    naturalCompound: 'Cápsulas (Composto Natural)',
+    accessories: 'Acessórios',
     sales: 'Promoções',
-    celebrity: 'Celebrity',
-    diamonds: 'Diamonds',
-    overdoseColor: 'Overdose Color',
+
+    celebrity: 'Loiros',
+    diammontLiss: 'Lisos e Selagem',
+    hairSpray: 'Penteados',
+    helpTherapy: 'Tratamentos',
+    shower: 'Lavatório',
+    overdoseColor: 'Coloridos',
+    vibranceCurls: 'Cachos/Curls',
+    wonderLiss: 'Home Care',
+
+    trainningDoll: 'Boneca de treino',
+    books: 'Livros',
+    scissors: 'Rolo de alumínio',
   },
 
   productItem: {

@@ -1,10 +1,6 @@
 .feature-hero {
   @media (min-width: 640px) {
     display: flex;
-
-    a {
-      flex: 0 0 50%;
-    }
   }
 
   &.--inverse {
@@ -21,9 +17,6 @@
 
   &:hover {
     .feature-hero {
-      &__name {
-        background-color: $primary-color-hover;
-      }
 
       &__image {
         a {
@@ -43,6 +36,7 @@
     
     @media (min-width: 640px) {
       min-height: 18rem;
+      flex: 0 0 50%;
     }
 
     @media (min-width: 1024px) {
@@ -69,6 +63,8 @@
     align-items: center;
     padding: 1.5rem;
     transition: all 0.2s;
+    box-sizing: border-box;
+    flex: 0 0 50%;
 
     @media (min-width: 640px) {
       padding: 0 2.25rem;

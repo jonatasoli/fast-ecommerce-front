@@ -1,3 +1,5 @@
+import { CATEGORIES } from './enums'
+
 type Description = {
   content: string
   composition: string
@@ -33,4 +35,9 @@ export type FeatureItem = {
 export type CartItem = {
   product: ProductItem
   quantity: number
+}
+
+export type CategoryOption = {
+  label: string
+  category: CATEGORIES
 }

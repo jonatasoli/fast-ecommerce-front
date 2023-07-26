@@ -1,22 +1,95 @@
-<script setup>
+<script lang="ts" setup>
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
   ShoppingCartIcon,
   UserCircleIcon,
 } from '@heroicons/vue/24/outline'
-import { useDevice, useI18n, useLocalePath } from '#imports'
+import { CATEGORIES, useDevice, useI18n, useLocalePath } from '#imports'
 
 const { isMobile } = useDevice()
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-const navLinks = [
-  { label: t('navigation.news'), route: localePath('/') },
-  { label: t('navigation.sales'), route: localePath('/') },
-  { label: t('navigation.celebrity'), route: localePath('/') },
-  { label: t('navigation.diamonds'), route: localePath('/') },
-  { label: t('navigation.overdoseColor'), route: localePath('/') },
+const categoryRoute = (uri: CATEGORIES): string => localePath({ name: 'category', params: { categoryUri: uri } })
+
+const nav = [
+  {
+    label: t('navigation.news'),
+    children: [],
+    route: categoryRoute(CATEGORIES.NEWS),
+  },
+  {
+    label: t('navigation.categories'),
+    route: localePath({ name: 'category' }),
+    children: [
+      {
+        label: t('navigation.celebrity'),
+        route: categoryRoute(CATEGORIES.CELEBRITY),
+      },
+      {
+        label: t('navigation.diammontLiss'),
+        route: categoryRoute(CATEGORIES.DIAMMONT_LISS),
+      },
+      {
+        label: t('navigation.hairSpray'),
+        route: categoryRoute(CATEGORIES.HAIR_SPRAY),
+      },
+      {
+        label: t('navigation.helpTherapy'),
+        route: categoryRoute(CATEGORIES.HELP_THERAPY),
+      },
+      {
+        label: t('navigation.shower'),
+        route: categoryRoute(CATEGORIES.SHOWER),
+      },
+      {
+        label: t('navigation.overdoseColor'),
+        route: categoryRoute(CATEGORIES.OVERDOSE_COLOR),
+      },
+      {
+        label: t('navigation.vibranceCurls'),
+        route: categoryRoute(CATEGORIES.VIBRANCE_CURLS),
+      },
+      {
+        label: t('navigation.wonderLiss'),
+        route: categoryRoute(CATEGORIES.WONDER_LISS),
+      },
+    ],
+  },
+  {
+    label: t('navigation.kits'),
+    children: [],
+    route: categoryRoute(CATEGORIES.KITS),
+  },
+  {
+    label: t('navigation.naturalCompound'),
+    children: [],
+    route: categoryRoute(CATEGORIES.NATURAL_COMPOUND),
+  },
+  {
+    label: t('navigation.accessories'),
+    route: categoryRoute(CATEGORIES.ACCESSORIES),
+    children: [
+      {
+        label: t('navigation.trainningDoll'),
+        route: categoryRoute(CATEGORIES.TRAINING_DOLL),
+      },
+      {
+        label: t('navigation.books'),
+        route: categoryRoute(CATEGORIES.BOOKS),
+      },
+      {
+        label: t('navigation.scissors'),
+        route: categoryRoute(CATEGORIES.SCISSORS),
+      },
+    ],
+  },
+  {
+    label: t('navigation.sales'),
+    children: [],
+    route: categoryRoute(CATEGORIES.SALE),
+  },
 ]
 </script>
 
@@ -103,7 +176,7 @@ const navLinks = [
     </div>
     <nav v-if="!isMobile" class="header__nav">
       <ul>
-        <li v-for="{ label, route } in navLinks" :key="label">
+        <li v-for="{ label, route } in nav" :key="label">
           <NuxtLink :to="route" class="header__nav-link">
             {{ label }}
           </NuxtLink>
