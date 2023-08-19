@@ -13,8 +13,8 @@ defineProps<Props>()
   <div class="card">
     <header>
       <n-icon :size="35">
-        <shopping-cart-icon v-if="icon === 'cart' " />
-        <banknotes-icon v-if="icon === 'cupom'" />
+        <ShoppingCartIcon v-if="icon === 'cart' " />
+        <BanknotesIcon v-if="icon === 'cupom'" />
       </n-icon>
       <h3>{{ title }}</h3>
     </header>
