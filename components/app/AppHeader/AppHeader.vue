@@ -1,10 +1,9 @@
 <script setup>
 import {
-  Bars3Icon,
   MagnifyingGlassIcon,
   ShoppingCartIcon,
-  UserCircleIcon,
 } from '@heroicons/vue/24/outline'
+import { UserMenu, UserMenuMobile } from '~/components/header'
 import { useDevice, useI18n, useLocalePath } from '#imports'
 
 const { isMobile } = useDevice()
@@ -23,19 +22,7 @@ const navLinks = [
 <template>
   <header class="header">
     <div class="header__logo">
-      <n-button
-        v-if="isMobile"
-        quaternary
-        circle
-        type="primary"
-        size="large"
-      >
-        <template #icon>
-          <n-icon :size="30">
-            <bars3-icon />
-          </n-icon>
-        </template>
-      </n-button>
+      <UserMenuMobile v-if="isMobile" />
       <img
         src="~/assets/logo-gold.png"
         alt=""
@@ -54,24 +41,12 @@ const navLinks = [
           >
             <template #icon>
               <n-icon :size="30">
-                <magnifying-glass-icon />
+                <MagnifyingGlassIcon />
               </n-icon>
             </template>
           </n-button>
         </div>
-        <n-button
-          v-if="!isMobile"
-          quaternary
-          circle
-          type="primary"
-          size="large"
-        >
-          <template #icon>
-            <n-icon :size="30">
-              <user-circle-icon />
-            </n-icon>
-          </template>
-        </n-button>
+        <UserMenu v-if="!isMobile" />
         <n-button
           v-else
           quaternary
@@ -81,7 +56,7 @@ const navLinks = [
         >
           <template #icon>
             <n-icon :size="30">
-              <magnifying-glass-icon />
+              <MagnifyingGlassIcon />
             </n-icon>
           </template>
         </n-button>
@@ -94,7 +69,7 @@ const navLinks = [
           <template #icon>
             <nuxt-link to="/cart">
               <n-icon :size="30">
-                <shopping-cart-icon />
+                <ShoppingCartIcon />
               </n-icon>
             </nuxt-link>
           </template>

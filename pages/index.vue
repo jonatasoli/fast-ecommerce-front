@@ -28,7 +28,7 @@ const exampleFeature = {
     <div class="home__news">
       <h2>{{ t('home.news.title') }}</h2>
       <div class="home__news-list">
-        <product-item
+        <ProductItem
           v-for="n in 4"
           :key="n"
           v-bind="exampleProduct"
@@ -41,7 +41,7 @@ const exampleFeature = {
         :key="`f_${n}`"
         class="home__features-item"
       >
-        <feature-card v-bind="exampleFeature" />
+        <FeatureCard v-bind="exampleFeature" />
       </div>
     </div>
   </main>
