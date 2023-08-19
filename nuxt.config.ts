@@ -31,16 +31,21 @@ export default defineNuxtConfig({
       inject: true,
     },
   },
+  plugins: [
+    { src: '@/plugins/vue-tel-input', mode: 'client' },
+  ],
   build: {
     analyze: true,
     transpile:
       transpileNaive
         ? [
             'naive-ui',
+            'vueuc',
             '@css-render/vue3-ssr',
             '@nuxtjs/i18n',
+            '@juggle/resize-observer',
           ]
-        : ['@nuxtjs/i18n'],
+        : ['@nuxtjs/i18n', '@juggle/resize-observer'],
   },
   vite: {
     optimizeDeps: {
