@@ -3,20 +3,53 @@
   width: 100%;
   top: 0;
 
+  &__top {
+    display: flex;
+    align-items: center;
+    max-width: 1366px;
+    padding: .5rem 1rem;
+    margin: 0 auto;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      gap: 2rem;
+    }
+
+    .logo {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      height: 3rem;
+
+      img {
+        height: 100%;
+        width: auto;
+      }
+
+      @media (min-width: 768px) {
+        height: 4rem;
+      }
+    }
+
+    .search-bar {
+      flex: 1;
+    }
+
+    .menu {
+      flex: 0 0 auto;
+    }
+
+    .sidenav-btn {
+      @media (min-width: 768px) {
+        display: none;
+      }
+    }
+  }
+
   &__logo {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 0.5rem;
-    margin: 0 auto;
-
-    @media (min-width: 840px) {
-      width: 70%;
-    }
-    button {
-      grid-column-start: 1;
-      align-self: center;
-      color: #DA9A39;
-    }
 
     img {
       width: 250px;
@@ -45,35 +78,151 @@
   }
 
   &__nav {
-    background-color: #DA9A39;
-    font-size: 0.875rem;
-    font-weight: 600;
-    padding: 0.5rem 0;
+    transition: all .3s ease;
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba($color: #000, $alpha: .4);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
 
-    ul {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 0 auto;
+    @media (min-width: 768px) {
+      opacity: 1;
+      visibility: visible;
+      backdrop-filter: unset;
+      background-color: #DA9A39;
+      position: static;
+      height: auto;
+      width: 100%;
+      max-width: unset;
+      padding: 0 0.5rem;
+    }
 
+    .dropdown {
       @media (min-width: 768px) {
-        width: 80%;
+        position: absolute;
+        padding-top: .25rem;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 0.2s;
+        visibility: hidden;
+        opacity: 0;
+        top: calc(100% + .5rem);
+      }
+      
+      & > ul {
+        padding: .5rem 0;
+        background-color: darken($color: #DA9A39, $amount: 5%);
+        box-shadow: inset 0px 1px 8px rgba($color: #000, $alpha: .1);
+        
+        @media (min-width: 768px) {
+          background-color: #e2aa57;
+          min-width: 13.5rem;
+          border-radius: .25rem;
+          box-shadow: 0 3px 5px rgba($color: #000, $alpha: .1);
+        }
       }
     }
-  }
 
-  &__nav-link {
-    color: #000000;
-    background-color: transparent;
-    line-height: 1rem;
-    padding: 0 0.5rem;
-    display: inline-flex;
-    align-items: center;
-    height: 42px;
-    transition: all 0.3s ease-in-out;
+    ul.nav {
+      font-size: 0.875rem;
+      font-weight: 600;
+      background-color: #DA9A39;
+      width: max(80%, 20rem);
+      top: 0;
+      left: min(-80%, -20rem);
+      height: 100vh;
+      overflow-y: auto;
+      position: fixed;
+      transition: all 0.4s ease;
+      box-shadow: 0 3px 5px rgba($color: #000, $alpha: .1);
+      padding: .5rem 0;
+      
+      @media (min-width: 768px) {
+        padding: 0;
+        overflow-y: visible;
+        position: static;
+        height: auto;
+        margin: 0 auto;
+        width: max-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;        
+        gap: 1rem;
+        box-shadow: none;
+      }
 
-    &:hover {
-      opacity: 0.5;
+      @media (min-width: 1024px) {
+        gap: 2rem;        
+      }
+
+      & > li {
+        position: relative;
+
+        &:hover {
+          .dropdown {
+            top: 100%;
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+
+    .nav-link {
+      color: #000000;
+      background-color: transparent;
+      line-height: 1rem;
+      padding: 0 1rem;
+      display: inline-flex;
+      align-items: center;
+      height: 48px;
+      transition: all 0.3s ease;
+      font-size: .75rem;
+    
+      &:hover {
+        opacity: 0.5;
+      }
+
+      @media (min-width: 768px) {
+        padding: 0 0.5rem;
+      }
+
+      @media screen and (min-width: 1024px) {
+        height: 56px;
+        font-size: .875rem;
+      }
+    }
+
+    .dropdown-link {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding-right: .75rem;
+      padding-left: 2rem;
+      height: 40px;
+
+      &:hover {
+        opacity: 1;
+        background-color: rgba($color: #000, $alpha: .1);
+      }
+
+      @media (min-width: 768px) {
+        padding-left: .75rem;
+      }
+    }
+
+    &.--open {
+      visibility: visible;
+      opacity: 1;
+
+      ul.nav {
+        left: 0;
+      }
     }
   }
 

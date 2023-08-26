@@ -4,7 +4,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <h1>{{ route.params.categoryUri }}</h1>
+  <h1>{{ route.params.uri }}</h1>
 </template>
 
 <style scoped>

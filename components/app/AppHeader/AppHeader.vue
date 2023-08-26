@@ -5,110 +5,90 @@ import {
   ShoppingCartIcon,
   UserCircleIcon,
 } from '@heroicons/vue/24/outline'
-import { CATEGORIES, useDevice, useI18n, useLocalePath } from '#imports'
+import { CATEGORIES, onClickOutside, ref, useDevice, useI18n, useLocalePath } from '#imports'
 
 const { isMobile } = useDevice()
 const { t } = useI18n()
 const localePath = useLocalePath()
+const open = ref(false)
+const nav = ref<HTMLElement | null>(null)
 
-const categoryRoute = (uri: CATEGORIES): string => localePath({ name: 'category', params: { categoryUri: uri } })
+const categoryLink = (uri: CATEGORIES | '', label: string, basePath = 'categories') => ({
+  label,
+  to: localePath(`/${basePath}${uri ? `/${uri}` : ''}`),
+  key: uri || basePath,
+  children: [],
+})
 
-const nav = [
+const navLinks = [
+  categoryLink(CATEGORIES.NEWS, t('navigation.news')),
   {
-    label: t('navigation.news'),
-    children: [],
-    route: categoryRoute(CATEGORIES.NEWS),
-  },
-  {
-    label: t('navigation.categories'),
-    route: localePath({ name: 'category' }),
+    ...categoryLink('', t('navigation.categories'), 'categories'),
     children: [
-      {
-        label: t('navigation.celebrity'),
-        route: categoryRoute(CATEGORIES.CELEBRITY),
-      },
-      {
-        label: t('navigation.diammontLiss'),
-        route: categoryRoute(CATEGORIES.DIAMMONT_LISS),
-      },
-      {
-        label: t('navigation.hairSpray'),
-        route: categoryRoute(CATEGORIES.HAIR_SPRAY),
-      },
-      {
-        label: t('navigation.helpTherapy'),
-        route: categoryRoute(CATEGORIES.HELP_THERAPY),
-      },
-      {
-        label: t('navigation.shower'),
-        route: categoryRoute(CATEGORIES.SHOWER),
-      },
-      {
-        label: t('navigation.overdoseColor'),
-        route: categoryRoute(CATEGORIES.OVERDOSE_COLOR),
-      },
-      {
-        label: t('navigation.vibranceCurls'),
-        route: categoryRoute(CATEGORIES.VIBRANCE_CURLS),
-      },
-      {
-        label: t('navigation.wonderLiss'),
-        route: categoryRoute(CATEGORIES.WONDER_LISS),
-      },
+      categoryLink(CATEGORIES.CELEBRITY, t('navigation.celebrity')),
+      categoryLink(CATEGORIES.DIAMMONT_LISS, t('navigation.diammontLiss')),
+      categoryLink(CATEGORIES.HAIR_SPRAY, t('navigation.hairSpray')),
+      categoryLink(CATEGORIES.HELP_THERAPY, t('navigation.helpTherapy')),
+      categoryLink(CATEGORIES.OVERDOSE_COLOR, t('navigation.overdoseColor')),
+      categoryLink(CATEGORIES.VIBRANCE_CURLS, t('navigation.vibranceCurls')),
+      categoryLink(CATEGORIES.WONDER_LISS, t('navigation.wonderLiss')),
     ],
   },
+  categoryLink(CATEGORIES.SHOWER, t('navigation.shower')),
+  categoryLink(CATEGORIES.KITS, t('navigation.kits')),
+  categoryLink(CATEGORIES.NATURAL_COMPOUND, t('navigation.naturalCompound')),
   {
-    label: t('navigation.kits'),
-    children: [],
-    route: categoryRoute(CATEGORIES.KITS),
-  },
-  {
-    label: t('navigation.naturalCompound'),
-    children: [],
-    route: categoryRoute(CATEGORIES.NATURAL_COMPOUND),
-  },
-  {
-    label: t('navigation.accessories'),
-    route: categoryRoute(CATEGORIES.ACCESSORIES),
+    ...categoryLink('', t('navigation.accessories'), 'accessories'),
     children: [
-      {
-        label: t('navigation.trainningDoll'),
-        route: categoryRoute(CATEGORIES.TRAINING_DOLL),
-      },
-      {
-        label: t('navigation.books'),
-        route: categoryRoute(CATEGORIES.BOOKS),
-      },
-      {
-        label: t('navigation.scissors'),
-        route: categoryRoute(CATEGORIES.SCISSORS),
-      },
+      categoryLink(CATEGORIES.TRAINING_DOLL, t('navigation.trainningDoll'), 'accessories'),
+      categoryLink(CATEGORIES.BOOKS, t('navigation.books'), 'accessories'),
+      categoryLink(CATEGORIES.SCISSORS, t('navigation.scissors'), 'accessories'),
     ],
   },
-  {
-    label: t('navigation.sales'),
-    children: [],
-    route: categoryRoute(CATEGORIES.SALE),
-  },
+  categoryLink('', t('navigation.sales'), 'sales'),
 ]
+
+function topggleSidenav() {
+  open.value = !open.value
+}
+
+function closeSidenav() {
+  open.value = false
+}
+
+onClickOutside(nav, () => {
+  if (window.innerWidth < 768) {
+    closeSidenav()
+  }
+})
 </script>
 
 <template>
   <header class="header">
-    <div class="header__logo">
+    <div class="header__top">
       <n-button
-        v-if="isMobile"
-        quaternary
-        circle
-        type="primary"
-        size="large"
+        text
+        class="sidenav-btn"
+        @click="topggleSidenav"
       >
-        <template #icon>
+        <n-icon :size="30">
+          <bars3-icon />
+        </n-icon>
+      </n-button>
+      <NuxtLink to="/" class="logo">
+        <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
+      </NuxtLink>
+      <div class="search-bar" />
+      <div class="menu" />
+    </div>
+    <div v-if="false" class="header__logo">
+      <div class="header__menu-btn">
+        <n-button text class="sidenav-btn">
           <n-icon :size="30">
             <bars3-icon />
           </n-icon>
-        </template>
-      </n-button>
+        </n-button>
+      </div>
       <img
         src="~/assets/logo-gold.png"
         alt=""
@@ -174,12 +154,29 @@ const nav = [
         </n-button>
       </div>
     </div>
-    <nav v-if="!isMobile" class="header__nav">
-      <ul>
-        <li v-for="{ label, route } in nav" :key="label">
-          <NuxtLink :to="route" class="header__nav-link">
-            {{ label }}
+    <nav class="header__nav" :class="{ '--open': open }">
+      <ul ref="nav" class="nav">
+        <li v-for="link in navLinks" :key="link.key">
+          <NuxtLink
+            :to="link.to"
+            class="nav-link"
+            @click="closeSidenav"
+          >
+            {{ link.label }}
           </NuxtLink>
+          <div class="dropdown">
+            <ul v-if="link.children.length > 0">
+              <li v-for="sublink in link.children" :key="sublink.key">
+                <NuxtLink
+                  :to="sublink.to"
+                  class="nav-link dropdown-link"
+                  @click="closeSidenav"
+                >
+                  {{ sublink.label }}
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
     </nav>
