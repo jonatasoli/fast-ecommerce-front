@@ -4,77 +4,16 @@ import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
 } from '@heroicons/vue/24/outline'
-import { UserMenu, UserMenuMobile } from '~/components/header'
-import { CATEGORIES, onClickOutside, ref, useDevice, useI18n, useLocalePath } from '#imports'
+import { NavBar, SideNav, UserMenu, UserMenuMobile } from '~/components/header'
+import { useDevice } from '#imports'
 
 const { isMobile } = useDevice()
-const { t } = useI18n()
-const localePath = useLocalePath()
-const open = ref(false)
-const nav = ref<HTMLElement | null>(null)
-
-const categoryLink = (uri: CATEGORIES | '', label: string, basePath = 'categories') => ({
-  label,
-  to: localePath(`/${basePath}${uri ? `/${uri}` : ''}`),
-  key: uri || basePath,
-  children: [],
-})
-
-const navLinks = [
-  categoryLink(CATEGORIES.NEWS, t('navigation.news')),
-  {
-    ...categoryLink('', t('navigation.categories'), 'categories'),
-    children: [
-      categoryLink(CATEGORIES.CELEBRITY, t('navigation.celebrity')),
-      categoryLink(CATEGORIES.DIAMMONT_LISS, t('navigation.diammontLiss')),
-      categoryLink(CATEGORIES.HAIR_SPRAY, t('navigation.hairSpray')),
-      categoryLink(CATEGORIES.HELP_THERAPY, t('navigation.helpTherapy')),
-      categoryLink(CATEGORIES.OVERDOSE_COLOR, t('navigation.overdoseColor')),
-      categoryLink(CATEGORIES.VIBRANCE_CURLS, t('navigation.vibranceCurls')),
-      categoryLink(CATEGORIES.WONDER_LISS, t('navigation.wonderLiss')),
-    ],
-  },
-  categoryLink(CATEGORIES.SHOWER, t('navigation.shower')),
-  categoryLink(CATEGORIES.KITS, t('navigation.kits')),
-  categoryLink(CATEGORIES.NATURAL_COMPOUND, t('navigation.naturalCompound')),
-  {
-    ...categoryLink('', t('navigation.accessories'), 'accessories'),
-    children: [
-      categoryLink(CATEGORIES.TRAINING_DOLL, t('navigation.trainningDoll'), 'accessories'),
-      categoryLink(CATEGORIES.BOOKS, t('navigation.books'), 'accessories'),
-      categoryLink(CATEGORIES.SCISSORS, t('navigation.scissors'), 'accessories'),
-    ],
-  },
-  categoryLink('', t('navigation.sales'), 'sales'),
-]
-
-function topggleSidenav() {
-  open.value = !open.value
-}
-
-function closeSidenav() {
-  open.value = false
-}
-
-onClickOutside(nav, () => {
-  if (window.innerWidth < 768) {
-    closeSidenav()
-  }
-})
 </script>
 
 <template>
   <header class="header">
     <div class="header__top">
-      <n-button
-        text
-        class="sidenav-btn"
-        @click="topggleSidenav"
-      >
-        <n-icon :size="30">
-          <Bars3Icon />
-        </n-icon>
-      </n-button>
+      <SideNav v-if="isMobile" />
       <NuxtLink to="/" class="logo">
         <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
       </NuxtLink>
@@ -144,32 +83,7 @@ onClickOutside(nav, () => {
         </n-button>
       </div>
     </div>
-    <nav class="header__nav" :class="{ '--open': open }">
-      <ul ref="nav" class="nav">
-        <li v-for="link in navLinks" :key="link.key">
-          <NuxtLink
-            :to="link.to"
-            class="nav-link"
-            @click="closeSidenav"
-          >
-            {{ link.label }}
-          </NuxtLink>
-          <div class="dropdown">
-            <ul v-if="link.children.length > 0">
-              <li v-for="sublink in link.children" :key="sublink.key">
-                <NuxtLink
-                  :to="sublink.to"
-                  class="nav-link dropdown-link"
-                  @click="closeSidenav"
-                >
-                  {{ sublink.label }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </nav>
+    <NavBar v-if="!isMobile" />
   </header>
 </template>
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Bars3Icon, UserCircleIcon } from '@heroicons/vue/24/outline'
+import { UserCircleIcon } from '@heroicons/vue/24/outline'
 import { reactive, ref, useI18n } from '#imports'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
@@ -33,12 +33,16 @@ async function logout() {
   >
     <template #icon>
       <n-icon :size="30">
-        <Bars3Icon />
+        <UserCircleIcon />
       </n-icon>
     </template>
   </n-button>
 
-  <n-drawer v-model:show="show" placement="left">
+  <n-drawer
+    v-model:show="show"
+    placement="right"
+    width="80%"
+  >
     <n-drawer-content
       closable
     >

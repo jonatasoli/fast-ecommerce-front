@@ -126,7 +126,8 @@ export default {
     },
   },
   userMenu: {
-    welcome: 'Olá',
+    welcome: 'Olá, {user}',
+    visitor: 'visitante',
     myAccount: 'Acessar minha conta',
     login: 'Login',
     logout: 'Sair',
