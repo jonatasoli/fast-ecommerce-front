@@ -27,12 +27,12 @@ const { t } = useI18n()
 
     <div v-else class="cart__not-empty">
       <div class="cart__not-empty--container">
-        <input-card
+        <InputCard
           icon="cart"
           :title="t('cart.inputs.shipping.title')"
           :button-text="t('cart.inputs.shipping.buttonText')"
         />
-        <input-card
+        <InputCard
           icon="cupom"
           :title="t('cart.inputs.discount.title')"
           :button-text="t('cart.inputs.discount.buttonText')"

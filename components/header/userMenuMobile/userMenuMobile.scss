@@ -1,0 +1,31 @@
+.menu {
+  &__header {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__header-authenticated {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__auth {
+    line-height: 1.5rem;
+    font-size: 1rem;
+    margin: 0;
+
+    a {
+      text-decoration: underline;
+    }
+
+    &--logout {
+      background-color: transparent;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      color: #7A7775;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+}

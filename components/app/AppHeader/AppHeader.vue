@@ -3,8 +3,8 @@ import {
   Bars3Icon,
   MagnifyingGlassIcon,
   ShoppingCartIcon,
-  UserCircleIcon,
 } from '@heroicons/vue/24/outline'
+import { UserMenu, UserMenuMobile } from '~/components/header'
 import { CATEGORIES, onClickOutside, ref, useDevice, useI18n, useLocalePath } from '#imports'
 
 const { isMobile } = useDevice()
@@ -72,20 +72,23 @@ onClickOutside(nav, () => {
         @click="topggleSidenav"
       >
         <n-icon :size="30">
-          <bars3-icon />
+          <Bars3Icon />
         </n-icon>
       </n-button>
       <NuxtLink to="/" class="logo">
         <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
       </NuxtLink>
       <div class="search-bar" />
-      <div class="menu" />
+      <div class="menu">
+        <UserMenuMobile v-if="isMobile" />
+        <UserMenu v-else />
+      </div>
     </div>
     <div v-if="false" class="header__logo">
       <div class="header__menu-btn">
         <n-button text class="sidenav-btn">
           <n-icon :size="30">
-            <bars3-icon />
+            <Bars3Icon />
           </n-icon>
         </n-button>
       </div>
@@ -107,24 +110,11 @@ onClickOutside(nav, () => {
           >
             <template #icon>
               <n-icon :size="30">
-                <magnifying-glass-icon />
+                <MagnifyingGlassIcon />
               </n-icon>
             </template>
           </n-button>
         </div>
-        <n-button
-          v-if="!isMobile"
-          quaternary
-          circle
-          type="primary"
-          size="large"
-        >
-          <template #icon>
-            <n-icon :size="30">
-              <user-circle-icon />
-            </n-icon>
-          </template>
-        </n-button>
         <n-button
           v-else
           quaternary
@@ -134,7 +124,7 @@ onClickOutside(nav, () => {
         >
           <template #icon>
             <n-icon :size="30">
-              <magnifying-glass-icon />
+              <MagnifyingGlassIcon />
             </n-icon>
           </template>
         </n-button>
@@ -147,7 +137,7 @@ onClickOutside(nav, () => {
           <template #icon>
             <nuxt-link to="/cart">
               <n-icon :size="30">
-                <shopping-cart-icon />
+                <ShoppingCartIcon />
               </n-icon>
             </nuxt-link>
           </template>

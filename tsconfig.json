@@ -2,8 +2,9 @@
 	"extends": "./.nuxt/tsconfig.json",
 	"compilerOptions": {
 		"resolveJsonModule": true,
-		"noImplicitAny": false
+		"noImplicitAny": false,
+		"checkJs": true
 	},
-	"exclude": ["node_modules", "cypress"]
+	"exclude": ["node_modules", "cypress"],
 }
 
