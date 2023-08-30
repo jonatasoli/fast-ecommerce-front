@@ -1,5 +1,5 @@
 .home {
-  background-color: #000000;
+  background-color: $home-background;
   padding-bottom: 1rem;
   min-height: 100vh;
 
@@ -47,6 +47,8 @@
   }
 
   &__features {
+    margin-bottom: 3rem;
+    
     &-item {
       margin-bottom: 1rem;
 

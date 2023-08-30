@@ -1,28 +1,36 @@
-<script setup>
+<script lang="ts" setup>
 import {
+  Bars3Icon,
   MagnifyingGlassIcon,
   ShoppingCartIcon,
 } from '@heroicons/vue/24/outline'
-import { UserMenu, UserMenuMobile } from '~/components/header'
-import { useDevice, useI18n, useLocalePath } from '#imports'
+import { NavBar, SideNav, UserMenu, UserMenuMobile } from '~/components/header'
+import { useDevice } from '#imports'
 
 const { isMobile } = useDevice()
-const { t } = useI18n()
-const localePath = useLocalePath()
-
-const navLinks = [
-  { label: t('navigation.news'), route: localePath('/') },
-  { label: t('navigation.sales'), route: localePath('/') },
-  { label: t('navigation.celebrity'), route: localePath('/') },
-  { label: t('navigation.diamonds'), route: localePath('/') },
-  { label: t('navigation.overdoseColor'), route: localePath('/') },
-]
 </script>
 
 <template>
   <header class="header">
-    <div class="header__logo">
-      <UserMenuMobile v-if="isMobile" />
+    <div class="header__top">
+      <SideNav v-if="isMobile" />
+      <NuxtLink to="/" class="logo">
+        <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
+      </NuxtLink>
+      <div class="search-bar" />
+      <div class="menu">
+        <UserMenuMobile v-if="isMobile" />
+        <UserMenu v-else />
+      </div>
+    </div>
+    <div v-if="false" class="header__logo">
+      <div class="header__menu-btn">
+        <n-button text class="sidenav-btn">
+          <n-icon :size="30">
+            <Bars3Icon />
+          </n-icon>
+        </n-button>
+      </div>
       <img
         src="~/assets/logo-gold.png"
         alt=""
@@ -46,7 +54,6 @@ const navLinks = [
             </template>
           </n-button>
         </div>
-        <UserMenu v-if="!isMobile" />
         <n-button
           v-else
           quaternary
@@ -76,15 +83,7 @@ const navLinks = [
         </n-button>
       </div>
     </div>
-    <nav v-if="!isMobile" class="header__nav">
-      <ul>
-        <li v-for="{ label, route } in navLinks" :key="label">
-          <NuxtLink :to="route" class="header__nav-link">
-            {{ label }}
-          </NuxtLink>
-        </li>
-      </ul>
-    </nav>
+    <NavBar v-if="!isMobile" />
   </header>
 </template>
 
