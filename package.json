@@ -10,6 +10,7 @@
     "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .gitignore .",
     "prepare": "husky install",
+    "start": "node .output/server/index.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ci": "vitest run --coverage",
