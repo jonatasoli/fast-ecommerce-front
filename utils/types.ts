@@ -17,12 +17,13 @@ type Variant = {
 }
 
 export type ProductItem = {
+  product_id: number
   name: string
-  image: string
+  image_path: string
   uri: string
-  value: number
+  price: number
   description?: Description
-  installments?: Installments
+  installments_list?: Installments
   variants?: Variant[]
 }
 

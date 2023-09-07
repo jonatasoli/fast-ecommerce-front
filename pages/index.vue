@@ -7,10 +7,11 @@ import ProductImage from '@/assets/images/product-item-example.jpeg'
 const { t } = useI18n()
 const exampleProduct = {
   product: {
+    product_id: 1,
     uri: 'celebrity-ox-premium-gatto-rosa-900ml',
     name: 'Celebrity Ox Premium Gatto Rosa 900ml',
-    image: ProductImage,
-    value: 7990,
+    image_path: ProductImage,
+    price: 7990,
   },
 }
 

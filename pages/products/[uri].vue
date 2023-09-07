@@ -2,8 +2,8 @@
 import { useCartStore } from '@/stores/cart'
 import { currencyFormat } from '@/utils/helpers'
 import { computed, ref, useI18n, useRoute, useRouter } from '#imports'
-import ProductImage from '@/assets/images/product-item-example.jpeg'
 import { ProductItem } from '@/utils/types'
+import { useProductsStore } from '@/stores/products'
 
 const route = useRoute()
 const router = useRouter()
@@ -11,45 +11,18 @@ const productUri = route.params.uri
 const { t } = useI18n()
 const cartStore = useCartStore()
 
-const exampleProduct = [{
-  product: {
-    uri: 'celebrity-ox-premium-gatto-rosa-900ml',
-    name: 'Celebrity Ox Premium Gatto Rosa 900ml',
-    image: ProductImage,
-    value: 7990,
-    installments: {
-      value: 2366,
-      count: 3,
-    },
-    variants: [
-      { value: '10', label: '10 VOL' },
-      { value: '20', label: '20 VOL' },
-      { value: '30', label: '30 VOL' },
-      { value: '40', label: '40 VOL' },
-    ],
-    description: {
-      content: `A Emulsão Reveladora deve ser utilizada na preparação de Colorações 
-        Linha Gatto Rosa e  Blond Celebrity, na quantidade indicada no modo 
-        de preparo do produto a ser utilizado Estabilizante de alta qualidade, na função de 
-        estabilizar a volumagem, e manter a performance do clareamento.`,
-      composition: 'Aloé Vera função  Hidratante, Óleo de Argan e Óleo de Macadâmia como  Emoliente',
-      how_to_use: `30 grs de pó Celebrity com 100 ml de oxidante Gatto Rosa\r
-        15 grs de pó Celebrity com 50 ml de oxidante Gatto Rosa\r
-        10 grs de pó Celebrity com 35 ml de oxidante Gatto Rosa\r
-        Misture de 2 a 3 minutos até obter uma consistência homogenia e cremosa`,
-    },
-  },
-}]
+const { getProducts } = useProductsStore()
 
-const product: ProductItem = exampleProduct.find(p => p.product.uri === productUri)?.product || {
+const product: ProductItem = getProducts.find(p => p.uri.replace('/', '') === productUri) || {
+  product_id: 0,
   uri: '',
   name: '',
-  image: '',
-  value: 0,
-}
+  image_path: '',
+  price: 0,
 
-const price = computed(() => currencyFormat(product.value))
-const installments = computed(() => currencyFormat(product?.installments?.value || 0))
+}
+const price = computed(() => currencyFormat(product.price))
+const installments = computed(() => currencyFormat(product?.installments_list?.value || 0))
 const value = ref(null)
 
 function addProductToCart() {
@@ -63,7 +36,7 @@ function addProductToCart() {
     <div class="product__info">
       <img
         class="product__info--image"
-        :src="product.image"
+        :src="product.image_path"
         :alt="product.name"
       >
 
@@ -71,8 +44,8 @@ function addProductToCart() {
         <h1 class="product__name">
           {{ product.name }}
         </h1>
-        <hr class="divider">
-        <div class="product__variants">
+        <div v-if="product.variants" class="product__variants">
+          <hr class="divider">
           <p> {{ t('productPage.variants') }}</p>
 
           <n-space vertical>
@@ -89,13 +62,13 @@ function addProductToCart() {
               />
             </n-radio-group>
           </n-space>
+          <hr class="divider">
         </div>
-        <hr class="divider">
         <p class="product__content--price">
           {{ price }}
         </p>
         <p class="product__content--installments">
-          {{ t('productPage.installments.term1') }} <span>{{ product?.installments?.count || 0 }}x</span>
+          {{ t('productPage.installments.term1') }} <span>{{ product?.installments_list?.count || 0 }}x</span>
           {{ t('productPage.installments.term2') }} <span>{{ installments }}</span>
           {{ t('productPage.installments.term3') }}
         </p>
@@ -112,7 +85,7 @@ function addProductToCart() {
         </div>
       </div>
     </div>
-    <div class="product__description">
+    <div v-if="product.description" class="product__description">
       <h2 class="product__description--title">
         {{ product.name }}
       </h2>
@@ -120,8 +93,13 @@ function addProductToCart() {
         {{ product?.description?.content }}
       </p>
     </div>
-    <n-collapse arrow-placement="right" class="product__description--collapse">
+    <n-collapse
+      v-if="product.description"
+      arrow-placement="right"
+      class="product__description--collapse"
+    >
       <n-collapse-item
+        v-if="product?.description?.composition"
         title="Composição"
         name="1"
         class="product__description--collapse-item"
@@ -131,6 +109,7 @@ function addProductToCart() {
         </p>
       </n-collapse-item>
       <n-collapse-item
+        v-if="product?.description?.how_to_use"
         title="Como usar"
         name="2"
         class="product__description--collapse-item"

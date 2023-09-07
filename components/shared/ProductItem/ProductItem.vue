@@ -11,9 +11,9 @@ const props = defineProps<Props>()
 
 const { t } = useI18n()
 
-const productImage = computed(() => ({ backgroundImage: `url('${props.product.image}')` }))
-const price = computed(() => currencyFormat(props.product.value))
-const route = `/products/${props.product.uri}`
+const productImage = computed(() => ({ backgroundImage: `url('${props.product.image_path}')` }))
+const price = computed(() => currencyFormat(props.product.price))
+const route = `/products${props.product.uri}`
 </script>
 
 <template>
