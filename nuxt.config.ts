@@ -5,6 +5,7 @@ import { LOCALES } from './utils/enums'
 const {
   VITEST,
   NODE_ENV,
+  SERVER_BASE_URL,
 } = process.env
 
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
@@ -27,7 +28,7 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      Montserrat: [400, 500, 600, 700],
+      Montserrat: [300, 400, 500, 600, 700],
       download: true,
       inject: true,
     },
@@ -70,6 +71,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      serverUrl: SERVER_BASE_URL,
       isProd: process.env.NODE_ENV === 'production',
     },
   },
