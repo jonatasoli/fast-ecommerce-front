@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { LoginResponse } from 'server/api/auth/login.post'
-import { LogoutResponse } from 'server/api/auth/logout.get'
-import { RegisterResponse } from 'server/api/auth/register.post'
 import { useUserStore } from './user'
+import { RegisterResponse } from '@/server/api/auth/register.post'
+import { LogoutResponse } from '@/server/api/auth/logout.get'
+import { LoginResponse } from '@/server/api/auth/login.post'
 import { ref, useFetch } from '#imports'
 
 interface LoginParams {
