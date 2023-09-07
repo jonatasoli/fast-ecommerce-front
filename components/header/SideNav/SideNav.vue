@@ -34,7 +34,7 @@ const closeSidenav = () => show.value = false
             >
               {{ link.label }}
             </NuxtLink>
-            <ul v-if="link.children.length > 0" class="sidenav__submenu">
+            <ul v-if="link.children && link.children.length > 0" class="sidenav__submenu">
               <li v-for="sublink in link.children" :key="sublink.key">
                 <NuxtLink
                   :to="sublink.to"
