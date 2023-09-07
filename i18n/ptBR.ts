@@ -6,7 +6,6 @@ export default {
     naturalCompound: 'Cápsulas (Composto Natural)',
     accessories: 'Acessórios',
     sales: 'Promoções',
-
     celebrity: 'Loiros',
     diammontLiss: 'Lisos e Selagem',
     hairSpray: 'Penteados',
@@ -15,10 +14,12 @@ export default {
     overdoseColor: 'Coloridos',
     vibranceCurls: 'Cachos/Curls',
     wonderLiss: 'Home Care',
-
     trainningDoll: 'Boneca de treino',
     books: 'Livros',
     scissors: 'Rolo de alumínio',
+    fiber: 'Fiber',
+    test: 'Teste',
+    diamonds: 'Diamonds',
   },
 
   productItem: {
@@ -133,5 +134,9 @@ export default {
     logout: 'Sair',
     or: 'ou',
     register: 'Cadastre-se',
+  },
+
+  products: {
+    empty: 'Nenhum produto encontrado',
   },
 }
