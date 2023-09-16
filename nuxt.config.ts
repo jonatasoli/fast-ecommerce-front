@@ -11,6 +11,8 @@ const {
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
+  ssr: false,
+  spaLoadingTemplate: 'spa-loading-template.html',
   devtools: { enabled: true },
   imports: { autoImport: false },
   modules: [
@@ -52,8 +54,8 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include:
-        !transpileNaive
-          ? ['naive-ui']
+        process.env.NODE_ENV === 'development'
+          ? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
           : [],
     },
     css: {

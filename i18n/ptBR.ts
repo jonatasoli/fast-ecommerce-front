@@ -65,12 +65,16 @@ export default {
     inputs: {
       shipping: {
         title: 'Insira seu CEP para calcular o frete e o prazo de entrega',
-        buttonText: 'OK',
+        buttonText: 'Calcular',
       },
       discount: {
         title: 'Cupom de desconto',
         buttonText: 'Adicionar',
       },
+    },
+    freight: {
+      part1: 'Entrega - até',
+      part2: 'dias úteis',
     },
   },
 

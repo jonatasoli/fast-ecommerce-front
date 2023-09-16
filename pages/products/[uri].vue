@@ -19,14 +19,16 @@ const product: ProductItem = getProducts.find(p => p.uri.replace('/', '') === pr
   name: '',
   image_path: '',
   price: 0,
-
 }
 const price = computed(() => currencyFormat(product.price))
 const installments = computed(() => currencyFormat(product?.installments_list?.value || 0))
 const value = ref(null)
 
-function addProductToCart() {
-  cartStore.addToCart(product)
+async function addProductToCart() {
+  await cartStore.addToCart({
+    ...product,
+    quantity: 1,
+  })
   router.push('/cart')
 }
 </script>
