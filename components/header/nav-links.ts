@@ -13,7 +13,7 @@ export function useNavLinks() {
   const { t } = useI18n()
   const { categories } = useCategoryStore()
 
-  const sortingCategories = categories.category.sort((a, b) => {
+  const sortingCategories = categories.categories.sort((a, b) => {
     const order = { news: -1, sales: -1 }
     return (order[a.name] || 0) - (order[b.name] || 0)
   })
