@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ShoppingCartIcon } from '@heroicons/vue/24/outline'
 import { NavBar, SideNav, UserMenu, UserMenuMobile } from '~/components/header'
 import { useDevice } from '#imports'
 
@@ -17,6 +18,20 @@ const { isMobile } = useDevice()
         <UserMenuMobile v-if="isMobile" />
         <UserMenu v-else />
       </div>
+      <n-button
+        quaternary
+        circle
+        type="primary"
+        size="large"
+      >
+        <template #icon>
+          <nuxt-link to="/cart">
+            <n-icon :size="30">
+              <ShoppingCartIcon />
+            </n-icon>
+          </nuxt-link>
+        </template>
+      </n-button>
     </div>
     <NavBar v-if="!isMobile" />
   </header>

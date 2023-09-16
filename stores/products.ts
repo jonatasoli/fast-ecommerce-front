@@ -13,7 +13,7 @@ export const useProductsStore = defineStore('products', () => {
       loading.value = true
       const res = await fetch(`${serverUrl}/catalog/showcase/all`)
       const data = await res.json()
-      products.value = data.products
+      products.value = data
     } catch (err) {
       console.error(err)
     } finally {

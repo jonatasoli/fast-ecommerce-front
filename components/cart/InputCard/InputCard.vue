@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import { BanknotesIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline'
+import { ref } from '#imports'
+
 type Props = {
   icon: string
   title: string
   buttonText: string
+  placeholder: string
 }
 
 defineProps<Props>()
+const emit = defineEmits(['onButtonClick'])
+
+const value = ref('')
+
+function handleButtonClick() {
+  emit('onButtonClick', value.value)
+}
 </script>
 
 <template>
@@ -20,12 +30,22 @@ defineProps<Props>()
     </header>
     <div class="card__input">
       <n-input
+        v-model:value="value"
         type="text"
-        placeholder="Insira seu CEP"
+        :placeholder="placeholder"
       />
-      <n-button type="primary" size="large">
+      <n-button
+        type="primary"
+        size="large"
+        strong
+        @click="handleButtonClick"
+      >
         {{ buttonText }}
       </n-button>
+    </div>
+
+    <div class="card__result">
+      <slot />
     </div>
   </div>
 </template>
