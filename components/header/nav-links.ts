@@ -11,9 +11,9 @@ interface NavLink {
 export function useNavLinks() {
   const localePath = useLocalePath()
   const { t } = useI18n()
-  const { categories } = useCategoryStore()
+  const store = useCategoryStore()
 
-  const sortingCategories = categories.category.sort((a, b) => {
+  const sortingCategories = store.categories.sort((a, b) => {
     const order = { news: -1, sales: -1 }
     return (order[a.name] || 0) - (order[b.name] || 0)
   })

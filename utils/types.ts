@@ -24,7 +24,17 @@ export type ProductItem = {
   price: number
   description?: Description
   installments_list?: Installments
+  installments_config: number
   variants?: Variant[]
+  direct_sales: boolean
+  discount: number
+  showcase: boolean
+  show_discount: false
+  heigth?: number
+  width?: number
+  weigth?: number
+  length?: number
+  sku: string
 }
 
 export type FeatureItem = {

@@ -1,24 +1,29 @@
 import { defineStore } from 'pinia'
 import { ProductItem } from '~/utils/types'
-import { computed, ref, useNuxtApp } from '#imports'
+import { computed, ref, useRuntimeConfig } from '#imports'
+
 export const useProductsStore = defineStore('products', () => {
   const products = ref<ProductItem[]>([])
   const getProducts = computed(() => products.value)
   const loading = ref(false)
-  const { $config } = useNuxtApp()
-  const serverUrl = $config.public.serverUrl
+  const config = useRuntimeConfig()
+  const serverUrl = config.public.serverUrl
 
   async function getProductsShowcase() {
+    loading.value = true
+    let showcase: ProductItem[] = []
+
     try {
-      loading.value = true
-      const res = await fetch(`${serverUrl}/catalog/showcase/all`)
+      const res = await fetch(`${serverUrl}/catalog/all`)
       const data = await res.json()
-      products.value = data.products
+
+      showcase = data?.slice?.(0, 4) || []
     } catch (err) {
       console.error(err)
-    } finally {
-      loading.value = false
     }
+
+    loading.value = false
+    return showcase
   }
 
   async function getProductsByCategory(category: string) {

@@ -1,19 +1,16 @@
 <script lang="ts" setup>
-import { useI18n } from '#imports'
-import { ProductItem } from '@/components/shared'
+import { computed, useAsyncData, useI18n } from '#imports'
+import { ProductCard } from '@/components/shared'
 import { FeatureCard, FeatureHero } from '~/components/home'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
+import { useProductsStore } from '~/stores/products'
 
 const { t } = useI18n()
-const exampleProduct = {
-  product: {
-    product_id: 1,
-    uri: 'celebrity-ox-premium-gatto-rosa-900ml',
-    name: 'Celebrity Ox Premium Gatto Rosa 900ml',
-    image_path: ProductImage,
-    price: 7990,
-  },
-}
+const store = useProductsStore()
+
+const { data } = await useAsyncData(() => store.getProductsShowcase())
+
+const products = computed(() => data.value || [])
 
 const exampleFeature = {
   item: {
@@ -26,13 +23,13 @@ const exampleFeature = {
 
 <template>
   <main class="home">
-    <div class="home__news">
+    <div v-if="products.length > 0" class="home__news">
       <h2>{{ t('home.news.title') }}</h2>
       <div class="home__news-list">
-        <ProductItem
-          v-for="n in 4"
-          :key="n"
-          v-bind="exampleProduct"
+        <ProductCard
+          v-for="product in products"
+          :key="product.product_id"
+          :product="product"
         />
       </div>
     </div>

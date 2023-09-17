@@ -1,28 +1,27 @@
 <script lang="ts" setup>
 import { useCartStore } from '@/stores/cart'
 import { currencyFormat } from '@/utils/helpers'
-import { computed, ref, useI18n, useRoute, useRouter } from '#imports'
+import { computed, createError, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig } from '#imports'
 import { ProductItem } from '@/utils/types'
-import { useProductsStore } from '@/stores/products'
 
 const route = useRoute()
 const router = useRouter()
-const productUri = route.params.uri
+const config = useRuntimeConfig()
 const { t } = useI18n()
 const cartStore = useCartStore()
 
-const { getProducts } = useProductsStore()
+const { data: product, error } = await useFetch<ProductItem>(`${config.public.serverUrl}/product/${route.params.uri}`)
 
-const product: ProductItem = getProducts.find(p => p.uri.replace('/', '') === productUri) || {
-  product_id: 0,
-  uri: '',
-  name: '',
-  image_path: '',
-  price: 0,
-
+if (error.value || !product.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page not found',
+    fatal: true,
+  })
 }
-const price = computed(() => currencyFormat(product.price))
-const installments = computed(() => currencyFormat(product?.installments_list?.value || 0))
+
+const price = computed(() => currencyFormat(product.value?.price || 0))
+const installments = computed(() => currencyFormat(product.value?.installments_list?.value || 0))
 const value = ref(null)
 
 function addProductToCart() {
@@ -32,7 +31,7 @@ function addProductToCart() {
 </script>
 
 <template>
-  <main class="product">
+  <main v-if="product" class="product">
     <div class="product__info">
       <img
         class="product__info--image"

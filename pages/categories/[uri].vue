@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, useI18n, useRoute } from '#imports'
 import { useProductsStore } from '@/stores/products'
-import { ProductItem } from '~/components/shared'
+import { ProductCard } from '~/components/shared'
 import Loading from '~/components/shared/Loading/Loading.vue'
 
 const route = useRoute()
@@ -40,7 +40,7 @@ onMounted(async () => {
         v-else
         class="showcase"
       >
-        <ProductItem
+        <ProductCard
           v-for="product in store.getProducts"
           :key="product.product_id"
           v-bind="{ product }"
