@@ -59,7 +59,7 @@
         .table-header {
           width: 100%;
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(3, 1fr) 60px;
           gap: 3rem;
           font-size: 1.15rem;
 
@@ -77,7 +77,7 @@
 
           .table-row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr) 60px;
             gap: 3rem;
 
             @media(max-width: 840px) {
@@ -146,5 +146,22 @@
       }
     }
   }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+
+  }
   
+  &__freigth {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    color: $home-background;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
 }

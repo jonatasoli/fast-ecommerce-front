@@ -24,8 +24,18 @@ const price = computed(() => currencyFormat(product.value?.price || 0))
 const installments = computed(() => currencyFormat(product.value?.installments_list?.value || 0))
 const value = ref(null)
 
-function addProductToCart() {
-  cartStore.addToCart(product)
+async function addProductToCart() {
+  if (!product.value) {
+    return
+  }
+
+  await cartStore.addToCart({
+    image_path: product.value.image_path,
+    name: product.value.name,
+    price: product.value.price,
+    product_id: product.value.product_id,
+    quantity: 1,
+  })
   router.push('/cart')
 }
 </script>

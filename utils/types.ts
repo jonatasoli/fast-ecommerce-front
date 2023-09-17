@@ -44,7 +44,10 @@ export type FeatureItem = {
 }
 
 export type CartItem = {
-  product: ProductItem
+  name: string
+  image_path: string
+  product_id: number
+  price: number
   quantity: number
 }
 
