@@ -91,6 +91,11 @@ export const theme: GlobalThemeOverrides = {
     optionTextColorHover: '#D29841',
     optionColorActive: '#D29841',
   },
+  Form: {
+    feedbackFontSizeLarge: '13px',
+    feedbackFontSizeMedium: '13px',
+    feedbackFontSizeSmall: '13px',
+  },
 } as const
 
 export const breakpoints = {

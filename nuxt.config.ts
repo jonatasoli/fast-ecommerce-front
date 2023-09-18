@@ -5,11 +5,14 @@ import { LOCALES } from './utils/enums'
 const {
   VITEST,
   NODE_ENV,
+  SERVER_BASE_URL,
 } = process.env
 
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
+  ssr: false,
+  spaLoadingTemplate: 'spa-loading-template.html',
   devtools: { enabled: true },
   imports: { autoImport: false },
   modules: [
@@ -17,6 +20,7 @@ export default defineNuxtConfig({
     '@nuxtjs/device',
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
+    '@vueuse/nuxt',
   ],
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
@@ -26,27 +30,32 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      Montserrat: [400, 500, 600, 700],
+      Montserrat: [300, 400, 500, 600, 700],
       download: true,
       inject: true,
     },
   },
+  plugins: [
+    { src: '@/plugins/vue-tel-input', mode: 'client' },
+  ],
   build: {
     analyze: true,
     transpile:
       transpileNaive
         ? [
             'naive-ui',
+            'vueuc',
             '@css-render/vue3-ssr',
             '@nuxtjs/i18n',
+            '@juggle/resize-observer',
           ]
-        : ['@nuxtjs/i18n'],
+        : ['@nuxtjs/i18n', '@juggle/resize-observer'],
   },
   vite: {
     optimizeDeps: {
       include:
-        !transpileNaive
-          ? ['naive-ui']
+        process.env.NODE_ENV === 'development'
+          ? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
           : [],
     },
     css: {
@@ -64,6 +73,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      serverUrl: SERVER_BASE_URL,
       isProd: process.env.NODE_ENV === 'production',
     },
   },

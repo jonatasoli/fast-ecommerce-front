@@ -11,18 +11,16 @@ const props = defineProps<Props>()
 
 const { t } = useI18n()
 
-const productImage = computed(() => ({ backgroundImage: `url('${props.product.image}')` }))
-const price = computed(() => currencyFormat(props.product.value))
+const productImage = computed(() => ({ backgroundImage: `url('${props.product.image_path}')` }))
+const price = computed(() => currencyFormat(props.product.price))
 const route = `/products/${props.product.uri}`
 </script>
 
 <template>
   <div class="product-item">
-    <NuxtLink
-      class="product-item__image"
-      :style="productImage"
-      :to="route"
-    />
+    <div class="product-item__image">
+      <NuxtLink :style="productImage" :to="route" />
+    </div>
     <div class="product-item__content">
       <NuxtLink :to="route">
         {{ product.name }}

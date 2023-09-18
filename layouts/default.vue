@@ -1,17 +1,12 @@
 <script lang="ts" setup>
 import { datePtBR, ptBR } from 'naive-ui'
-import { useLocaleHead, useNuxtApp, useRuntimeConfig } from '#imports'
+import { useLocaleHead, useRuntimeConfig } from '#imports'
 import { AppHeader } from '@/components/app'
 import { breakpoints, theme } from '@/naive.style'
 
-const nuxtApp = useNuxtApp()
 const config = useRuntimeConfig()
 const head = useLocaleHead({
   addSeoAttributes: true,
-})
-
-nuxtApp.hook('page:finish', () => {
-  window.scrollTo(0, 0)
 })
 </script>
 
@@ -40,8 +35,10 @@ nuxtApp.hook('page:finish', () => {
       :theme-overrides="theme"
       :breakpoints="breakpoints"
     >
-      <app-header />
-      <slot />
+      <n-notification-provider>
+        <AppHeader />
+        <slot />
+      </n-notification-provider>
     </n-config-provider>
   </Body>
 </template>

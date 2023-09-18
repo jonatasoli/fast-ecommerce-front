@@ -1,16 +1,17 @@
 <script lang="ts" setup>
 import { useI18n } from '#imports'
 import { ProductItem } from '@/components/shared'
-import FeatureCard from '~/components/home/FeatureCard/FeatureCard.vue'
+import { FeatureCard, FeatureHero } from '~/components/home'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 
 const { t } = useI18n()
 const exampleProduct = {
   product: {
+    product_id: 1,
     uri: 'celebrity-ox-premium-gatto-rosa-900ml',
     name: 'Celebrity Ox Premium Gatto Rosa 900ml',
-    image: ProductImage,
-    value: 7990,
+    image_path: ProductImage,
+    price: 7990,
   },
 }
 
@@ -28,7 +29,7 @@ const exampleFeature = {
     <div class="home__news">
       <h2>{{ t('home.news.title') }}</h2>
       <div class="home__news-list">
-        <product-item
+        <ProductItem
           v-for="n in 4"
           :key="n"
           v-bind="exampleProduct"
@@ -41,8 +42,12 @@ const exampleFeature = {
         :key="`f_${n}`"
         class="home__features-item"
       >
-        <feature-card v-bind="exampleFeature" />
+        <FeatureCard v-bind="exampleFeature" />
       </div>
+    </div>
+    <div class="home__heros container">
+      <FeatureHero :item="{ label: 'Pó Poderoso', image: ProductImage, uri: 'teste' }" />
+      <FeatureHero :item="{ label: 'Overdose Color', image: ProductImage, uri: 'teste' }" inverse />
     </div>
   </main>
 </template>

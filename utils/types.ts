@@ -1,3 +1,5 @@
+import { CATEGORIES } from './enums'
+
 type Description = {
   content: string
   composition: string
@@ -15,12 +17,13 @@ type Variant = {
 }
 
 export type ProductItem = {
+  product_id: number
   name: string
-  image: string
+  image_path: string
   uri: string
-  value: number
+  price: number
   description?: Description
-  installments?: Installments
+  installments_list?: Installments
   variants?: Variant[]
 }
 
@@ -31,6 +34,14 @@ export type FeatureItem = {
 }
 
 export type CartItem = {
-  product: ProductItem
+  name: string
+  image_path: string
+  product_id: number
+  price: number
   quantity: number
+}
+
+export type CategoryOption = {
+  label: string
+  category: CATEGORIES
 }
