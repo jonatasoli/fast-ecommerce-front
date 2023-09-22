@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { datePtBR, ptBR } from 'naive-ui'
 import { useLocaleHead, useRuntimeConfig } from '#imports'
-import { AppHeader } from '@/components/app'
+import { AppFooter, AppHeader } from '@/components/app'
 import { breakpoints, theme } from '@/naive.style'
 
 const config = useRuntimeConfig()
@@ -38,6 +38,7 @@ const head = useLocaleHead({
       <n-notification-provider>
         <AppHeader />
         <slot />
+        <AppFooter />
       </n-notification-provider>
     </n-config-provider>
   </Body>

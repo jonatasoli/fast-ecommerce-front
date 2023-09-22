@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     NButton: typeof import('naive-ui')['NButton']
+    NCol: typeof import('naive-ui')['NCol']
     NCollapse: typeof import('naive-ui')['NCollapse']
     NCollapseItem: typeof import('naive-ui')['NCollapseItem']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
@@ -22,6 +23,7 @@ declare module '@vue/runtime-core' {
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
     NRadioButton: typeof import('naive-ui')['NRadioButton']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
+    NRow: typeof import('naive-ui')['NRow']
     NSkeleton: typeof import('naive-ui')['NSkeleton']
     NSpace: typeof import('naive-ui')['NSpace']
     NSpin: typeof import('naive-ui')['NSpin']
