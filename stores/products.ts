@@ -14,10 +14,10 @@ export const useProductsStore = defineStore('products', () => {
     let showcase: ProductItem[] = []
 
     try {
-      const res = await fetch(`${serverUrl}/catalog/all`)
+      const res = await fetch(`${serverUrl}/catalog/showcase/all`)
       const data = await res.json()
 
-      showcase = data?.products.slice?.(0, 4) || []
+      showcase = data || []
     } catch (err) {
       console.error(err)
     }
