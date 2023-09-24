@@ -6,15 +6,15 @@ import ProductImage from '@/assets/images/product-item-example.jpeg'
 import { useProductsStore } from '~/stores/products'
 import { FeatureItem, ProductItem } from '~/utils/types'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const store = useProductsStore()
 
 const { data } = await useAsyncData(() => store.getProductsShowcase())
 
-const productToFeature = (product: ProductItem): FeatureItem => ({
-  label: product.name,
-  uri: product.uri,
-  image: product.image_path || '',
+const productToFeature = ({ category, image_path }: ProductItem): FeatureItem => ({
+  label: te(`navigation.${category.name}`) ? t(`navigation.${category.name}`) : category.name,
+  uri: category.path,
+  image: image_path || '',
 })
 
 const allProducts = computed(() => {
@@ -53,6 +53,7 @@ const carouselBackground = (image?: string) => ({
           v-for="(product, index) in allProducts"
           :key="index"
           :style="carouselBackground(product.image_path)"
+          :to="`/products/${product.uri}`"
           class="carousel-slide"
         />
       </n-carousel>

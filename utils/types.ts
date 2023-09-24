@@ -20,6 +20,11 @@ export type ProductItem = {
   product_id: number
   name: string
   image_path: string
+  category: {
+    category_id: number
+    path: string
+    name: string
+  }
   uri: string
   price: number
   description?: Description
