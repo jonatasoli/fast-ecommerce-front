@@ -20,11 +20,26 @@ export type ProductItem = {
   product_id: number
   name: string
   image_path: string
+  category: {
+    category_id: number
+    path: string
+    name: string
+  }
   uri: string
   price: number
   description?: Description
   installments_list?: Installments
+  installments_config: number
   variants?: Variant[]
+  direct_sales: boolean
+  discount: number
+  showcase: boolean
+  show_discount: false
+  heigth?: number
+  width?: number
+  weigth?: number
+  length?: number
+  sku: string
 }
 
 export type FeatureItem = {
