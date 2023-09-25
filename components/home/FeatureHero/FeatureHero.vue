@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const style = computed(() => ({ backgroundImage: `url('${props.item.image}')` }))
-const route = computed(() => `/products/${props.item.uri}`)
+const route = computed(() => `/categories/${props.item.uri}`)
 </script>
 
 <template>
