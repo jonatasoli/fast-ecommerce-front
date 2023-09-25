@@ -1,6 +1,6 @@
 .home {
   background-color: $home-background;
-  padding-bottom: 1rem;
+  padding-bottom: 3rem;
   min-height: 100vh;
 
   &__news {
@@ -8,6 +8,7 @@
     padding: 1.5rem 2.5rem 1rem;
     margin: 0 auto;
     max-width: 1175px;
+    box-sizing: border-box;
     width: 100%;
     margin-bottom: 1.125rem;
 
@@ -78,6 +79,20 @@
       &-item {
         flex: 1;
       }
+    }
+  }
+
+  &__carousel {
+    width: 100%;
+    margin-bottom: 3.5rem;
+
+    .carousel-slide {
+      width: 100%;
+      height: 20rem;
+      display: block;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
   }
 }

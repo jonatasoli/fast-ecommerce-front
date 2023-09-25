@@ -34,5 +34,5 @@ const route = `/products/${props.product.uri}`
 </template>
 
 <style lang="scss" scoped>
-@import './ProductItem.scss';
+@import './ProductCard.scss';
 </style>

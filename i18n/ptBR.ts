@@ -1,4 +1,5 @@
 export default {
+  address: 'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
     news: 'Novidades',
     categories: 'Categorias',
@@ -20,6 +21,14 @@ export default {
     fiber: 'Fiber',
     test: 'Teste',
     diamonds: 'Diamonds',
+  },
+
+  footer: {
+    contact: {
+      title: 'Entre em contato conosco através do botão WHATSAPP, ou deixe seu email',
+      placeholder: 'Digite seu e-mail',
+      subscribe: 'Assinar',
+    },
   },
 
   productItem: {
