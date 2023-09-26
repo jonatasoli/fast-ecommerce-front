@@ -7,12 +7,14 @@ type Props = {
   title: string
   buttonText: string
   placeholder: string
+  receivedValue: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits(['onButtonClick'])
 
 const value = ref('')
+value.value = props.receivedValue
 
 function handleButtonClick() {
   emit('onButtonClick', value.value)
@@ -26,13 +28,13 @@ function handleButtonClick() {
         <ShoppingCartIcon v-if="icon === 'cart' " />
         <BanknotesIcon v-if="icon === 'cupom'" />
       </n-icon>
-      <h3>{{ title }}</h3>
+      <h3>{{ props.title }}</h3>
     </header>
     <div class="card__input">
       <n-input
         v-model:value="value"
         type="text"
-        :placeholder="placeholder"
+        :placeholder="props.placeholder"
       />
       <n-button
         type="primary"
@@ -40,7 +42,7 @@ function handleButtonClick() {
         strong
         @click="handleButtonClick"
       >
-        {{ buttonText }}
+        {{ props.buttonText }}
       </n-button>
     </div>
 
