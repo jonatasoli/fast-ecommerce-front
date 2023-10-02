@@ -1,9 +1,22 @@
 <script lang="ts" setup>
-import { ShoppingCartIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline'
 import { NavBar, SideNav, UserMenu, UserMenuMobile } from '~/components/header'
-import { useDevice } from '#imports'
+import { ref, useDevice, useRouter } from '#imports'
 
 const { isMobile } = useDevice()
+const router = useRouter()
+const search = ref('')
+
+function doSearch() {
+  const trimSearch = search.value.trim()
+
+  if (!trimSearch) {
+    return
+  }
+
+  const encodedSearch = encodeURIComponent(trimSearch)
+  router.push(`/search?q=${encodedSearch}`)
+}
 </script>
 
 <template>
@@ -13,7 +26,21 @@ const { isMobile } = useDevice()
       <NuxtLink to="/" class="logo">
         <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
       </NuxtLink>
-      <div class="search-bar" />
+      <div class="search-bar">
+        <div class="search-bar__group">
+          <input
+            v-model="search"
+            type="text"
+            placeholder="Digite o que você procura"
+            @keyup.enter="doSearch"
+          >
+          <button @click="doSearch">
+            <n-icon>
+              <MagnifyingGlassIcon />
+            </n-icon>
+          </button>
+        </div>
+      </div>
       <div class="menu">
         <UserMenuMobile v-if="isMobile" />
         <UserMenu v-else />
