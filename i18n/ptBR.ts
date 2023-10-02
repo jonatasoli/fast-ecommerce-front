@@ -152,4 +152,8 @@ export default {
   products: {
     empty: 'Nenhum produto encontrado',
   },
+
+  search: {
+    title: 'Resultados para: {search}',
+  },
 }
