@@ -1,21 +1,36 @@
 <script lang="ts" setup>
-import { computed, useAsyncData, useI18n } from '#imports'
+import { computed, useAsyncData, useFetch, useI18n, useRuntimeConfig } from '#imports'
 import { ProductCard } from '@/components/shared'
 import { FeatureCard, FeatureHero } from '~/components/home'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 import { useProductsStore } from '~/stores/products'
 import { FeatureItem, ProductItem } from '~/utils/types'
 
-const { t, te } = useI18n()
+const { t } = useI18n()
 const store = useProductsStore()
+const serverUrl = useRuntimeConfig().public.serverUrl
+const url = `${serverUrl}/catalog/featured`
 
 const { data } = await useAsyncData(() => store.getProductsShowcase())
+const { data: featured } = await useFetch<{ products: ProductItem[] }>(url)
+// const { data: categories } = await useFetch(`${serverUrl}/catalog/categories`, {
+//   query: {
+//     showcase: true,
+//   },
+// })
 
-const productToFeature = ({ category, image_path }: ProductItem): FeatureItem => ({
-  label: te(`navigation.${category.name}`) ? t(`navigation.${category.name}`) : category.name,
+// console.log(categories.value)
+
+const productToFeature = ({ category, image_path, name }: ProductItem): FeatureItem => ({
+  label: name,
   uri: category.path,
   image: image_path || '',
 })
+
+const featuredProducts = computed(() => featured.value?.products
+  ? featured.value.products.map(product => productToFeature(product))
+  : [],
+)
 
 const allProducts = computed(() => {
   if (!data.value) {
@@ -38,7 +53,6 @@ const allProducts = computed(() => {
 
 const showcase = computed(() => allProducts.value.slice(0, 4))
 const features = computed(() => allProducts.value.slice(4, 7).map(product => productToFeature(product)))
-const hero = computed(() => allProducts.value.slice(7, 9).map(product => productToFeature(product)))
 
 const carouselBackground = (image?: string) => ({
   backgroundImage: `url('${image || ProductImage}')`,
@@ -77,9 +91,9 @@ const carouselBackground = (image?: string) => ({
         <FeatureCard :item="product" />
       </div>
     </div>
-    <div v-if="hero.length > 0" class="home__heros container">
+    <div v-if="featuredProducts?.length > 0" class="home__heros container">
       <FeatureHero
-        v-for="(product, index) in hero"
+        v-for="(product, index) in featuredProducts"
         :key="product.label"
         :item="product"
         :inverse="index % 2 === 1"
