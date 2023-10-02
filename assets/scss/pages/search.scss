@@ -1,0 +1,10 @@
+.search {
+  &__pagination {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  &__empty {
+    min-height: 40rem;
+  }
+}

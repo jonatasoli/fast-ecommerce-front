@@ -22,9 +22,11 @@ const route = `/products/${props.product.uri}`
       <NuxtLink :style="productImage" :to="route" />
     </div>
     <div class="product-item__content">
-      <NuxtLink :to="route">
-        {{ product.name }}
-      </NuxtLink>
+      <div class="name">
+        <NuxtLink :to="route">
+          {{ product.name }}
+        </NuxtLink>
+      </div>
       <p>{{ price }}</p>
     </div>
     <button class="product-item__buy">

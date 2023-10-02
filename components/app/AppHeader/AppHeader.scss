@@ -102,4 +102,62 @@
       }
     }
   }
+
+  .search-bar {
+    &__group {
+      max-width: 25rem;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+
+      input {
+        flex: 1;
+        background-color: transparent;
+        border-radius: .5rem 0 0 .5rem;
+        border: 1px solid $primary-color;
+        outline: none;
+        box-shadow: none;
+        height: 2.25rem;
+        box-sizing: border-box;
+        color: #DDD;
+        padding: 0 1rem;
+        transition: all 0.2s;
+
+        &::placeholder {
+          color: #AAA;
+        }
+
+        &:focus {
+          border-width: 2px;
+        }
+      }
+
+      button {
+        flex: 0 0 auto;
+        height: 2.25rem;
+        border-radius: 0 .5rem .5rem 0;
+        width: 3rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        padding: 0;
+        border: 1px solid $primary-color;
+        border-left: none;
+        color: $primary-color;
+        background: transparent;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: $primary-color;
+          color: black;
+        }
+
+        &:active {
+          background-color: $primary-color-pressed;
+          color: black;
+        }
+      }
+    }
+  }
 }
