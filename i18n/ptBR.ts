@@ -46,11 +46,12 @@ export default {
   },
 
   productPage: {
-    installments: {
-      term1: 'em até',
-      term2: 'de',
-      term3: 'sem juros',
-    },
+    installments: 'em até {count} de {amount} sem juros',
+    // installments: {
+    //   term1: 'em até',
+    //   term2: 'de',
+    //   term3: 'sem juros',
+    // },
     variants: 'Selecione uma opção:',
   },
 
