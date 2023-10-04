@@ -7,7 +7,7 @@ import { useProductsStore } from '~/stores/products'
 import { FeatureItem, ProductItem } from '~/utils/types'
 import { useCategoryStore } from '~/stores/categories'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const store = useProductsStore()
 
 const categoryStore = useCategoryStore()
@@ -17,13 +17,9 @@ const { data: carousel } = await useAsyncData(() => store.getProductsShowcase())
 const { data: featured } = await useFetch<{ products: ProductItem[] }>(`${serverUrl}/catalog/featured`)
 const { data: latest } = await useFetch<{ products: ProductItem[] }>(`${serverUrl}/catalog/latest`)
 
-const url = `${serverUrl}/catalog/featured`
-
-const { data } = await useAsyncData(() => store.getProductsShowcase())
-
-const productToFeature = ({ category, image_path, name }: ProductItem): FeatureItem => ({
+const productToFeature = ({ image_path, name, uri }: ProductItem): FeatureItem => ({
   label: name,
-  uri: category.path,
+  uri,
   image: image_path || '',
 })
 
@@ -31,15 +27,6 @@ const featuredProducts = computed(() => featured.value?.products
   ? featured.value.products.map(product => productToFeature(product))
   : [],
 )
-
-const allProducts = computed(() => {
-  if (!data.value) {
-    return []
-  }
-})
-
-const products: ProductItem[] = [...data.value]
-const diff = 9 - data.value.length
 
 const categories = computed(() =>
   categoryStore.sortedCategories
@@ -60,8 +47,6 @@ const latestProducts = computed(() => {
   if (!latest.value) {
     return []
   }
-const showcase = computed(() => allProducts.value.slice(0, 4))
-const features = computed(() => allProducts.value.slice(4, 7).map(product => productToFeature(product)))
 
   return latest.value.products.slice(0, 4)
 })
