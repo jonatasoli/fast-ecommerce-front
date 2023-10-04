@@ -27,10 +27,10 @@ const installments = computed(() => {
 
   if (product.value) {
     if (product.value.installments_list) {
-      count = product.value.installments_list.count
-      amount = currencyFormat(product.value.installments_list.value)
+      count = product.value.installments_list.count || count
+      amount = currencyFormat(product.value.installments_list.value || product.value.price)
     } else {
-      amount = currencyFormat(Math.round(product.value.price / 4))
+      amount = currencyFormat(Math.round(product.value.price / count))
     }
   }
 
