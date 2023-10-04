@@ -29,7 +29,6 @@ export type ProductItem = {
   price: number
   description?: Description
   installments_list?: Installments
-  installments_config: number
   variants?: Variant[]
   direct_sales: boolean
   discount: number
