@@ -14,7 +14,9 @@ const route = computed(() => `/categories/${props.item.uri}`)
 
 <template>
   <div class="feature-item">
-    <NuxtLink :to="route" :style="style" />
+    <div class="feature-item__link">
+      <NuxtLink :to="route" :style="style" />
+    </div>
     <div class="feature-item__label">
       {{ item.label }}
     </div>

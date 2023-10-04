@@ -1,16 +1,22 @@
 import { defineStore } from 'pinia'
-import { ref, useNuxtApp } from '#imports'
+import { computed, ref, useNuxtApp } from '#imports'
 
 type CategoryItem = {
   category_id: number
   name: string
   path: string
+  image_path?: string
 }
 
 export const useCategoryStore = defineStore('categorys', () => {
   const categories = ref<CategoryItem[]>([])
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
+
+  const sortedCategories = computed(() => [...categories.value].sort((a, b) => {
+    const order = { news: -1, sales: -1 }
+    return (order[a.name] || 0) - (order[b.name] || 0)
+  }))
 
   async function getCategorys() {
     try {
@@ -26,5 +32,6 @@ export const useCategoryStore = defineStore('categorys', () => {
   return {
     categories,
     getCategorys,
+    sortedCategories,
   }
 })

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { useCartStore } from '@/stores/cart'
 import { currencyFormat } from '@/utils/helpers'
-import { computed, createError, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig } from '#imports'
+import { LOCALES, computed, createError, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig } from '#imports'
 import { ProductItem } from '@/utils/types'
 
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const cartStore = useCartStore()
 
 const { data: product, error } = await useFetch<ProductItem>(`${config.public.serverUrl}/product/${route.params.uri}`)
@@ -21,7 +21,21 @@ if (error.value || !product.value) {
 }
 
 const price = computed(() => currencyFormat(product.value?.price || 0))
-const installments = computed(() => currencyFormat(product.value?.installments_list?.value || 0))
+const installments = computed(() => {
+  let count = 4
+  let amount = currencyFormat(0)
+
+  if (product.value) {
+    if (product.value.installments_list) {
+      count = product.value.installments_list.count
+      amount = currencyFormat(product.value.installments_list.value)
+    } else {
+      amount = currencyFormat(Math.round(product.value.price / 4))
+    }
+  }
+
+  return { count, amount }
+})
 const value = ref(null)
 
 async function addProductToCart() {
@@ -38,6 +52,8 @@ async function addProductToCart() {
   })
   router.push('/cart')
 }
+
+const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
 </script>
 
 <template>
@@ -76,10 +92,15 @@ async function addProductToCart() {
         <p class="product__content--price">
           {{ price }}
         </p>
-        <p class="product__content--installments">
-          {{ t('productPage.installments.term1') }} <span>{{ product?.installments_list?.count || 0 }}x</span>
-          {{ t('productPage.installments.term2') }} <span>{{ installments }}</span>
-          {{ t('productPage.installments.term3') }}
+        <p v-if="isPtBr" class="product__content--installments">
+          <i18n-t keypath="productPage.installments">
+            <template #count>
+              <span>{{ installments.count }}x</span>
+            </template>
+            <template #amount>
+              <span>{{ installments.amount }}</span>
+            </template>
+          </i18n-t>
         </p>
         <div class="product__content--buy">
           <n-button

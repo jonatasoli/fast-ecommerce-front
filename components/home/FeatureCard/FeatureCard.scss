@@ -23,12 +23,18 @@
     top: 0;
   }
 
+  &__link {
+    overflow: hidden;
+    background-color: #FFF;
+  }
+
   a {
     display: block;
     width: 100%;
     height: 16.5rem;
     background-position: center center;
-    background-size: cover;
+    background-size: cover;    
+    background-color: rgba($color: $primary-color, $alpha: .2);
     transition: all 0.2s ease-in-out;
 
     &:hover {
