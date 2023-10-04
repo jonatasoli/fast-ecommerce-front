@@ -13,11 +13,6 @@ export function useNavLinks() {
   const { t } = useI18n()
   const store = useCategoryStore()
 
-  const sortingCategories = store.categories.sort((a, b) => {
-    const order = { news: -1, sales: -1 }
-    return (order[a.name] || 0) - (order[b.name] || 0)
-  })
-
   const categoryLink = (uri: CATEGORIES | string, label: string, basePath = 'categories') => ({
     label,
     to: localePath(`/${basePath}${uri ? `/${uri}` : ''}`),
@@ -25,7 +20,7 @@ export function useNavLinks() {
     children: [],
   }) as NavLink
 
-  const navLinks = sortingCategories.map(category => categoryLink(category.path, t(`navigation.${category.name}`)))
+  const navLinks = store.sortedCategories.map(category => categoryLink(category.path, t(`navigation.${category.name}`)))
 
   return {
     categoryLink,
