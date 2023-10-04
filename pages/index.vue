@@ -20,14 +20,6 @@ const { data: latest } = await useFetch<{ products: ProductItem[] }>(`${serverUr
 const url = `${serverUrl}/catalog/featured`
 
 const { data } = await useAsyncData(() => store.getProductsShowcase())
-const { data: featured } = await useFetch<{ products: ProductItem[] }>(url)
-// const { data: categories } = await useFetch(`${serverUrl}/catalog/categories`, {
-//   query: {
-//     showcase: true,
-//   },
-// })
-
-// console.log(categories.value)
 
 const productToFeature = ({ category, image_path, name }: ProductItem): FeatureItem => ({
   label: name,
@@ -44,9 +36,10 @@ const allProducts = computed(() => {
   if (!data.value) {
     return []
   }
+})
 
-  const products: ProductItem[] = [...data.value]
-  const diff = 9 - data.value.length
+const products: ProductItem[] = [...data.value]
+const diff = 9 - data.value.length
 
 const categories = computed(() =>
   categoryStore.sortedCategories
