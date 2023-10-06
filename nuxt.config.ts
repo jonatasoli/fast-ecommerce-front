@@ -37,6 +37,7 @@ export default defineNuxtConfig({
   },
   plugins: [
     { src: '@/plugins/vue-tel-input', mode: 'client' },
+    { src: '@/plugins/vue-the-mask', mode: 'client' },
   ],
   build: {
     analyze: true,

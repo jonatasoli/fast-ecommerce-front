@@ -1,6 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { TrashIcon } from '@heroicons/vue/24/outline'
+import { useDebounceFn } from '@vueuse/core'
 import { currencyFormat, useI18n } from '#imports'
 import { useCartStore } from '@/stores/cart'
 import InputCard from '~/components/cart/InputCard/InputCard.vue'
@@ -8,9 +9,17 @@ import InputCard from '~/components/cart/InputCard/InputCard.vue'
 const cartStore = useCartStore()
 const { getCart } = storeToRefs(cartStore)
 const { t } = useI18n()
-const freight = getCart?.value?.freight?.price ? currencyFormat(getCart.value.freight.price, undefined, 'freight') : 0
+
 function handleEstimateFreight(value) {
   cartStore.calculateFreight(value)
+}
+
+const debounceFn = useDebounceFn((id, quantity) => {
+  cartStore.updateQuantity(id, quantity)
+}, 1000, { maxWait: 5000 })
+
+function updateQuantity(id, quantity) {
+  debounceFn(id, quantity)
 }
 </script>
 
@@ -45,6 +54,7 @@ function handleEstimateFreight(value) {
               :title="t('cart.inputs.shipping.title')"
               :button-text="t('cart.inputs.shipping.buttonText')"
               placeholder="Informe seu CEP"
+              :received-value="getCart.zipcode"
               @on-button-click="handleEstimateFreight"
             >
               <div v-if="getCart?.freight?.price" class="cart__freigth">
@@ -58,6 +68,7 @@ function handleEstimateFreight(value) {
             :title="t('cart.inputs.discount.title')"
             placeholder="Cupom de desconto"
             :button-text="t('cart.inputs.discount.buttonText')"
+            received-value=""
           />
         </div>
         <div class="cart__not-empty--container">
@@ -91,7 +102,7 @@ function handleEstimateFreight(value) {
                       :min="1"
                       :max="999"
                       on
-                      @update:value="cartStore.updateQuantity(item.product_id, $event)"
+                      @update:value="updateQuantity(item.product_id, $event)"
                     />
                   </div>
                   <div class="value">
@@ -128,7 +139,7 @@ function handleEstimateFreight(value) {
 
             <div class="summary-values">
               <p>{{ t("cart.summary.shipping") }}</p>
-              <p> {{ freight }}</p>
+              <p> {{ currencyFormat(getCart?.freight?.price, undefined, 'freight') || 0 }}</p>
             </div>
             <hr>
 
