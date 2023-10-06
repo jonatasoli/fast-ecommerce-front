@@ -8,7 +8,7 @@ type CategoryItem = {
   image_path?: string
 }
 
-export const useCategoryStore = defineStore('categorys', () => {
+export const useCategoryStore = defineStore('categories', () => {
   const categories = ref<CategoryItem[]>([])
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
