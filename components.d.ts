@@ -24,6 +24,7 @@ declare module '@vue/runtime-core' {
     NGi: typeof import('naive-ui')['NGi']
     NGrid: typeof import('naive-ui')['NGrid']
     NGridCol: typeof import('naive-ui')['NGridCol']
+    NGridItem: typeof import('naive-ui')['NGridItem']
     NGridRow: typeof import('naive-ui')['NGridRow']
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']

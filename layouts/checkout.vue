@@ -10,6 +10,7 @@ const head = useLocaleHead({
 </script>
 
 <template>
+  <!DOCTYPE html>
   <Html :lang="head.htmlAttrs?.lang">
     <Head>
       <Title>Gatto Rosa</Title>
