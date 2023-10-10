@@ -59,3 +59,8 @@ export type CategoryOption = {
   label: string
   category: CATEGORIES
 }
+
+export type PaginatedProducts = {
+  products: ProductItem[]
+  total_pages: number
+}
