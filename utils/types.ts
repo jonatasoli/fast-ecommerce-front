@@ -63,4 +63,5 @@ export type CategoryOption = {
 export type PaginatedProducts = {
   products: ProductItem[]
   total_pages: number
+  total_records: number
 }

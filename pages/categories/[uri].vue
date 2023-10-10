@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, useFetch, useI18n, useRoute, useRuntimeConfig } from '#imports'
+import { computed, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig, watch } from '#imports'
 import { ProductCard, ProductSkeleton } from '~/components/shared'
 import { getPageFromRoute } from '~/utils/helpers'
 import { PaginatedProducts } from '~/utils/types'
 
 const { serverUrl } = useRuntimeConfig().public
 const route = useRoute()
-const OFFSET = 16
+const router = useRouter()
+const OFFSET = 12
 const { t } = useI18n()
 const { page } = getPageFromRoute()
 const url = computed(() => route.params.uri === 'latest'
@@ -23,7 +24,26 @@ const { data, pending } = await useFetch<PaginatedProducts>(url.value, {
 })
 
 const products = computed(() => data.value?.products || [])
-const totalPages = computed(() => data.value?.total_pages ? data.value.total_pages + 1 : 1)
+const totalPages = computed(() => data.value?.total_pages ? data.value.total_pages : 1)
+const totalRecords = computed(() => {
+  const records = data.value?.total_records || 0
+
+  if (!records) {
+    return ''
+  }
+
+  return records === 1
+    ? t('categoryPage.singleProduct')
+    : t('categoryPage.totalProducts', { num: records.toString().padStart(2, '0') })
+})
+
+watch(page, () => router.push({
+  ...route,
+  query: {
+    ...route.query,
+    p: page.value,
+  },
+}))
 </script>
 
 <template>
@@ -31,6 +51,9 @@ const totalPages = computed(() => data.value?.total_pages ? data.value.total_pag
     <h1 class="title">
       {{ t(`navigation.${route.params.uri}`) }}
     </h1>
+    <p class="subtitle">
+      {{ totalRecords }}
+    </p>
     <n-grid
       v-if="pending"
       cols="1 480:2 768:3 1024:4"
@@ -42,7 +65,7 @@ const totalPages = computed(() => data.value?.total_pages ? data.value.total_pag
       </n-grid-item>
     </n-grid>
     <div v-else-if="products.length === 0" class="category__empty">
-      <p>{{ t(`products.empty`) }}</p>
+      <p>{{ t(`categoryPage.empty`) }}</p>
     </div>
     <n-grid
       v-else
@@ -70,15 +93,28 @@ const totalPages = computed(() => data.value?.total_pages ? data.value.total_pag
 
 <style scoped lang="scss">
 .title {
-  margin: 3rem 0;
+  margin: 2rem 0 1rem;
+  font-size: 2rem;
   text-align: center;
   font-weight: 300;
   color: $primary-color;
   font-size: 3rem;
 
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    margin: 2rem 0;
+  @media (min-width: 768px) {
+    margin: 3rem 0 1rem;
+  }
+}
+
+.subtitle {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: #AAA;
+
+  @media (min-width: 768px) {
+    margin-bottom: 3rem;
   }
 }
 

@@ -2,6 +2,7 @@ export default {
   address: 'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
     news: 'Novidades',
+    latest: 'Novidades',
     categories: 'Categorias',
     kits: 'Combos',
     naturalCompound: 'Cápsulas (Composto Natural)',
@@ -145,8 +146,10 @@ export default {
     register: 'Cadastre-se',
   },
 
-  products: {
+  categoryPage: {
     empty: 'Nenhum produto encontrado',
+    totalProducts: '{num} produtos',
+    singleProduct: '01 produto',
   },
 
   search: {

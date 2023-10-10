@@ -22,7 +22,7 @@ const { data, pending } = await useFetch<PaginatedProducts>(url, {
   },
 })
 
-const totalPages = ref(data.value?.total_pages ? data.value.total_pages + 1 : 1)
+const totalPages = ref(data.value?.total_pages ? data.value.total_pages : 1)
 const products = computed<ProductItem[]>(() => data.value?.products || [])
 const searchTitle = computed(() => decodeURIComponent(query))
 
