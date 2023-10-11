@@ -1,4 +1,5 @@
 import { CURRENCIES, LOCALES } from './enums'
+import { ref, useRoute } from '#imports'
 
 export function currencyFormat(value = 0, locale = LOCALES.PT_BR, type = ''): string {
   const currency = CURRENCIES[locale] || LOCALES.PT_BR
@@ -12,4 +13,18 @@ export function currencyFormat(value = 0, locale = LOCALES.PT_BR, type = ''): st
   }
 
   return format(value / 100)
+}
+
+export function getPageFromRoute() {
+  const page = useRoute().query.p?.toString() || ''
+  const intPage = parseInt(page)
+  const pageRef = ref(1)
+
+  if (page && !isNaN(intPage) && intPage > 0) {
+    pageRef.value = intPage
+  }
+
+  return {
+    page: pageRef,
+  }
 }
