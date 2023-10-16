@@ -39,7 +39,7 @@ export const useCartStore = defineStore('cart', () => {
     async function createCart() {
       try {
         if (!uuid) {
-          const res = await fetch(`${serverUrl}/cart`, {
+          const res = await fetch(`${serverUrl}/cart/`, {
             method: 'POST',
           })
           const data = await res.json()
@@ -59,7 +59,7 @@ export const useCartStore = defineStore('cart', () => {
     async function addProduct(uuid: string = cart.value.uuid) {
       try {
         loadingCart.value = true
-        const res = await fetch(`${serverUrl}/cart/${uuid}/product`, {
+        const res = await fetch(`${serverUrl}/cart/${uuid}/product/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ export const useCartStore = defineStore('cart', () => {
   async function estimate() {
     try {
       loadingCart.value = true
-      const res = await fetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
+      const res = await fetch(`${serverUrl}/cart/${cart.value.uuid}/estimate/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const res = await fetch(`${serverUrl}/cart/${uuid}`, {
+      const res = await fetch(`${serverUrl}/cart/${uuid}`/, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${$config.public.apiKey}`,
