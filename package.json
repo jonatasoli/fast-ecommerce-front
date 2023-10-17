@@ -1,6 +1,9 @@
 {
   "private": true,
   "type": "module",
+  "engines": { 
+    "node": "18.x" 
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
