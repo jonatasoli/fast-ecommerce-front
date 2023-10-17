@@ -20,7 +20,13 @@ export const useCategoryStore = defineStore('categories', () => {
 
   async function getCategorys() {
     try {
-      const res = await fetch(`${serverUrl}/catalog/categories`)
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+      const res = await fetch(`${serverUrl}/catalog/categories`, {
+        headers,
+      })
       const data = await res.json()
 
       categories.value = data.categories || []

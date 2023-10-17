@@ -38,9 +38,14 @@ export const useCartStore = defineStore('cart', () => {
     const uuid = cart.value.uuid
     async function createCart() {
       try {
+        const headers = {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        }
         if (!uuid) {
-          const res = await fetch(`${serverUrl}/cart/`, {
+          const res = await fetch(`${serverUrl}/cart`, {
             method: 'POST',
+            headers,
           })
           const data = await res.json()
           cart.value.uuid = data.uuid
@@ -59,11 +64,14 @@ export const useCartStore = defineStore('cart', () => {
     async function addProduct(uuid: string = cart.value.uuid) {
       try {
         loadingCart.value = true
-        const res = await fetch(`${serverUrl}/cart/${uuid}/product/`, {
+        const headers = {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        }
+        const res = await fetch(`${serverUrl}/cart/${uuid}/product`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers,
           body: JSON.stringify({
             product_id: item.product_id,
             name: item.name,
@@ -104,11 +112,13 @@ export const useCartStore = defineStore('cart', () => {
   async function estimate() {
     try {
       loadingCart.value = true
-      const res = await fetch(`${serverUrl}/cart/${cart.value.uuid}/estimate/`, {
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+      const res = await fetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           ...cart.value,
           freight_product_code: '03298',
@@ -155,10 +165,12 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const res = await fetch(`${serverUrl}/cart/${uuid}` / {
+      const res = await fetch(`${serverUrl}/cart/${uuid}`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${$config.public.apiKey}`,
+          'Authorization': `Bearer ${$config.public.apiKey}`,
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
       })
       const data = await res.json()
