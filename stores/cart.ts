@@ -155,7 +155,7 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const res = await fetch(`${serverUrl}/cart/${uuid}`/ {
+      const res = await fetch(`${serverUrl}/cart/${uuid}` / {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${$config.public.apiKey}`,
