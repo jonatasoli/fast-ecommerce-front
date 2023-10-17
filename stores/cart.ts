@@ -43,7 +43,7 @@ export const useCartStore = defineStore('cart', () => {
           'Access-Control-Allow-Origin': '*',
         }
         if (!uuid) {
-          const res = await fetch(`${serverUrl}/cart`, {
+          const res = await fetch(`${serverUrl}/cart/`, {
             method: 'POST',
             headers,
           })
