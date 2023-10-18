@@ -108,11 +108,12 @@ defineExpose({
 <template>
   <n-form class="border checkout__address">
     <n-grid
-      :x-gap="20"
-      :cols="12"
+      x-gap="6 md:20"
+      cols="4 md:12"
       class="zipcode"
+      style="align-items: center"
     >
-      <n-gi :span="11">
+      <n-gi span="3 md:11">
         <n-form-item
           :label="t('checkout.shipping.form.zipcode')"
           v-bind="zipcode"

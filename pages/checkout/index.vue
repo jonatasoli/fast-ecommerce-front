@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
-import { definePageMeta, onMounted, ref, useI18n } from '#imports'
+import { definePageMeta, onMounted, ref, useDevice, useI18n } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCheckoutStore } from '~/stores/checkout'
-
-import { FormAddress, ResumeOrder } from '~/components/checkout'
+import { FormAddress, FormCreditCard, ResumeOrder } from '~/components/checkout'
 import { useCartStore } from '~/stores/cart'
 
 definePageMeta({
@@ -20,16 +19,16 @@ definePageMeta({
     },
   ],
 })
+const { isMobile } = useDevice()
 const checkoutStore = useCheckoutStore()
 const { user } = storeToRefs(useUserStore())
 const { checkout } = storeToRefs(useCheckoutStore())
 
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
-const current = ref<number>(1)
+const current = ref<number>(2)
 const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
 const paymentMethod = ref<string>('credit-card')
-const timestamp = ref<number | null>(null)
 const shipping_is_payment = ref<boolean | null>(null)
 
 const { t } = useI18n()
@@ -83,7 +82,11 @@ onMounted(() => {
 
 <template>
   <div class="container checkout">
-    <n-steps :current="current" :status="currentStatus">
+    <n-steps
+      v-if="!isMobile"
+      :current="current"
+      :status="currentStatus"
+    >
       <n-step
         :title="t('checkout.steps.login')"
       />
@@ -175,7 +178,7 @@ onMounted(() => {
         </n-radio-group>
       </div>
       <div v-if="paymentMethod === 'credit-card'" class="border">
-        <n-form>
+        <!-- <n-form>
           <n-form-item :label="t('checkout.payment.credit_card_number')">
             <n-input
               v-mask="'#### #### #### ####'"
@@ -206,7 +209,8 @@ onMounted(() => {
               </n-form-item>
             </n-gi>
           </n-grid>
-        </n-form>
+        </n-form> -->
+        <FormCreditCard />
       </div>
     </div>
 
@@ -217,7 +221,7 @@ onMounted(() => {
       <ResumeOrder />
     </div>
 
-    <div v-if="current && user" class="checkout__actions">
+    <div v-if="current " class="checkout__actions">
       <n-button
         v-if="current === 4"
         quaternary
