@@ -65,3 +65,30 @@ export type PaginatedProducts = {
   total_pages: number
   total_records: number
 }
+
+export interface Address {
+  country: string
+  state: string
+  city: string
+  neighborhood: string
+  street: string
+  street_number: string
+  address_complement: string
+  zipcode: string
+}
+
+export interface Checkout {
+  shipping_is_payment: boolean
+  user_address: Address
+  shipping_address: Address
+}
+
+export interface CreditCard {
+  credit_card_number: string
+  credit_card_name: string
+  credit_card_expiration: string
+  credit_card_cvv: string
+  credit_card_installments: number
+  type_document: string
+  document_number: string
+}

@@ -59,6 +59,7 @@
     "vitest": "^0.32.0"
   },
   "dependencies": {
+    "@mercadopago/sdk-js": "^0.0.3",
     "@nuxtjs/google-fonts": "^3.0.1",
     "@pinia/nuxt": "^0.4.11",
     "@types/jest": "^29.2.6",

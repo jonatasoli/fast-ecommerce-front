@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
-import { definePageMeta, onMounted, ref, useDevice, useI18n } from '#imports'
+import { CreditCard, definePageMeta, onMounted, ref, useDevice, useI18n, useNuxtApp } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCheckoutStore } from '~/stores/checkout'
-import { FormAddress, FormCreditCard, ResumeOrder } from '~/components/checkout'
 import { useCartStore } from '~/stores/cart'
+import { FormAddress, FormCreditCard, ResumeOrder } from '~/components/checkout'
+import { getMonthYearFromTimestamp } from '~/utils/helpers'
 
 definePageMeta({
   layout: 'checkout',
@@ -23,41 +24,44 @@ const { isMobile } = useDevice()
 const checkoutStore = useCheckoutStore()
 const { user } = storeToRefs(useUserStore())
 const { checkout } = storeToRefs(useCheckoutStore())
-
+const { $mercadoPago } = useNuxtApp()
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
-const current = ref<number>(2)
+const formCreditCard = ref<typeof FormCreditCard | null>(null)
+const current = ref<number>(1)
 const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
 const paymentMethod = ref<string>('credit-card')
 const shipping_is_payment = ref<boolean | null>(null)
 
 const { t } = useI18n()
 
-function handleSubmitAndValidate(form) {
-  form.value?.onSubmit()
-  const data = form.value?.validate().then(({ valid }) => {
-    if (valid) {
-      return true
-    }
-    return false
-  })
-  return data
-}
-
 async function nextSteps() {
-  if (current.value === 2) {
-    const validFormUserAddress = await handleSubmitAndValidate(formUserAddress)
-    const validFormShippingAddress = await handleSubmitAndValidate(formShippingAddress)
+  if (current.value === 1) {
+    current.value++
+    return
+  }
 
-    if (validFormUserAddress) {
-      if (!shipping_is_payment.value && validFormShippingAddress) {
-        current.value = current.value + 1
-      } else if (shipping_is_payment.value) {
-        current.value = current.value + 1
+  if (current.value === 2) {
+    const { valid: validUserAddress } = await formUserAddress.value?.validate()
+    if (validUserAddress && !shipping_is_payment.value) {
+      const { valid: validShippingAddress } = await formShippingAddress.value?.validate()
+
+      if (validShippingAddress) {
+        return current.value++
       }
     }
-  } else {
-    current.value = current.value + 1
+
+    if (validUserAddress) {
+      return current.value++
+    }
+  }
+
+  if (current.value === 3 && paymentMethod.value === 'credit-card') {
+    const { valid } = await formCreditCard.value?.validate()
+    if (valid) {
+      handleSubmitCreditCard(formCreditCard.value?.values)
+      current.value++
+    }
   }
 }
 
@@ -71,6 +75,28 @@ function handleSubmitShippingAddress(address) {
 
 function handleUpdateShippingIsPayment(value) {
   checkoutStore.setShippingIsPayment(value)
+}
+
+async function handleSubmitCreditCard(creditCard: CreditCard) {
+  const { month, year } = getMonthYearFromTimestamp(creditCard.credit_card_expiration)
+
+  const card = {
+    cardNumber: creditCard.credit_card_number.split(' ').join(''),
+    securityCode: creditCard.credit_card_cvv,
+    expirationMonth: month,
+    expirationYear: year,
+    cardholder: {
+      name: creditCard.credit_card_name,
+      identification: {
+        type: creditCard.type_document,
+        number: creditCard.document_number,
+      },
+    },
+  }
+
+  const tokenResponse = await $mercadoPago.createCardToken(card)
+
+  return tokenResponse.id
 }
 
 onMounted(() => {
@@ -131,7 +157,7 @@ onMounted(() => {
       <FormAddress
         ref="formUserAddress"
         addres-type="user_address"
-        :values="checkout.user_address"
+        :data="checkout.user_address"
         @on-submit="handleSubmitUserAddress"
       />
       <h2 class="title">
@@ -156,7 +182,7 @@ onMounted(() => {
         <FormAddress
           ref="formShippingAddress"
           addres-type="shipping_address"
-          :values="checkout.shipping_address"
+          :data="checkout.shipping_address"
           @on-submit="handleSubmitShippingAddress"
         />
       </div>
@@ -178,39 +204,9 @@ onMounted(() => {
         </n-radio-group>
       </div>
       <div v-if="paymentMethod === 'credit-card'" class="border">
-        <!-- <n-form>
-          <n-form-item :label="t('checkout.payment.credit_card_number')">
-            <n-input
-              v-mask="'#### #### #### ####'"
-            />
-          </n-form-item>
-          <n-form-item :label="t('checkout.payment.credit_card_name')">
-            <n-input />
-          </n-form-item>
-          <n-grid :x-gap="20" :cols="10">
-            <n-gi :span="2">
-              <n-form-item :label="t('checkout.payment.credit_card_validate')">
-                <n-date-picker
-                  v-model:value="timestamp"
-                  type="month"
-                  format="MM/yyyy"
-                  clearable
-                />
-              </n-form-item>
-            </n-gi>
-            <n-gi :span="2">
-              <n-form-item :label="t('checkout.payment.credit_card_cvv')">
-                <n-input />
-              </n-form-item>
-            </n-gi>
-            <n-gi :span="6">
-              <n-form-item :label="t('checkout.payment.installments')">
-                <n-select />
-              </n-form-item>
-            </n-gi>
-          </n-grid>
-        </n-form> -->
-        <FormCreditCard />
+        <FormCreditCard
+          ref="formCreditCard"
+        />
       </div>
     </div>
 
@@ -240,10 +236,11 @@ onMounted(() => {
         {{ t('checkout.actions.back') }}
       </n-button>
       <n-button
-        v-if="current < 4"
+        v-if="current < 4 && user"
         type="primary"
         strong
         class="btn-checkout"
+        submit
         @click="nextSteps"
       >
         {{ t('checkout.actions.next') }}
