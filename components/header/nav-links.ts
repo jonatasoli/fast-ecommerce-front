@@ -1,4 +1,4 @@
-import { CATEGORIES, useI18n, useLocalePath } from '#imports'
+import { CATEGORIES, useLocalePath } from '#imports'
 import { useCategoryStore } from '@/stores/categories'
 
 interface NavLink {
@@ -10,7 +10,6 @@ interface NavLink {
 
 export function useNavLinks() {
   const localePath = useLocalePath()
-  const { t } = useI18n()
   const store = useCategoryStore()
 
   const categoryLink = (uri: CATEGORIES | string, label: string, basePath = 'categories') => ({
@@ -20,7 +19,7 @@ export function useNavLinks() {
     children: [],
   }) as NavLink
 
-  const navLinks = store.sortedCategories.map(category => categoryLink(category.path, t(`navigation.${category.name}`)))
+  const navLinks = store.sortedCategories.map(category => categoryLink(category.path, category.name))
 
   return {
     categoryLink,
