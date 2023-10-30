@@ -30,6 +30,7 @@ function updateQuantity(id, quantity) {
         <n-spin size="large" />
       </n-space>
     </div>
+
     <div v-else>
       <div v-if="cartStore.getCart.cart_items.length === 0" class="cart__empty">
         <p>{{ t("cart.empty") }} :(</p>
@@ -82,7 +83,7 @@ function updateQuantity(id, quantity) {
               </div>
               <div class="table-body">
                 <div
-                  v-for="(item) in getCart.cart_items"
+                  v-for="(item) in cartStore.getCart.cart_items"
                   :key="item.product_id"
                   class="table-row"
                 >
@@ -129,7 +130,7 @@ function updateQuantity(id, quantity) {
           <div class="cart__not-empty--summary">
             <div class="summary-values">
               <p>{{ t("cart.summary.products") }}</p>
-              <p>{{ currencyFormat(getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(cartStore.getCart.subtotal) }}</p>
             </div>
 
             <div class="summary-values">
@@ -139,13 +140,13 @@ function updateQuantity(id, quantity) {
 
             <div class="summary-values">
               <p>{{ t("cart.summary.shipping") }}</p>
-              <p> {{ currencyFormat(getCart?.freight?.price, undefined, 'freight') || 0 }}</p>
+              <p> {{ currencyFormat(cartStore.getCart?.freight?.price, undefined, 'freight') || 0 }}</p>
             </div>
             <hr>
 
             <div class="summary-values amount">
               <p>{{ t("cart.summary.total") }}</p>
-              <p>{{ currencyFormat(getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(cartStore.getCart.subtotal) }}</p>
             </div>
             <nuxt-link to="/checkout">
               <n-button
