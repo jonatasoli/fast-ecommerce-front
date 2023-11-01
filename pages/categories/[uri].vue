@@ -49,7 +49,7 @@ watch(page, () => router.push({
 <template>
   <main class="category container">
     <h1 class="title">
-      {{ t(`navigation.${route.params.uri}`) }}
+      {{ route.params.uri }}
     </h1>
     <p class="subtitle">
       {{ totalRecords }}
@@ -91,47 +91,6 @@ watch(page, () => router.push({
   </main>
 </template>
 
-<style scoped lang="scss">
-.title {
-  margin: 2rem 0 1rem;
-  font-size: 2rem;
-  text-align: center;
-  font-weight: 300;
-  color: $primary-color;
-  font-size: 3rem;
-
-  @media (min-width: 768px) {
-    margin: 3rem 0 1rem;
-  }
-}
-
-.subtitle {
-  margin-bottom: 2rem;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.25rem;
-  color: #AAA;
-
-  @media (min-width: 768px) {
-    margin-bottom: 3rem;
-  }
-}
-
-.category {
-  padding-bottom: 3rem;
-
-  &__empty {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-    font-size: 1.5rem;
-    color: #A6ACAF
-  }
-
-  &__pagination {
-    margin-top: 3rem;
-  }
-}
+<style lang="scss" scoped>
+@import '@/assets/scss/pages/category.scss';
 </style>

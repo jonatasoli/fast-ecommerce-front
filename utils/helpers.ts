@@ -12,7 +12,7 @@ export function currencyFormat(value = 0, locale = LOCALES.PT_BR, type = ''): st
     return format(value)
   }
 
-  return format(value / 100)
+  return format(value)
 }
 
 export function getPageFromRoute() {
