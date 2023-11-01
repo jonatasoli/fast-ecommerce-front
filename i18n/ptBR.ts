@@ -211,6 +211,15 @@ export default {
       credit_card_validate: 'Validade',
       credit_card_cvv: 'CVV',
       installments: 'Parcelas',
+      form: {
+        credit_card_number_invalid: 'Número do cartão invalido',
+        credit_card_name_invalid: 'Nome impresso no cartão é inválido',
+        credit_card_validateRequired: 'Validade é obrigatória',
+        credit_card_cvv_invalid: 'CVV é obrigatório',
+        installmentsRequired: 'Parcelas é obrigatório',
+        type_document_invalid: 'Tipo de documento é obrigatório',
+        document_number_invalid: 'Número do documento é obrigatório',
+      },
     },
     finally: {
       title: 'Confirmação do pedido',

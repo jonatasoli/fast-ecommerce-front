@@ -38,6 +38,7 @@ export default defineNuxtConfig({
   plugins: [
     { src: '@/plugins/vue-tel-input', mode: 'client' },
     { src: '@/plugins/vue-the-mask', mode: 'client' },
+    { src: '@/plugins/mercadopago', mode: 'client' },
   ],
   build: {
     analyze: true,
@@ -75,6 +76,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       serverUrl: SERVER_BASE_URL,
+      mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
       isProd: process.env.NODE_ENV === 'production',
     },
   },
