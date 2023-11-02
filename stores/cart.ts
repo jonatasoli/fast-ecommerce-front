@@ -16,6 +16,7 @@ interface Checkout {
   shipping_is_payment: boolean
   user_address: UserAddress
   shipping_address?: ShippingAddress | null
+  user_data: User
 }
 
 export const useCartStore = defineStore('cart', () => {
@@ -47,6 +48,12 @@ export const useCartStore = defineStore('cart', () => {
         zipcode: '',
         active: false,
       },
+      user_data: {
+        name: '',
+        email: '',
+        phone: '',
+        document: '',
+      }
   })
 
   const loading = ref(false)
@@ -231,11 +238,18 @@ export const useCartStore = defineStore('cart', () => {
           user,
         }),
       })
-      const data = await res.json()
-      cart.value = data
+      const {data, success} = await res.json()
+
+      if (!success) {
+        throw new Error("ERROR_ADD_USER_CART");
+        
+      }
+      checkout.value.user_data = data.user_data
       return data
     } catch (error) {
       console.error(error)
+    } finally {
+      loading.value = false
     }
   }
 
@@ -254,14 +268,24 @@ export const useCartStore = defineStore('cart', () => {
           'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify({
-          cart: cart.value,
-          address,
+          cart: {
+            ...cart.value,
+            user_data: {
+              ...checkout.value.user_data,
+              user_id: null
+            },
+          },
+          address: {
+            ...address,
+            address_id: null,
+          },
         }),
       })
       
-      const data = await res.json()
-      if (!data.success) {
-        return
+      const { data, success} = await res.json()
+
+      if (!success) {
+        throw new Error("ERROR_ADD_ADDRESS_CART");
       }
       const res_cart = {
         uuid: data.uuid,

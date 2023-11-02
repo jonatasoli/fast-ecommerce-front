@@ -46,6 +46,16 @@ async function nextSteps() {
 }
 
 async function handleSubmitUser() {
+  if (!user.value) {
+    return
+  }
+
+  await cartStore.addUserCart({
+    name: user.value.name,
+    email: user.value.email,
+    phone: user.value.phone,
+    document: user.value.document,
+  })
   current.value++
 }
 

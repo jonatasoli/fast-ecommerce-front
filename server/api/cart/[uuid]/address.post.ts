@@ -17,7 +17,11 @@ export default defineEventHandler(async (event) => {
       body: JSON.stringify(body),
     })
     const data = await res.json()
-    return data
+
+    return {
+      success: true,
+      data,
+    }
   } catch (error) {
     console.log(error)
     return {
