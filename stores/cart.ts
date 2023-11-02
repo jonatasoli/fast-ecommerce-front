@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { CartAddress, CartItem, CreditCardPayment } from '@/utils/types'
+import { CartAddress, CartItem, CreditCardPayment, ShippingAddress, User, UserAddress } from '@/utils/types'
 import { computed, ref, useCookie, useNuxtApp } from '#imports'
 
 interface Cart {
@@ -11,6 +11,9 @@ interface Cart {
   subtotal: number
   zipcode: string
   cart_items: CartItem[]
+  shipping_is_payment: boolean
+  user_address: UserAddress
+  shipping_address?: ShippingAddress | null
 }
 
 export const useCartStore = defineStore('cart', () => {
@@ -24,10 +27,24 @@ export const useCartStore = defineStore('cart', () => {
       zipcode: '',
       subtotal: 0,
       cart_items: [],
+      shipping_is_payment: false,
+      user_address: {
+        address_id: 0,
+        user_id: 0,
+        country: 'Brasil',
+        state: '',
+        city: '',
+        neighborhood: '',
+        street: '',
+        street_number: '',
+        address_complement: '',
+        zipcode: '',
+        active: false,
+      },
     }),
   })
 
-  const loadingCart = ref(false)
+  const loading = ref(false)
   const getCart = computed(() => cart.value)
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
@@ -64,7 +81,7 @@ export const useCartStore = defineStore('cart', () => {
 
     async function addProduct(uuid: string = cart.value.uuid) {
       try {
-        loadingCart.value = true
+        loading.value = true
         const headers = {
           'accept': 'application/json',
           'content-type': 'application/json',
@@ -84,6 +101,7 @@ export const useCartStore = defineStore('cart', () => {
         },
         )
         const data = await res.json()
+        cart.value = data
 
         if (!data) {
           return
@@ -93,7 +111,7 @@ export const useCartStore = defineStore('cart', () => {
       } catch (err) {
         console.error(err)
       } finally {
-        loadingCart.value = false
+        loading.value = false
       }
     }
 
@@ -117,7 +135,7 @@ export const useCartStore = defineStore('cart', () => {
 
   async function estimate() {
     try {
-      loadingCart.value = true
+      loading.value = true
       const headers = {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -126,7 +144,10 @@ export const useCartStore = defineStore('cart', () => {
         method: 'POST',
         headers,
         body: JSON.stringify({
-          ...cart.value,
+          uuid: cart.value.uuid,
+          cart_items: cart.value.cart_items,
+          zipcode: cart.value.zipcode,
+          subtotal: cart.value.subtotal,
           freight_product_code: '03298',
         }),
       })
@@ -136,7 +157,7 @@ export const useCartStore = defineStore('cart', () => {
     } catch (err) {
       console.error(err)
     } finally {
-      loadingCart.value = false
+      loading.value = false
     }
   }
 
@@ -154,13 +175,13 @@ export const useCartStore = defineStore('cart', () => {
       if (!zipcode) {
         return
       }
-      loadingCart.value = true
+      loading.value = true
       cart.value.zipcode = zipcode
       await estimate()
     } catch (err) {
       console.error(err)
     } finally {
-      loadingCart.value = false
+      loading.value = false
     }
   }
 
@@ -186,13 +207,40 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function AddAddressCart(address: CartAddress) {
+  async function addUserCart(user: User) {
     try {
       const uuid = cart.value.uuid
       if (!uuid) {
         return
       }
-      loadingCart.value = true
+
+      loading.value = true
+      const res = await fetch(`/api/cart/${uuid}/user`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          ...cart.value,
+          user,
+        }),
+      })
+      const data = await res.json()
+      cart.value = data
+      return data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function addAddressCart(address: CartAddress) {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+      loading.value = true
       const headers = {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -212,7 +260,7 @@ export const useCartStore = defineStore('cart', () => {
     } catch (err) {
       console.error(err)
     } finally {
-      loadingCart.value = false
+      loading.value = false
     }
   }
 
@@ -222,7 +270,7 @@ export const useCartStore = defineStore('cart', () => {
       if (!uuid) {
         return
       }
-      loadingCart.value = true
+      loading.value = true
       const headers = {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -242,7 +290,7 @@ export const useCartStore = defineStore('cart', () => {
     } catch (err) {
       console.error(err)
     } finally {
-      loadingCart.value = false
+      loading.value = false
     }
   }
 
@@ -268,13 +316,13 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function Checkout() {
+  async function checkout() {
     try {
       const uuid = cart.value.uuid
       if (!uuid) {
         return
       }
-      loadingCart.value = true
+      loading.value = true
       const headers = {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -293,23 +341,84 @@ export const useCartStore = defineStore('cart', () => {
     } catch (err) {
       console.error(err)
     } finally {
-      loadingCart.value = false
+      loading.value = false
     }
+  }
+
+  async function getAddressByZipcode(zipcode: string, typeAddress: string) {
+    try {
+      loading.value = true
+      const res = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
+      const data = await res.json()
+      cart.value[typeAddress] = {
+        country: 'Brasil',
+        state: data.uf,
+        city: data.localidade,
+        neighborhood: data.bairro,
+        street: data.logradouro,
+        street_number: '',
+        address_complement: '',
+        zipcode: data.cep,
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function setUserAddress(values: any) {
+    for (const key in values) {
+      if (key === 'shipping_is_payment') {
+        cart.value.shipping_is_payment = values.shipping_is_payment
+      }
+      cart.value.user_address[key] = values[key]
+    }
+  }
+
+  function setShippingAddress(values: any) {
+    if (!cart.value.shipping_address) {
+      cart.value.shipping_address = {
+        address_id: 0,
+        user_id: 0,
+        country: 'Brasil',
+        state: '',
+        city: '',
+        neighborhood: '',
+        street: '',
+        street_number: '',
+        address_complement: '',
+        zipcode: '',
+        active: false,
+      }
+    }
+    for (const key in values) {
+      cart.value.shipping_address[key] = values[key]
+    }
+  }
+
+  function setShippingIsPayment(value: boolean) {
+    cart.value.shipping_is_payment = value
   }
 
   return {
     cart,
     getCart,
-    loadingCart,
+    loading,
     estimate,
     getCartUser,
     addToCart,
     updateQuantity,
     calculateFreight,
     removeItem,
-    AddAddressCart,
+    addUserCart,
+    addAddressCart,
     addMercadoPagoCreditCardPayment,
     getCartPreview,
-    Checkout,
+    checkout,
+    getAddressByZipcode,
+    setUserAddress,
+    setShippingAddress,
+    setShippingIsPayment,
   }
 })

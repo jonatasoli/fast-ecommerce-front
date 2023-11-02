@@ -3,8 +3,8 @@ import { storeToRefs } from 'pinia'
 import * as zod from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import { useCheckoutStore } from '~/stores/checkout'
 import { onMounted, useI18n } from '#imports'
+import { useCartStore } from '~/stores/cart'
 
 interface Props {
   data?: {
@@ -14,15 +14,14 @@ interface Props {
     neighborhood: string
     street: string
     street_number: string
-  }
+  } | null
   addresType: string
 }
 
 const props = defineProps<Props>()
 
-const checkoutStore = useCheckoutStore()
-const { checkout } = storeToRefs(checkoutStore)
-const { loading } = storeToRefs(useCheckoutStore())
+const cartStore = useCartStore()
+const { cart, loading } = storeToRefs(cartStore)
 const { t } = useI18n()
 
 const validationSchema = toTypedSchema(zod.object({
@@ -71,9 +70,9 @@ function handleGetAddressByZipcode() {
   if (!zipcode.value) {
     return
   }
-  checkoutStore.getAddressByZipcode(zipcode.value.value, props.addresType)
+  cartStore.getAddressByZipcode(zipcode.value.value, props.addresType)
     .then(() => {
-      fillFormAddress(checkout.value[props.addresType])
+      fillFormAddress(cart.value[props.addresType])
     })
 }
 function fillFormAddress(values) {

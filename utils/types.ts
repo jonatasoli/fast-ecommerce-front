@@ -91,7 +91,15 @@ export interface CreditCard {
   credit_card_installments: number
   type_document: string
   document_number: string
-=======
+}
+
+export type User = {
+  name: string
+  email: string
+  document: string
+  phone: string
+}
+
 export type UserAddress = {
   address_id: number
   user_id: number

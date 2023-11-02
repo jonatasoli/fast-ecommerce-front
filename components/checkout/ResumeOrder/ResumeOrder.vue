@@ -3,11 +3,10 @@ import { storeToRefs } from 'pinia'
 import { currencyFormat, useI18n } from '#imports'
 import { useCartStore } from '~/stores/cart'
 import { useUserStore } from '~/stores/user'
-import { useCheckoutStore } from '~/stores/checkout'
 
-const { getCart } = storeToRefs(useCartStore())
+const { cart } = storeToRefs(useCartStore())
 const { user } = storeToRefs(useUserStore())
-const { checkout } = storeToRefs(useCheckoutStore())
+
 const { t } = useI18n()
 </script>
 
@@ -36,20 +35,20 @@ const { t } = useI18n()
         </h3>
         <ul>
           <li>
-            {{ checkout.user_address.zipcode }}
+            {{ cart.user_address.zipcode }}
           </li>
           <li>
-            {{ checkout.user_address.street }} - {{ checkout.user_address.street_number }}
+            {{ cart.user_address.street }} - {{ cart.user_address.street_number }}
           </li>
           <li>
-            {{ checkout.user_address.neighborhood }} - {{ checkout.user_address.city }} - {{ checkout.user_address.state }}
+            {{ cart.user_address.neighborhood }} - {{ cart.user_address.city }} - {{ cart.user_address.state }}
           </li>
         </ul>
       </div>
     </div>
     <div class="divider" />
     <div
-      v-for="product in getCart.cart_items"
+      v-for="product in cart.cart_items"
       :key="product.product_id"
       class="products"
     >

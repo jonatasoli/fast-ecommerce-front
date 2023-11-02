@@ -25,7 +25,7 @@ function updateQuantity(id, quantity) {
 
 <template>
   <main class="cart">
-    <div v-if="cartStore.loadingCart" class="cart__loading">
+    <div v-if="cartStore.loading" class="cart__loading">
       <n-space>
         <n-spin size="large" />
       </n-space>
