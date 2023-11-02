@@ -23,7 +23,7 @@ definePageMeta({
 const { isMobile } = useDevice()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
-const { cart } = storeToRefs(cartStore)
+const { checkout } = storeToRefs(cartStore)
 const { $mercadoPago } = useNuxtApp()
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
@@ -37,12 +37,11 @@ const { t } = useI18n()
 
 async function nextSteps() {
   const steps = {
-    1: await handleSubmitUser(),
-    2: await handleSubmitUserAddress(),
-    3: await handleSubmitCreditCard(),
+    1: handleSubmitUser,
+    2: handleSubmitUserAddress,
+    3: handleSubmitCreditCard,
     4: async () => {},
   }
-
   return steps[current.value]()
 }
 
@@ -51,21 +50,28 @@ async function handleSubmitUser() {
 }
 
 async function handleSubmitUserAddress() {
+  if (shipping_is_payment.value === null) {
+    return
+  }
+
   const { valid: validUserAddress } = await formUserAddress.value?.validate()
-  if (!validUserAddress || shipping_is_payment.value === null) {
+  
+  if (!validUserAddress && shipping_is_payment.value === null) {
     return
   }
 
-  const { valid: validShippingAddress } = await formShippingAddress.value?.validate()
-  if (!validShippingAddress && !shipping_is_payment.value) {
-    return
+  if (!shipping_is_payment.value) {
+    const { valid: validShippingAddress } = await formShippingAddress.value?.validate()
+    if(!validShippingAddress) {
+      return
+    }
   }
 
-  const shippingAddress = shipping_is_payment.value
+  const shippingAddress = shipping_is_payment.value 
     ? formUserAddress.value?.values
     : formShippingAddress.value?.values
 
-  cartStore.addAddressCart({
+  await cartStore.addAddressCart({
     shipping_is_payment: shipping_is_payment.value,
     user_address: formUserAddress.value?.values,
     shipping_address: shippingAddress,
@@ -74,7 +80,11 @@ async function handleSubmitUserAddress() {
   current.value++
 }
 
-function handleSubmitShippingAddress(address) {
+function setUserAddress(address) {
+  cartStore.setUserAddress(address)
+}
+
+function setShippingAddress(address) {
   cartStore.setShippingAddress(address)
 }
 
@@ -119,8 +129,8 @@ async function handleSubmitCreditCard() {
 }
 
 onMounted(() => {
-  if (cart.value.shipping_is_payment) {
-    shipping_is_payment.value = cart.value.shipping_is_payment
+  if (checkout.value.shipping_is_payment) {
+    shipping_is_payment.value = checkout.value.shipping_is_payment
   }
 })
 </script>
@@ -176,8 +186,8 @@ onMounted(() => {
       <FormAddress
         ref="formUserAddress"
         addres-type="user_address"
-        :data="cart.user_address"
-        @on-submit="handleSubmitUserAddress"
+        :data="checkout.user_address"
+        @on-submit="setUserAddress"
       />
       <h2 class="title">
         {{ t('checkout.shipping.payment_title') }}
@@ -201,8 +211,8 @@ onMounted(() => {
         <FormAddress
           ref="formShippingAddress"
           addres-type="shipping_address"
-          :data="cart.shipping_address"
-          @on-submit="handleSubmitShippingAddress"
+          :data="checkout.shipping_address"
+          @on-submit="setShippingAddress"
         />
       </div>
     </div>

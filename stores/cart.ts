@@ -11,6 +11,8 @@ interface Cart {
   subtotal: number
   zipcode: string
   cart_items: CartItem[]
+}
+interface Checkout {
   shipping_is_payment: boolean
   user_address: UserAddress
   shipping_address?: ShippingAddress | null
@@ -18,7 +20,7 @@ interface Cart {
 
 export const useCartStore = defineStore('cart', () => {
   const cart = useCookie<Cart>('cart', {
-    default: () => ref({
+   default: () => ref({
       uuid: '',
       freight: {
         price: 0,
@@ -27,6 +29,10 @@ export const useCartStore = defineStore('cart', () => {
       zipcode: '',
       subtotal: 0,
       cart_items: [],
+    }),
+  })
+
+  const checkout = ref<Checkout>({
       shipping_is_payment: false,
       user_address: {
         address_id: 0,
@@ -41,7 +47,6 @@ export const useCartStore = defineStore('cart', () => {
         zipcode: '',
         active: false,
       },
-    }),
   })
 
   const loading = ref(false)
@@ -241,21 +246,40 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
       loading.value = true
-      const headers = {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      }
-
-      const res = await fetch(`${serverUrl}/cart/${uuid}/address`, {
+      
+      const res = await fetch(`/api/cart/${uuid}/address`, {
         method: 'POST',
-        headers,
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
         body: JSON.stringify({
-          ...cart.value,
+          cart: cart.value,
           address,
         }),
       })
+      
       const data = await res.json()
-      cart.value = data
+      if (!data.success) {
+        return
+      }
+      const res_cart = {
+        uuid: data.uuid,
+        cart_items: data.cart_items,
+        subtotal: data.subtotal,
+        freight: data.freight,
+        zipcode: data.zipcode,
+      }
+
+      const res_checkout = {
+        shipping_address: data.shipping_address,
+        shipping_is_payment: data.shipping_is_payment,
+        user_address: data.user_address,
+      }
+     
+      cart.value = res_cart
+      checkout.value = res_checkout
+
       return data
     } catch (err) {
       console.error(err)
@@ -316,7 +340,7 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function checkout() {
+  async function finishCheckout() {
     try {
       const uuid = cart.value.uuid
       if (!uuid) {
@@ -333,6 +357,7 @@ export const useCartStore = defineStore('cart', () => {
         headers,
         body: JSON.stringify({
           ...cart.value,
+          ...checkout.value,
         }),
       })
       const data = await res.json()
@@ -350,7 +375,8 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       const res = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
       const data = await res.json()
-      cart.value[typeAddress] = {
+      console.log(typeAddress)
+      return checkout.value[typeAddress] = {
         country: 'Brasil',
         state: data.uf,
         city: data.localidade,
@@ -370,15 +396,15 @@ export const useCartStore = defineStore('cart', () => {
   async function setUserAddress(values: any) {
     for (const key in values) {
       if (key === 'shipping_is_payment') {
-        cart.value.shipping_is_payment = values.shipping_is_payment
+        checkout.value.shipping_is_payment = values.shipping_is_payment
       }
-      cart.value.user_address[key] = values[key]
+      checkout.value.user_address[key] = values[key]
     }
   }
 
   function setShippingAddress(values: any) {
-    if (!cart.value.shipping_address) {
-      cart.value.shipping_address = {
+    if (!checkout.value.shipping_address) {
+      checkout.value.shipping_address = {
         address_id: 0,
         user_id: 0,
         country: 'Brasil',
@@ -393,16 +419,17 @@ export const useCartStore = defineStore('cart', () => {
       }
     }
     for (const key in values) {
-      cart.value.shipping_address[key] = values[key]
+      checkout.value.shipping_address[key] = values[key]
     }
   }
 
   function setShippingIsPayment(value: boolean) {
-    cart.value.shipping_is_payment = value
+    checkout.value.shipping_is_payment = value
   }
 
   return {
     cart,
+    checkout,
     getCart,
     loading,
     estimate,
@@ -415,10 +442,10 @@ export const useCartStore = defineStore('cart', () => {
     addAddressCart,
     addMercadoPagoCreditCardPayment,
     getCartPreview,
-    checkout,
     getAddressByZipcode,
     setUserAddress,
     setShippingAddress,
     setShippingIsPayment,
+    finishCheckout,
   }
 })
