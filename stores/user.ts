@@ -24,6 +24,11 @@ export const useUserStore = defineStore('user', () => {
     try {
       const res = await fetch(`${serverUrl}/user/token`, {
         method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${$config.public.apiKey}`,
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
       })
 
       const userData = res.data
