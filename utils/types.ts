@@ -100,7 +100,7 @@ export type User = {
   phone: string
 }
 
-export type UserAddress = {
+export type BaseAddress = {
   address_id: number
   user_id: number
   country: string
@@ -114,19 +114,10 @@ export type UserAddress = {
   active: boolean
 }
 
-export type ShippingAddress = {
-  address_id: number
-  user_id: number
-  country: string
-  city: string
-  state: string
-  neighborhood: string
-  street: string
-  street_number: string
-  address_complement: string | null
-  zipcode: string
-  active: boolean
-}
+export type UserAddress = BaseAddress
+
+export type ShippingAddress = BaseAddress 
+
 export type CartAddress = {
   shipping_is_payment: boolean
   user_address: UserAddress

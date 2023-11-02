@@ -30,6 +30,7 @@ const validationSchema = toTypedSchema(zod.object({
   }).nonempty(t('checkout.shipping.form.zipcodeRequired')),
   country: zod.string().nonempty(t('checkout.shipping.form.countryRequired')),
   state: zod.string().nonempty(t('checkout.shipping.form.stateRequired')),
+  city: zod.string().nonempty(t('checkout.shipping.form.stateRequired')),
   neighborhood: zod.string().nonempty(t('checkout.shipping.form.neighborhoodRequired')),
   street: zod.string().nonempty(t('checkout.shipping.form.streetRequired')),
   street_number: zod.string().nonempty(t('checkout.shipping.form.numberRequired')),
@@ -42,6 +43,7 @@ const { defineComponentBinds, setValues, validate, values } = useForm({
     zipcode: '',
     country: '',
     state: '',
+    city: '',
     neighborhood: '',
     street: '',
     street_number: '',
@@ -61,6 +63,7 @@ const naiveConfig = state => ({
 const zipcode = defineComponentBinds('zipcode', naiveConfig)
 const country = defineComponentBinds('country', naiveConfig)
 const state = defineComponentBinds('state', naiveConfig)
+const city = defineComponentBinds('city', naiveConfig)
 const neighborhood = defineComponentBinds('neighborhood', naiveConfig)
 const street = defineComponentBinds('street', naiveConfig)
 const street_number = defineComponentBinds('street_number', naiveConfig)
@@ -83,6 +86,7 @@ function fillFormAddress(values) {
     zipcode: values.zipcode,
     country: values.country,
     state: values.state,
+    city: values.city,
     neighborhood: values.neighborhood,
     street: values.street,
     street_number: values.street_number,
@@ -150,13 +154,26 @@ defineExpose({
         </n-form-item>
       </n-gi>
     </n-grid>
-    <n-form-item
-      :label="t('checkout.shipping.form.neighborhood')"
-      v-bind="neighborhood"
-      path="neighborhood"
-    >
-      <n-input v-bind="neighborhood" />
-    </n-form-item>
+    <n-grid :x-gap="20" :cols="2">
+      <n-gi>
+        <n-form-item
+          :label="t('checkout.shipping.form.city')"
+          v-bind="city"
+          path="city"
+        >
+          <n-input v-bind="city" readonly />
+        </n-form-item>
+      </n-gi>
+      <n-gi>
+        <n-form-item
+          :label="t('checkout.shipping.form.neighborhood')"
+          v-bind="neighborhood"
+          path="neighborhood"
+        >
+          <n-input v-bind="neighborhood" />
+        </n-form-item>
+      </n-gi>
+    </n-grid>
     <n-grid :x-gap="20" :cols="2">
       <n-gi>
         <n-form-item
