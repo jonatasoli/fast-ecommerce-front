@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Address, CartAddress, CartItem, CreditCardPayment, ShippingAddress, User, UserAddress } from '@/utils/types'
+import type { CartAddress, CartItem, CreditCardPayment, ShippingAddress, User, UserAddress } from '@/utils/types'
 import { computed, ref, unref, useCookie, useFetch, useNuxtApp } from '#imports'
 
 interface Cart {
@@ -8,15 +8,15 @@ interface Cart {
     price: number
     delivery_time: string
   }
-  subtotal: number
+  subtotal: string
   zipcode: string
   cart_items: CartItem[]
 }
 
 interface Checkout {
   shipping_is_payment: boolean
-  user_address: UserAddress
-  shipping_address?: ShippingAddress
+  user_address_id: number | null
+  shipping_address_id?: number
   user_data: User
 }
 
@@ -30,26 +30,14 @@ export const useCartStore = defineStore('cart', () => {
         delivery_time: '',
       },
       zipcode: '',
-      subtotal: 0,
+      subtotal: "0",
       cart_items: [],
     }),
   })
 
   const checkout = ref<Checkout>({
       shipping_is_payment: false,
-      user_address: {
-        address_id: 0,
-        user_id: 0,
-        country: 'Brasil',
-        state: '',
-        city: '',
-        neighborhood: '',
-        street: '',
-        street_number: '',
-        address_complement: '',
-        zipcode: '',
-        active: false,
-      },
+      user_address_id: null,
       user_data: {
         name: '',
         email: '',
@@ -229,7 +217,7 @@ export const useCartStore = defineStore('cart', () => {
       }
 
       loading.value = true  
-      const res = await fetch(`/api/cart/${uuid}/user`, {
+      const {data, error } = await useFetch(`/api/cart/${uuid}/user`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -240,13 +228,36 @@ export const useCartStore = defineStore('cart', () => {
           user,
         }),
       })
-      const {data, success} = await res.json()
 
-      if (!success) {
+      if (unref(error)) {
         throw new Error("ERROR_ADD_USER_CART");
-        
       }
-      checkout.value.user_data = data.user_data
+      
+      const responseData = unref(data) as {
+        data: {
+          uuid: string
+          affiliate: string
+          cart_items: CartItem[]
+          coupon: string
+          discount: string
+          zipcode: string
+          subtotal: string
+          freight: {
+            price: number
+            delivery_time: string
+          }
+          user_data: User
+        }
+        success: boolean
+      }
+
+      if (!responseData.success) {
+        throw new Error("ERROR_ADD_USER_CART");
+      }
+      const { user_data: userCart, ...restCart } = responseData.data
+     
+      setUserCart(userCart)
+      setCart(restCart)
       return data
     } catch (error) {
       console.error(error)
@@ -281,15 +292,15 @@ export const useCartStore = defineStore('cart', () => {
             shipping_is_payment: address.shipping_is_payment,
             user_address: {
               ...address.user_address,
-              address_id: 1,
-              user_id: 1,
+              user_id: null,
+              address_id: null,
               active: true,
-              address_complement: ""
+              address_complement: address.user_address.address_complement || ""
             },
             shipping_address: {
               ...address.shipping_address,
-              address_id: 1,
-              user_id: 1,
+              user_id: null,
+              address_id: null,
               active: true,
               address_complement: ""
             }
@@ -303,8 +314,20 @@ export const useCartStore = defineStore('cart', () => {
 
       const responseData = unref(data) as {
         data: {
-          user_address: UserAddress
-          shipping_address: ShippingAddress
+          uuid: string
+          affiliate: string
+          cart_items: CartItem[]
+          coupon: string
+          discount: string
+          zipcode: string
+          subtotal: string
+          freight: {
+            price: number
+            delivery_time: string
+          }
+          user_data: User
+          user_address_id: number
+          shipping_address_id: number
           shipping_is_payment: boolean
         }
         success: boolean
@@ -315,22 +338,25 @@ export const useCartStore = defineStore('cart', () => {
       }
 
       const {
-        user_address: userAddress,
-        shipping_address: shippingAddress,
-        shipping_is_payment: shippingIsPayment
-      } = responseData
+        shipping_is_payment: shippingIsPayment,
+        shipping_address_id: shippingAddressId,
+        user_address_id: userAddressId,
+        ...restCart
+      } = responseData.data
 
-      setUserAddress(userAddress)
-      setShippingAddress(shippingAddress)
       setShippingIsPayment(shippingIsPayment)
+      setShippingAddressId(shippingAddressId)
+      setUserAddressId(userAddressId)
 
-      const res_cart = {
-        uuid: data.uuid,
-        cart_items: data.cart_items,
-        subtotal: data.subtotal,
-        freight: data.freight,
-        zipcode: data.zipcode,
+      const resCart = {
+        uuid: responseData.data.uuid,
+        cart_items: responseData.data.cart_items,
+        subtotal: responseData.data.subtotal,
+        freight: responseData.data.freight,
+        zipcode: responseData.data.zipcode,
       }
+
+      setCart(resCart)
      
       return data
     } catch (err) {
@@ -352,17 +378,29 @@ export const useCartStore = defineStore('cart', () => {
         'Access-Control-Allow-Origin': '*',
       }
 
-      const res = await fetch(`${serverUrl}/cart/${uuid}/payment/credit_card`, {
+      const { data, error } = await useFetch(`/api/cart/${uuid}/payment/credit_card`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({
-          ...cart.value,
-          payment,
-        }),
+        body: {
+          cart: {
+            ...cart.value,
+            ...checkout.value,
+            user_address_id: 20,
+            user_data: {
+              ...checkout.value.user_data,
+              user_id: null
+            },
+          },
+          payment
+        },
       })
-      const data = await res.json()
-      cart.value = data
-      return data
+
+      console.log(unref(data))
+      console.log(unref(error))
+
+      if (unref(error) || !unref(data)) {
+        throw new Error("ERROR_ADD_MERCADO_PAGO_CREDIT_CARD_PAYMENT"); // FIXME: show an error message
+      }
     } catch (err) {
       console.error(err)
     } finally {
@@ -427,7 +465,6 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       const res = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
       const data = await res.json()
-      console.log(typeAddress)
       return checkout.value[typeAddress] = {
         country: 'Brasil', // TODO: i18n
         state: data.uf,
@@ -445,12 +482,20 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  function setUserAddress(userAddress: UserAddress) {
-    checkout.value.user_address = userAddress
+  function setCart(userCart: Cart) {
+    cart.value = userCart
   }
 
-  function setShippingAddress(shippingAddress: ShippingAddress) {
-    checkout.value.shipping_address = shippingAddress
+  function setUserCart(userCart: User) {
+    checkout.value.user_data = userCart
+  }
+
+  function setUserAddressId(userAddressId: number) {
+    checkout.value.user_address_id = userAddressId
+  }
+
+  function setShippingAddressId(shippingAddressId: number) {
+    checkout.value.shipping_address_id = shippingAddressId
   }
 
   function setShippingIsPayment(value: boolean) {
@@ -473,8 +518,8 @@ export const useCartStore = defineStore('cart', () => {
     addMercadoPagoCreditCardPayment,
     getCartPreview,
     getAddressByZipcode,
-    setUserAddress,
-    setShippingAddress,
+    setUserAddressId,
+    setShippingAddressId,
     setShippingIsPayment,
     finishCheckout,
   }

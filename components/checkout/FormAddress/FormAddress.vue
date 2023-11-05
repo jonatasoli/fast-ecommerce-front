@@ -141,7 +141,7 @@ defineExpose({
           v-bind="country"
           path="country"
         >
-          <n-input v-bind="country" readonly />
+          <n-input v-bind="country"  />
         </n-form-item>
       </n-gi>
       <n-gi>
@@ -150,7 +150,7 @@ defineExpose({
           v-bind="state"
           path="state"
         >
-          <n-input v-bind="state" readonly />
+          <n-input v-bind="state"  />
         </n-form-item>
       </n-gi>
     </n-grid>
@@ -161,7 +161,7 @@ defineExpose({
           v-bind="city"
           path="city"
         >
-          <n-input v-bind="city" readonly />
+          <n-input v-bind="city" />
         </n-form-item>
       </n-gi>
       <n-gi>

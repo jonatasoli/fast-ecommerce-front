@@ -4,7 +4,7 @@ import { ProductCard } from '@/components/shared'
 import { FeatureCard, FeatureHero } from '~/components/home'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 import { useProductsStore } from '~/stores/products'
-import { FeatureItem, ProductItem } from '~/utils/types'
+import type { FeatureItem, ProductItem } from '~/utils/types'
 import { useCategoryStore } from '~/stores/categories'
 
 const { t, te } = useI18n()

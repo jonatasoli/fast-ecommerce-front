@@ -2,7 +2,7 @@
 import { useCartStore } from '@/stores/cart'
 import { currencyFormat } from '@/utils/helpers'
 import { LOCALES, computed, createError, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig } from '#imports'
-import { ProductItem } from '@/utils/types'
+import type { ProductItem } from '~/utils/types'
 
 const route = useRoute()
 const router = useRouter()

@@ -84,13 +84,13 @@ export interface Checkout {
 }
 
 export interface CreditCard {
-  credit_card_number: string
-  credit_card_name: string
-  credit_card_expiration: string
-  credit_card_cvv: string
-  credit_card_installments: number
-  type_document: string
-  document_number: string
+  creditCardNumber: string
+  creditCardName: string
+  creditCardExpiration: string
+  creditCardCvv: string
+  installments: number
+  typeCocument: string
+  document: string
 }
 
 export type User = {

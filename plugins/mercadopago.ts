@@ -3,6 +3,7 @@ import { defineNuxtPlugin } from 'nuxt/app'
 
 interface MercadoPago {
   createCardToken: (data: any) => Promise<any>
+  getInstallments: (data: any) => Promise<any>
 }
 
 declare module '#app' {
