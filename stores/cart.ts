@@ -9,6 +9,7 @@ interface Cart {
     delivery_time: string
   }
   subtotal: string
+  total: string
   zipcode: string
   cart_items: CartItem[]
 }
@@ -31,6 +32,7 @@ export const useCartStore = defineStore('cart', () => {
       },
       zipcode: '',
       subtotal: "0",
+      total: "0",
       cart_items: [],
     }),
   })
@@ -384,7 +386,7 @@ export const useCartStore = defineStore('cart', () => {
           cart: {
             ...cart.value,
             ...checkout.value,
-            user_address_id: 20,
+            user_address_id: null,
             user_data: {
               ...checkout.value.user_data,
               user_id: null
