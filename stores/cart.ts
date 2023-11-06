@@ -209,7 +209,7 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addUserCart(user: User) {
+  async function addUserCart() {
     try {
       const uuid = cart.value.uuid
       if (!uuid) {
@@ -225,7 +225,6 @@ export const useCartStore = defineStore('cart', () => {
         },
         body: JSON.stringify({
           ...cart.value,
-          user,
         }),
       })
 

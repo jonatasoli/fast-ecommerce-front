@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
-import { definePageMeta, onMounted, ref, useDevice, useI18n } from '#imports'
+import { definePageMeta, onMounted, ref, useDevice, useI18n, watch, unref } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
 import { FormAddress, ResumeOrder } from '~/components/checkout'
 import  CreditCard from './_stepsCheckout/payment/CreditCard.vue'
+
 
 definePageMeta({
   layout: 'checkout',
@@ -48,12 +49,7 @@ async function handleSubmitUser() {
     return
   }
 
-  await cartStore.addUserCart({
-    name: user.value.name,
-    email: user.value.email,
-    phone: user.value.phone,
-    document: user.value.document,
-  })
+  await cartStore.addUserCart()
   current.value++
 }
 
@@ -107,10 +103,12 @@ function handleUpdateShippingIsPayment(value) {
 }
 
 onMounted(() => {
+  handleSubmitUser()
   if (checkout.value.shipping_is_payment) {
     shipping_is_payment.value = checkout.value.shipping_is_payment
   }
 })
+
 </script>
 
 <template>
@@ -129,23 +127,7 @@ onMounted(() => {
     </n-steps>
 
     <div v-if="current === 1" class="checkout__container">
-      <div v-if="user">
-        <h2 class="title">
-          {{ t('checkout.user.title') }}
-        </h2>
-        <n-form class="border">
-          <n-form-item :label="t('checkout.user.name')">
-            <n-input v-model:value="user.name" />
-          </n-form-item>
-          <n-form-item :label="t('checkout.user.email')">
-            <n-input v-model:value="user.email" />
-          </n-form-item>
-          <n-form-item :label="t('checkout.user.phone')">
-            <n-input v-model:value="user.phone" />
-          </n-form-item>
-        </n-form>
-      </div>
-      <div v-else class="checkout__login">
+      <div v-if="!user" class="checkout__login">
         <div>
           {{ t('checkout.user.login.part1') }}
           <NuxtLink to="/login?redirect=/checkout" class="link">

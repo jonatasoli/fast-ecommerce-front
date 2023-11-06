@@ -158,7 +158,7 @@ export default {
   },
   checkout: {
     steps: {
-      login: 'Identificação',
+      login: 'Login',
       shipping: 'Entrega',
       payment: 'Pagamento',
       resume: 'Confirmação',
