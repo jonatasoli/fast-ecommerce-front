@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getMonthYearFromTimestamp, ref, unref, useNuxtApp, watch } from '#imports'
+import { getMonthYearFromTimestamp, ref, storeToRefs, unref, useNuxtApp, watch } from '#imports'
 import { FormCreditCard } from '~/components/checkout'
 import { useCartStore } from '~/stores/cart';
 import type { CreditCard} from '~/utils/types'
@@ -7,9 +7,10 @@ import type { CreditCard} from '~/utils/types'
 interface Props {
   paymentMethod: string
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 const { $mercadoPago } = useNuxtApp()
 const cartStore = useCartStore()
+const { cart } = storeToRefs(cartStore)
 const formCreditCard = ref<typeof FormCreditCard | null>(null)
 const bin = ref<string>('')
 const creditCardIssuer = ref<string>('')
@@ -17,9 +18,10 @@ const optionInstallments = ref<{ label: string; value: number }[]>([])
 
 async function handleSubmitCreditCard() {
   const { valid } = await formCreditCard.value?.validate()
+  console.log('valid', valid)
 
   if (!valid) {
-    return
+    return false
   }
 
   const creditCard = formCreditCard.value?.values as CreditCard
@@ -67,7 +69,7 @@ async function getInstallments() {
 
   try {
     const installments = await $mercadoPago.getInstallments({
-      amount: '100',
+      amount: cart.value.total,
       bin: unref(bin),
       paymentTypeId: unref(creditCardIssuer),
     })

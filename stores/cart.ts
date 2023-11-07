@@ -37,6 +37,35 @@ export const useCartStore = defineStore('cart', () => {
     }),
   })
 
+  const address = ref<Omit<CartAddress, "shipping_is_payment">>({
+    user_address: {
+      active: true,
+      address_complement: '',
+      address_id: null,
+      city: '',
+      country: '',
+      neighborhood: '',
+      state: '',
+      street: '',
+      street_number: '',
+      user_id: null,
+      zipcode: '',
+    },
+    shipping_address: {
+      active: true,
+      address_complement: '',
+      address_id: null,
+      city: '',
+      country: '',
+      neighborhood: '',
+      state: '',
+      street: '',
+      street_number: '',
+      user_id: null,
+      zipcode: '',
+    },
+  })
+
   const checkout = ref<Checkout>({
       shipping_is_payment: false,
       user_address_id: null,
@@ -243,6 +272,7 @@ export const useCartStore = defineStore('cart', () => {
           discount: string
           zipcode: string
           subtotal: string
+          total: string
           freight: {
             price: number
             delivery_time: string
@@ -322,6 +352,7 @@ export const useCartStore = defineStore('cart', () => {
           discount: string
           zipcode: string
           subtotal: string
+          total: string
           freight: {
             price: number
             delivery_time: string
@@ -346,18 +377,11 @@ export const useCartStore = defineStore('cart', () => {
       } = responseData.data
 
       setShippingIsPayment(shippingIsPayment)
+      setShippingAddress(address?.shipping_address ?? null)
+      setUserAddress(address.user_address)
       setShippingAddressId(shippingAddressId)
       setUserAddressId(userAddressId)
-
-      const resCart = {
-        uuid: responseData.data.uuid,
-        cart_items: responseData.data.cart_items,
-        subtotal: responseData.data.subtotal,
-        freight: responseData.data.freight,
-        zipcode: responseData.data.zipcode,
-      }
-
-      setCart(resCart)
+      setCart(restCart)
      
       return data
     } catch (err) {
@@ -491,6 +515,14 @@ export const useCartStore = defineStore('cart', () => {
     checkout.value.user_data = userCart
   }
 
+  function setUserAddress(userAddress: UserAddress) {
+    address.value.user_address = userAddress
+  }
+
+  function setShippingAddress(shippingAddress: ShippingAddress) {
+    address.value.shipping_address = shippingAddress
+  }
+
   function setUserAddressId(userAddressId: number) {
     checkout.value.user_address_id = userAddressId
   }
@@ -505,6 +537,7 @@ export const useCartStore = defineStore('cart', () => {
 
   return {
     cart,
+    address,
     checkout,
     getCart,
     loading,

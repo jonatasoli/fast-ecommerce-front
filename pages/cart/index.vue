@@ -145,7 +145,7 @@ function updateQuantity(id, quantity) {
 
             <div class="summary-values amount">
               <p>{{ t("cart.summary.total") }}</p>
-              <p>{{ currencyFormat(getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
             <nuxt-link to="/checkout">
               <n-button

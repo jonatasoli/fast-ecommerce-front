@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
       body: JSON.stringify(body),
     })
     const data = await res.json()
-
+    
     if (!data.cart) {
       throw createError({
         statusCode: 400,

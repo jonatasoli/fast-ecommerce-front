@@ -1,8 +1,9 @@
 import { CURRENCIES, LOCALES } from './enums'
 import { ref, useRoute } from '#imports'
 
-export function currencyFormat(value = 0, locale = LOCALES.PT_BR, type = ''): string {
+export function currencyFormat(value, locale = LOCALES.PT_BR, type = ''): string {
   const currency = CURRENCIES[locale] || LOCALES.PT_BR
+  if (!value) return currencyFormat(0)
   const { format } = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
