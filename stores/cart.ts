@@ -70,6 +70,7 @@ export const useCartStore = defineStore('cart', () => {
       shipping_is_payment: false,
       user_address_id: null,
       user_data: {
+        user_id: null,
         name: '',
         email: '',
         phone: '',
@@ -314,26 +315,23 @@ export const useCartStore = defineStore('cart', () => {
         body: {
           cart: {
             ...cart.value,
-            user_data: {
-              ...checkout.value.user_data,
-              user_id: null
-            },
+            user_data: checkout.value.user_data,
           },
           address: {
             shipping_is_payment: address.shipping_is_payment,
             user_address: {
               ...address.user_address,
-              user_id: null,
+              user_id: checkout.value.user_data.user_id,
               address_id: null,
               active: true,
               address_complement: address.user_address.address_complement || ""
             },
             shipping_address: {
               ...address.shipping_address,
-              user_id: null,
+              user_id: checkout.value.user_data.user_id,
               address_id: null,
               active: true,
-              address_complement: ""
+              address_complement: address.shipping_address?.address_complement || ""
             }
           },
         }
@@ -410,11 +408,8 @@ export const useCartStore = defineStore('cart', () => {
           cart: {
             ...cart.value,
             ...checkout.value,
-            user_address_id: null,
-            user_data: {
-              ...checkout.value.user_data,
-              user_id: null
-            },
+            user_address_id: checkout.value.user_address_id,
+            user_data: checkout.value.user_data,
           },
           payment
         },
@@ -490,6 +485,7 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       const res = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
       const data = await res.json()
+      await calculateFreight(zipcode)
       return checkout.value[typeAddress] = {
         country: 'Brasil', // TODO: i18n
         state: data.uf,

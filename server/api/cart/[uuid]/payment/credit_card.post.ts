@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     if (!data.cart) {
       throw createError({
         statusCode: 400,
-        message: data,
+        message: JSON.stringify(data),
       })
     }
 
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
   } catch (error: any) {
     throw createError({
       statusCode: 400,
-      message: error,
+      message: JSON.stringify(error),
     })
   }
 })

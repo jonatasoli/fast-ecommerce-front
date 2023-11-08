@@ -3,11 +3,15 @@ import { ref, useRoute } from '#imports'
 
 export function currencyFormat(value, locale = LOCALES.PT_BR, type = ''): string {
   const currency = CURRENCIES[locale] || LOCALES.PT_BR
-  if (!value) return currencyFormat(0)
+
   const { format } = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
   })
+
+  if (!value) {
+    return format(0)
+  }
 
   if (type === 'freight') {
     return format(value)
