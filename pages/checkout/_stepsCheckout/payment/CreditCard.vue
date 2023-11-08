@@ -18,7 +18,6 @@ const optionInstallments = ref<{ label: string; value: number }[]>([])
 
 async function handleSubmitCreditCard() {
   const { valid } = await formCreditCard.value?.validate()
-  console.log('valid', valid)
 
   if (!valid) {
     return false
@@ -26,19 +25,16 @@ async function handleSubmitCreditCard() {
 
   const creditCard = formCreditCard.value?.values as CreditCard
   const { month, year } = getMonthYearFromTimestamp(creditCard.creditCardExpiration)
+  console.log(month, year)
 
   const card = {
     cardNumber: creditCard.creditCardNumber.split(' ').join(''),
+    cardholderName: creditCard.creditCardName,
+    cardExpirationMonth: month,
+    cardExpirationYear: year,
     securityCode: creditCard.creditCardCvv,
-    expirationMonth: month,
-    expirationYear: year,
-    cardholder: {
-      name: creditCard.creditCardName,
-      identification: {
-        type: creditCard.typeCocument,
-        number: creditCard.document,
-      },
-    },
+    identificationType: creditCard.typeCocument,
+    identificationNumber: creditCard.document,
   }
 
   const tokenResponse = await $mercadoPago.createCardToken(card)
