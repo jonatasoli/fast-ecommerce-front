@@ -140,8 +140,8 @@ export const useCartStore = defineStore('cart', () => {
         if (!data) {
           return
         }
-        const res_cart = await estimate()
-        cart.value = res_cart
+        
+        await estimate()
       } catch (err) {
         console.error(err)
       } finally {
@@ -174,7 +174,7 @@ export const useCartStore = defineStore('cart', () => {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-      const res = await fetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
+      const { data, error } = await useFetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -185,9 +185,30 @@ export const useCartStore = defineStore('cart', () => {
           freight_product_code: '03298',
         }),
       })
-      const data = await res.json()
-      cart.value = data
-      return data
+
+      if (unref(error)) {
+        error.value = null
+        return;
+      }
+
+      const responseData = unref(data) as {
+        uuid: string
+        affiliate: string
+        cart_items: CartItem[]
+        coupon: string
+        discount: string
+        zipcode: string
+        subtotal: string
+        total: string
+        freight: {
+          price: number
+          delivery_time: string
+          max_date: string
+        }
+        freight_product_code: string
+      }
+      
+      setCart(responseData)
     } catch (err) {
       console.error(err)
     } finally {
@@ -338,6 +359,7 @@ export const useCartStore = defineStore('cart', () => {
       })
 
       if (unref(error)) {
+        error.value = null
         throw new Error("ERROR_ADD_ADDRESS_CART"); // FIXME: show an error message
       }
 
@@ -415,9 +437,6 @@ export const useCartStore = defineStore('cart', () => {
         },
       })
 
-      console.log(unref(data))
-      console.log(unref(error))
-
       if (unref(error) || !unref(data)) {
         throw new Error("ERROR_ADD_MERCADO_PAGO_CREDIT_CARD_PAYMENT"); // FIXME: show an error message
       }
@@ -485,7 +504,7 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       const res = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
       const data = await res.json()
-      await calculateFreight(zipcode)
+      // await calculateFreight(zipcode)
       return checkout.value[typeAddress] = {
         country: 'Brasil', // TODO: i18n
         state: data.uf,

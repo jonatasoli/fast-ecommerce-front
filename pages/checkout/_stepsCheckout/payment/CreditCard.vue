@@ -25,7 +25,7 @@ async function handleSubmitCreditCard() {
 
   const creditCard = formCreditCard.value?.values as CreditCard
   const { month, year } = getMonthYearFromTimestamp(creditCard.creditCardExpiration)
-  console.log(month, year)
+ 
 
   const card = {
     cardNumber: creditCard.creditCardNumber.split(' ').join(''),
