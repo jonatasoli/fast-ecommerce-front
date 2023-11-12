@@ -71,15 +71,8 @@ export default defineNuxtConfig({
       Components({
         resolvers: [NaiveUiResolver()],
       }),
-    ],
-
-    server: {
-      watch: {
-        ignored: ['**/pages/checkout/_*/**'],
-      }
-    }
+    ],  
   },
-  ignore: ['**/pages/checkout/_*/**'],
   runtimeConfig: {
     public: {
       serverUrl: SERVER_BASE_URL,

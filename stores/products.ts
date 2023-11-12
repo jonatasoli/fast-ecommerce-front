@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ProductItem } from '~/utils/types'
+import type { ProductItem } from '~/utils/types'
 import { computed, ref, useRuntimeConfig } from '#imports'
 
 export const useProductsStore = defineStore('products', () => {

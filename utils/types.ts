@@ -66,6 +66,23 @@ export type PaginatedProducts = {
   total_records: number
 }
 
+export interface Cart {
+  uuid: string
+  affiliate: string
+  coupon: string
+  discount: string 
+  freight: {
+    price: string
+    delivery_time: string
+    max_date?: string
+  }
+  freight_product_code?: string
+  subtotal: string
+  total: string
+  zipcode: string
+  cart_items: CartItem[]
+}
+
 export interface Address {
   country: string
   state: string
@@ -77,10 +94,25 @@ export interface Address {
   zipcode: string
 }
 
-export interface Checkout {
+export interface Payment {
+  payment_method: string
+  payment_method_id: string
+  payment_intent?: string | null
+  customer_id: string
+  card_token?: string
+  pix_qr_code?: string
+  pix_qr_code_base64?: string
+  pix_payment_id?: number
+  gateway_provider: string
+  installments: number
+}
+
+
+export interface Checkout extends Cart, Payment {
+  user_data: User
   shipping_is_payment: boolean
-  user_address: Address
-  shipping_address: Address
+  user_address_id: number
+  shipping_address_id: number | null
 }
 
 export interface CreditCard {
@@ -123,6 +155,8 @@ export type CartAddress = {
   shipping_is_payment: boolean
   user_address: UserAddress
   shipping_address: ShippingAddress | null
+  user_address_id?: number | null
+  shipping_address_id?: number | null
 }
 
 export type CreditCardPayment = {

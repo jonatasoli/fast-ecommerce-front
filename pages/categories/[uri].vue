@@ -2,7 +2,7 @@
 import { computed, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig, watch } from '#imports'
 import { ProductCard, ProductSkeleton } from '~/components/shared'
 import { getPageFromRoute } from '~/utils/helpers'
-import { PaginatedProducts } from '~/utils/types'
+import type { PaginatedProducts } from '~/utils/types'
 
 const { serverUrl } = useRuntimeConfig().public
 const route = useRoute()

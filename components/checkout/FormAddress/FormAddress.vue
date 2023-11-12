@@ -21,7 +21,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const cartStore = useCartStore()
-const { checkout, loading } = storeToRefs(cartStore)
+const { address, loading } = storeToRefs(cartStore)
 const { t } = useI18n()
 
 const validationSchema = toTypedSchema(zod.object({
@@ -75,7 +75,7 @@ function handleGetAddressByZipcode() {
   }
   cartStore.getAddressByZipcode(zipcode.value.value, props.addresType)
     .then(() => {
-      fillFormAddress(checkout.value[props.addresType])
+      fillFormAddress(address.value[props.addresType])
     })
 }
 function fillFormAddress(values) {

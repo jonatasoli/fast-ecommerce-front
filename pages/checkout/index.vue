@@ -4,8 +4,9 @@ import { navigateTo } from 'nuxt/app'
 import { definePageMeta, onMounted, ref, useDevice, useI18n, watch, unref } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
-import { FormAddress, ResumeOrder } from '~/components/checkout'
-import CreditCard from './_stepsCheckout/payment/CreditCard.vue'
+import { FormAddress } from '~/components/checkout'
+import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
+import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
 
 
 definePageMeta({
@@ -23,7 +24,7 @@ definePageMeta({
 const { isMobile } = useDevice()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
-const { checkout, address } = storeToRefs(cartStore)
+const { address } = storeToRefs(cartStore)
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
 const creditCard = ref<typeof CreditCard | null>(null)
@@ -91,8 +92,8 @@ async function handleSubmitUserAddress() {
 
 async function handleSubmitAddPayment() {
   if (paymentMethod.value === 'credit-card') {
-    const data = await creditCard.value?.handleSubmitCreditCard()
-    if (data) {
+    const { data } = await creditCard.value?.handleSubmitCreditCard()
+    if (data.uuid) {
       current.value++
     }
   }
@@ -102,13 +103,18 @@ function handleUpdateShippingIsPayment(value) {
   cartStore.setShippingIsPayment(value)
 }
 
+function handleFinishCheckout() {
+  cartStore.finishCheckout()
+}
+
 onMounted(() => {
   handleSubmitUser()
-  if (checkout.value.shipping_is_payment) {
-    shipping_is_payment.value = checkout.value.shipping_is_payment
+  if (address.value.shipping_is_payment) {
+    shipping_is_payment.value = address.value.shipping_is_payment
   }
 })
 
+console.log('a')
 </script>
 
 <template>
@@ -176,21 +182,18 @@ onMounted(() => {
     </div>
 
     <div v-if="current === 4" class="checkout__container checkout__confirm">
-      <h2 class="title">
-        {{ t('checkout.finally.title') }}
-      </h2>
       <ResumeOrder />
     </div>
 
     <div v-if="current" class="checkout__actions">
-      <n-button v-if="current === 4" quaternary strong class="btn-checkout">
-        {{ t('checkout.actions.finish') }}
-      </n-button>
       <n-button v-if="current > 2" quaternary strong class="btn-checkout" @click="current--">
         {{ t('checkout.actions.back') }}
       </n-button>
       <n-button v-if="current < 4 && user" type="primary" strong class="btn-checkout" submit @click="nextSteps">
         {{ t('checkout.actions.next') }}
+      </n-button>
+      <n-button v-if="current === 4" type="primary" strong class="btn-checkout" @click="handleFinishCheckout">
+        {{ t('checkout.actions.finish') }}
       </n-button>
     </div>
   </div>
