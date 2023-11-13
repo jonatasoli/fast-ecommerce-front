@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
-import { definePageMeta, onMounted, ref, useDevice, useI18n, watch, unref } from '#imports'
+import { definePageMeta, onMounted, ref, useDevice, useI18n } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
 import { FormAddress } from '~/components/checkout'
@@ -56,18 +56,24 @@ async function handleSubmitUser() {
 
 async function handleSubmitUserAddress() {
   try {
-    if (shipping_is_payment.value === null) {
+    if (!shipping_is_payment.value || !formUserAddress.value) {
+      console.warn('shipping_is_payment or formUserAddress is null')
       return
     }
 
-    const { valid: validUserAddress } = await formUserAddress.value?.validate()
+    const { valid: validUserAddress } = await formUserAddress.value.validate()
   
     if (!validUserAddress && shipping_is_payment.value === null) {
       return
     }
 
+    if (!formShippingAddress.value) {
+      console.warn('formShippingAddress is null')
+      return
+    }
+
     if (!shipping_is_payment.value) {
-      const { valid: validShippingAddress } = await formShippingAddress.value?.validate()
+      const { valid: validShippingAddress } = await formShippingAddress.value.validate()
       if (!validShippingAddress) {
         return
       }
@@ -87,12 +93,16 @@ async function handleSubmitUserAddress() {
   } catch (error) {
     console.error(error)
   }
-
 }
 
 async function handleSubmitAddPayment() {
   if (paymentMethod.value === 'credit-card') {
-    const { data } = await creditCard.value?.handleSubmitCreditCard()
+    if (!creditCard.value) {
+      console.warn('creditCard ref value is null')
+      return
+    }
+    
+    const { data } = await creditCard.value.handleSubmitCreditCard()
     if (data.uuid) {
       current.value++
     }

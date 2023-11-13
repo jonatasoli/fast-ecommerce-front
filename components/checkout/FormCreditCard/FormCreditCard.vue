@@ -78,9 +78,9 @@ defineExpose({
   <n-form ref="formRefCreditCard">
     <n-form-item :label="t('checkout.payment.credit_card_number')" v-bind="creditCardNumber">
       <n-input
-        @input="handleCreditCardNumberChange"
         v-mask="'#### #### #### ####'"
         v-bind="creditCardNumber"
+        @input="handleCreditCardNumberChange"
       />
     </n-form-item>
     <n-form-item :label="t('checkout.payment.credit_card_name')" v-bind="creditCardName">

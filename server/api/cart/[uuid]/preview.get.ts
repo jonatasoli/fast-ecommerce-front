@@ -25,10 +25,10 @@ export default defineEventHandler(async (event) => {
       success: true,
       data,
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw createError({
       statusCode: 400,
-      message: error,
+      message: (error as Error).message,
      })
   }
 })

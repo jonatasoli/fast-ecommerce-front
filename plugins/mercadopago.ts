@@ -2,8 +2,8 @@ import { loadMercadoPago } from '@mercadopago/sdk-js'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 interface MercadoPago {
-  createCardToken: (data: any) => Promise<any>
-  getInstallments: (data: any) => Promise<any>
+  createCardToken: (data: unknown) => Promise<unknown>
+  getInstallments: (data: unknown) => Promise<unknown>
 }
 
 declare module '#app' {
@@ -13,7 +13,7 @@ declare module '#app' {
 }
 
 type CustomWindow = {
-  MercadoPago: any
+  MercadoPago: unknown
 } & Window & typeof globalThis
 
 export default defineNuxtPlugin(async (nuxtApp) => {

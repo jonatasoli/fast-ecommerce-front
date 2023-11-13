@@ -5,7 +5,7 @@ import { ProductCard, ProductSkeleton } from '~/components/shared'
 
 const route = useRoute()
 const router = useRouter()
-const query = route.query.q?.toString() || ''
+const query = route.query.q?.toString() ?? ''
 const config = useRuntimeConfig()
 const OFFSET = 16
 const { t } = useI18n()

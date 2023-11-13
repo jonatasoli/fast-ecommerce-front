@@ -7,7 +7,9 @@ import type { CreditCard} from '~/utils/types'
 interface Props {
   paymentMethod: string
 }
+
 defineProps<Props>()
+
 const { $mercadoPago } = useNuxtApp()
 const cartStore = useCartStore()
 const { cart } = storeToRefs(cartStore)
@@ -17,7 +19,11 @@ const creditCardIssuer = ref<string>('')
 const optionInstallments = ref<{ label: string; value: number }[]>([])
 
 async function handleSubmitCreditCard() {
-  const { valid } = await formCreditCard.value?.validate()
+  if (!formCreditCard.value) {
+    return false
+  }
+
+  const { valid } = await formCreditCard.value.validate()
 
   if (!valid) {
     return false
@@ -91,10 +97,10 @@ watch(() => unref(bin), getInstallments)
 </script>
 <template>
   <div v-if="paymentMethod === 'credit-card'" class="border">
-        <FormCreditCard
-          ref="formCreditCard"
-          :optionInstallments="optionInstallments"
-          @on-input-credit-card="handleUpdateCreditCard"
-        />
+    <FormCreditCard
+      ref="formCreditCard"
+      :option-installments="optionInstallments"
+      @on-input-credit-card="handleUpdateCreditCard"
+    />
   </div>
 </template>

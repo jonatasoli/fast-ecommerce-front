@@ -50,20 +50,16 @@ onMounted(async () => {
   }
   preview.value = data
 })
-
-console.log(preview)
 </script>
 
 <template>
   <div>
-
     <h2 class="title">
       {{ t('checkout.finally.title') }}
     </h2>
     <div class="border">
       <n-grid :x-gap="20" :cols="12">
         <n-gi :span="8">
-
           <h3 class="title">
             {{ t('checkout.steps.login') }}
           </h3>
@@ -80,7 +76,6 @@ console.log(preview)
           </ul>
         </n-gi>
         <n-gi :span="4">
-
           <h3 class="title">
             {{ t('checkout.shipping.title') }}
           </h3>
@@ -98,11 +93,20 @@ console.log(preview)
         </n-gi>
       </n-grid>
       <div class="divider" />
-      <div v-for="product in preview.cart_items" :key="product.product_id" class="products">
+      <div
+        v-for="product in preview.cart_items"
+        :key="product.product_id"
+        class="products"
+      >
         <n-grid :x-gap="20" :cols="12">
           <n-gi :span="3">
             <div class="product__image">
-              <img :src="product.image_path" alt="Imagem do produto" width="100" height="100">
+              <img
+                :src="product.image_path"
+                alt="Imagem do produto"
+                width="100"
+                height="100"
+              >
             </div>
           </n-gi>
           <n-gi :span="5">
@@ -126,7 +130,7 @@ console.log(preview)
       </div>
       <div class="divider" />
       <n-grid :x-gap="20" :cols="12">
-        <n-gi :span="8"></n-gi>
+        <n-gi :span="8" />
         <n-gi :span="4">
           <div class="amount">
             <div class="row">
@@ -164,7 +168,6 @@ console.log(preview)
           </div>
         </n-gi>
       </n-grid>
-
     </div>
   </div>
 </template>

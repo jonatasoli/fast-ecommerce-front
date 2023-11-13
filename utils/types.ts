@@ -107,7 +107,6 @@ export interface Payment {
   installments: number
 }
 
-
 export interface Checkout extends Cart, Payment {
   user_data: User
   shipping_is_payment: boolean

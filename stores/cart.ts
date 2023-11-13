@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Cart, CartAddress, CartItem, Checkout, CreditCardPayment, Payment, ShippingAddress, User, UserAddress } from '@/utils/types'
 import { computed, ref, unref, useCookie, useFetch, useNuxtApp } from '#imports'
-import { set } from 'nuxt/dist/app/compat/capi'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = useCookie<Cart>('cart', {
