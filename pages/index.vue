@@ -35,12 +35,12 @@ const categories = computed(() =>
     .map(category => ({
       label: te(`navigation.${category.name}`) ? t(`navigation.${category.name}`) : category.name,
       uri: category.path,
-      image: category.image_path || '',
+      image: category.image_path ?? '',
     })),
 )
 
 const carouselBackground = (image?: string) => ({
-  backgroundImage: `url('${image || ProductImage}')`,
+  backgroundImage: `url('${image ?? ProductImage}')`,
 })
 
 const latestProducts = computed(() => {
