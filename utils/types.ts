@@ -91,19 +91,6 @@ export interface CreditCard {
   credit_card_installments: number
   type_document: string
   document_number: string
-=======
-export type UserAddress = {
-  address_id: number
-  user_id: number
-  country: string
-  city: string
-  state: string
-  neighborhood: string
-  street: string
-  street_number: string
-  address_complement: string | null
-  zipcode: string
-  active: boolean
 }
 
 export type ShippingAddress = {
@@ -119,6 +106,21 @@ export type ShippingAddress = {
   zipcode: string
   active: boolean
 }
+
+export type UserAddress = {
+  address_id: number
+  user_id: number
+  country: string
+  city: string
+  state: string
+  neighborhood: string
+  street: string
+  street_number: string
+  address_complement: string | null
+  zipcode: string
+  active: boolean
+}
+
 export type CartAddress = {
   shipping_is_payment: boolean
   user_address: UserAddress
