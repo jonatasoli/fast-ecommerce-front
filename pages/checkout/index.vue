@@ -119,7 +119,11 @@ console.log('a')
 
 <template>
   <div class="container checkout">
-    <n-steps v-if="!isMobile" :current="current" :status="currentStatus">
+    <n-steps
+      v-if="!isMobile"
+      :current="current"
+      :status="currentStatus"
+    >
       <n-step :title="t('checkout.steps.login')" />
       <n-step :title="t('checkout.steps.shipping')" />
       <n-step :title="t('checkout.steps.payment')" />
@@ -144,14 +148,20 @@ console.log('a')
         {{ t('checkout.shipping.title') }}
       </h2>
 
-      <FormAddress ref="formUserAddress" addres-type="user_address" :data="address?.user_address" />
+      <FormAddress
+        ref="formUserAddress"
+        addres-type="user_address"
+        :data="address?.user_address"
+      />
 
       <h2 class="title">
         {{ t('checkout.shipping.payment_title') }}
       </h2>
-      <n-form-item :label="t('checkout.shipping.shipping_is_payment')"
+      <n-form-item
+        :label="t('checkout.shipping.shipping_is_payment')"
         :feedback="shipping_is_payment === null ? t('checkout.shipping.select_option') : undefined"
-        :validation-status="shipping_is_payment === null ? 'error' : undefined">
+        :validation-status="shipping_is_payment === null ? 'error' : undefined"
+      >
         <n-radio-group v-model:value="shipping_is_payment">
           <n-radio :value="true" @change="handleUpdateShippingIsPayment">
             {{ t('checkout.shipping.shipping_is_payment_yes') }}
@@ -163,7 +173,11 @@ console.log('a')
       </n-form-item>
 
       <div v-if="shipping_is_payment === false">
-        <FormAddress ref="formShippingAddress" addres-type="shipping_address" :data="address?.shipping_address" />
+        <FormAddress
+          ref="formShippingAddress"
+          addres-type="shipping_address"
+          :data="address?.shipping_address"
+        />
       </div>
     </div>
 
@@ -172,7 +186,11 @@ console.log('a')
         {{ t('checkout.payment.title') }}
       </h2>
       <div class="border">
-        <n-radio-group v-model:value="paymentMethod" class="payment-method" size="large">
+        <n-radio-group
+          v-model:value="paymentMethod"
+          class="payment-method"
+          size="large"
+        >
           <n-radio value="credit-card">
             {{ t('checkout.payment.credit_card') }}
           </n-radio>
@@ -186,13 +204,32 @@ console.log('a')
     </div>
 
     <div v-if="current" class="checkout__actions">
-      <n-button v-if="current > 2" quaternary strong class="btn-checkout" @click="current--">
+      <n-button
+        v-if="current > 2"
+        quaternary
+        strong
+        class="btn-checkout"
+        @click="current--"
+      >
         {{ t('checkout.actions.back') }}
       </n-button>
-      <n-button v-if="current < 4 && user" type="primary" strong class="btn-checkout" submit @click="nextSteps">
+      <n-button
+        v-if="current < 4 && user"
+        type="primary"
+        strong
+        class="btn-checkout"
+        submit
+        @click="nextSteps"
+      >
         {{ t('checkout.actions.next') }}
       </n-button>
-      <n-button v-if="current === 4" type="primary" strong class="btn-checkout" @click="handleFinishCheckout">
+      <n-button
+        v-if="current === 4"
+        type="primary"
+        strong
+        class="btn-checkout"
+        @click="handleFinishCheckout"
+      >
         {{ t('checkout.actions.finish') }}
       </n-button>
     </div>

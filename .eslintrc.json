@@ -5,30 +5,28 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-recommended"
   ],
-  // "rules": {
-  //   "@typescript-eslint/consistent-type-imports": "off",
-  //   "@typescript-eslint/consistent-type-definitions": "off",
-  //   "@typescript-eslint/no-unused-vars": [
-  //     "error",
-  //     {
-  //       "argsIgnorePattern": "^_",
-  //       "varsIgnorePattern": "^_",
-  //       "caughtErrorsIgnorePattern": "^_"
-  //     }
-  //   ],
-  //   "vue/component-tags-order": ["error", {
-  //     "order": ["script", "template", "style"]
-  //   }],
-  //   "curly": ["error", "all"],
-  //   "vue/max-attributes-per-line": ["error", {
-  //     "singleline": {
-  //       "max": 2
-  //     },
-  //     "multiline": {
-  //       "max": 1
-  //     }
-  //   }]
-  // }
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "curly": ["error", "all"],
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": {
+        "max": 2
+      },
+      "multiline": {
+        "max": 1
+      }
+    }]
+  }
 }
