@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { CartItem } from '@/utils/types'
+import { CartAddress, CartItem, CreditCardPayment } from '@/utils/types'
 import { computed, ref, useCookie, useNuxtApp } from '#imports'
 
 interface Cart {
@@ -31,6 +31,7 @@ export const useCartStore = defineStore('cart', () => {
   const getCart = computed(() => cart.value)
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
+
   async function addToCart(item: CartItem) {
     if (!item) {
       return
@@ -83,7 +84,12 @@ export const useCartStore = defineStore('cart', () => {
         },
         )
         const data = await res.json()
-        cart.value = data
+
+        if (!data) {
+          return
+        }
+        const res_cart = await estimate()
+        cart.value = res_cart
       } catch (err) {
         console.error(err)
       } finally {
@@ -180,6 +186,117 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  async function AddAddressCart(address: CartAddress) {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+      loadingCart.value = true
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+
+      const res = await fetch(`${serverUrl}/cart/${uuid}/address`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ...cart.value,
+          address,
+        }),
+      })
+      const data = await res.json()
+      cart.value = data
+      return data
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loadingCart.value = false
+    }
+  }
+
+  async function addMercadoPagoCreditCardPayment(payment: CreditCardPayment) {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+      loadingCart.value = true
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+
+      const res = await fetch(`${serverUrl}/cart/${uuid}/payment/credit_card`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ...cart.value,
+          payment,
+        }),
+      })
+      const data = await res.json()
+      cart.value = data
+      return data
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loadingCart.value = false
+    }
+  }
+
+  async function getCartPreview() {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+
+      const res = await fetch(`${serverUrl}/cart/${uuid}/preview`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${$config.public.apiKey}`,
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+      const data = await res.json()
+      return data
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async function Checkout() {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+      loadingCart.value = true
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+
+      const res = await fetch(`${serverUrl}/cart/${uuid}/payment/credit_card`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ...cart.value,
+        }),
+      })
+      const data = await res.json()
+      cart.value = data
+      return data
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loadingCart.value = false
+    }
+  }
+
   return {
     cart,
     getCart,
@@ -190,5 +307,9 @@ export const useCartStore = defineStore('cart', () => {
     updateQuantity,
     calculateFreight,
     removeItem,
+    AddAddressCart,
+    addMercadoPagoCreditCardPayment,
+    getCartPreview,
+    Checkout,
   }
 })

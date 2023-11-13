@@ -1,26 +1,12 @@
 import { defineStore } from 'pinia'
-import { reactive, ref } from '#imports'
-
-interface Address {
-  country: string
-  state: string
-  city: string
-  neighborhood: string
-  street: string
-  street_number: string
-  address_complement: string
-  zipcode: string
-}
-
-interface Checkout {
-  shipping_is_payment: boolean
-  user_address: Address
-  shipping_address: Address
-}
+import { useCartStore } from './cart'
+import { ref, useNuxtApp } from '#imports'
+import { Checkout } from '~/utils/types'
 
 export const useCheckoutStore = defineStore('checkout', () => {
   const loading = ref(false)
-  const checkout = reactive<Checkout>({
+  const { getCart } = useCartStore()
+  const checkout = ref<Checkout>({
     shipping_is_payment: false,
     user_address: {
       country: 'Brasil',
@@ -43,13 +29,58 @@ export const useCheckoutStore = defineStore('checkout', () => {
       zipcode: '',
     },
   })
+  const { $config } = useNuxtApp()
+  const serverUrl = $config.public.serverUrl
+
+  async function addUser(uuid: string, user: any) {
+    try {
+      loading.value = true
+      const res = await fetch(`/api/cart/${uuid}/user`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          ...getCart,
+          user,
+        }),
+      })
+      const data = await res.json()
+      checkout.value = data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function addAddress(uuid: string) {
+    try {
+      loading.value = true
+      const res = await fetch(`${serverUrl}/cart/${uuid}/address`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          shipping_is_payment: checkout.value.shipping_is_payment,
+          user_address: checkout.value.user_address,
+          shipping_address: checkout.value.shipping_address,
+        }),
+      })
+      const data = await res.json()
+      checkout.value = data
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   async function getAddressByZipcode(zipcode: string, typeAddress: string) {
     try {
       loading.value = true
       const res = await fetch(`https://viacep.com.br/ws/${zipcode}/json/`)
       const data = await res.json()
-      checkout[typeAddress] = {
+      checkout.value[typeAddress] = {
         country: 'Brasil',
         state: data.uf,
         city: data.localidade,
@@ -66,23 +97,23 @@ export const useCheckoutStore = defineStore('checkout', () => {
     }
   }
 
-  function setUserAddress(values: any) {
+  async function setUserAddress(values: any) {
     for (const key in values) {
       if (key === 'shipping_is_payment') {
-        checkout.shipping_is_payment = values.shipping_is_payment
+        checkout.value.shipping_is_payment = values.shipping_is_payment
       }
-      checkout.user_address[key] = values[key]
+      checkout.value.user_address[key] = values[key]
     }
   }
 
   function setShippingAddress(values: any) {
     for (const key in values) {
-      checkout.shipping_address[key] = values[key]
+      checkout.value.shipping_address[key] = values[key]
     }
   }
 
   function setShippingIsPayment(value: boolean) {
-    checkout.shipping_is_payment = value
+    checkout.value.shipping_is_payment = value
   }
 
   return {
@@ -92,5 +123,7 @@ export const useCheckoutStore = defineStore('checkout', () => {
     setUserAddress,
     setShippingAddress,
     setShippingIsPayment,
+    addUser,
+    addAddress,
   }
 })

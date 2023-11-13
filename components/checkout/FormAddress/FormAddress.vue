@@ -7,7 +7,7 @@ import { useCheckoutStore } from '~/stores/checkout'
 import { onMounted, useI18n } from '#imports'
 
 interface Props {
-  values?: {
+  data?: {
     zipcode: string
     country: string
     state: string
@@ -19,9 +19,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['onSubmit'])
 
 const checkoutStore = useCheckoutStore()
+const { checkout } = storeToRefs(checkoutStore)
 const { loading } = storeToRefs(useCheckoutStore())
 const { t } = useI18n()
 
@@ -37,7 +37,7 @@ const validationSchema = toTypedSchema(zod.object({
   address_complement: zod.string().optional(),
 }))
 
-const { defineComponentBinds, handleSubmit, setValues, validate } = useForm({
+const { defineComponentBinds, setValues, validate, values } = useForm({
   validationSchema,
   initialValues: {
     zipcode: '',
@@ -73,46 +73,42 @@ function handleGetAddressByZipcode() {
   }
   checkoutStore.getAddressByZipcode(zipcode.value.value, props.addresType)
     .then(() => {
-      fillFormAddress()
+      fillFormAddress(checkout.value[props.addresType])
     })
 }
-
-function fillFormAddress() {
-  if (!props.values || !props.values.zipcode) {
+function fillFormAddress(values) {
+  if (!values || !values.zipcode) {
     return
   }
   setValues({
-    zipcode: props.values.zipcode,
-    country: props.values.country,
-    state: props.values.state,
-    neighborhood: props.values.neighborhood,
-    street: props.values.street,
-    street_number: props.values.street_number,
+    zipcode: values.zipcode,
+    country: values.country,
+    state: values.state,
+    neighborhood: values.neighborhood,
+    street: values.street,
+    street_number: values.street_number,
   })
 }
 
-const onSubmit = handleSubmit((values) => {
-  emit('onSubmit', values)
-})
-
 onMounted(() => {
-  fillFormAddress()
+  fillFormAddress(props.data)
 })
 
 defineExpose({
-  onSubmit,
   validate,
+  values,
 })
 </script>
 
 <template>
-  <n-form class="border checkout__address">
+  <n-form ref="formRef" class="border checkout__address">
     <n-grid
-      :x-gap="20"
-      :cols="12"
+      x-gap="6 800:20"
+      cols="4 800:12"
       class="zipcode"
+      style="align-items: center"
     >
-      <n-gi :span="11">
+      <n-gi span="3 800:11">
         <n-form-item
           :label="t('checkout.shipping.form.zipcode')"
           v-bind="zipcode"

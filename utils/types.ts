@@ -65,3 +65,69 @@ export type PaginatedProducts = {
   total_pages: number
   total_records: number
 }
+
+export interface Address {
+  country: string
+  state: string
+  city: string
+  neighborhood: string
+  street: string
+  street_number: string
+  address_complement: string
+  zipcode: string
+}
+
+export interface Checkout {
+  shipping_is_payment: boolean
+  user_address: Address
+  shipping_address: Address
+}
+
+export interface CreditCard {
+  credit_card_number: string
+  credit_card_name: string
+  credit_card_expiration: string
+  credit_card_cvv: string
+  credit_card_installments: number
+  type_document: string
+  document_number: string
+=======
+export type UserAddress = {
+  address_id: number
+  user_id: number
+  country: string
+  city: string
+  state: string
+  neighborhood: string
+  street: string
+  street_number: string
+  address_complement: string | null
+  zipcode: string
+  active: boolean
+}
+
+export type ShippingAddress = {
+  address_id: number
+  user_id: number
+  country: string
+  city: string
+  state: string
+  neighborhood: string
+  street: string
+  street_number: string
+  address_complement: string | null
+  zipcode: string
+  active: boolean
+}
+export type CartAddress = {
+  shipping_is_payment: boolean
+  user_address: UserAddress
+  shipping_address: ShippingAddress | null
+}
+
+export type CreditCardPayment = {
+  payment_gateway: string
+  card_token: string
+  card_issuer: string
+  installments: number
+}
