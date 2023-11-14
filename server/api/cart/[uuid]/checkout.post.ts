@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
     const res = await fetch(`${serverBaseURL}/cart/${uuid}/checkout`, {
       method: 'POST',
       headers: {
-        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },

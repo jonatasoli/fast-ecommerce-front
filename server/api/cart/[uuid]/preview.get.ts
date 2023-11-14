@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
   try {
     const res = await fetch(`${serverBaseURL}/cart/${uuid}/preview`, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
