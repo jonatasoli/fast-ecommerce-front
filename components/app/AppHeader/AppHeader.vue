@@ -28,10 +28,11 @@ function doSearch() {
       </NuxtLink>
       <div class="search-bar">
         <div class="search-bar__group">
+          <!-- FIXME: i18n -->
           <input
             v-model="search"
             type="text"
-            placeholder="Digite o que você procura"
+            placeholder="Digite o que você procura" 
             @keyup.enter="doSearch"
           >
           <button @click="doSearch">

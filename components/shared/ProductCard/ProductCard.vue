@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useI18n } from '#imports'
 import { currencyFormat } from '@/utils/helpers'
-import { ProductItem } from '@/utils/types'
+import type { ProductItem } from '@/utils/types'
 
 type Props = {
   product: ProductItem

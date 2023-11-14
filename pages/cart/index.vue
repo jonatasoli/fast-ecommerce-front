@@ -25,7 +25,7 @@ function updateQuantity(id, quantity) {
 
 <template>
   <main class="cart">
-    <div v-if="cartStore.loadingCart" class="cart__loading">
+    <div v-if="cartStore.loading" class="cart__loading">
       <n-space>
         <n-spin size="large" />
       </n-space>
@@ -145,7 +145,7 @@ function updateQuantity(id, quantity) {
 
             <div class="summary-values amount">
               <p>{{ t("cart.summary.total") }}</p>
-              <p>{{ currencyFormat(getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
             <nuxt-link to="/checkout">
               <n-button

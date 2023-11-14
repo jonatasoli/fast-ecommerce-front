@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, getPageFromRoute, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig, watch } from '#imports'
-import { PaginatedProducts, ProductItem } from '~/utils/types'
+import type { PaginatedProducts, ProductItem } from '~/utils/types'
 import { ProductCard, ProductSkeleton } from '~/components/shared'
 
 const route = useRoute()
 const router = useRouter()
-const query = route.query.q?.toString() || ''
+const query = route.query.q?.toString() ?? ''
 const config = useRuntimeConfig()
 const OFFSET = 16
 const { t } = useI18n()

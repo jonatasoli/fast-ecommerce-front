@@ -3,8 +3,8 @@ import { storeToRefs } from 'pinia'
 import * as zod from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import { useCheckoutStore } from '~/stores/checkout'
 import { onMounted, useI18n } from '#imports'
+import { useCartStore } from '~/stores/cart'
 
 interface Props {
   data?: {
@@ -14,15 +14,14 @@ interface Props {
     neighborhood: string
     street: string
     street_number: string
-  }
+  } | null
   addresType: string
 }
 
 const props = defineProps<Props>()
 
-const checkoutStore = useCheckoutStore()
-const { checkout } = storeToRefs(checkoutStore)
-const { loading } = storeToRefs(useCheckoutStore())
+const cartStore = useCartStore()
+const { address, loading } = storeToRefs(cartStore)
 const { t } = useI18n()
 
 const validationSchema = toTypedSchema(zod.object({
@@ -31,6 +30,7 @@ const validationSchema = toTypedSchema(zod.object({
   }).nonempty(t('checkout.shipping.form.zipcodeRequired')),
   country: zod.string().nonempty(t('checkout.shipping.form.countryRequired')),
   state: zod.string().nonempty(t('checkout.shipping.form.stateRequired')),
+  city: zod.string().nonempty(t('checkout.shipping.form.stateRequired')),
   neighborhood: zod.string().nonempty(t('checkout.shipping.form.neighborhoodRequired')),
   street: zod.string().nonempty(t('checkout.shipping.form.streetRequired')),
   street_number: zod.string().nonempty(t('checkout.shipping.form.numberRequired')),
@@ -43,6 +43,7 @@ const { defineComponentBinds, setValues, validate, values } = useForm({
     zipcode: '',
     country: '',
     state: '',
+    city: '',
     neighborhood: '',
     street: '',
     street_number: '',
@@ -62,6 +63,7 @@ const naiveConfig = state => ({
 const zipcode = defineComponentBinds('zipcode', naiveConfig)
 const country = defineComponentBinds('country', naiveConfig)
 const state = defineComponentBinds('state', naiveConfig)
+const city = defineComponentBinds('city', naiveConfig)
 const neighborhood = defineComponentBinds('neighborhood', naiveConfig)
 const street = defineComponentBinds('street', naiveConfig)
 const street_number = defineComponentBinds('street_number', naiveConfig)
@@ -71,9 +73,9 @@ function handleGetAddressByZipcode() {
   if (!zipcode.value) {
     return
   }
-  checkoutStore.getAddressByZipcode(zipcode.value.value, props.addresType)
+  cartStore.getAddressByZipcode(zipcode.value.value, props.addresType)
     .then(() => {
-      fillFormAddress(checkout.value[props.addresType])
+      fillFormAddress(address.value[props.addresType])
     })
 }
 function fillFormAddress(values) {
@@ -84,6 +86,7 @@ function fillFormAddress(values) {
     zipcode: values.zipcode,
     country: values.country,
     state: values.state,
+    city: values.city,
     neighborhood: values.neighborhood,
     street: values.street,
     street_number: values.street_number,
@@ -138,7 +141,7 @@ defineExpose({
           v-bind="country"
           path="country"
         >
-          <n-input v-bind="country" readonly />
+          <n-input v-bind="country" />
         </n-form-item>
       </n-gi>
       <n-gi>
@@ -147,17 +150,30 @@ defineExpose({
           v-bind="state"
           path="state"
         >
-          <n-input v-bind="state" readonly />
+          <n-input v-bind="state" />
         </n-form-item>
       </n-gi>
     </n-grid>
-    <n-form-item
-      :label="t('checkout.shipping.form.neighborhood')"
-      v-bind="neighborhood"
-      path="neighborhood"
-    >
-      <n-input v-bind="neighborhood" />
-    </n-form-item>
+    <n-grid :x-gap="20" :cols="2">
+      <n-gi>
+        <n-form-item
+          :label="t('checkout.shipping.form.city')"
+          v-bind="city"
+          path="city"
+        >
+          <n-input v-bind="city" />
+        </n-form-item>
+      </n-gi>
+      <n-gi>
+        <n-form-item
+          :label="t('checkout.shipping.form.neighborhood')"
+          v-bind="neighborhood"
+          path="neighborhood"
+        >
+          <n-input v-bind="neighborhood" />
+        </n-form-item>
+      </n-gi>
+    </n-grid>
     <n-grid :x-gap="20" :cols="2">
       <n-gi>
         <n-form-item

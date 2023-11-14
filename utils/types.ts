@@ -66,6 +66,23 @@ export type PaginatedProducts = {
   total_records: number
 }
 
+export interface Cart {
+  uuid: string
+  affiliate: string
+  coupon: string
+  discount: string 
+  freight: {
+    price: string
+    delivery_time: string
+    max_date?: string
+  }
+  freight_product_code?: string
+  subtotal: string
+  total: string
+  zipcode: string
+  cart_items: CartItem[]
+}
+
 export interface Address {
   country: string
   state: string
@@ -77,24 +94,47 @@ export interface Address {
   zipcode: string
 }
 
-export interface Checkout {
+export interface Payment {
+  payment_method: string
+  payment_method_id: string
+  payment_intent?: string | null
+  customer_id: string
+  card_token?: string
+  pix_qr_code?: string
+  pix_qr_code_base64?: string
+  pix_payment_id?: number
+  gateway_provider: string
+  installments: number
+}
+
+export interface Checkout extends Cart, Payment {
+  user_data: User
   shipping_is_payment: boolean
-  user_address: Address
-  shipping_address: Address
+  user_address_id: number
+  shipping_address_id: number | null
 }
 
 export interface CreditCard {
-  credit_card_number: string
-  credit_card_name: string
-  credit_card_expiration: string
-  credit_card_cvv: string
-  credit_card_installments: number
-  type_document: string
-  document_number: string
-=======
-export type UserAddress = {
-  address_id: number
-  user_id: number
+  creditCardNumber: string
+  creditCardName: string
+  creditCardExpiration: string
+  creditCardCvv: string
+  installments: number
+  typeCocument: string
+  document: string
+}
+
+export type User = {
+  user_id: number | null
+  name: string
+  email: string
+  document: string
+  phone: string
+}
+
+export type BaseAddress = {
+  address_id: number | null
+  user_id: number | null
   country: string
   city: string
   state: string
@@ -106,23 +146,16 @@ export type UserAddress = {
   active: boolean
 }
 
-export type ShippingAddress = {
-  address_id: number
-  user_id: number
-  country: string
-  city: string
-  state: string
-  neighborhood: string
-  street: string
-  street_number: string
-  address_complement: string | null
-  zipcode: string
-  active: boolean
-}
+export type UserAddress = BaseAddress
+
+export type ShippingAddress = BaseAddress | null
+
 export type CartAddress = {
   shipping_is_payment: boolean
   user_address: UserAddress
   shipping_address: ShippingAddress | null
+  user_address_id?: number | null
+  shipping_address_id?: number | null
 }
 
 export type CreditCardPayment = {

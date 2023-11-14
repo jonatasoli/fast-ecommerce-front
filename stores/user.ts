@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, useNuxtApp } from '#imports'
+import { ref } from '#imports'
 
 interface User {
   name: string
@@ -15,14 +15,12 @@ export const useUserStore = defineStore('user', () => {
   const authenticated = ref(false)
   const loadingUser = ref(false)
   const error = ref<string | null>(null)
-  const { $config } = useNuxtApp()
-  const serverUrl = $config.public.serverUrl
 
   async function getUser() {
     loadingUser.value = true
 
     try {
-      const res = await fetch(`${serverUrl}/user/token`, {
+      const res = await $fetch('/api/auth/user', {
         method: 'GET',
       })
 

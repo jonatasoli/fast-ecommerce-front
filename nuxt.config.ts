@@ -57,8 +57,8 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include:
         process.env.NODE_ENV === 'development'
-          ? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
-          : [],
+          ? ['naive-ui', 'vueuc', 'date-fns-tz/formatInTimeZone']
+          : []
     },
     css: {
       preprocessorOptions: {
@@ -71,7 +71,7 @@ export default defineNuxtConfig({
       Components({
         resolvers: [NaiveUiResolver()],
       }),
-    ],
+    ],  
   },
   runtimeConfig: {
     public: {
