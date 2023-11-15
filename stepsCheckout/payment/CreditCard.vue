@@ -52,6 +52,7 @@ async function handleSubmitCreditCard() {
     card_issuer: unref(creditCardIssuer),
   })
 
+  await cartStore.setPaymentCreditCard(creditCard)
   return data
 }
 

@@ -24,7 +24,7 @@ definePageMeta({
 const { isMobile } = useDevice()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
-const { address } = storeToRefs(cartStore)
+const { address, cart } = storeToRefs(cartStore)
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
 const creditCard = ref<typeof CreditCard | null>(null)
@@ -35,7 +35,7 @@ const shipping_is_payment = ref<boolean | null>(null)
 
 const { t } = useI18n()
 
-async function nextSteps() {
+function nextSteps() {
   const steps = {
     1: handleSubmitUser,
     2: handleSubmitUserAddress,
@@ -67,12 +67,8 @@ async function handleSubmitUserAddress() {
       return
     }
 
-    if (!formShippingAddress.value) {
-      console.warn('formShippingAddress is null')
-      return
-    }
 
-    if (!shipping_is_payment.value) {
+    if (!shipping_is_payment.value && formShippingAddress.value) {
       const { valid: validShippingAddress } = await formShippingAddress.value.validate()
       if (!validShippingAddress) {
         return
@@ -161,7 +157,11 @@ console.log('a')
       <FormAddress
         ref="formUserAddress"
         addres-type="user_address"
-        :data="address?.user_address"
+        :data="{
+          ...address?.user_address,
+          zipcode: cart?.zipcode,
+        }"
+        :readonly-zipcode="true"
       />
 
       <h2 class="title">

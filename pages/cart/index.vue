@@ -48,21 +48,6 @@ function updateQuantity(id, quantity) {
 
       <div v-else class="cart__not-empty">
         <div class="cart__not-empty--container">
-          <div>
-            <InputCard
-              icon="cart"
-              :title="t('cart.inputs.shipping.title')"
-              :button-text="t('cart.inputs.shipping.buttonText')"
-              placeholder="Informe seu CEP"
-              :received-value="getCart.zipcode"
-              @on-button-click="handleEstimateFreight"
-            >
-              <div v-if="getCart?.freight?.price" class="cart__freigth">
-                <div>{{ t('cart.freight.part1') }} {{ getCart.freight.delivery_time }} {{ t('cart.freight.part2') }}</div>
-                <div>{{ currencyFormat(getCart.freight.price, undefined, 'freight') }}</div>
-              </div>
-            </InputCard>
-          </div>
           <InputCard
             icon="cupom"
             :title="t('cart.inputs.discount.title')"
@@ -70,6 +55,19 @@ function updateQuantity(id, quantity) {
             :button-text="t('cart.inputs.discount.buttonText')"
             received-value=""
           />
+          <InputCard
+            icon="cart"
+            :title="t('cart.inputs.shipping.title')"
+            :button-text="t('cart.inputs.shipping.buttonText')"
+            placeholder="Informe seu CEP"
+            :received-value="getCart.zipcode"
+            @on-button-click="handleEstimateFreight"
+          >
+            <div v-if="getCart?.freight?.price" class="cart__freigth">
+              <div>{{ t('cart.freight.part1') }} {{ getCart.freight.delivery_time }} {{ t('cart.freight.part2') }}</div>
+              <div>{{ currencyFormat(getCart.freight.price, undefined, 'freight') }}</div>
+            </div>
+          </InputCard>
         </div>
         <div class="cart__not-empty--container">
           <div class="cart__not-empty--products">
@@ -147,8 +145,14 @@ function updateQuantity(id, quantity) {
               <p>{{ t("cart.summary.total") }}</p>
               <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
-            <nuxt-link to="/checkout">
+            
+
+            <p v-if="!getCart?.freight?.price" class="alert-freight">
+              Calcule o frete para finalizar a compra
+            </p>
+            <nuxt-link v-else to="/checkout">
               <n-button
+                :disabled="!getCart?.freight?.price"
                 type="primary"
                 strong
                 class="btn-checkout"

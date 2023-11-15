@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Cart, CartAddress, CartItem, Checkout, CreditCardPayment, Payment, ShippingAddress, User, UserAddress } from '@/utils/types'
-import { computed, ref, unref, useCookie, useFetch, useNuxtApp } from '#imports'
+import { computed, ref, unref, useCookie, useFetch, useNuxtApp, type CreditCard } from '#imports'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = useCookie<Cart>('cart', {
@@ -60,6 +60,16 @@ export const useCartStore = defineStore('cart', () => {
       phone: '',
       document: ''  
     },
+  })
+
+  const paymentCreditCard = ref<CreditCard>({
+    creditCardNumber: '',
+    creditCardName: '',
+    creditCardExpiration: '',
+    creditCardCvv: '',
+    installments: 1,
+    typeCocument: '',
+    document: '',
   })
 
   const payment = ref<Payment>({
@@ -583,11 +593,16 @@ export const useCartStore = defineStore('cart', () => {
     payment.value = paymentUser
   }
 
+  function setPaymentCreditCard(paymentCreditCardUser: CreditCard) {
+    paymentCreditCard.value = paymentCreditCardUser
+  }
+
   return {
     cart,
     address,
     getCart,
     loading,
+    paymentCreditCard,
     estimate,
     getCartUser,
     addToCart,
@@ -602,6 +617,8 @@ export const useCartStore = defineStore('cart', () => {
     setUserAddressId,
     setShippingAddressId,
     setShippingIsPayment,
+    setPaymentCreditCard,
     finishCheckout,
+
   }
 })
