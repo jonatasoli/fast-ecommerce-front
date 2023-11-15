@@ -14,7 +14,6 @@ export default defineNuxtConfig({
   ssr: false,
   spaLoadingTemplate: 'spa-loading-template.html',
   devtools: { enabled: true },
-  imports: { autoImport: false },
   modules: [
     '@nuxtjs/i18n',
     '@nuxtjs/device',

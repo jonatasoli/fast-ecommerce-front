@@ -67,8 +67,8 @@ const state = defineComponentBinds('state', naiveConfig)
 const city = defineComponentBinds('city', naiveConfig)
 const neighborhood = defineComponentBinds('neighborhood', naiveConfig)
 const street = defineComponentBinds('street', naiveConfig)
-const street_number = defineComponentBinds('street_number', naiveConfig)
-const address_complement = defineComponentBinds('address_complement', naiveConfig)
+const streetNumber = defineComponentBinds('street_number', naiveConfig)
+const addressComplement = defineComponentBinds('address_complement', naiveConfig)
 
 function handleGetAddressByZipcode() {
   if (!zipcode.value) {
@@ -184,19 +184,19 @@ defineExpose({
       <n-gi>
         <n-form-item
           :label="t('checkout.shipping.form.number')"
-          v-bind="street_number"
+          v-bind="streetNumber"
           path="street_number"
         >
-          <n-input v-bind="street_number" />
+          <n-input v-bind="streetNumber" />
         </n-form-item>
       </n-gi>
     </n-grid>
     <n-form-item
       :label="t('checkout.shipping.form.complement')"
-      v-bind="address_complement"
+      v-bind="addressComplement"
       path="address_complement"
     >
-      <n-input v-bind="address_complement" />
+      <n-input v-bind="addressComplement" />
     </n-form-item>
   </n-form>
 </template>

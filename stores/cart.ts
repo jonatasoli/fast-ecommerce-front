@@ -90,7 +90,7 @@ export const useCartStore = defineStore('cart', () => {
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
 
-  async function addToCart(item: CartItem) {
+  function addToCart(item: CartItem) {
     if (!item) {
       return
     }
@@ -514,7 +514,7 @@ export const useCartStore = defineStore('cart', () => {
       }
 
       const responseData = unref(data) as Checkout
-      console.log(responseData)
+      return responseData
     } catch (err) {
       console.error(err)
     } finally {
@@ -544,7 +544,7 @@ export const useCartStore = defineStore('cart', () => {
         siafi: string
       }
       
-      return address.value[typeAddress] = {
+       address.value[typeAddress] = {
         country: 'Brasil', // TODO: i18n
         state: responseData.uf,
         city: responseData.localidade,
@@ -554,6 +554,8 @@ export const useCartStore = defineStore('cart', () => {
         address_complement: '',
         zipcode: responseData.cep,
       }
+
+      return address.value[typeAddress]
     } catch (error) {
       console.error(error)
     } finally {

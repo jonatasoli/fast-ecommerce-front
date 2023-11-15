@@ -10,7 +10,7 @@ interface LogoutErrorResponse {
 
 export type LogoutResponse = LogoutSuccessResponse | LogoutErrorResponse
 
-export default defineEventHandler(async (event): Promise<LogoutResponse> => {
+export default defineEventHandler((event): LogoutResponse => {
   try {
     setCookie(event, 'token', '', {
       httpOnly: true,

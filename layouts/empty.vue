@@ -31,19 +31,19 @@ nuxtApp.hook('page:finish', () => {
         />
       </template>
     </Head>
+    <Body>
+      <n-config-provider
+        :locale="ptBR"
+        :date-locale="datePtBR"
+        :theme-overrides="theme"
+        :breakpoints="breakpoints"
+      >
+        <n-notification-provider placement="top-left">
+          <slot />
+        </n-notification-provider>
+      </n-config-provider>
+    </Body>
   </Html>
-  <Body>
-    <n-config-provider
-      :locale="ptBR"
-      :date-locale="datePtBR"
-      :theme-overrides="theme"
-      :breakpoints="breakpoints"
-    >
-      <n-notification-provider placement="top-left">
-        <slot />
-      </n-notification-provider>
-    </n-config-provider>
-  </Body>
 </template>
 
 <style lang="scss">

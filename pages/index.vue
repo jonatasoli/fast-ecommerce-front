@@ -17,10 +17,10 @@ const { data: carousel } = await useAsyncData(() => store.getProductsShowcase())
 const { data: featured } = await useFetch<{ products: ProductItem[] }>(`${serverUrl}/catalog/featured`)
 const { data: latest } = await useFetch<{ products: ProductItem[] }>(`${serverUrl}/catalog/latest`)
 
-const productToFeature = ({ image_path, name, uri }: ProductItem): FeatureItem => ({
+const productToFeature = ({ image_path: imagePath, name, uri }: ProductItem): FeatureItem => ({
   label: name,
   uri,
-  image: image_path || '',
+  image: imagePath || '',
 })
 
 const featuredProducts = computed(() => featured.value?.products

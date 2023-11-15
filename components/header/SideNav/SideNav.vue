@@ -5,7 +5,7 @@ import { ref } from '#imports'
 const show = ref(false)
 const { navLinks } = useNavLinks()
 
-const closeSidenav = () => show.value = false
+const closeSidenav = () => { show.value = false }
 </script>
 
 <template>

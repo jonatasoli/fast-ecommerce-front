@@ -31,7 +31,7 @@ const creditCard = ref<typeof CreditCard | null>(null)
 const current = ref<number>(1)
 const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
 const paymentMethod = ref<string>('credit-card')
-const shipping_is_payment = ref<boolean | null>(null)
+const shippingIsPayment = ref<boolean | null>(null)
 
 const { t } = useI18n()
 
@@ -56,31 +56,31 @@ async function handleSubmitUser() {
 
 async function handleSubmitUserAddress() {
   try {
-    if (!shipping_is_payment.value || !formUserAddress.value) {
+    if (!shippingIsPayment.value || !formUserAddress.value) {
       console.warn('shipping_is_payment or formUserAddress is null')
       return
     }
 
     const { valid: validUserAddress } = await formUserAddress.value.validate()
   
-    if (!validUserAddress && shipping_is_payment.value === null) {
+    if (!validUserAddress && shippingIsPayment.value === null) {
       return
     }
 
 
-    if (!shipping_is_payment.value && formShippingAddress.value) {
+    if (!shippingIsPayment.value && formShippingAddress.value) {
       const { valid: validShippingAddress } = await formShippingAddress.value.validate()
       if (!validShippingAddress) {
         return
       }
     }
 
-    const shippingAddress = shipping_is_payment.value
+    const shippingAddress = shippingIsPayment.value
       ? formUserAddress.value?.values
       : formShippingAddress.value?.values
 
     await cartStore.addAddressCart({
-      shipping_is_payment: shipping_is_payment.value,
+      shipping_is_payment: shippingIsPayment.value,
       user_address: formUserAddress.value?.values,
       shipping_address: shippingAddress,
     })
@@ -116,11 +116,10 @@ function handleFinishCheckout() {
 onMounted(() => {
   handleSubmitUser()
   if (address.value.shipping_is_payment) {
-    shipping_is_payment.value = address.value.shipping_is_payment
+    shippingIsPayment.value = address.value.shipping_is_payment
   }
 })
 
-console.log('a')
 </script>
 
 <template>
@@ -169,10 +168,10 @@ console.log('a')
       </h2>
       <n-form-item
         :label="t('checkout.shipping.shipping_is_payment')"
-        :feedback="shipping_is_payment === null ? t('checkout.shipping.select_option') : undefined"
-        :validation-status="shipping_is_payment === null ? 'error' : undefined"
+        :feedback="shippingIsPayment === null ? t('checkout.shipping.select_option') : undefined"
+        :validation-status="shippingIsPayment === null ? 'error' : undefined"
       >
-        <n-radio-group v-model:value="shipping_is_payment">
+        <n-radio-group v-model:value="shippingIsPayment">
           <n-radio :value="true" @change="handleUpdateShippingIsPayment">
             {{ t('checkout.shipping.shipping_is_payment_yes') }}
           </n-radio>
@@ -182,7 +181,7 @@ console.log('a')
         </n-radio-group>
       </n-form-item>
 
-      <div v-if="shipping_is_payment === false">
+      <div v-if="shippingIsPayment === false">
         <FormAddress
           ref="formShippingAddress"
           addres-type="shipping_address"

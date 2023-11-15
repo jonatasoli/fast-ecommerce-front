@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { currencyFormat, useI18n, onMounted, ref, unref } from '#imports'
 import { useCartStore } from '~/stores/cart'
-import { storeToRefs } from 'pinia'
 import type { Checkout } from "~/utils/types"
 
 const cartStore = useCartStore()

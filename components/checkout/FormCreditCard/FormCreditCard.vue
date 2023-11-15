@@ -97,7 +97,7 @@ defineExpose({
   values,
 })
 
-onMounted(async() => {
+onMounted(() => {
   if (!props.data) {
     return
   }
