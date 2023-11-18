@@ -342,7 +342,6 @@ export const useCartStore = defineStore('cart', () => {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
         },
         body: {
           cart: {
