@@ -12,7 +12,7 @@ defineProps<Props>()
 
 const { $mercadoPago } = useNuxtApp()
 const cartStore = useCartStore()
-const { cart } = storeToRefs(cartStore)
+const { cart, paymentCreditCard } = storeToRefs(cartStore)
 const formCreditCard = ref<typeof FormCreditCard | null>(null)
 const bin = ref<string>('')
 const creditCardIssuer = ref<string>('')
@@ -39,7 +39,7 @@ async function handleSubmitCreditCard() {
     cardExpirationMonth: month,
     cardExpirationYear: year,
     securityCode: creditCard.creditCardCvv,
-    identificationType: creditCard.typeCocument,
+    identificationType: creditCard.typeDocument,
     identificationNumber: creditCard.document,
   }
 
@@ -57,11 +57,12 @@ async function handleSubmitCreditCard() {
 }
 
 function handleUpdateCreditCard(creditCardNumber) {
-  if (creditCardNumber.length < 6) {
+  const newCreditCardNumber = creditCardNumber.replace(/\s/g, '')
+  if (newCreditCardNumber.length < 6) {
     return
   }
 
-  const substringBin = creditCardNumber.substring(0, 6)
+  const substringBin = newCreditCardNumber.substring(0, 6)
   bin.value = substringBin
 }
 
@@ -95,12 +96,19 @@ defineExpose({
 })
 
 watch(() => unref(bin), getInstallments)
+onMounted(() => {
+  const { creditCardNumber } = unref(paymentCreditCard);
+  if (creditCardNumber) {
+    handleUpdateCreditCard(creditCardNumber);
+  }
+})
 </script>
 <template>
   <div v-if="paymentMethod === 'credit-card'" class="border">
     <FormCreditCard
       ref="formCreditCard"
       :option-installments="optionInstallments"
+      :data="paymentCreditCard"
       @on-input-credit-card="handleUpdateCreditCard"
     />
   </div>

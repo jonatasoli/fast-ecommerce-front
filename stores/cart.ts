@@ -68,7 +68,7 @@ export const useCartStore = defineStore('cart', () => {
     creditCardExpiration: '',
     creditCardCvv: '',
     installments: 1,
-    typeCocument: '',
+    typeDocument: '',
     document: '',
   })
 
@@ -202,7 +202,7 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       const headers = {
         'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
       }
       const { data, error } = await useFetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
         method: 'POST',
@@ -222,7 +222,6 @@ export const useCartStore = defineStore('cart', () => {
       }
 
       const responseData = unref(data) as Cart
-  
       return responseData
     } catch (err) {
       console.error(err)
@@ -233,7 +232,12 @@ export const useCartStore = defineStore('cart', () => {
 
   async function removeItem(id: number) {
     try {
-      cart.value.cart_items = cart.value.cart_items.filter(p => p.product_id !== id)
+      const cartItems = unref(cart).cart_items
+      cart.value.cart_items = cartItems.filter(p => p.product_id !== id)
+      if (cartItems.length === 1) {
+        cart.value.uuid = ''
+        return
+      }
       await estimate()
     } catch (err) {
       console.error(err)
@@ -338,6 +342,7 @@ export const useCartStore = defineStore('cart', () => {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
         body: {
           cart: {
@@ -513,12 +518,33 @@ export const useCartStore = defineStore('cart', () => {
         return;
       }
 
-      const responseData = unref(data) as Checkout
+      const responseData = unref(data) as {
+        status: string
+        message: string
+        order_id: string
+      }
       return responseData
     } catch (err) {
       console.error(err)
     } finally {
       loading.value = false
+    }
+  }
+
+  function clearCart() {
+    cart.value = {
+      uuid: '',
+      affiliate: '',
+      coupon: '',
+      discount: '',
+      freight: {
+        price: '',
+        delivery_time: '',
+      },
+      zipcode: '',
+      subtotal: "0",
+      total: "0",
+      cart_items: [],
     }
   }
 
@@ -621,6 +647,7 @@ export const useCartStore = defineStore('cart', () => {
     setShippingIsPayment,
     setPaymentCreditCard,
     finishCheckout,
+    clearCart,
 
   }
 })

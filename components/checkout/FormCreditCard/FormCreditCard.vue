@@ -8,12 +8,12 @@ interface Props {
   data?: {
     creditCardNumber: string
     creditCardName: string
-    creditCardExpiration: number
+    creditCardExpiration: string
     creditCardCvv: string
     installments: number
     typeDocument: string
     document: string
-  } | null
+  }
   optionInstallments: { label: string; value: number }[]
 }
 
@@ -98,7 +98,7 @@ defineExpose({
 })
 
 onMounted(() => {
-  if (!props.data) {
+  if (!props.data?.creditCardNumber) {
     return
   }
   fillFormCreditCard(props.data)
@@ -128,8 +128,8 @@ onMounted(() => {
           <n-select
             v-bind="typeDocument"
             :options="[
-              { label: 'CPF', value: 'cpf' },
-              { label: 'CNPJ', value: 'cnpj' },
+              { label: 'CPF', value: 'CPF' },
+              { label: 'CNPJ', value: 'CNPJ' },
             ]"
           />
         </n-form-item>

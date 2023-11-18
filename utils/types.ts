@@ -128,7 +128,7 @@ export interface CreditCard {
   creditCardExpiration: string
   creditCardCvv: string
   installments: number
-  typeCocument: string
+  typeDocument: string
   document: string
 }
 

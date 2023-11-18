@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
-import { definePageMeta, onMounted, ref, useDevice, useI18n } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
-import { FormAddress } from '~/components/checkout'
+import { useCheckoutStore } from '~/stores/checkout'
 import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
 import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
-
+import type { FormAddress } from '~/components/checkout'
 
 definePageMeta({
   layout: 'checkout',
@@ -21,9 +20,11 @@ definePageMeta({
     },
   ],
 })
+const router = useRouter()
 const { isMobile } = useDevice()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
+const checkoutStore = useCheckoutStore()
 const { address, cart } = storeToRefs(cartStore)
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
@@ -109,8 +110,16 @@ function handleUpdateShippingIsPayment(value) {
   cartStore.setShippingIsPayment(value)
 }
 
-function handleFinishCheckout() {
-  cartStore.finishCheckout()
+async function handleFinishCheckout() {
+  const responseData = await cartStore.finishCheckout()
+  if (!responseData) {
+    return
+  }
+  if (responseData.order_id) {
+    checkoutStore.setCheckout(unref(responseData))
+    cartStore.clearCart()
+    router.push('/checkout/finish')
+  }
 }
 
 onMounted(() => {

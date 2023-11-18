@@ -232,4 +232,10 @@ export default {
     },
 
   },
+
+  finishCheckout: {
+    title: 'Pedido realizado com sucesso!',
+    description: 'Em breve você receberá um e-mail com os detalhes do pedido',
+    button: 'Voltar para a página inicial',
+  }
 }
