@@ -12,6 +12,12 @@ const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
   ssr: false,
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
   spaLoadingTemplate: 'spa-loading-template.html',
   devtools: { enabled: true },
   modules: [
