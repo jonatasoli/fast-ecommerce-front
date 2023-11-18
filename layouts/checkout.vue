@@ -27,26 +27,26 @@ const head = useLocaleHead({
         />
       </template>
     </Head>
-  </Html>
-  <Body>
-    <n-config-provider
-      :locale="ptBR"
-      :date-locale="datePtBR"
-      :theme-overrides="theme"
-      :breakpoints="breakpoints"
-    >
-      <n-notification-provider>
-        <header class="header">
-          <div class="header__top">
-            <div class="logo">
-              <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
+    <Body>
+      <n-config-provider
+        :locale="ptBR"
+        :date-locale="datePtBR"
+        :theme-overrides="theme"
+        :breakpoints="breakpoints"
+      >
+        <n-notification-provider>
+          <header class="header">
+            <div class="header__top">
+              <div class="logo">
+                <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
+              </div>
             </div>
-          </div>
-        </header>
-        <slot />
-      </n-notification-provider>
-    </n-config-provider>
-  </Body>
+          </header>
+          <slot />
+        </n-notification-provider>
+      </n-config-provider>
+    </Body>
+  </Html>
 </template>
 
 <style lang="scss">

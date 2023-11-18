@@ -107,6 +107,14 @@ export interface Payment {
   installments: number
 }
 
+export type User = {
+  user_id: number | null
+  name: string
+  email: string
+  document: string
+  phone: string
+}
+
 export interface Checkout extends Cart, Payment {
   user_data: User
   shipping_is_payment: boolean
@@ -120,16 +128,8 @@ export interface CreditCard {
   creditCardExpiration: string
   creditCardCvv: string
   installments: number
-  typeCocument: string
+  typeDocument: string
   document: string
-}
-
-export type User = {
-  user_id: number | null
-  name: string
-  email: string
-  document: string
-  phone: string
 }
 
 export type BaseAddress = {

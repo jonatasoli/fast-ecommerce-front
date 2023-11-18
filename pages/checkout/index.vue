@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
-import { definePageMeta, onMounted, ref, useDevice, useI18n } from '#imports'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
-import { FormAddress } from '~/components/checkout'
+import { useCheckoutStore } from '~/stores/checkout'
 import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
 import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
-
+import type { FormAddress } from '~/components/checkout'
 
 definePageMeta({
   layout: 'checkout',
@@ -21,21 +20,23 @@ definePageMeta({
     },
   ],
 })
+const router = useRouter()
 const { isMobile } = useDevice()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
-const { address } = storeToRefs(cartStore)
+const checkoutStore = useCheckoutStore()
+const { address, cart } = storeToRefs(cartStore)
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
 const creditCard = ref<typeof CreditCard | null>(null)
 const current = ref<number>(1)
 const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
 const paymentMethod = ref<string>('credit-card')
-const shipping_is_payment = ref<boolean | null>(null)
+const shippingIsPayment = ref<boolean | null>(null)
 
 const { t } = useI18n()
 
-async function nextSteps() {
+function nextSteps() {
   const steps = {
     1: handleSubmitUser,
     2: handleSubmitUserAddress,
@@ -56,35 +57,31 @@ async function handleSubmitUser() {
 
 async function handleSubmitUserAddress() {
   try {
-    if (!shipping_is_payment.value || !formUserAddress.value) {
+    if (!shippingIsPayment.value || !formUserAddress.value) {
       console.warn('shipping_is_payment or formUserAddress is null')
       return
     }
 
     const { valid: validUserAddress } = await formUserAddress.value.validate()
   
-    if (!validUserAddress && shipping_is_payment.value === null) {
+    if (!validUserAddress && shippingIsPayment.value === null) {
       return
     }
 
-    if (!formShippingAddress.value) {
-      console.warn('formShippingAddress is null')
-      return
-    }
 
-    if (!shipping_is_payment.value) {
+    if (!shippingIsPayment.value && formShippingAddress.value) {
       const { valid: validShippingAddress } = await formShippingAddress.value.validate()
       if (!validShippingAddress) {
         return
       }
     }
 
-    const shippingAddress = shipping_is_payment.value
+    const shippingAddress = shippingIsPayment.value
       ? formUserAddress.value?.values
       : formShippingAddress.value?.values
 
     await cartStore.addAddressCart({
-      shipping_is_payment: shipping_is_payment.value,
+      shipping_is_payment: shippingIsPayment.value,
       user_address: formUserAddress.value?.values,
       shipping_address: shippingAddress,
     })
@@ -113,18 +110,25 @@ function handleUpdateShippingIsPayment(value) {
   cartStore.setShippingIsPayment(value)
 }
 
-function handleFinishCheckout() {
-  cartStore.finishCheckout()
+async function handleFinishCheckout() {
+  const responseData = await cartStore.finishCheckout()
+  if (!responseData) {
+    return
+  }
+  if (responseData.order_id) {
+    checkoutStore.setCheckout(unref(responseData))
+    cartStore.clearCart()
+    router.push('/checkout/finish')
+  }
 }
 
 onMounted(() => {
   handleSubmitUser()
   if (address.value.shipping_is_payment) {
-    shipping_is_payment.value = address.value.shipping_is_payment
+    shippingIsPayment.value = address.value.shipping_is_payment
   }
 })
 
-console.log('a')
 </script>
 
 <template>
@@ -161,7 +165,11 @@ console.log('a')
       <FormAddress
         ref="formUserAddress"
         addres-type="user_address"
-        :data="address?.user_address"
+        :data="{
+          ...address?.user_address,
+          zipcode: cart?.zipcode,
+        }"
+        :readonly-zipcode="true"
       />
 
       <h2 class="title">
@@ -169,10 +177,10 @@ console.log('a')
       </h2>
       <n-form-item
         :label="t('checkout.shipping.shipping_is_payment')"
-        :feedback="shipping_is_payment === null ? t('checkout.shipping.select_option') : undefined"
-        :validation-status="shipping_is_payment === null ? 'error' : undefined"
+        :feedback="shippingIsPayment === null ? t('checkout.shipping.select_option') : undefined"
+        :validation-status="shippingIsPayment === null ? 'error' : undefined"
       >
-        <n-radio-group v-model:value="shipping_is_payment">
+        <n-radio-group v-model:value="shippingIsPayment">
           <n-radio :value="true" @change="handleUpdateShippingIsPayment">
             {{ t('checkout.shipping.shipping_is_payment_yes') }}
           </n-radio>
@@ -182,7 +190,7 @@ console.log('a')
         </n-radio-group>
       </n-form-item>
 
-      <div v-if="shipping_is_payment === false">
+      <div v-if="shippingIsPayment === false">
         <FormAddress
           ref="formShippingAddress"
           addres-type="shipping_address"

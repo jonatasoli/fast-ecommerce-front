@@ -2,13 +2,22 @@
 import * as zod from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import { ref, useI18n } from '#imports'
+import { ref, useI18n, onMounted } from '#imports'
 
 interface Props {
+  data?: {
+    creditCardNumber: string
+    creditCardName: string
+    creditCardExpiration: string
+    creditCardCvv: string
+    installments: number
+    typeDocument: string
+    document: string
+  }
   optionInstallments: { label: string; value: number }[]
 }
-defineProps<Props>()
 
+const props =  defineProps<Props>()
 const formRefCreditCard = ref<null>(null)
 const { t } = useI18n()
 const emit = defineEmits(['onInputCreditCard'])
@@ -33,7 +42,7 @@ const validationSchema = toTypedSchema(zod.object({
   }),
 }))
 
-const { defineComponentBinds, values, validate } = useForm({
+const { defineComponentBinds, values, validate, setValues } = useForm({
   validationSchema,
   initialValues: {
     creditCardNumber: '',
@@ -68,10 +77,33 @@ function handleCreditCardNumberChange(number) {
   emit('onInputCreditCard', number.replace(/\s/g, ''))
 }
 
+function fillFormCreditCard(values) {
+  if (!values) {
+    return
+  }
+  setValues({
+    creditCardNumber: values.creditCardNumber,
+    creditCardName: values.creditCardName,
+    creditCardExpiration: values.creditCardExpiration,
+    creditCardCvv: values.creditCardCvv,
+    installments: values.installments,
+    typeDocument: values.typeDocument,
+    document: values.document,
+  })
+}
+
 defineExpose({
   validate,
   values,
 })
+
+onMounted(() => {
+  if (!props.data?.creditCardNumber) {
+    return
+  }
+  fillFormCreditCard(props.data)
+})
+
 </script>
 
 <template>
@@ -96,8 +128,8 @@ defineExpose({
           <n-select
             v-bind="typeDocument"
             :options="[
-              { label: 'CPF', value: 'cpf' },
-              { label: 'CNPJ', value: 'cnpj' },
+              { label: 'CPF', value: 'CPF' },
+              { label: 'CNPJ', value: 'CNPJ' },
             ]"
           />
         </n-form-item>

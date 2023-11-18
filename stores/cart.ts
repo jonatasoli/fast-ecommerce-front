@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Cart, CartAddress, CartItem, Checkout, CreditCardPayment, Payment, ShippingAddress, User, UserAddress } from '@/utils/types'
-import { computed, ref, unref, useCookie, useFetch, useNuxtApp } from '#imports'
+import { computed, ref, unref, useCookie, useFetch, useNuxtApp, type CreditCard } from '#imports'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = useCookie<Cart>('cart', {
@@ -62,6 +62,16 @@ export const useCartStore = defineStore('cart', () => {
     },
   })
 
+  const paymentCreditCard = ref<CreditCard>({
+    creditCardNumber: '',
+    creditCardName: '',
+    creditCardExpiration: '',
+    creditCardCvv: '',
+    installments: 1,
+    typeDocument: '',
+    document: '',
+  })
+
   const payment = ref<Payment>({
     payment_method: '',
     payment_method_id: '',
@@ -80,7 +90,7 @@ export const useCartStore = defineStore('cart', () => {
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
 
-  async function addToCart(item: CartItem) {
+  function addToCart(item: CartItem) {
     if (!item) {
       return
     }
@@ -192,7 +202,7 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       const headers = {
         'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
       }
       const { data, error } = await useFetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
         method: 'POST',
@@ -212,7 +222,6 @@ export const useCartStore = defineStore('cart', () => {
       }
 
       const responseData = unref(data) as Cart
-  
       return responseData
     } catch (err) {
       console.error(err)
@@ -223,7 +232,12 @@ export const useCartStore = defineStore('cart', () => {
 
   async function removeItem(id: number) {
     try {
-      cart.value.cart_items = cart.value.cart_items.filter(p => p.product_id !== id)
+      const cartItems = unref(cart).cart_items
+      cart.value.cart_items = cartItems.filter(p => p.product_id !== id)
+      if (cartItems.length === 1) {
+        cart.value.uuid = ''
+        return
+      }
       await estimate()
     } catch (err) {
       console.error(err)
@@ -503,12 +517,33 @@ export const useCartStore = defineStore('cart', () => {
         return;
       }
 
-      const responseData = unref(data) as Checkout
-      console.log(responseData)
+      const responseData = unref(data) as {
+        status: string
+        message: string
+        order_id: string
+      }
+      return responseData
     } catch (err) {
       console.error(err)
     } finally {
       loading.value = false
+    }
+  }
+
+  function clearCart() {
+    cart.value = {
+      uuid: '',
+      affiliate: '',
+      coupon: '',
+      discount: '',
+      freight: {
+        price: '',
+        delivery_time: '',
+      },
+      zipcode: '',
+      subtotal: "0",
+      total: "0",
+      cart_items: [],
     }
   }
 
@@ -534,7 +569,7 @@ export const useCartStore = defineStore('cart', () => {
         siafi: string
       }
       
-      return address.value[typeAddress] = {
+       address.value[typeAddress] = {
         country: 'Brasil', // TODO: i18n
         state: responseData.uf,
         city: responseData.localidade,
@@ -544,6 +579,8 @@ export const useCartStore = defineStore('cart', () => {
         address_complement: '',
         zipcode: responseData.cep,
       }
+
+      return address.value[typeAddress]
     } catch (error) {
       console.error(error)
     } finally {
@@ -583,11 +620,16 @@ export const useCartStore = defineStore('cart', () => {
     payment.value = paymentUser
   }
 
+  function setPaymentCreditCard(paymentCreditCardUser: CreditCard) {
+    paymentCreditCard.value = paymentCreditCardUser
+  }
+
   return {
     cart,
     address,
     getCart,
     loading,
+    paymentCreditCard,
     estimate,
     getCartUser,
     addToCart,
@@ -602,6 +644,9 @@ export const useCartStore = defineStore('cart', () => {
     setUserAddressId,
     setShippingAddressId,
     setShippingIsPayment,
+    setPaymentCreditCard,
     finishCheckout,
+    clearCart,
+
   }
 })

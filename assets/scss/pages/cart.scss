@@ -144,6 +144,16 @@
         width: 100%;
         text-decoration: underline;
       }
+
+      .alert-freight {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $primary-color;
+        text-align: center;
+        background-color: #F9E9D2;
+        padding: 0.5rem;
+        margin: 0 0 1rem 0;
+      }
     }
   }
 

@@ -1,18 +1,20 @@
 {
+  "root": true,
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:vue/vue3-recommended"
-  ],
-  "parser": "vue-eslint-parser",
   "parserOptions": {
-    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "extends": [
+    "@nuxtjs/eslint-config-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-recommended",
+    "prettier"
+  ],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
@@ -33,6 +35,14 @@
         "max": 1
       }
     }],
-    "vue/multi-word-component-names": "off"
+    "vue/multi-word-component-names": "off",
+    "no-console": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+          "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(warn|error|info|trace)$/]",
+          "message": "Unexpected property on console object was called"
+      }
+  ]
   }
 }
