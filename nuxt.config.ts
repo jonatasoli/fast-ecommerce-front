@@ -12,9 +12,14 @@ const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
   ssr: false,
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
   spaLoadingTemplate: 'spa-loading-template.html',
   devtools: { enabled: true },
-  imports: { autoImport: false },
   modules: [
     '@nuxtjs/i18n',
     '@nuxtjs/device',
@@ -37,6 +42,8 @@ export default defineNuxtConfig({
   },
   plugins: [
     { src: '@/plugins/vue-tel-input', mode: 'client' },
+    { src: '@/plugins/vue-the-mask', mode: 'client' },
+    { src: '@/plugins/mercadopago', mode: 'client' },
   ],
   build: {
     analyze: true,
@@ -55,8 +62,8 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include:
         process.env.NODE_ENV === 'development'
-          ? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
-          : [],
+          ? ['naive-ui', 'vueuc', 'date-fns-tz/formatInTimeZone']
+          : []
     },
     css: {
       preprocessorOptions: {
@@ -69,11 +76,12 @@ export default defineNuxtConfig({
       Components({
         resolvers: [NaiveUiResolver()],
       }),
-    ],
+    ],  
   },
   runtimeConfig: {
     public: {
       serverUrl: SERVER_BASE_URL,
+      mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
       isProd: process.env.NODE_ENV === 'production',
     },
   },

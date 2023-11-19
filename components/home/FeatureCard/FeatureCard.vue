@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from '#imports'
-import { FeatureItem } from '@/utils/types'
+import type { FeatureItem } from '@/utils/types'
 
 type Props = {
   item: FeatureItem

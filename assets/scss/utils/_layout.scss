@@ -9,3 +9,16 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+
+.border {  
+  padding: 1rem;
+  margin: 1rem auto;
+  min-width: 60vw;
+  height: 100%;
+  border-radius: 8px;
+  border: 1px solid #CDCACA; 
+}
+
+.title {
+  color: $primary-color;
+}

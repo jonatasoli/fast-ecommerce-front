@@ -1,30 +1,19 @@
 <script setup lang="ts">
-import { computed, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig, watch } from '#imports'
-import { ProductItem } from '~/utils/types'
+import { computed, getPageFromRoute, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig, watch } from '#imports'
+import type { PaginatedProducts, ProductItem } from '~/utils/types'
 import { ProductCard, ProductSkeleton } from '~/components/shared'
 
 const route = useRoute()
 const router = useRouter()
-const query = route.query.q?.toString() || ''
+const query = route.query.q?.toString() ?? ''
 const config = useRuntimeConfig()
 const OFFSET = 16
 const { t } = useI18n()
 
-const getPageFromRoute = () => {
-  const page = route.query.p?.toString() || ''
-  const intPage = parseInt(page)
-
-  if (!page || isNaN(intPage) || intPage < 0) {
-    return 1
-  }
-
-  return intPage
-}
-
-const page = ref(getPageFromRoute())
+const { page } = getPageFromRoute()
 const url = `${config.public.serverUrl}/catalog/all`
 
-const { data, pending } = await useFetch<{ products: ProductItem[]; total_pages: number }>(url, {
+const { data, pending } = await useFetch<PaginatedProducts>(url, {
   watch: [page],
   query: {
     search: query,
@@ -33,7 +22,7 @@ const { data, pending } = await useFetch<{ products: ProductItem[]; total_pages:
   },
 })
 
-const totalPages = ref(data.value?.total_pages ? data.value.total_pages + 1 : 1)
+const totalPages = ref(data.value?.total_pages ? data.value.total_pages : 1)
 const products = computed<ProductItem[]>(() => data.value?.products || [])
 const searchTitle = computed(() => decodeURIComponent(query))
 
@@ -62,7 +51,7 @@ watch(page, () => router.push({
     <div v-else-if="data?.products.length === 0" class="search__empty">
       <n-alert
         type="info"
-        title="Nenhum produto encontrado."
+        :title="t('search.empty')"
         bordered
       />
     </div>

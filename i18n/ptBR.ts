@@ -2,6 +2,7 @@ export default {
   address: 'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
     news: 'Novidades',
+    latest: 'Novidades',
     categories: 'Categorias',
     kits: 'Combos',
     naturalCompound: 'Cápsulas (Composto Natural)',
@@ -47,11 +48,6 @@ export default {
 
   productPage: {
     installments: 'em até {count} de {amount} sem juros',
-    // installments: {
-    //   term1: 'em até',
-    //   term2: 'de',
-    //   term3: 'sem juros',
-    // },
     variants: 'Selecione uma opção:',
   },
 
@@ -150,11 +146,96 @@ export default {
     register: 'Cadastre-se',
   },
 
-  products: {
+  categoryPage: {
     empty: 'Nenhum produto encontrado',
+    totalProducts: '{num} produtos',
+    singleProduct: '01 produto',
   },
 
   search: {
     title: 'Resultados para: {search}',
+    empty: 'Nenhum produto encontrado',
   },
+  checkout: {
+    steps: {
+      login: 'Login',
+      shipping: 'Entrega',
+      payment: 'Pagamento',
+      resume: 'Confirmação',
+    },
+    user: {
+      title: 'Informações pessoais',
+      name: 'Nome',
+      email: 'E-mail',
+      phone: 'Telefone',
+      login: {
+        part1: 'Faça seu',
+        part2: 'login',
+        part3: 'ou',
+        part4: 'cadastre-se',
+        part5: 'para continuar',
+      },
+    },
+    shipping: {
+      title: 'Endereço de entrega',
+      payment_title: 'Endereço de cobrança',
+      shipping_is_payment: 'O endereço de cobrança é o mesmo de entrega?',
+      shipping_is_payment_yes: 'Sim, é o mesmo endereço',
+      shipping_is_payment_no: 'Outro endereço',
+      select_option: 'Selecione uma opção',
+      form: {
+        zipcode: 'CEP',
+        search: 'Buscar',
+        country: 'País',
+        state: 'Estado',
+        city: 'Cidade',
+        neighborhood: 'Bairro',
+        street: 'Rua',
+        number: 'Número',
+        complement: 'Complemento',
+        zipcodeInvalid: 'CEP inválido',
+        zipcodeRequired: 'CEP é obrigatório',
+        countryRequired: 'País é obrigatório',
+        stateRequired: 'Estado é obrigatório',
+        cityRequired: 'Cidade é obrigatório',
+        neighborhoodRequired: 'Bairro é obrigatório',
+        streetRequired: 'Rua é obrigatório',
+        numberRequired: 'Número é obrigatório',
+      },
+    },
+    payment: {
+      title: 'Forma de pagamento',
+      credit_card: 'Cartão de crédito',
+      credit_card_number: 'Número do cartão',
+      credit_card_name: 'Nome impresso no cartão',
+      credit_card_validate: 'Validade',
+      credit_card_cvv: 'CVV',
+      installments: 'Parcelas',
+      form: {
+        credit_card_number_invalid: 'Número do cartão invalido',
+        credit_card_name_invalid: 'Nome impresso no cartão é inválido',
+        credit_card_validateRequired: 'Validade é obrigatória',
+        credit_card_cvv_invalid: 'CVV é obrigatório',
+        installmentsRequired: 'Parcelas é obrigatório',
+        type_document_invalid: 'Tipo de documento é obrigatório',
+        document_number_invalid: 'Número do documento é obrigatório',
+      },
+    },
+    finally: {
+      title: 'Confirmação do pedido',
+      quantity: 'Quantidade',
+    },
+    actions: {
+      next: 'Próximo',
+      back: 'Voltar',
+      finish: 'Confirmar Pedido',
+    },
+
+  },
+
+  finishCheckout: {
+    title: 'Pedido realizado com sucesso!',
+    description: 'Em breve você receberá um e-mail com os detalhes do pedido',
+    button: 'Voltar para a página inicial',
+  }
 }

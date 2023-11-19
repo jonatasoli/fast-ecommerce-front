@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from '#imports'
-import { FeatureItem } from '@/utils/types'
+import type { FeatureItem } from '@/utils/types'
 
 type Props = {
   item: FeatureItem
@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const style = computed(() => ({ backgroundImage: `url('${props.item.image}')` }))
-const route = computed(() => `/categories/${props.item.uri}`)
+const route = computed(() => `/products/${props.item.uri}`)
 </script>
 
 <template>

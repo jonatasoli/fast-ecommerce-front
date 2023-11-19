@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import { UserCircleIcon } from '@heroicons/vue/24/outline'
 import { NButton, NText } from 'naive-ui'
-import { h, reactive, useI18n, useRouter } from '#imports'
+import { computed, h, useI18n, useRouter } from '#imports'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
 
 const storeUser = useUserStore()
 const storeAuth = useAuthStore()
 
-const userState = reactive({
+const userState = computed(() => ({
   user: storeUser.user,
   authenticated: storeUser.authenticated,
-})
+}))
 
 const router = useRouter()
 const { t } = useI18n()
@@ -44,7 +44,7 @@ function customRenderAuthenticated() {
       style: 'display: flex; align-items: center; padding: 0.75rem;',
     },
     [
-      h(NText, { depth: 3 }, { default: () => `${t('userMenu.welcome')} ${userState.user?.name}` }),
+      h(NText, { depth: 3 }, { default: () => `${t('userMenu.welcome')} ${userState.value.user?.name}` }),
     ],
   )
 }
@@ -74,8 +74,6 @@ const optionsAuthenticated = [
       onClick: async () => {
         await storeAuth.logout()
         storeUser.reset()
-        userState.user = storeUser.user
-        userState.authenticated = storeUser.authenticated
       },
     },
   },

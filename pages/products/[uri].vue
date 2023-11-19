@@ -2,7 +2,7 @@
 import { useCartStore } from '@/stores/cart'
 import { currencyFormat } from '@/utils/helpers'
 import { LOCALES, computed, createError, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig } from '#imports'
-import { ProductItem } from '@/utils/types'
+import type { ProductItem } from '~/utils/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,10 +27,10 @@ const installments = computed(() => {
 
   if (product.value) {
     if (product.value.installments_list) {
-      count = product.value.installments_list.count
-      amount = currencyFormat(product.value.installments_list.value)
+      count = product.value.installments_list.count || count
+      amount = currencyFormat(product.value.installments_list.value || product.value.price)
     } else {
-      amount = currencyFormat(Math.round(product.value.price / 4))
+      amount = currencyFormat(Math.round(product.value.price / count))
     }
   }
 

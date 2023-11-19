@@ -38,7 +38,7 @@ export default defineEventHandler(async (event): Promise<UserResponse> => {
       },
     })
     const data = await res.json()
-    if (!data && !data.name) {
+    if (!data || !data.name) {
       return {
         success: false,
         error: 'USER_NOT_FOUND',

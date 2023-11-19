@@ -1,86 +1,96 @@
 <script setup lang="ts">
-import { onMounted, useI18n, useRoute } from '#imports'
-import { useProductsStore } from '@/stores/products'
-import { ProductCard } from '~/components/shared'
-import Loading from '~/components/shared/Loading/Loading.vue'
+import { computed, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig, watch } from '#imports'
+import { ProductCard, ProductSkeleton } from '~/components/shared'
+import { getPageFromRoute } from '~/utils/helpers'
+import type { PaginatedProducts } from '~/utils/types'
 
+const { serverUrl } = useRuntimeConfig().public
 const route = useRoute()
+const router = useRouter()
+const OFFSET = 12
 const { t } = useI18n()
-const store = useProductsStore()
+const { page } = getPageFromRoute()
+const url = computed(() => route.params.uri === 'latest'
+  ? `${serverUrl}/catalog/latest`
+  : `${serverUrl}/catalog/category/products/${route.params.uri}`,
+)
 
-async function fetchData(category) {
-  try {
-    if (category === 'news') {
-      await store.getProductsShowcase()
-    } else {
-      await store.getProductsByCategory(category)
-    }
-  } catch (error) {
-    console.error('Erro ao buscar produtos:', error)
-  }
-}
-
-onMounted(async () => {
-  await fetchData(route.params.uri)
+const { data, pending } = await useFetch<PaginatedProducts>(url.value, {
+  watch: [page, url],
+  query: {
+    offset: OFFSET,
+    page,
+  },
 })
+
+const products = computed(() => data.value?.products || [])
+const totalPages = computed(() => data.value?.total_pages ? data.value.total_pages : 1)
+const totalRecords = computed(() => {
+  const records = data.value?.total_records || 0
+
+  if (!records) {
+    return ''
+  }
+
+  return records === 1
+    ? t('categoryPage.singleProduct')
+    : t('categoryPage.totalProducts', { num: records.toString().padStart(2, '0') })
+})
+
+watch(page, () => router.push({
+  ...route,
+  query: {
+    ...route.query,
+    p: page.value,
+  },
+}))
 </script>
 
 <template>
-  <div class="container">
+  <main class="category container">
     <h1 class="title">
-      {{ t(`navigation.${route.params.uri}`) }}
+      {{ route.params.uri }}
     </h1>
-    <Loading v-if="store.loading" />
-    <div v-else>
-      <div v-if="store.getProducts.length === 0" class="showcase-empty">
-        <p>{{ t(`products.empty`) }}</p>
-      </div>
-
-      <div
-        v-else
-        class="showcase"
-      >
-        <ProductCard
-          v-for="product in store.getProducts"
-          :key="product.product_id"
-          v-bind="{ product }"
-        />
-      </div>
+    <p class="subtitle">
+      {{ totalRecords }}
+    </p>
+    <n-grid
+      v-if="pending"
+      cols="1 480:2 768:3 1024:4"
+      x-gap="16"
+      y-gap="16"
+    >
+      <n-grid-item v-for="n in OFFSET" :key="n">
+        <ProductSkeleton />
+      </n-grid-item>
+    </n-grid>
+    <div v-else-if="products.length === 0" class="category__empty">
+      <p>{{ t(`categoryPage.empty`) }}</p>
     </div>
-  </div>
+    <n-grid
+      v-else
+      cols="1 480:2 768:3 1024:4"
+      x-gap="16"
+      y-gap="16"
+    >
+      <n-grid-item v-for="product in products" :key="product.product_id">
+        <ProductCard v-bind="{ product }" />
+      </n-grid-item>
+    </n-grid>
+    <n-space
+      align="flex-end"
+      vertical
+      class="category__pagination"
+    >
+      <n-pagination
+        v-model:page="page"
+        :page-count="totalPages"
+        size="large"
+      />
+    </n-space>
+  </main>
 </template>
 
-<style scoped lang="scss">
-.title {
-  margin: 3rem 0;
-  text-align: center;
-  font-weight: 300;
-  color: $primary-color;
-  font-size: 3rem;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    margin: 2rem 0;
-  }
-}
-
-.showcase-empty {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
-  font-size: 1.5rem;
-  color: #A6ACAF
-}
- .showcase {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
-    padding: 0 1rem;
-  }
- }
+<style lang="scss" scoped>
+@import '@/assets/scss/pages/category.scss';
 </style>

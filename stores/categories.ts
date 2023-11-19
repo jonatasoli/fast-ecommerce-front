@@ -8,7 +8,7 @@ type CategoryItem = {
   image_path?: string
 }
 
-export const useCategoryStore = defineStore('categorys', () => {
+export const useCategoryStore = defineStore('categories', () => {
   const categories = ref<CategoryItem[]>([])
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
@@ -20,7 +20,13 @@ export const useCategoryStore = defineStore('categorys', () => {
 
   async function getCategorys() {
     try {
-      const res = await fetch(`${serverUrl}/catalog/categories`)
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+      const res = await fetch(`${serverUrl}/catalog/categories`, {
+        headers,
+      })
       const data = await res.json()
 
       categories.value = data.categories || []

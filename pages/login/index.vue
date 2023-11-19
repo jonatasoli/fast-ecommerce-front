@@ -5,12 +5,14 @@ import * as zod from 'zod'
 
 import { toTypedSchema } from '@vee-validate/zod'
 import { useAuthStore } from '@/stores/auth'
-import { definePageMeta, ref, useI18n, useRouter } from '#imports'
+import { definePageMeta, ref, useI18n, useRoute, useRouter } from '#imports'
 
 definePageMeta({
   layout: 'empty',
 })
 const router = useRouter()
+const route = useRoute()
+const redirect = ref(route.query.redirect as string | undefined)
 const { t } = useI18n()
 const error = ref('')
 const validationSchema = toTypedSchema(zod.object({
@@ -51,6 +53,10 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   error.value = ''
+  if (redirect.value) {
+    router.push(redirect.value)
+    return
+  }
   router.push('/')
 })
 </script>

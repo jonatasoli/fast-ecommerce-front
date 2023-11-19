@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ProductItem } from '~/utils/types'
+import type { ProductItem } from '~/utils/types'
 import { computed, ref, useRuntimeConfig } from '#imports'
 
 export const useProductsStore = defineStore('products', () => {
@@ -14,7 +14,13 @@ export const useProductsStore = defineStore('products', () => {
     let showcase: ProductItem[] = []
 
     try {
-      const res = await fetch(`${serverUrl}/catalog/showcase/all`)
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+      const res = await fetch(`${serverUrl}/catalog/showcase/all`, {
+        headers,
+      })
       const data = await res.json()
 
       showcase = data || []
@@ -29,7 +35,13 @@ export const useProductsStore = defineStore('products', () => {
   async function getProductsByCategory(category: string) {
     try {
       loading.value = true
-      const res = await fetch(`${serverUrl}/catalog/category/products/${category}`)
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+      const res = await fetch(`${serverUrl}/catalog/category/products/${category}`, {
+        headers,
+      })
       const data = await res.json()
       products.value = data.product
     } catch (err) {

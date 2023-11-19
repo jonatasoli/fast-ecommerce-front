@@ -1,6 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { TrashIcon } from '@heroicons/vue/24/outline'
+import { useDebounceFn } from '@vueuse/core'
 import { currencyFormat, useI18n } from '#imports'
 import { useCartStore } from '@/stores/cart'
 import InputCard from '~/components/cart/InputCard/InputCard.vue'
@@ -8,15 +9,23 @@ import InputCard from '~/components/cart/InputCard/InputCard.vue'
 const cartStore = useCartStore()
 const { getCart } = storeToRefs(cartStore)
 const { t } = useI18n()
-const freight = getCart?.value?.freight?.price ? currencyFormat(getCart.value.freight.price, undefined, 'freight') : 0
+
 function handleEstimateFreight(value) {
   cartStore.calculateFreight(value)
+}
+
+const debounceFn = useDebounceFn((id, quantity) => {
+  cartStore.updateQuantity(id, quantity)
+}, 1000, { maxWait: 5000 })
+
+function updateQuantity(id, quantity) {
+  debounceFn(id, quantity)
 }
 </script>
 
 <template>
   <main class="cart">
-    <div v-if="cartStore.loadingCart" class="cart__loading">
+    <div v-if="cartStore.loading" class="cart__loading">
       <n-space>
         <n-spin size="large" />
       </n-space>
@@ -39,26 +48,26 @@ function handleEstimateFreight(value) {
 
       <div v-else class="cart__not-empty">
         <div class="cart__not-empty--container">
-          <div>
-            <InputCard
-              icon="cart"
-              :title="t('cart.inputs.shipping.title')"
-              :button-text="t('cart.inputs.shipping.buttonText')"
-              placeholder="Informe seu CEP"
-              @on-button-click="handleEstimateFreight"
-            >
-              <div v-if="getCart?.freight?.price" class="cart__freigth">
-                <div>{{ t('cart.freight.part1') }} {{ getCart.freight.delivery_time }} {{ t('cart.freight.part2') }}</div>
-                <div>{{ currencyFormat(getCart.freight.price, undefined, 'freight') }}</div>
-              </div>
-            </InputCard>
-          </div>
           <InputCard
             icon="cupom"
             :title="t('cart.inputs.discount.title')"
             placeholder="Cupom de desconto"
             :button-text="t('cart.inputs.discount.buttonText')"
+            received-value=""
           />
+          <InputCard
+            icon="cart"
+            :title="t('cart.inputs.shipping.title')"
+            :button-text="t('cart.inputs.shipping.buttonText')"
+            placeholder="Informe seu CEP"
+            :received-value="getCart.zipcode"
+            @on-button-click="handleEstimateFreight"
+          >
+            <div v-if="getCart?.freight?.price" class="cart__freigth">
+              <div>{{ t('cart.freight.part1') }} {{ getCart.freight.delivery_time }} {{ t('cart.freight.part2') }}</div>
+              <div>{{ currencyFormat(getCart.freight.price, undefined, 'freight') }}</div>
+            </div>
+          </InputCard>
         </div>
         <div class="cart__not-empty--container">
           <div class="cart__not-empty--products">
@@ -91,7 +100,7 @@ function handleEstimateFreight(value) {
                       :min="1"
                       :max="999"
                       on
-                      @update:value="cartStore.updateQuantity(item.product_id, $event)"
+                      @update:value="updateQuantity(item.product_id, $event)"
                     />
                   </div>
                   <div class="value">
@@ -128,16 +137,22 @@ function handleEstimateFreight(value) {
 
             <div class="summary-values">
               <p>{{ t("cart.summary.shipping") }}</p>
-              <p> {{ freight }}</p>
+              <p> {{ currencyFormat(getCart?.freight?.price, undefined, 'freight') || 0 }}</p>
             </div>
             <hr>
 
             <div class="summary-values amount">
               <p>{{ t("cart.summary.total") }}</p>
-              <p>{{ currencyFormat(getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
-            <nuxt-link to="/checkout">
+            
+
+            <p v-if="!getCart?.freight?.price" class="alert-freight">
+              Calcule o frete para finalizar a compra
+            </p>
+            <nuxt-link v-else to="/checkout">
               <n-button
+                :disabled="!getCart?.freight?.price"
                 type="primary"
                 strong
                 class="btn-checkout"
