@@ -17,7 +17,7 @@ export function useNavLinks(categories) {
     children: [],
   }) as NavLink
 
-  const navLinks = unref(categories).map(category => categoryLink(category.path, category.name))
+  const navLinks = unref(categories)?.map(category => categoryLink(category.path, category.name))
 
   return {
     categoryLink,

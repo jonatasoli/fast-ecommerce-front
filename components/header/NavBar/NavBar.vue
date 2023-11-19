@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useNavLinks } from '../nav-links'
+import type { CategoryItem } from '~/stores/categories';
 
-const { categories } = storeToRefs(useCategoryStore())
-const { navLinks } = useNavLinks(categories)
-
-watch(categories, () => {
-  navLinks.value = useNavLinks(categories).navLinks
-})
+const store = useCategoryStore()
+const { data } = await useAsyncData(() => store.getCategorys())
+const responseData = unref(data) as {
+  categories: CategoryItem[]
+}
+const { navLinks } = useNavLinks(responseData.categories)
 </script>
 
 <template>
