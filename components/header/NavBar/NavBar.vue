@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { useNavLinks } from '../nav-links'
 
-const { navLinks } = useNavLinks()
+const { categories } = storeToRefs(useCategoryStore())
+const { navLinks } = useNavLinks(categories)
+
+watch(categories, () => {
+  navLinks.value = useNavLinks(categories).navLinks
+})
 </script>
 
 <template>
-  <nav v-if="navLinks.length > 0">
+  <nav>
     <ul class="nav">
       <li v-for="link in navLinks" :key="link.key">
         <NuxtLink

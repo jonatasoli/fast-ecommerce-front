@@ -17,6 +17,10 @@ function doSearch() {
   const encodedSearch = encodeURIComponent(trimSearch)
   router.push(`/search?q=${encodedSearch}`)
 }
+
+onMounted(async() => {
+  await useCategoryStore().getCategorys()
+})
 </script>
 
 <template>

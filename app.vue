@@ -9,9 +9,9 @@ const storeUser = useUserStore()
 const storeCategory = useCategoryStore()
 
 onBeforeMount(async () => {
-  await nuxtApp.$router.isReady()
-  await storeUser.getUser()
   await storeCategory.getCategorys()
+  await storeUser.getUser()
+  await nuxtApp.$router.isReady()
 })
 
 nuxtApp.hook('page:finish', () => {
