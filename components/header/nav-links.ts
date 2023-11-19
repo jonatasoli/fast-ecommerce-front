@@ -19,7 +19,7 @@ export function useNavLinks() {
     children: [],
   }) as NavLink
 
-  const navLinks = store.sortedCategories.map(category => categoryLink(category.path, category.name))
+  const navLinks = store.categories.map(category => categoryLink(category.path, category.name))
 
   return {
     categoryLink,

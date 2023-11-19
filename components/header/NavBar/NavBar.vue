@@ -5,7 +5,7 @@ const { navLinks } = useNavLinks()
 </script>
 
 <template>
-  <nav>
+  <nav v-if="navLinks.length > 0">
     <ul class="nav">
       <li v-for="link in navLinks" :key="link.key">
         <NuxtLink
