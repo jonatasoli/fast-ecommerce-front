@@ -29,7 +29,7 @@ const featuredProducts = computed(() => featured.value?.products
 )
 
 const categories = computed(() =>
-  categoryStore.sortedCategories
+  categoryStore.categories
     .filter(({ name }) => !['news', 'sales'].includes(name))
     .slice(0, 3)
     .map(category => ({

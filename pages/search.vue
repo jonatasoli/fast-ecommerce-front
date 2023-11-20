@@ -38,16 +38,14 @@ watch(page, () => router.push({
 <template>
   <main class="search container">
     <h1>{{ t('search.title', { search: searchTitle }) }}</h1>
-    <n-grid
+    <div 
       v-if="pending"
-      cols="1 480:2 768:3 1024:4"
-      x-gap="16"
-      y-gap="16"
+      class="search__skeleton"
     >
-      <n-grid-item v-for="n in OFFSET" :key="n">
+      <div v-for="n in OFFSET" :key="n">
         <ProductSkeleton />
-      </n-grid-item>
-    </n-grid>
+      </div>
+    </div>
     <div v-else-if="data?.products.length === 0" class="search__empty">
       <n-alert
         type="info"
@@ -55,19 +53,17 @@ watch(page, () => router.push({
         bordered
       />
     </div>
-    <n-grid
+    <div
       v-else
-      cols="1 480:2 768:3 1024:4"
-      x-gap="16"
-      y-gap="16"
+      class="search__products"
     >
-      <n-grid-item
+      <div
         v-for="product in products"
         :key="product.product_id"
       >
         <ProductCard :product="product" />
-      </n-grid-item>
-    </n-grid>
+      </div>
+    </div>
     <n-space
       align="flex-end"
       vertical
