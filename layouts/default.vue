@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { datePtBR, ptBR } from 'naive-ui'
-import { useLocaleHead, useRuntimeConfig } from '#imports'
-import { AppFooter, AppHeader } from '@/components/app'
-import { breakpoints, theme } from '@/naive.style'
+import { datePtBR, ptBR } from "naive-ui";
+import { useLocaleHead, useRuntimeConfig } from "#imports";
+import { AppFooter, AppHeader } from "@/components/app";
+import { breakpoints, theme } from "@/naive.style";
 
-const config = useRuntimeConfig()
+const config = useRuntimeConfig();
 const head = useLocaleHead({
   addSeoAttributes: true,
-})
+});
 </script>
 
 <template>
@@ -16,15 +16,13 @@ const head = useLocaleHead({
       <Title>Gatto Rosa</Title>
       <template v-if="config.public.isProd">
         <Link
-          v-for="link in head.link"
-          :key="link.id"
-          v-bind="link"
-        />
+v-for="link in head.link"
+:key="link.id"
+v-bind="link" />
         <Meta
-          v-for="meta in head.meta"
-          :key="meta.id"
-          v-bind="meta"
-        />
+v-for="meta in head.meta"
+:key="meta.id"
+v-bind="meta" />
       </template>
     </Head>
     <Body>
@@ -45,5 +43,5 @@ const head = useLocaleHead({
 </template>
 
 <style lang="scss">
-@import '@/assets/scss/main.scss';
+@import "@/assets/scss/main.scss";
 </style>

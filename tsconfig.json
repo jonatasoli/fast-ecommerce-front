@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"resolveJsonModule": true,
 		"noImplicitAny": false,
-		"checkJs": true
+		"checkJs": true,
 	},
 	"exclude": ["node_modules", "cypress"],
 }
