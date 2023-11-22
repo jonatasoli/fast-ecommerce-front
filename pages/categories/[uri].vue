@@ -23,6 +23,7 @@ const { data, pending } = await useFetch<PaginatedProducts>(url.value, {
   },
 })
 
+const cartStore = useCartStore()
 const products = computed(() => data.value?.products || [])
 const totalPages = computed(() => data.value?.total_pages ? data.value.total_pages : 1)
 const totalRecords = computed(() => {
@@ -36,6 +37,22 @@ const totalRecords = computed(() => {
     ? t('categoryPage.singleProduct')
     : t('categoryPage.totalProducts', { num: records.toString().padStart(2, '0') })
 })
+
+async function handleAddToCart(product: ProductItem) {
+  if (!product) {
+    return;
+  }
+
+  await cartStore.addToCart({
+    image_path: product.image_path,
+    name: product.name,
+    price: product.price,
+    product_id: product.product_id,
+    quantity: 1,
+  });
+
+  router.push('/cart');
+}
 
 watch(page, () => router.push({
   ...route,
@@ -70,7 +87,7 @@ watch(page, () => router.push({
       class="category__products"
     >
       <div v-for="product in products" :key="product.product_id">
-        <ProductCard v-bind="{ product }" />
+        <ProductCard v-bind="{ product }" @add-to-cart="handleAddToCart" />
       </div>
     </div>
     <n-space

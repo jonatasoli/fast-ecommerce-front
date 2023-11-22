@@ -10,12 +10,17 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const emit = defineEmits(['addToCart']);
 
 const productImage = computed(() => ({
   backgroundImage: `url('${props.product.image_path}')`,
 }));
 const price = computed(() => currencyFormat(props.product.price));
 const route = `/products/${props.product.uri}`;
+
+function handleAddToCart() {
+  emit('addToCart', props.product);
+}
 </script>
 
 <template>
@@ -34,7 +39,7 @@ const route = `/products/${props.product.uri}`;
     <div v-if="product.quantity === 0" class="product-item__out-of-stock">
       {{ t('productItem.outOfStock') }}
     </div>
-    <button v-else class="product-item__buy">
+    <button v-else class="product-item__buy" @click="handleAddToCart">
       {{ t('productItem.buy') }}
     </button>
   </div>
