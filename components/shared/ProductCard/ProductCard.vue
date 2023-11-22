@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { computed, useI18n } from '#imports'
-import { currencyFormat } from '@/utils/helpers'
-import type { ProductItem } from '@/utils/types'
+import { computed, useI18n } from '#imports';
+import { currencyFormat } from '@/utils/helpers';
+import type { ProductItem } from '@/utils/types';
 
 type Props = {
-  product: ProductItem
-}
+  product: ProductItem;
+};
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const productImage = computed(() => ({ backgroundImage: `url('${props.product.image_path}')` }))
-const price = computed(() => currencyFormat(props.product.price))
-const route = `/products/${props.product.uri}`
+const productImage = computed(() => ({
+  backgroundImage: `url('${props.product.image_path}')`,
+}));
+const price = computed(() => currencyFormat(props.product.price));
+const route = `/products/${props.product.uri}`;
 </script>
 
 <template>
@@ -29,7 +31,10 @@ const route = `/products/${props.product.uri}`
       </div>
       <p>{{ price }}</p>
     </div>
-    <button class="product-item__buy">
+    <div v-if="product.quantity === 0" class="product-item__out-of-stock">
+      {{ t('productItem.outOfStock') }}
+    </div>
+    <button v-else class="product-item__buy">
       {{ t('productItem.buy') }}
     </button>
   </div>

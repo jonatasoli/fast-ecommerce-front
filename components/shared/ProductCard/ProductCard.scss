@@ -5,6 +5,16 @@
   border: 1px solid $primary-color;
   overflow: hidden;
 
+  &__out-of-stock {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #A6ACAF;
+    font-size: 1.25rem;
+    font-family: Montserrat, sans-serif;
+    padding: 1.125rem;
+  }
+
   &__buy {
     width: 100%;
     display: inline-flex;
