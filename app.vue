@@ -7,11 +7,17 @@ const nuxtApp = useNuxtApp();
 
 const storeUser = useUserStore();
 const storeCategory = useCategoryStore();
+const cartStore = useCartStore();
+const route = useRoute();
+const affiliate: string = (route.query.affiliate as string) ;
 
 onBeforeMount(async () => {
   await storeCategory.getCategorys();
   await storeUser.getUser();
   await nuxtApp.$router.isReady();
+  if (affiliate) {
+    await cartStore.setAffiliate(affiliate);
+  }
 });
 
 nuxtApp.hook("page:finish", () => {

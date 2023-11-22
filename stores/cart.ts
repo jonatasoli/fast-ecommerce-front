@@ -3,6 +3,10 @@ import type { Cart, CartAddress, CartItem, Checkout, CreditCardPayment, Payment,
 import { computed, ref, unref, useCookie, useFetch, useNuxtApp, type CreditCard } from '#imports'
 
 export const useCartStore = defineStore('cart', () => {
+  const affiliate = useCookie<string>('affiliate', {
+    default: () => ref(''),
+  })
+
   const cart = useCookie<Cart>('cart', {
    default: () => ref({
       uuid: '',
@@ -207,13 +211,10 @@ export const useCartStore = defineStore('cart', () => {
       const { data, error } = await useFetch(`${serverUrl}/cart/${cart.value.uuid}/estimate`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({
-          uuid: cart.value.uuid,
-          cart_items: cart.value.cart_items,
-          zipcode: cart.value.zipcode,
-          subtotal: cart.value.subtotal,
-          freight_product_code: '03298',
-        }),
+        body: {
+          ...cart.value,
+          affiliate: affiliate.value,
+        },
       })
 
       if (unref(error)) {
@@ -301,6 +302,7 @@ export const useCartStore = defineStore('cart', () => {
         },
         body: JSON.stringify({
           ...cart.value,
+          affiliate: affiliate.value,
         }),
       })
 
@@ -346,6 +348,7 @@ export const useCartStore = defineStore('cart', () => {
         body: {
           cart: {
             ...cart.value,
+            affiliate: affiliate.value,
             user_data: user.value.user_data,
           },
           address: {
@@ -427,6 +430,7 @@ export const useCartStore = defineStore('cart', () => {
         body: {
           cart: {
             ...cart.value,
+            affiliate: affiliate.value,
             shipping_is_payment: address.value.shipping_is_payment,
             user_address_id: address.value.user_address_id,
             user_data: user.value.user_data,
@@ -506,6 +510,7 @@ export const useCartStore = defineStore('cart', () => {
           ...cart.value,
           ...user.value,
           ...payment.value,
+          affiliate: affiliate.value,
           shipping_is_payment: address.value.shipping_is_payment,
           user_address_id: address.value.user_address_id,
           shipping_address_id: address.value.shipping_address_id,
@@ -624,6 +629,14 @@ export const useCartStore = defineStore('cart', () => {
     paymentCreditCard.value = paymentCreditCardUser
   }
 
+  function setAffiliate(value: string) {
+    affiliate.value = value
+  }
+
+  function clearAffiliate() {
+    affiliate.value = ''
+  }
+
   return {
     cart,
     address,
@@ -647,6 +660,7 @@ export const useCartStore = defineStore('cart', () => {
     setPaymentCreditCard,
     finishCheckout,
     clearCart,
-
+    clearAffiliate,
+    setAffiliate,
   }
 })

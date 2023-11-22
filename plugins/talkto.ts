@@ -3,10 +3,7 @@ import { defineNuxtPlugin } from 'nuxt/app';
 // Define the Tawk.to plugin
 const tawktoPlugin = defineNuxtPlugin(async ({ app }) => {
   // Load Tawk.to script
-  const loadTawkTo = async () => {
-    const _TawkAPI = (await import(/* webpackChunkName: "tawkto" */ 'tawkto'))?.default || {};
-    const _TawkLoadStart = new Date();
-
+  const loadTawkTo =  () => {
     (function () {
       const s1 = document.createElement('script');
         const s0 = document.getElementsByTagName('script')[0];
@@ -25,7 +22,7 @@ const tawktoPlugin = defineNuxtPlugin(async ({ app }) => {
   // Expose Tawk_API to the Vue instance
   if (app) {
      
-    app.tawk_API = TawkAPI;
+    app.tawk_API = window.Tawk_API;
   }
 });
 

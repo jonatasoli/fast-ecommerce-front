@@ -34,6 +34,7 @@ export type ProductItem = {
   discount: number
   showcase: boolean
   show_discount: false
+  quantity: number
   heigth?: number
   width?: number
   weigth?: number
