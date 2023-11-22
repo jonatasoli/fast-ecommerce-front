@@ -31,8 +31,10 @@ function updateQuantity(id, quantity) {
 function handleRadioChange(value) {
   cartStore.getCart.freight_product_code = value;
 }
-onMounted(() => {
-  cartStore.getCart.freight_product_code = "PAC";
+onUpdated(() => {
+  if (cartStore.getCart.freight_product_code === null) {
+    cartStore.getCart.freight_product_code = "PAC";
+  }
 });
 </script>
 
