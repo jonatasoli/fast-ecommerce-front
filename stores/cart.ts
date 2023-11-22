@@ -13,6 +13,7 @@ export const useCartStore = defineStore('cart', () => {
       affiliate: '',
       coupon: '',
       discount: '',
+      freight_product_code: '03298',
       freight: {
         price: '',
         delivery_time: '',
@@ -541,6 +542,7 @@ export const useCartStore = defineStore('cart', () => {
       affiliate: '',
       coupon: '',
       discount: '',
+      freight_product_code: '03298',
       freight: {
         price: '',
         delivery_time: '',
