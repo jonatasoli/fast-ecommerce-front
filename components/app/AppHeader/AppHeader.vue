@@ -30,7 +30,7 @@ onMounted(async() => {
       <NuxtLink to="/" class="logo">
         <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
       </NuxtLink>
-      <div v-if="!isMobile" class="search-bar">
+      <div class="search-bar">
         <div class="search-bar__group">
           <!-- FIXME: i18n -->
           <input
@@ -65,6 +65,7 @@ onMounted(async() => {
         </template>
       </n-button>
     </div>
+    
     <NavBar v-if="!isMobile" />
   </header>
 </template>
