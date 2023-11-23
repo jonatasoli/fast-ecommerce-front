@@ -2,13 +2,7 @@
 import { getMonthYearFromTimestamp, ref, storeToRefs, unref, useNuxtApp, watch } from '#imports'
 import { FormCreditCard } from '~/components/checkout'
 import { useCartStore } from '~/stores/cart';
-import type { CreditCard} from '~/utils/types'
-
-interface Props {
-  paymentMethod: string
-}
-
-defineProps<Props>()
+import type { CreditCard } from '~/utils/types'
 
 const { $mercadoPago } = useNuxtApp()
 const cartStore = useCartStore()
@@ -32,7 +26,6 @@ async function handleSubmitCreditCard() {
   const creditCard = formCreditCard.value?.values as CreditCard
   const { month, year } = getMonthYearFromTimestamp(creditCard.creditCardExpiration)
  
-
   const card = {
     cardNumber: creditCard.creditCardNumber.split(' ').join(''),
     cardholderName: creditCard.creditCardName,
@@ -46,19 +39,19 @@ async function handleSubmitCreditCard() {
   const tokenResponse = await $mercadoPago.createCardToken(card)
 
   const data = await cartStore.addMercadoPagoCreditCardPayment({
-    card_token: tokenResponse.id as string,
+    card_token: tokenResponse.id ,
     installments: creditCard.installments,
-    payment_gateway: 'MERCADOPAGO',
+    payment_gateway: 'MERCADOPAGO', // TODO: move to constant
     card_issuer: unref(creditCardIssuer),
   })
 
-  await cartStore.setPaymentCreditCard(creditCard)
+  cartStore.setPaymentCreditCard(creditCard)
   return data
 }
 
-function handleUpdateCreditCard(creditCardNumber) {
+function handleUpdateCreditCard(creditCardNumber: string): void {
   const newCreditCardNumber = creditCardNumber.replace(/\s/g, '')
-  if (newCreditCardNumber.length < 6) {
+  if (newCreditCardNumber.length < 6) { // TODO: move to constant
     return
   }
 
@@ -103,8 +96,9 @@ onMounted(() => {
   }
 })
 </script>
+
 <template>
-  <div v-if="paymentMethod === 'credit-card'" class="border">
+  <div class="border">
     <FormCreditCard
       ref="formCreditCard"
       :option-installments="optionInstallments"
