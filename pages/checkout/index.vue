@@ -4,7 +4,7 @@ import { navigateTo } from 'nuxt/app'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
 import { useCheckoutStore } from '~/stores/checkout'
-import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
+import { Pix, CreditCard } from '~/stepsCheckout/payment'
 import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
 import type { FormAddress } from '~/components/checkout'
 
@@ -31,10 +31,10 @@ const formShippingAddress = ref<typeof FormAddress | null>(null)
 const creditCard = ref<typeof CreditCard | null>(null)
 const current = ref<number>(1)
 const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
-const paymentMethod = ref<string>('credit-card')
+const paymentMethod = ref<'credit-card' | 'pix'>('credit-card')
 const shippingIsPayment = ref<boolean | null>(null)
 
-const { t } = useI18n()
+const { t, locale  } = useI18n()
 
 function nextSteps() {
   const steps = {
@@ -204,7 +204,8 @@ onMounted(() => {
       <h2 class="title">
         {{ t('checkout.payment.title') }}
       </h2>
-      <div class="border">
+
+      <div class="border m-w:fit-content">
         <n-radio-group
           v-model:value="paymentMethod"
           class="payment-method"
@@ -213,9 +214,14 @@ onMounted(() => {
           <n-radio value="credit-card">
             {{ t('checkout.payment.credit_card') }}
           </n-radio>
+          <n-radio v-if="locale === 'pt-br'" value="pix">
+            Pix
+          </n-radio>
         </n-radio-group>
       </div>
-      <CreditCard ref="creditCard" :payment-method="paymentMethod" />
+
+      <CreditCard v-if="paymentMethod === 'credit-card'" ref="creditCard" />
+      <Pix v-else-if="paymentMethod === 'pix'" />
     </div>
 
     <div v-if="current === 4" class="checkout__container checkout__confirm">
