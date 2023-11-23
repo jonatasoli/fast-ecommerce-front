@@ -159,7 +159,7 @@ export type CartAddress = {
   shipping_address_id?: number | null
 }
 
-export type CreditCardPayment = {
+export type CardPaymentData = {
   payment_gateway: string
   card_token: string
   card_issuer: string

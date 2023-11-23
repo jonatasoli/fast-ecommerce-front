@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
-import type { Cart, CartAddress, CartItem, Checkout, CreditCardPayment, Payment, ShippingAddress, User, UserAddress } from '@/utils/types'
+import type { Cart, CartAddress, CartItem, Checkout, CardPaymentData, Payment, ShippingAddress, User, UserAddress } from '@/utils/types'
 import { computed, ref, unref, useCookie, useFetch, useNuxtApp, type CreditCard } from '#imports'
+
+const DEFAULT_HEADERS = {
+  'content-type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+}
 
 export const useCartStore = defineStore('cart', () => {
   const affiliate = useCookie<string>('affiliate', {
@@ -99,29 +104,30 @@ export const useCartStore = defineStore('cart', () => {
     if (!item) {
       return
     }
-    const uuid = cart.value.uuid
+
+    const { uuid } = cart.value
+    
     async function createCart() {
       try {
-        const headers = {
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        }
         if (!uuid) {
-          const {data, error} = await useFetch(`${serverUrl}/cart/`, {
+          const { data, error } = await useFetch<{ uuid: string }>(`${serverUrl}/cart/`, {
             method: 'POST',
-            headers,
+            headers: DEFAULT_HEADERS
           })
 
           if (unref(error)) {
             error.value = null
             return;
           }
+
           const responseData = unref(data) as {
             uuid: string
           }
+
           cart.value.uuid = responseData.uuid
           return data
         }
+        
         return {
           data: {
             uuid,
@@ -413,21 +419,17 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addMercadoPagoCreditCardPayment(payment: CreditCardPayment) {
+  async function addMercadoPagoCreditCardPayment(payment: CardPaymentData) {
     try {
       const uuid = cart.value.uuid
       if (!uuid) {
         return
       }
       loading.value = true
-      const headers = {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      }
 
       const { data, error } = await useFetch(`/api/cart/${uuid}/payment/credit_card`, {
         method: 'POST',
-        headers,
+        headers: DEFAULT_HEADERS,
         body: {
           cart: {
             ...cart.value,
@@ -611,6 +613,44 @@ export const useCartStore = defineStore('cart', () => {
     address.value.shipping_address = shippingAddress
   }
 
+  function getCartData() {
+    return {
+      ...cart.value,
+      affiliate: affiliate.value,
+      shipping_is_payment: address.value.shipping_is_payment,
+      user_address_id: address.value.user_address_id,
+      user_data: user.value.user_data,
+    }
+  }
+
+  /**
+   * Calls the API to add a new payment method (PIX)
+   * @param paymentData: the relevant data about the payment method.
+   */
+  async function addPaymentMethod() {
+    const { data, error } = await useFetch(
+      `/api/cart/${cart.value.uuid}/payment/pix`,
+      {
+        headers: DEFAULT_HEADERS,
+        method: 'POST',
+        body: {
+          cart: getCartData(),
+          payment: {
+            payment_gateway: 'MERCADOPAGO',
+            installments: 1
+          }
+        }
+      }
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
   function setUserAddressId(userAddressId: number) {
     address.value.user_address_id = userAddressId
   }
@@ -664,5 +704,6 @@ export const useCartStore = defineStore('cart', () => {
     clearCart,
     clearAffiliate,
     setAffiliate,
+    addPaymentMethod,
   }
 })
