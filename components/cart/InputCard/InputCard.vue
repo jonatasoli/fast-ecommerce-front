@@ -8,6 +8,7 @@ type Props = {
   buttonText: string
   placeholder: string
   receivedValue: string
+  mask?: string
 }
 
 const props = defineProps<Props>()
@@ -33,6 +34,7 @@ function handleButtonClick() {
     <div class="card__input">
       <n-input
         v-model:value="value"
+        v-mask="`#${props.mask}`"
         type="text"
         :placeholder="props.placeholder"
       />

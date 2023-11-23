@@ -121,10 +121,19 @@ onMounted(async () => {
               </div>
             </div>
           </n-gi>
-          <n-gi :span="4">
+          <n-gi :span="2">
             <div class="product__price">
+              <p class="price-title">Unit.</p>
               <h3>
                 {{ currencyFormat(product.price) }}
+              </h3>
+            </div>
+          </n-gi>
+          <n-gi :span="2">
+            <div class="product__price">
+              <p class="price-title">Total</p>
+              <h3>
+                {{ currencyFormat(product.price * product.quantity) }}
               </h3>
             </div>
           </n-gi>
@@ -132,8 +141,8 @@ onMounted(async () => {
       </div>
       <div class="divider" />
       <n-grid :x-gap="20" :cols="12">
-        <n-gi :span="8" />
-        <n-gi :span="4">
+        <n-gi :span="9" />
+        <n-gi :span="3">
           <div class="amount">
             <div class="row">
               <span class="total__title"> Subtotal: </span>
