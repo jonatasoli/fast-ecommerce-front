@@ -118,8 +118,9 @@ async function handleFinishCheckout() {
   if (responseData.order_id) {
     checkoutStore.setCheckout(unref(responseData))
     cartStore.clearCart()
-    router.push('/checkout/finish')
+    cartStore.clearAffiliate()
   }
+  router.push('/checkout/finish')
 }
 
 onMounted(() => {

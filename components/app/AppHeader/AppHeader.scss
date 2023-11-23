@@ -8,13 +8,16 @@
   &__top {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     max-width: 1366px;
     padding: .5rem 1rem;
     margin: 0 auto;
     gap: 1rem;
+    flex-wrap: wrap;
 
     @media (min-width: 768px) {
       gap: 2rem;
+      justify-content: space-between;
     }
 
     .logo {
@@ -35,6 +38,10 @@
 
     .search-bar {
       flex: 1;
+      
+      @media (max-width: 768px) {
+        order: 1;
+      }
     }
 
     .menu {

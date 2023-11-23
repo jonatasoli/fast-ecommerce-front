@@ -16,7 +16,12 @@ function doSearch() {
 
   const encodedSearch = encodeURIComponent(trimSearch)
   router.push(`/search?q=${encodedSearch}`)
+  search.value = ''
 }
+
+onMounted(async() => {
+  await useCategoryStore().getCategorys()
+})
 </script>
 
 <template>
@@ -61,6 +66,7 @@ function doSearch() {
         </template>
       </n-button>
     </div>
+    
     <NavBar v-if="!isMobile" />
   </header>
 </template>

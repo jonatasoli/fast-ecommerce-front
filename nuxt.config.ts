@@ -44,6 +44,7 @@ export default defineNuxtConfig({
     { src: '@/plugins/vue-tel-input', mode: 'client' },
     { src: '@/plugins/vue-the-mask', mode: 'client' },
     { src: '@/plugins/mercadopago', mode: 'client' },
+    { src: '@/plugins/talkto', mode: 'client' },
   ],
   build: {
     analyze: true,

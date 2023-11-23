@@ -23,6 +23,7 @@ const { data, pending } = await useFetch<PaginatedProducts>(url.value, {
   },
 })
 
+const cartStore = useCartStore()
 const products = computed(() => data.value?.products || [])
 const totalPages = computed(() => data.value?.total_pages ? data.value.total_pages : 1)
 const totalRecords = computed(() => {
@@ -36,6 +37,22 @@ const totalRecords = computed(() => {
     ? t('categoryPage.singleProduct')
     : t('categoryPage.totalProducts', { num: records.toString().padStart(2, '0') })
 })
+
+async function handleAddToCart(product: ProductItem) {
+  if (!product) {
+    return;
+  }
+
+  await cartStore.addToCart({
+    image_path: product.image_path,
+    name: product.name,
+    price: product.price,
+    product_id: product.product_id,
+    quantity: 1,
+  });
+
+  router.push('/cart');
+}
 
 watch(page, () => router.push({
   ...route,
@@ -54,29 +71,25 @@ watch(page, () => router.push({
     <p class="subtitle">
       {{ totalRecords }}
     </p>
-    <n-grid
+    <div
       v-if="pending"
-      cols="1 480:2 768:3 1024:4"
-      x-gap="16"
-      y-gap="16"
+      class="category__skeleton"
     >
-      <n-grid-item v-for="n in OFFSET" :key="n">
+      <div v-for="n in OFFSET" :key="n">
         <ProductSkeleton />
-      </n-grid-item>
-    </n-grid>
+      </div>
+    </div>
     <div v-else-if="products.length === 0" class="category__empty">
       <p>{{ t(`categoryPage.empty`) }}</p>
     </div>
-    <n-grid
+    <div
       v-else
-      cols="1 480:2 768:3 1024:4"
-      x-gap="16"
-      y-gap="16"
+      class="category__products"
     >
-      <n-grid-item v-for="product in products" :key="product.product_id">
-        <ProductCard v-bind="{ product }" />
-      </n-grid-item>
-    </n-grid>
+      <div v-for="product in products" :key="product.product_id">
+        <ProductCard v-bind="{ product }" @add-to-cart="handleAddToCart" />
+      </div>
+    </div>
     <n-space
       align="flex-end"
       vertical

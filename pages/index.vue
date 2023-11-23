@@ -11,6 +11,8 @@ const { t, te } = useI18n()
 const store = useProductsStore()
 
 const categoryStore = useCategoryStore()
+const cartStore = useCartStore()
+const router = useRouter()
 const serverUrl = useRuntimeConfig().public.serverUrl
 
 const { data: carousel } = await useAsyncData(() => store.getProductsShowcase())
@@ -29,7 +31,7 @@ const featuredProducts = computed(() => featured.value?.products
 )
 
 const categories = computed(() =>
-  categoryStore.sortedCategories
+  categoryStore.categories
     .filter(({ name }) => !['news', 'sales'].includes(name))
     .slice(0, 3)
     .map(category => ({
@@ -50,6 +52,22 @@ const latestProducts = computed(() => {
 
   return latest.value.products.slice(0, 4)
 })
+
+async function handleAddToCart(product: ProductItem) {
+  if (!product) {
+    return;
+  }
+
+  await cartStore.addToCart({
+    image_path: product.image_path,
+    name: product.name,
+    price: product.price,
+    product_id: product.product_id,
+    quantity: 1,
+  });
+
+  router.push('/cart');
+}
 </script>
 
 <template>
@@ -76,6 +94,7 @@ const latestProducts = computed(() => {
           v-for="product in latestProducts"
           :key="product.product_id"
           :product="product"
+          @add-to-cart="handleAddToCart"
         />
       </div>
     </div>

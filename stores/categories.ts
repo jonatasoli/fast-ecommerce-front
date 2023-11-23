@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { computed, ref, useNuxtApp } from '#imports'
+import { ref, useNuxtApp } from '#imports'
 
-type CategoryItem = {
+export type CategoryItem = {
   category_id: number
   name: string
   path: string
@@ -9,14 +9,10 @@ type CategoryItem = {
 }
 
 export const useCategoryStore = defineStore('categories', () => {
+  const loadingCategories = ref(true)
   const categories = ref<CategoryItem[]>([])
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
-
-  const sortedCategories = computed(() => [...categories.value].sort((a, b) => {
-    const order = { news: -1, sales: -1 }
-    return (order[a.name] || 0) - (order[b.name] || 0)
-  }))
 
   async function getCategorys() {
     try {
@@ -24,12 +20,16 @@ export const useCategoryStore = defineStore('categories', () => {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-      const res = await fetch(`${serverUrl}/catalog/categories`, {
+      const { data, pending } = await useFetch(`${serverUrl}/catalog/categories`, {
         headers,
       })
-      const data = await res.json()
 
-      categories.value = data.categories || []
+      const responseData = await unref(data) as {
+        categories: CategoryItem[]
+      }
+      categories.value = responseData.categories
+      loadingCategories.value = unref(pending)
+      return responseData
     } catch (error) {
       console.error(error)
     }
@@ -38,6 +38,6 @@ export const useCategoryStore = defineStore('categories', () => {
   return {
     categories,
     getCategorys,
-    sortedCategories,
+    loadingCategories,
   }
 })
