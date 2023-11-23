@@ -110,7 +110,7 @@ defineExpose({
 </script>
 
 <template>
-  <n-form ref="formRef" class="border checkout__address">
+  <n-form ref="formRef" class="border checkout__address m-w:fit-content">
     <n-grid
       x-gap="6 800:20"
       cols="4 800:12"
