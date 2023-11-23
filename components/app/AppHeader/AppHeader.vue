@@ -16,6 +16,7 @@ function doSearch() {
 
   const encodedSearch = encodeURIComponent(trimSearch)
   router.push(`/search?q=${encodedSearch}`)
+  search.value = ''
 }
 
 onMounted(async() => {
