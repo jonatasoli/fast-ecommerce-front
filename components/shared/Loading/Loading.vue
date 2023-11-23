@@ -9,14 +9,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 50vh;
   width: 100%;
 }
 
 .spinner  {
   width: 60px;
   height: 60px;
-  border: 3px solid #b5b5b5;
+  border: 3px solid $primary-color;
   border-bottom-color: transparent;
   border-radius: 50%;
   box-sizing: border-box;

@@ -1,31 +1,46 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { TrashIcon } from '@heroicons/vue/24/outline'
-import { useDebounceFn } from '@vueuse/core'
-import { currencyFormat, useI18n } from '#imports'
-import { useCartStore } from '@/stores/cart'
-import InputCard from '~/components/cart/InputCard/InputCard.vue'
+import { storeToRefs } from "pinia";
+import { TrashIcon } from "@heroicons/vue/24/outline";
+import { useDebounceFn } from "@vueuse/core";
+import { currencyFormat, useI18n } from "#imports";
+import { useCartStore } from "@/stores/cart";
+import InputCard from "~/components/cart/InputCard/InputCard.vue";
+import { RadioInput } from "~/components/cart";
 
-const cartStore = useCartStore()
-const { getCart } = storeToRefs(cartStore)
-const { t } = useI18n()
+const cartStore = useCartStore();
+const { getCart } = storeToRefs(cartStore);
+const { t } = useI18n();
+const checkedValueRef = "PAC";
 
 function handleEstimateFreight(value) {
-  cartStore.calculateFreight(value)
+  cartStore.calculateFreight(value);
 }
 
-const debounceFn = useDebounceFn((id, quantity) => {
-  cartStore.updateQuantity(id, quantity)
-}, 1000, { maxWait: 5000 })
+const debounceFn = useDebounceFn(
+  (id, quantity) => {
+    cartStore.updateQuantity(id, quantity);
+  },
+  1000,
+  { maxWait: 5000 },
+);
 
 function updateQuantity(id, quantity) {
-  debounceFn(id, quantity)
+  debounceFn(id, quantity);
 }
+
+function handleRadioChange(value) {
+  cartStore.getCart.freight_product_code = value;
+}
+onUpdated(() => {
+  if (cartStore.getCart.freight_product_code === null) {
+    cartStore.getCart.freight_product_code = "PAC";
+  }
+});
 </script>
 
 <template>
   <main class="cart">
-    <div v-if="cartStore.loadingCart" class="cart__loading">
+    <div v-if="cartStore.loading" class="cart__loading">
       <n-space>
         <n-spin size="large" />
       </n-space>
@@ -37,11 +52,10 @@ function updateQuantity(id, quantity) {
 
         <nuxt-link to="/">
           <n-button
-            class="cart__button"
-            quaternary
-            type="primary"
-            size="large"
-          >
+class="cart__button"
+quaternary
+type="primary"
+size="large">
             {{ t("cart.continue") }}
           </n-button>
         </nuxt-link>
@@ -49,21 +63,6 @@ function updateQuantity(id, quantity) {
 
       <div v-else class="cart__not-empty">
         <div class="cart__not-empty--container">
-          <div>
-            <InputCard
-              icon="cart"
-              :title="t('cart.inputs.shipping.title')"
-              :button-text="t('cart.inputs.shipping.buttonText')"
-              placeholder="Informe seu CEP"
-              :received-value="getCart.zipcode"
-              @on-button-click="handleEstimateFreight"
-            >
-              <div v-if="getCart?.freight?.price" class="cart__freigth">
-                <div>{{ t('cart.freight.part1') }} {{ getCart.freight.delivery_time }} {{ t('cart.freight.part2') }}</div>
-                <div>{{ currencyFormat(getCart.freight.price, undefined, 'freight') }}</div>
-              </div>
-            </InputCard>
-          </div>
           <InputCard
             icon="cupom"
             :title="t('cart.inputs.discount.title')"
@@ -71,6 +70,32 @@ function updateQuantity(id, quantity) {
             :button-text="t('cart.inputs.discount.buttonText')"
             received-value=""
           />
+          <InputCard
+            icon="cart"
+            :title="t('cart.inputs.shipping.title')"
+            :button-text="t('cart.inputs.shipping.buttonText')"
+            placeholder="Informe seu CEP"
+            :received-value="getCart.zipcode"
+            @on-button-click="handleEstimateFreight"
+          >
+            <div v-if="getCart?.freight?.price" class="cart__freigth">
+              <div>
+                {{ t("cart.freight.part1") }}
+                {{ getCart.freight.delivery_time }}
+                {{ t("cart.freight.part2") }}
+              </div>
+              <div>
+                {{
+                  currencyFormat(getCart.freight.price, undefined, "freight")
+                }}
+              </div>
+            </div>
+          </InputCard>
+          <RadioInput
+            :checked-value="checkedValueRef"
+            @radio-change="handleRadioChange"
+          >
+          </RadioInput>
         </div>
         <div class="cart__not-empty--container">
           <div class="cart__not-empty--products">
@@ -83,7 +108,7 @@ function updateQuantity(id, quantity) {
               </div>
               <div class="table-body">
                 <div
-                  v-for="(item) in cartStore.getCart.cart_items"
+                  v-for="item in getCart.cart_items"
                   :key="item.product_id"
                   class="table-row"
                 >
@@ -93,7 +118,7 @@ function updateQuantity(id, quantity) {
                       alt=""
                       width="100"
                       height="100"
-                    >
+                    />
                     {{ item.name }}
                   </div>
                   <div class="quantity">
@@ -140,16 +165,29 @@ function updateQuantity(id, quantity) {
 
             <div class="summary-values">
               <p>{{ t("cart.summary.shipping") }}</p>
-              <p> {{ currencyFormat(cartStore.getCart?.freight?.price, undefined, 'freight') || 0 }}</p>
+              <p>
+                {{
+                  currencyFormat(
+                    getCart?.freight?.price,
+                    undefined,
+                    "freight",
+                  ) || 0
+                }}
+              </p>
             </div>
-            <hr>
+            <hr />
 
             <div class="summary-values amount">
               <p>{{ t("cart.summary.total") }}</p>
-              <p>{{ currencyFormat(cartStore.getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
-            <nuxt-link to="/checkout">
+
+            <p v-if="!getCart?.freight?.price" class="alert-freight">
+              Calcule o frete para finalizar a compra
+            </p>
+            <nuxt-link v-else to="/checkout">
               <n-button
+                :disabled="!getCart?.freight?.price"
                 type="primary"
                 strong
                 class="btn-checkout"
@@ -176,5 +214,5 @@ function updateQuantity(id, quantity) {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/pages/cart.scss';
+@import "@/assets/scss/pages/cart.scss";
 </style>

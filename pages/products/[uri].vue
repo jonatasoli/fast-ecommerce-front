@@ -1,46 +1,60 @@
 <script lang="ts" setup>
-import { useCartStore } from '@/stores/cart'
-import { currencyFormat } from '@/utils/helpers'
-import { LOCALES, computed, createError, ref, useFetch, useI18n, useRoute, useRouter, useRuntimeConfig } from '#imports'
-import { ProductItem } from '@/utils/types'
+import { useCartStore } from '@/stores/cart';
+import { currencyFormat } from '@/utils/helpers';
+import {
+  LOCALES,
+  computed,
+  createError,
+  ref,
+  useFetch,
+  useI18n,
+  useRoute,
+  useRouter,
+  useRuntimeConfig,
+} from '#imports';
+import type { ProductItem } from '~/utils/types';
 
-const route = useRoute()
-const router = useRouter()
-const config = useRuntimeConfig()
-const { t, locale } = useI18n()
-const cartStore = useCartStore()
+const route = useRoute();
+const router = useRouter();
+const config = useRuntimeConfig();
+const { t, locale } = useI18n();
+const cartStore = useCartStore();
 
-const { data: product, error } = await useFetch<ProductItem>(`${config.public.serverUrl}/product/${route.params.uri}`)
+const { data: product, error } = await useFetch<ProductItem>(
+  `${config.public.serverUrl}/product/${route.params.uri}`
+);
 
 if (error.value || !product.value) {
   throw createError({
     statusCode: 404,
     statusMessage: 'Page not found',
     fatal: true,
-  })
+  });
 }
 
-const price = computed(() => currencyFormat(product.value?.price || 0))
+const price = computed(() => currencyFormat(product.value?.price || 0));
 const installments = computed(() => {
-  let count = 4
-  let amount = currencyFormat(0)
+  let count = 4;
+  let amount = currencyFormat(0);
 
   if (product.value) {
     if (product.value.installments_list) {
-      count = product.value.installments_list.count || count
-      amount = currencyFormat(product.value.installments_list.value || product.value.price)
+      count = product.value.installments_list.count || count;
+      amount = currencyFormat(
+        product.value.installments_list.value || product.value.price
+      );
     } else {
-      amount = currencyFormat(Math.round(product.value.price / count))
+      amount = currencyFormat(Math.round(product.value.price / count));
     }
   }
 
-  return { count, amount }
-})
-const value = ref(null)
+  return { count, amount };
+});
+const value = ref(null);
 
 async function addProductToCart() {
   if (!product.value) {
-    return
+    return;
   }
 
   await cartStore.addToCart({
@@ -49,11 +63,11 @@ async function addProductToCart() {
     price: product.value.price,
     product_id: product.value.product_id,
     quantity: 1,
-  })
-  router.push('/cart')
+  });
+  router.push('/cart');
 }
 
-const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
+const isPtBr = computed(() => locale.value === LOCALES.PT_BR);
 </script>
 
 <template>
@@ -63,15 +77,15 @@ const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
         class="product__info--image"
         :src="product.image_path"
         :alt="product.name"
-      >
+      />
 
       <div class="product__content">
         <h1 class="product__name">
           {{ product.name }}
         </h1>
         <div v-if="product.variants" class="product__variants">
-          <hr class="divider">
-          <p> {{ t('productPage.variants') }}</p>
+          <hr class="divider" />
+          <p>{{ t('productPage.variants') }}</p>
 
           <n-space vertical>
             <n-radio-group
@@ -87,7 +101,7 @@ const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
               />
             </n-radio-group>
           </n-space>
-          <hr class="divider">
+          <hr class="divider" />
         </div>
         <p class="product__content--price">
           {{ price }}
@@ -103,7 +117,11 @@ const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
           </i18n-t>
         </p>
         <div class="product__content--buy">
+          <div v-if="product.quantity === 0" class="product__content--out-of-stock">
+            {{ t('productItem.outOfStock') }}
+          </div>
           <n-button
+            v-else
             type="primary"
             size="large"
             strong
@@ -153,5 +171,5 @@ const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/pages/products/product.scss";
+@import '@/assets/scss/pages/products/product.scss';
 </style>

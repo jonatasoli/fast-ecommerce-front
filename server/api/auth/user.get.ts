@@ -27,13 +27,14 @@ export default defineEventHandler(async (event): Promise<UserResponse> => {
     if (!document && !token) {
       return {
         success: false,
-        error: 'USER_NOT_FOUND',
+        error: 'USER_NOT_AUTHENTICATED',
       }
     }
 
     const res = await fetch(`${serverBaseURL}/user/${document}`, {
       method: 'GET',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     })

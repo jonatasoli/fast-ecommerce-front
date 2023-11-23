@@ -2,42 +2,56 @@
 import * as zod from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import { FormInst } from 'naive-ui'
-import { ref, useI18n } from '#imports'
+import { ref, useI18n, onMounted } from '#imports'
 
-const formRefCreditCard = ref<FormInst | null>(null)
+interface Props {
+  data?: {
+    creditCardNumber: string
+    creditCardName: string
+    creditCardExpiration: string
+    creditCardCvv: string
+    installments: number
+    typeDocument: string
+    document: string
+  }
+  optionInstallments: { label: string; value: number }[]
+}
+
+const props =  defineProps<Props>()
+const formRefCreditCard = ref<null>(null)
 const { t } = useI18n()
+const emit = defineEmits(['onInputCreditCard'])
 
 const validationSchema = toTypedSchema(zod.object({
-  credit_card_number: zod.string().min(16, {
+  creditCardNumber: zod.string().min(16, {
     message: t('checkout.payment.form.credit_card_number_invalid'),
   }),
-  credit_card_name: zod.string().min(3, {
+  creditCardName: zod.string().min(3, {
     message: t('checkout.payment.form.credit_card_name_invalid'),
   }),
-  credit_card_expiration: zod.number().optional(),
-  credit_card_cvv: zod.string().min(3, {
+  creditCardExpiration: zod.number().optional(),
+  creditCardCvv: zod.string().min(3, {
     message: t('checkout.payment.form.credit_card_cvv_invalid'),
   }),
-  credit_card_installments: zod.string().optional(),
-  type_document: zod.string().min(3, {
+  installments: zod.number().optional(),
+  typeDocument: zod.string().min(3, {
     message: t('checkout.payment.form.type_document_invalid'),
   }),
-  document_number: zod.string().min(11, {
+  document: zod.string().min(11, {
     message: t('checkout.payment.form.document_number_invalid'),
   }),
 }))
 
-const { defineComponentBinds, values, validate } = useForm({
+const { defineComponentBinds, values, validate, setValues } = useForm({
   validationSchema,
   initialValues: {
-    credit_card_number: '',
-    credit_card_name: '',
-    credit_card_expiration: undefined,
-    credit_card_cvv: '',
-    credit_card_installments: '',
-    type_document: undefined,
-    document_number: '',
+    creditCardNumber: '',
+    creditCardName: '',
+    creditCardExpiration: undefined,
+    creditCardCvv: '',
+    installments: undefined,
+    typeDocument: undefined,
+    document: '',
   },
 })
 
@@ -51,18 +65,45 @@ const naiveConfig = state => ({
   },
 })
 
-const creditCardNumber = defineComponentBinds('credit_card_number', naiveConfig)
-const creditCardName = defineComponentBinds('credit_card_name', naiveConfig)
-const creditCardValidate = defineComponentBinds('credit_card_expiration', naiveConfig)
-const creditCardCvv = defineComponentBinds('credit_card_cvv', naiveConfig)
-const installments = defineComponentBinds('credit_card_installments', naiveConfig)
-const typeDocument = defineComponentBinds('type_document', naiveConfig)
-const document = defineComponentBinds('document_number', naiveConfig)
+const creditCardNumber = defineComponentBinds('creditCardNumber', naiveConfig)
+const creditCardName = defineComponentBinds('creditCardName', naiveConfig)
+const creditCardValidate = defineComponentBinds('creditCardExpiration', naiveConfig)
+const creditCardCvv = defineComponentBinds('creditCardCvv', naiveConfig)
+const installments = defineComponentBinds('installments', naiveConfig)
+const typeDocument = defineComponentBinds('typeDocument', naiveConfig)
+const document = defineComponentBinds('document', naiveConfig)
+
+function handleCreditCardNumberChange(number) {
+  emit('onInputCreditCard', number.replace(/\s/g, ''))
+}
+
+function fillFormCreditCard(values) {
+  if (!values) {
+    return
+  }
+  setValues({
+    creditCardNumber: values.creditCardNumber,
+    creditCardName: values.creditCardName,
+    creditCardExpiration: values.creditCardExpiration,
+    creditCardCvv: values.creditCardCvv,
+    installments: values.installments,
+    typeDocument: values.typeDocument,
+    document: values.document,
+  })
+}
 
 defineExpose({
   validate,
   values,
 })
+
+onMounted(() => {
+  if (!props.data?.creditCardNumber) {
+    return
+  }
+  fillFormCreditCard(props.data)
+})
+
 </script>
 
 <template>
@@ -71,6 +112,7 @@ defineExpose({
       <n-input
         v-mask="'#### #### #### ####'"
         v-bind="creditCardNumber"
+        @input="handleCreditCardNumberChange"
       />
     </n-form-item>
     <n-form-item :label="t('checkout.payment.credit_card_name')" v-bind="creditCardName">
@@ -86,8 +128,8 @@ defineExpose({
           <n-select
             v-bind="typeDocument"
             :options="[
-              { label: 'CPF', value: 'cpf' },
-              { label: 'CNPJ', value: 'cnpj' },
+              { label: 'CPF', value: 'CPF' },
+              { label: 'CNPJ', value: 'CNPJ' },
             ]"
           />
         </n-form-item>
@@ -115,7 +157,7 @@ defineExpose({
       </n-gi>
       <n-gi span="10 800:6">
         <n-form-item :label="t('checkout.payment.installments')" v-bind="installments">
-          <n-select v-bind="installments" />
+          <n-select v-bind="installments" :options="optionInstallments" />
         </n-form-item>
       </n-gi>
     </n-grid>

@@ -59,12 +59,11 @@ const document = defineComponentBinds('document', naiveConfig)
 const password = defineComponentBinds('password', naiveConfig)
 const confirmPassword = defineComponentBinds('confirmPassword', naiveConfig)
 const phone = ref('')
+const countryCallingCode = ref('')
 const phoneIsValid = ref(true)
 const notification = useNotification()
 
 const onSubmit = handleSubmit(async (values) => {
-  setFieldValue('phone', phone.value)
-
   const res = await register(values)
   if (!res?.success) {
     notification.error({
@@ -82,13 +81,19 @@ const onSubmit = handleSubmit(async (values) => {
   })
   router.push('/login')
 })
-
-const validPhoneNumber = (isValid) => {
-  if (!isValid?.valid && isValid?.number?.length > 0) {
-    phoneIsValid.value = false
-  } else {
+function validPhoneNumber (phoneNumber) {
+  if (phoneNumber.valid) {
     phoneIsValid.value = true
+    countryCallingCode.value = phoneNumber.countryCallingCode
+  } else {
+    phoneIsValid.value = false
   }
+}
+
+function onBlurPhone () {
+  const replacedPhone = phone.value.replace(/\D/g, '')
+  const phoneNumber = `+${countryCallingCode.value}${replacedPhone}`
+  setFieldValue('phone', phoneNumber)
 }
 </script>
 
@@ -172,6 +177,7 @@ const validPhoneNumber = (isValid) => {
               placeholder: `${t('register.phone')}`,
             }"
             @validate="validPhoneNumber"
+            @blur="onBlurPhone"
           />
         </n-form-item>
       </n-form>

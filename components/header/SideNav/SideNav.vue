@@ -3,9 +3,15 @@ import { Bars3Icon } from '@heroicons/vue/24/outline'
 import { useNavLinks } from '../nav-links'
 import { ref } from '#imports'
 const show = ref(false)
-const { navLinks } = useNavLinks()
 
-const closeSidenav = () => show.value = false
+const store = useCategoryStore()
+const { data } = await useAsyncData(() => store.getCategorys())
+const responseData = unref(data) as {
+  categories: CategoryItem[]
+}
+const { navLinks } = useNavLinks(responseData.categories)
+
+const closeSidenav = () => { show.value = false }
 </script>
 
 <template>

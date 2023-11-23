@@ -17,6 +17,10 @@ function doSearch() {
   const encodedSearch = encodeURIComponent(trimSearch)
   router.push(`/search?q=${encodedSearch}`)
 }
+
+onMounted(async() => {
+  await useCategoryStore().getCategorys()
+})
 </script>
 
 <template>
@@ -26,12 +30,13 @@ function doSearch() {
       <NuxtLink to="/" class="logo">
         <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
       </NuxtLink>
-      <div class="search-bar">
+      <div v-if="!isMobile" class="search-bar">
         <div class="search-bar__group">
+          <!-- FIXME: i18n -->
           <input
             v-model="search"
             type="text"
-            placeholder="Digite o que você procura"
+            placeholder="Digite o que você procura" 
             @keyup.enter="doSearch"
           >
           <button @click="doSearch">

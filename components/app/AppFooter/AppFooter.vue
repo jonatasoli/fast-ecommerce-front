@@ -3,7 +3,12 @@ import { useI18n } from '#imports'
 import { useNavLinks } from '~/components/header/nav-links'
 
 const { t } = useI18n()
-const { navLinks } = useNavLinks()
+const store = useCategoryStore()
+const { data } = await useAsyncData(() => store.getCategorys())
+const responseData = unref(data) as {
+  categories: CategoryItem[]
+}
+const { navLinks } = useNavLinks(responseData.categories)
 </script>
 
 <template>

@@ -1,12 +1,17 @@
 import { CURRENCIES, LOCALES } from './enums'
 import { ref, useRoute } from '#imports'
 
-export function currencyFormat(value = 0, locale = LOCALES.PT_BR, type = ''): string {
+export function currencyFormat(value, locale = LOCALES.PT_BR, type = ''): string {
   const currency = CURRENCIES[locale] || LOCALES.PT_BR
+
   const { format } = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
   })
+
+  if (!value) {
+    return format(0)
+  }
 
   if (type === 'freight') {
     return format(value)
@@ -31,8 +36,8 @@ export function getPageFromRoute() {
 
 export function getMonthYearFromTimestamp(timestamp) {
   const date = new Date(timestamp)
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = (date.getFullYear()).toString()
 
   return { month, year }
 }

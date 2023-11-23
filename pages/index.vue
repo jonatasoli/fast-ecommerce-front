@@ -4,7 +4,7 @@ import { ProductCard } from '@/components/shared'
 import { FeatureCard, FeatureHero } from '~/components/home'
 import ProductImage from '@/assets/images/product-item-example.jpeg'
 import { useProductsStore } from '~/stores/products'
-import { FeatureItem, ProductItem } from '~/utils/types'
+import type { FeatureItem, ProductItem } from '~/utils/types'
 import { useCategoryStore } from '~/stores/categories'
 
 const { t, te } = useI18n()
@@ -17,10 +17,10 @@ const { data: carousel } = await useAsyncData(() => store.getProductsShowcase())
 const { data: featured } = await useFetch<{ products: ProductItem[] }>(`${serverUrl}/catalog/featured`)
 const { data: latest } = await useFetch<{ products: ProductItem[] }>(`${serverUrl}/catalog/latest`)
 
-const productToFeature = ({ image_path, name, uri }: ProductItem): FeatureItem => ({
+const productToFeature = ({ image_path: imagePath, name, uri }: ProductItem): FeatureItem => ({
   label: name,
   uri,
-  image: image_path || '',
+  image: imagePath || '',
 })
 
 const featuredProducts = computed(() => featured.value?.products
@@ -29,18 +29,18 @@ const featuredProducts = computed(() => featured.value?.products
 )
 
 const categories = computed(() =>
-  categoryStore.sortedCategories
+  categoryStore.categories
     .filter(({ name }) => !['news', 'sales'].includes(name))
     .slice(0, 3)
     .map(category => ({
       label: te(`navigation.${category.name}`) ? t(`navigation.${category.name}`) : category.name,
       uri: category.path,
-      image: category.image_path || '',
+      image: category.image_path ?? '',
     })),
 )
 
 const carouselBackground = (image?: string) => ({
-  backgroundImage: `url('${image || ProductImage}')`,
+  backgroundImage: `url('${image ?? ProductImage}')`,
 })
 
 const latestProducts = computed(() => {

@@ -34,6 +34,7 @@ export default {
 
   productItem: {
     buy: 'Comprar',
+    outOfStock: 'Produto indisponível',
   },
 
   home: {
@@ -158,7 +159,7 @@ export default {
   },
   checkout: {
     steps: {
-      login: 'Identificação',
+      login: 'Login',
       shipping: 'Entrega',
       payment: 'Pagamento',
       resume: 'Confirmação',
@@ -232,4 +233,13 @@ export default {
     },
 
   },
+
+  finishCheckout: {
+    title: 'Pedido realizado com sucesso!',
+    description: 'Em breve você receberá um e-mail com os detalhes do pedido',
+    button: 'Voltar para a página inicial',
+    titleError: 'Erro ao realizar o pedido',
+    descriptionError: 'Houve um problema ao realizar o seu pedido, verifique o email enviado e tente novamente em instantes',
+    buttonError: 'Voltar para o carrinho',
+  }
 }
