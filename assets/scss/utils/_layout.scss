@@ -19,6 +19,10 @@
   border: 1px solid #CDCACA; 
 }
 
+.m-w\:fit-content {
+  min-width: fit-content !important;
+}
+
 .title {
   color: $primary-color;
 }
