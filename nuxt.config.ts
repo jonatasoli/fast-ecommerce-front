@@ -11,6 +11,9 @@ const {
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
+  imports: {
+    autoImport: true
+  },
   ssr: false,
   components: [
     {
