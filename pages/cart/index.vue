@@ -10,9 +10,14 @@ import { RadioInput } from '~/components/cart';
 const cartStore = useCartStore();
 const { getCart } = storeToRefs(cartStore);
 const { t } = useI18n();
-const checkedValueRef = 'PAC';
+const checkedFreightProductCode = ref("PAC");
+
 function handleEstimateFreight(value) {
-  cartStore.calculateFreight(value);
+  cartStore.calculateFreight(value, unref(checkedFreightProductCode));
+}
+
+function handleAddCoupon(value) {
+  cartStore.addCoupon(value);
 }
 
 const debounceFn = useDebounceFn(
@@ -28,13 +33,8 @@ function updateQuantity(id, quantity) {
 }
 
 function handleRadioChange(value) {
-  cartStore.getCart.freight_product_code = value;
+  checkedFreightProductCode.value = value;
 }
-onUpdated(() => {
-  if (cartStore.getCart.freight_product_code === null) {
-    cartStore.getCart.freight_product_code = 'PAC';
-  }
-});
 </script>
 
 <template>
@@ -49,12 +49,7 @@ onUpdated(() => {
         <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
-          <n-button 
-            class="cart__button" 
-            quaternary 
-            type="primary" 
-            size="large"
-          >
+          <n-button class="cart__button" quaternary type="primary" size="large">
             {{ t('cart.continue') }}
           </n-button>
         </nuxt-link>
@@ -68,6 +63,7 @@ onUpdated(() => {
             placeholder="Cupom de desconto"
             :button-text="t('cart.inputs.discount.buttonText')"
             received-value=""
+            @on-button-click="handleAddCoupon"
           />
           <InputCard
             icon="cart"
@@ -75,7 +71,7 @@ onUpdated(() => {
             :button-text="t('cart.inputs.shipping.buttonText')"
             placeholder="Informe seu CEP"
             :received-value="getCart.zipcode"
-            mask="####-###"
+            mask="#####-###"
             @on-button-click="handleEstimateFreight"
           >
             <div v-if="getCart?.freight?.price" class="cart__freigth">
@@ -92,7 +88,7 @@ onUpdated(() => {
             </div>
           </InputCard>
           <RadioInput
-            :checked-value="checkedValueRef"
+            :checked-value="checkedFreightProductCode"
             @radio-change="handleRadioChange"
           >
           </RadioInput>

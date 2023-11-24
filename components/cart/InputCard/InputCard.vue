@@ -33,8 +33,15 @@ function handleButtonClick() {
     </header>
     <div class="card__input">
       <n-input
+        v-if="$props.mask"
         v-model:value="value"
-        v-mask="`#${props.mask}`"
+        v-mask="`${props.mask}`"
+        type="text"
+        :placeholder="props.placeholder"
+      />
+      <n-input
+        v-else
+        v-model:value="value"
         type="text"
         :placeholder="props.placeholder"
       />
