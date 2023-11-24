@@ -13,7 +13,7 @@ export const useCartStore = defineStore('cart', () => {
       affiliate: '',
       coupon: '',
       discount: '',
-      freight_product_code: '03298',
+      freight_product_code: 'PAC',
       freight: {
         price: '',
         delivery_time: '',
@@ -246,13 +246,33 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function calculateFreight(zipcode: string) {
+  async function calculateFreight(zipcode: string, freightProductCode: string) {
     try {
       if (!zipcode) {
         return
       }
       loading.value = true
       cart.value.zipcode = zipcode
+      cart.value.freight_product_code = freightProductCode
+      const responseData = await estimate()
+      if (!responseData) {
+        return { error: 'ERROR_CALCULATE_FREIGHT'}
+      }
+      setCart(responseData)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function addCoupon(coupon: string) {
+    try {
+      if (!coupon) {
+        return
+      }
+      loading.value = true
+      cart.value.coupon = coupon
       const responseData = await estimate()
       if (!responseData) {
         return
@@ -498,13 +518,13 @@ export const useCartStore = defineStore('cart', () => {
       if (!uuid) {
         return
       }
-      loading.value = true
+
       const headers = {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
 
-      const { data, error } = await useFetch(`api/cart/${uuid}/checkout`, {
+      const { data, error } = await useFetch(`/api/cart/${uuid}/checkout`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -531,8 +551,6 @@ export const useCartStore = defineStore('cart', () => {
       return responseData
     } catch (err) {
       console.error(err)
-    } finally {
-      loading.value = false
     }
   }
 
@@ -664,5 +682,6 @@ export const useCartStore = defineStore('cart', () => {
     clearCart,
     clearAffiliate,
     setAffiliate,
+    addCoupon,
   }
 })

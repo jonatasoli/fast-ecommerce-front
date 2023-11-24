@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 
+interface Checkout {
+  order_id: string;
+}
+
 definePageMeta({
   layout: 'checkout',
   middleware: [
@@ -14,45 +18,67 @@ definePageMeta({
   ],
 });
 const { t } = useI18n();
-const { checkout } = storeToRefs(useCheckoutStore());
+const cartStore = useCartStore();
+const pending = ref<boolean>(false);
+const checkout = ref<Checkout>();
 
-const title = unref(checkout).order_id
-  ? t('finishCheckout.title')
-  : t('finishCheckout.titleError');
-const description = unref(checkout).order_id
-  ? t('finishCheckout.description')
-  : t('finishCheckout.descriptionError');
-const buttonText = unref(checkout).order_id
-  ? t('finishCheckout.button')
-  : t('finishCheckout.buttonError');
-const redirect = unref(checkout).order_id ? '/' : '/cart';
+onMounted(async () => {
+  pending.value = true;
+  const response = await cartStore.finishCheckout();
+  checkout.value = response;
+  pending.value = false;
+  if (response?.order_id) {
+    cartStore.clearCart();
+    cartStore.clearAffiliate();
+  }
+});
 </script>
 
 <template>
-  <div class="finished">
-    <div v-if="checkout.order_id">
-      <n-icon :size="80" color="#DA9A39">
-        <CheckCircleIcon />
-      </n-icon>
+  <div class="finish">
+    <div v-if="pending">
+      <h2 class="finish__title">{{ t('finishCheckout.pending') }}</h2>
+      <n-space>
+        <n-spin size="large"/>
+      </n-space>
     </div>
-    <div>
-      <h2 class="finished__title">{{ title }}</h2>
-      <p class="finished__description">{{ description }}</p>
+    <div v-else>
+      <div v-if="checkout?.order_id" class="finish__container">
+        <n-icon :size="80" color="#DA9A39">
+          <CheckCircleIcon />
+        </n-icon>
+        <h2 class="finish__title">{{ t("finishCheckout.title") }}</h2>
+        <p class="finish__description">{{ t("finishCheckout.description") }}</p>
+        <NuxtLink to="/">
+        <n-button type="primary" strong>{{ t("finishCheckout.button") }}</n-button>
+      </NuxtLink>
+      </div>
+      <div v-else class="finish__container">
+        <h2 class="finish__title">{{ t("finishCheckout.titleError") }}</h2>
+        <p class="finish__description">{{ t("finishCheckout.descriptionError") }}</p>
+        <NuxtLink to="/cart">
+          <n-button type="primary" strong>{{ t("finishCheckout.buttonError") }}</n-button>
+        </NuxtLink>
+      </div>
     </div>
-    <NuxtLink :to="redirect">
-      <n-button type="primary" strong>{{ buttonText }}</n-button>
-    </NuxtLink>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.finished {
+.finish {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 90vh;
   width: 100%;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   &__title {
     font-size: 1.5rem;
