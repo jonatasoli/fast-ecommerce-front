@@ -25,7 +25,7 @@ const emit = defineEmits(['onInputCreditCard'])
 const validationSchema = toTypedSchema(zod.object({
   creditCardNumber: zod.string().min(16, {
     message: t('checkout.payment.form.credit_card_number_invalid'),
-  }),
+  }).transform(value => value.replace(/\s/g, '')),
   creditCardName: zod.string().min(3, {
     message: t('checkout.payment.form.credit_card_name_invalid'),
   }),
@@ -39,7 +39,7 @@ const validationSchema = toTypedSchema(zod.object({
   }),
   document: zod.string().min(11, {
     message: t('checkout.payment.form.document_number_invalid'),
-  }),
+  }).transform(value => value.replace(/\D/g, ''))
 }))
 
 const { defineComponentBinds, values, validate, setValues } = useForm({
@@ -72,6 +72,7 @@ const creditCardCvv = defineComponentBinds('creditCardCvv', naiveConfig)
 const installments = defineComponentBinds('installments', naiveConfig)
 const typeDocument = defineComponentBinds('typeDocument', naiveConfig)
 const document = defineComponentBinds('document', naiveConfig)
+const maskDocument = ref('')
 
 function handleCreditCardNumberChange(number) {
   emit('onInputCreditCard', number.replace(/\s/g, ''))
@@ -102,6 +103,17 @@ onMounted(() => {
     return
   }
   fillFormCreditCard(props.data)
+})
+
+watch(values, (values) => {
+  if (!values.typeDocument) {
+    return
+  }
+  if (values.typeDocument === 'CPF') {
+    maskDocument.value = '###.###.###-##'
+  } else {
+    maskDocument.value = '##.###.###/####-##'
+  }
 })
 
 </script>
@@ -136,7 +148,7 @@ onMounted(() => {
       </n-gi>
       <n-gi span="10 800:5">
         <n-form-item label="Documento" v-bind="document">
-          <n-input v-bind="document" />
+          <n-input v-mask="`${maskDocument}`"  v-bind="document"/>
         </n-form-item>
       </n-gi>
       <n-gi span="5 800:2">
@@ -152,7 +164,7 @@ onMounted(() => {
       </n-gi>
       <n-gi span="5 800:2">
         <n-form-item :label="t('checkout.payment.credit_card_cvv')" v-bind="creditCardCvv">
-          <n-input v-bind="creditCardCvv" />
+          <n-input v-mask="'###'" v-bind="creditCardCvv" />
         </n-form-item>
       </n-gi>
       <n-gi span="10 800:6">

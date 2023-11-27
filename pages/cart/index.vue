@@ -1,23 +1,47 @@
-<script setup>
-import { storeToRefs } from 'pinia';
-import { TrashIcon } from '@heroicons/vue/24/outline';
-import { useDebounceFn } from '@vueuse/core';
-import { currencyFormat, useI18n } from '#imports';
-import { useCartStore } from '@/stores/cart';
-import InputCard from '~/components/cart/InputCard/InputCard.vue';
-import { RadioInput } from '~/components/cart';
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { TrashIcon } from "@heroicons/vue/24/outline";
+import { useDebounceFn } from "@vueuse/core";
+import { currencyFormat, useI18n } from "#imports";
+import { useCartStore } from "@/stores/cart";
+import InputCard from "~/components/cart/InputCard/InputCard.vue";
+import { RadioInput } from "~/components/cart";
 
 const cartStore = useCartStore();
 const { getCart } = storeToRefs(cartStore);
 const { t } = useI18n();
 const checkedFreightProductCode = ref("PAC");
+const validationCEP = ref<"error" | "success" | "warning" | undefined>(undefined)
+const validationCoupon = ref<"error" | "success" | "warning" | undefined>(undefined)
+const messageInvalidCoupon = ref("")
+const messageInvalidCEP = ref("")
 
-function handleEstimateFreight(value) {
-  cartStore.calculateFreight(value, unref(checkedFreightProductCode));
+async function handleEstimateFreight(value) {
+  const response = await cartStore.calculateFreight(value, unref(checkedFreightProductCode));
+  if ( response === "INVALID_CEP") {
+    messageInvalidCEP.value = "CEP Inválido"
+    validationCEP.value = "error"
+    cartStore.clearFreight()
+    return;
+  }
+
+  messageInvalidCEP.value = ""
+  validationCEP.value = undefined
+  return response
+ 
 }
 
-function handleAddCoupon(value) {
-  cartStore.addCoupon(value);
+async function handleAddCoupon(value) {
+  const response = await cartStore.addCoupon(value);
+  if ( response === "INVALID_COUPON") {
+    validationCoupon.value = "error"
+    messageInvalidCoupon.value = "Cupom Inválido"
+    cartStore.clearDiscount()
+    return;
+  }
+  validationCoupon.value = undefined
+  messageInvalidCoupon.value = ""
+  return response
 }
 
 const debounceFn = useDebounceFn(
@@ -46,11 +70,11 @@ function handleRadioChange(value) {
     </div>
     <div v-else>
       <div v-if="cartStore.getCart.cart_items.length === 0" class="cart__empty">
-        <p>{{ t('cart.empty') }} :(</p>
+        <p>{{ t("cart.empty") }} :(</p>
 
         <nuxt-link to="/">
           <n-button class="cart__button" quaternary type="primary" size="large">
-            {{ t('cart.continue') }}
+            {{ t("cart.continue") }}
           </n-button>
         </nuxt-link>
       </div>
@@ -62,7 +86,9 @@ function handleRadioChange(value) {
             :title="t('cart.inputs.discount.title')"
             placeholder="Cupom de desconto"
             :button-text="t('cart.inputs.discount.buttonText')"
-            received-value=""
+            :received-value="getCart.coupon"
+            :validation="validationCoupon"
+            :message="messageInvalidCoupon"
             @on-button-click="handleAddCoupon"
           />
           <InputCard
@@ -72,17 +98,19 @@ function handleRadioChange(value) {
             placeholder="Informe seu CEP"
             :received-value="getCart.zipcode"
             mask="#####-###"
+            :validation="validationCEP"
+            :message="messageInvalidCEP"
             @on-button-click="handleEstimateFreight"
           >
             <div v-if="getCart?.freight?.price" class="cart__freigth">
               <div>
-                {{ t('cart.freight.part1') }}
+                {{ t("cart.freight.part1") }}
                 {{ getCart.freight.delivery_time }}
-                {{ t('cart.freight.part2') }}
+                {{ t("cart.freight.part2") }}
               </div>
               <div>
                 {{
-                  currencyFormat(getCart.freight.price, undefined, 'freight')
+                  currencyFormat(getCart.freight.price, undefined, "freight")
                 }}
               </div>
             </div>
@@ -95,12 +123,12 @@ function handleRadioChange(value) {
         </div>
         <div class="cart__not-empty--container">
           <div class="cart__not-empty--products">
-            <h1>{{ t('cart.title') }}<strong>.</strong></h1>
+            <h1>{{ t("cart.title") }}<strong>.</strong></h1>
             <div class="table-container">
               <div class="table-header">
-                <p>{{ t('cart.products.title') }}</p>
-                <p>{{ t('cart.products.quantity') }}</p>
-                <p>{{ t('cart.products.unitPrice') }}</p>
+                <p>{{ t("cart.products.title") }}</p>
+                <p>{{ t("cart.products.quantity") }}</p>
+                <p>{{ t("cart.products.unitPrice") }}</p>
               </div>
               <div class="table-body">
                 <div
@@ -150,23 +178,23 @@ function handleRadioChange(value) {
 
           <div class="cart__not-empty--summary">
             <div class="summary-values">
-              <p>{{ t('cart.summary.products') }}</p>
+              <p>{{ t("cart.summary.products") }}</p>
               <p>{{ currencyFormat(getCart.subtotal) }}</p>
             </div>
 
-            <div class="summary-values">
-              <p>{{ t('cart.summary.discount') }}</p>
-              <p>R$ 0.00</p>
+            <div v-if="getCart.discount !== '0'" class="summary-values">
+              <p>{{ t("cart.summary.discount") }}</p>
+              <p>- {{  currencyFormat(getCart.discount) }}</p>
             </div>
 
             <div class="summary-values">
-              <p>{{ t('cart.summary.shipping') }}</p>
+              <p>{{ t("cart.summary.shipping") }}</p>
               <p>
                 {{
                   currencyFormat(
                     getCart?.freight?.price,
                     undefined,
-                    'freight'
+                    "freight"
                   ) || 0
                 }}
               </p>
@@ -174,7 +202,7 @@ function handleRadioChange(value) {
             <hr />
 
             <div class="summary-values amount">
-              <p>{{ t('cart.summary.total') }}</p>
+              <p>{{ t("cart.summary.total") }}</p>
               <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
 
@@ -188,7 +216,7 @@ function handleRadioChange(value) {
                 strong
                 class="btn-checkout"
               >
-                {{ t('cart.finish') }}
+                {{ t("cart.finish") }}
               </n-button>
             </nuxt-link>
             <nuxt-link to="/">
@@ -199,7 +227,7 @@ function handleRadioChange(value) {
                 type="primary"
                 size="large"
               >
-                {{ t('cart.continue') }}
+                {{ t("cart.continue") }}
               </n-button>
             </nuxt-link>
           </div>
@@ -210,5 +238,5 @@ function handleRadioChange(value) {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/pages/cart.scss';
+@import "@/assets/scss/pages/cart.scss";
 </style>

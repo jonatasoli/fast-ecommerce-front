@@ -36,7 +36,7 @@ onMounted(async () => {
 
 <template>
   <div class="finish">
-    <div v-if="pending">
+    <div v-if="pending" class="finish__container">
       <h2 class="finish__title">{{ t('finishCheckout.pending') }}</h2>
       <n-space>
         <n-spin size="large"/>
