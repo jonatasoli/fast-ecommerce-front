@@ -23,18 +23,17 @@ async function handleSubmitCreditCard() {
     return false
   }
 
-  const { valid } = await formCreditCard.value.validate()
+  const { valid, values} = await formCreditCard.value.validate()
 
   if (!valid) {
     return false
   }
 
-  const creditCard = formCreditCard.value?.values as CreditCard
+  const creditCard = values as CreditCard
   const { month, year } = getMonthYearFromTimestamp(creditCard.creditCardExpiration)
  
-
   const card = {
-    cardNumber: creditCard.creditCardNumber.split(' ').join(''),
+    cardNumber: creditCard.creditCardNumber,
     cardholderName: creditCard.creditCardName,
     cardExpirationMonth: month,
     cardExpirationYear: year,
@@ -44,7 +43,7 @@ async function handleSubmitCreditCard() {
   }
 
   const tokenResponse = await $mercadoPago.createCardToken(card)
-
+  
   const data = await cartStore.addMercadoPagoCreditCardPayment({
     card_token: tokenResponse.id as string,
     installments: creditCard.installments,
