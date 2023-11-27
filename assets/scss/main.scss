@@ -5,3 +5,7 @@
 html:has(nav.--open) {
   overflow: hidden;
 }
+
+:deep(.n-input .n-input__input-el) {
+  font-weight: 500;
+}
