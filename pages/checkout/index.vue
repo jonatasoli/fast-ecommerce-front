@@ -45,10 +45,6 @@ function nextSteps() {
 }
 
 async function handleSubmitUser() {
-  if (!user.value) {
-    return
-  }
-
   await cartStore.addUserCart()
   current.value++
 }
@@ -112,10 +108,18 @@ function handleFinishCheckout() {
   router.push('/checkout/finish')
 }
 
-onMounted(() => {
-  handleSubmitUser()
+onMounted(async () => {
+  if(user.value) {
+    await handleSubmitUser()
+  }
   if (address.value.shipping_is_payment) {
     shippingIsPayment.value = address.value.shipping_is_payment
+  }
+})
+
+watch(user, () => {
+  if (user.value) {
+    current.value = 2
   }
 })
 
