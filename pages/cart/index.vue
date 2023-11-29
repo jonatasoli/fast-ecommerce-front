@@ -1,18 +1,47 @@
-<script setup>
-import { storeToRefs } from 'pinia';
-import { TrashIcon } from '@heroicons/vue/24/outline';
-import { useDebounceFn } from '@vueuse/core';
-import { currencyFormat, useI18n } from '#imports';
-import { useCartStore } from '@/stores/cart';
-import InputCard from '~/components/cart/InputCard/InputCard.vue';
-import { RadioInput } from '~/components/cart';
+<script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { TrashIcon } from "@heroicons/vue/24/outline";
+import { useDebounceFn } from "@vueuse/core";
+import { currencyFormat, useI18n } from "#imports";
+import { useCartStore } from "@/stores/cart";
+import InputCard from "~/components/cart/InputCard/InputCard.vue";
+import { RadioInput } from "~/components/cart";
 
 const cartStore = useCartStore();
 const { getCart } = storeToRefs(cartStore);
 const { t } = useI18n();
-const checkedValueRef = 'PAC';
-function handleEstimateFreight(value) {
-  cartStore.calculateFreight(value);
+const checkedFreightProductCode = ref("PAC");
+const validationCEP = ref<"error" | "success" | "warning" | undefined>(undefined)
+const validationCoupon = ref<"error" | "success" | "warning" | undefined>(undefined)
+const messageInvalidCoupon = ref("")
+const messageInvalidCEP = ref("")
+
+async function handleEstimateFreight(value) {
+  const response = await cartStore.calculateFreight(value, unref(checkedFreightProductCode));
+  if ( response === "INVALID_CEP") {
+    messageInvalidCEP.value = "CEP Inválido"
+    validationCEP.value = "error"
+    cartStore.clearFreight()
+    return;
+  }
+
+  messageInvalidCEP.value = ""
+  validationCEP.value = undefined
+  return response
+ 
+}
+
+async function handleAddCoupon(value) {
+  const response = await cartStore.addCoupon(value);
+  if ( response === "INVALID_COUPON") {
+    validationCoupon.value = "error"
+    messageInvalidCoupon.value = "Cupom Inválido"
+    cartStore.clearDiscount()
+    return;
+  }
+  validationCoupon.value = undefined
+  messageInvalidCoupon.value = ""
+  return response
 }
 
 const debounceFn = useDebounceFn(
@@ -28,7 +57,7 @@ function updateQuantity(id, quantity) {
 }
 
 function handleRadioChange(value) {
-  cartStore.getCart.freight_product_code = value;
+  checkedFreightProductCode.value = value;
 }
 onUpdated(() => {
   if (cartStore.getCart.freight_product_code === null) {
@@ -49,13 +78,8 @@ onUpdated(() => {
         <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
-          <n-button 
-            class="cart__button" 
-            quaternary 
-            type="primary" 
-            size="large"
-          >
-            {{ t('cart.continue') }}
+          <n-button class="cart__button" quaternary type="primary" size="large">
+            {{ t("cart.continue") }}
           </n-button>
         </nuxt-link>
       </div>
@@ -67,7 +91,10 @@ onUpdated(() => {
             :title="t('cart.inputs.discount.title')"
             placeholder="Cupom de desconto"
             :button-text="t('cart.inputs.discount.buttonText')"
-            received-value=""
+            :received-value="getCart.coupon"
+            :validation="validationCoupon"
+            :message="messageInvalidCoupon"
+            @on-button-click="handleAddCoupon"
           />
           <InputCard
             icon="cart"
@@ -75,24 +102,26 @@ onUpdated(() => {
             :button-text="t('cart.inputs.shipping.buttonText')"
             placeholder="Informe seu CEP"
             :received-value="getCart.zipcode"
-            mask="####-###"
+            mask="#####-###"
+            :validation="validationCEP"
+            :message="messageInvalidCEP"
             @on-button-click="handleEstimateFreight"
           >
             <div v-if="getCart?.freight?.price" class="cart__freigth">
               <div>
-                {{ t('cart.freight.part1') }}
+                {{ t("cart.freight.part1") }}
                 {{ getCart.freight.delivery_time }}
-                {{ t('cart.freight.part2') }}
+                {{ t("cart.freight.part2") }}
               </div>
               <div>
                 {{
-                  currencyFormat(getCart.freight.price, undefined, 'freight')
+                  currencyFormat(getCart.freight.price, undefined, "freight")
                 }}
               </div>
             </div>
           </InputCard>
           <RadioInput
-            :checked-value="checkedValueRef"
+            :checked-value="checkedFreightProductCode"
             @radio-change="handleRadioChange"
           >
           </RadioInput>
@@ -158,19 +187,19 @@ onUpdated(() => {
               <p>{{ currencyFormat(getCart.subtotal) }}</p>
             </div>
 
-            <div class="summary-values">
-              <p>{{ t('cart.summary.discount') }}</p>
-              <p>R$ 0.00</p>
+            <div v-if="getCart.discount !== '0'" class="summary-values">
+              <p>{{ t("cart.summary.discount") }}</p>
+              <p>- {{  currencyFormat(getCart.discount) }}</p>
             </div>
 
             <div class="summary-values">
-              <p>{{ t('cart.summary.shipping') }}</p>
+              <p>{{ t("cart.summary.shipping") }}</p>
               <p>
                 {{
                   currencyFormat(
                     getCart?.freight?.price,
                     undefined,
-                    'freight'
+                    "freight"
                   ) || 0
                 }}
               </p>
@@ -214,5 +243,5 @@ onUpdated(() => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/pages/cart.scss';
+@import "@/assets/scss/pages/cart.scss";
 </style>

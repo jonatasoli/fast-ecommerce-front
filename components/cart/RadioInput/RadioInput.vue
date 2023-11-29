@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 
 type Props = {
   checkedValue: string;
 };
 
 const props = defineProps<Props>();
-const emit = defineEmits(["radio-change"]);
+const emit = defineEmits(['radio-change']);
 
 const checkedValue = ref(props.checkedValue);
 
 function handleChange(value: string) {
-  checkedValue.value = value;
-  emit("radio-change", value);
+  emit('radio-change', value);
 }
 </script>
 
@@ -21,22 +20,12 @@ function handleChange(value: string) {
   <div class="container">
     <p>Envio todo o Brasil</p>
     <n-space>
-      <n-radio
-        :checked="checkedValue === 'PAC'"
-        value="PAC"
-        name="PAC"
-        @change="() => handleChange('PAC')"
-      >
-        PAC
-      </n-radio>
-      <n-radio
-        :checked="checkedValue === 'SEDEX'"
-        value="SEDEX"
-        name="SEDEX"
-        @change="() => handleChange('SEDEX')"
-      >
-        SEDEX
-      </n-radio>
+      <n-radio-group v-model:value="checkedValue" @update:value="handleChange">
+        <n-space>
+          <n-radio value="PAC">PAC</n-radio>
+          <n-radio value="SEDEX">SEDEX</n-radio>
+        </n-space>
+      </n-radio-group>
     </n-space>
   </div>
 </template>

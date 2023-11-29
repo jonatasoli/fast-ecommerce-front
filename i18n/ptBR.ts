@@ -235,7 +235,8 @@ export default {
   },
 
   finishCheckout: {
-    title: 'Pedido realizado com sucesso!',
+    pending: 'Aguarde um momento...',
+    title: 'Seu pagamento está sendo processado',
     description: 'Em breve você receberá um e-mail com os detalhes do pedido',
     button: 'Voltar para a página inicial',
     titleError: 'Erro ao realizar o pedido',

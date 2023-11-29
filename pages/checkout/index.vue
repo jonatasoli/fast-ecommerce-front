@@ -3,7 +3,6 @@ import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
-import { useCheckoutStore } from '~/stores/checkout'
 import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
 import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
 import type { FormAddress } from '~/components/checkout'
@@ -24,7 +23,6 @@ const router = useRouter()
 const { isMobile } = useDevice()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
-const checkoutStore = useCheckoutStore()
 const { address, cart } = storeToRefs(cartStore)
 const formUserAddress = ref<typeof FormAddress | null>(null)
 const formShippingAddress = ref<typeof FormAddress | null>(null)
@@ -47,10 +45,6 @@ function nextSteps() {
 }
 
 async function handleSubmitUser() {
-  if (!user.value) {
-    return
-  }
-
   await cartStore.addUserCart()
   current.value++
 }
@@ -110,23 +104,22 @@ function handleUpdateShippingIsPayment(value) {
   cartStore.setShippingIsPayment(value)
 }
 
-async function handleFinishCheckout() {
-  const responseData = await cartStore.finishCheckout()
-  if (!responseData) {
-    return
-  }
-  if (responseData.order_id) {
-    checkoutStore.setCheckout(unref(responseData))
-    cartStore.clearCart()
-    cartStore.clearAffiliate()
-  }
+function handleFinishCheckout() {
   router.push('/checkout/finish')
 }
 
-onMounted(() => {
-  handleSubmitUser()
+onMounted(async () => {
+  if(user.value) {
+    await handleSubmitUser()
+  }
   if (address.value.shipping_is_payment) {
     shippingIsPayment.value = address.value.shipping_is_payment
+  }
+})
+
+watch(user, () => {
+  if (user.value) {
+    current.value = 2
   }
 })
 
