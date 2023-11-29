@@ -713,6 +713,14 @@ export const useCartStore = defineStore("cart", () => {
     cart.value.discount = "0"
   }
 
+  function setAffiliate(value: string) {
+    affiliate.value = value
+  }
+
+  function clearAffiliate() {
+    affiliate.value = ''
+  }
+
   return {
     cart,
     address,

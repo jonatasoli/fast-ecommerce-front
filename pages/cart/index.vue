@@ -59,6 +59,11 @@ function updateQuantity(id, quantity) {
 function handleRadioChange(value) {
   checkedFreightProductCode.value = value;
 }
+onUpdated(() => {
+  if (cartStore.getCart.freight_product_code === null) {
+    cartStore.getCart.freight_product_code = 'PAC';
+  }
+});
 </script>
 
 <template>
@@ -70,7 +75,7 @@ function handleRadioChange(value) {
     </div>
     <div v-else>
       <div v-if="cartStore.getCart.cart_items.length === 0" class="cart__empty">
-        <p>{{ t("cart.empty") }} :(</p>
+        <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
           <n-button class="cart__button" quaternary type="primary" size="large">
@@ -123,12 +128,12 @@ function handleRadioChange(value) {
         </div>
         <div class="cart__not-empty--container">
           <div class="cart__not-empty--products">
-            <h1>{{ t("cart.title") }}<strong>.</strong></h1>
+            <h1>{{ t('cart.title') }}<strong>.</strong></h1>
             <div class="table-container">
               <div class="table-header">
-                <p>{{ t("cart.products.title") }}</p>
-                <p>{{ t("cart.products.quantity") }}</p>
-                <p>{{ t("cart.products.unitPrice") }}</p>
+                <p>{{ t('cart.products.title') }}</p>
+                <p>{{ t('cart.products.quantity') }}</p>
+                <p>{{ t('cart.products.unitPrice') }}</p>
               </div>
               <div class="table-body">
                 <div
@@ -178,7 +183,7 @@ function handleRadioChange(value) {
 
           <div class="cart__not-empty--summary">
             <div class="summary-values">
-              <p>{{ t("cart.summary.products") }}</p>
+              <p>{{ t('cart.summary.products') }}</p>
               <p>{{ currencyFormat(getCart.subtotal) }}</p>
             </div>
 
@@ -202,7 +207,7 @@ function handleRadioChange(value) {
             <hr />
 
             <div class="summary-values amount">
-              <p>{{ t("cart.summary.total") }}</p>
+              <p>{{ t('cart.summary.total') }}</p>
               <p>{{ currencyFormat(getCart.total) }}</p>
             </div>
 
@@ -216,7 +221,7 @@ function handleRadioChange(value) {
                 strong
                 class="btn-checkout"
               >
-                {{ t("cart.finish") }}
+                {{ t('cart.finish') }}
               </n-button>
             </nuxt-link>
             <nuxt-link to="/">
@@ -227,7 +232,7 @@ function handleRadioChange(value) {
                 type="primary"
                 size="large"
               >
-                {{ t("cart.continue") }}
+                {{ t('cart.continue') }}
               </n-button>
             </nuxt-link>
           </div>
