@@ -16,18 +16,11 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   mask: "",
   validation: undefined,
-  message: ""
-})
-
-const emit = defineEmits(["onButtonClick"]);
+  message: "",
+});
 
 const value = ref("");
 value.value = props.receivedValue;
-
-function handleButtonClick() {
-  emit("onButtonClick", value.value);
-}
-
 </script>
 
 <template>
@@ -41,7 +34,11 @@ function handleButtonClick() {
     </header>
     <div class="card__input">
       <n-form class="card__form">
-        <n-form-item v-if="$props.mask" :feedback="message" :validation-status="validation">
+        <n-form-item
+          v-if="$props.mask"
+          :feedback="message"
+          :validation-status="validation"
+        >
           <n-input
             v-model:value="value"
             v-mask="`${props.mask}`"
@@ -58,6 +55,7 @@ function handleButtonClick() {
         </n-form-item>
       </n-form>
 
+      <n-button>
         {{ props.buttonText }}
       </n-button>
     </div>
