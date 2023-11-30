@@ -11,7 +11,7 @@ const OFFSET = 16
 const { t } = useI18n()
 
 const { page } = getPageFromRoute()
-const url = `${config.public.serverUrl}/catalog/all`
+const url = `${config.public.serverUrl}/catalog/`
 
 const { data, pending } = await useFetch<PaginatedProducts>(url, {
   watch: [page],
