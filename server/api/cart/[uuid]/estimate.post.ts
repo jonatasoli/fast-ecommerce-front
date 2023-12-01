@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     });
     const data = await res.json();
     
-    if (data?.detail && data?.detail.includes("CEP de destino inexistente")) {
+    if (data?.code === "PZN-999") {
         throw createError({
             statusCode: res.status,
             message: 'INVALID_CEP'

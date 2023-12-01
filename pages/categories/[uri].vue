@@ -54,6 +54,11 @@ async function handleAddToCart(product: ProductItem) {
   router.push('/cart');
 }
 
+const categoryTitle = computed (() => {
+  const {uri} = route.params
+  return typeof uri === 'string' ? uri.replace(/-/g, ' ') : ''
+})
+
 watch(page, () => router.push({
   ...route,
   query: {
@@ -66,7 +71,7 @@ watch(page, () => router.push({
 <template>
   <main class="category container">
     <h1 class="title">
-      {{ route.params.uri }}
+      {{ categoryTitle }}
     </h1>
     <p class="subtitle">
       {{ totalRecords }}
