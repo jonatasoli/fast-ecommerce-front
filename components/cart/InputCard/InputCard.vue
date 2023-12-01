@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { BanknotesIcon, ShoppingCartIcon } from "@heroicons/vue/24/outline";
-import { ref } from "#imports";
+import { BanknotesIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline';
+import { ref } from '#imports';
 
 type Props = {
   icon: string;
@@ -9,18 +9,24 @@ type Props = {
   placeholder: string;
   receivedValue: string;
   mask?: string;
-  validation?: "error" | "success" | "warning" | undefined;
+  validation?: 'error' | 'success' | 'warning' | undefined;
   message?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  mask: "",
+  mask: '',
   validation: undefined,
-  message: "",
+  message: '',
 });
 
-const value = ref("");
+const emit = defineEmits(['onButtonClick']);
+
+const value = ref('');
 value.value = props.receivedValue;
+
+function handleButtonClick() {
+  emit('onButtonClick', value.value);
+}
 </script>
 
 <template>
@@ -55,7 +61,7 @@ value.value = props.receivedValue;
         </n-form-item>
       </n-form>
 
-      <n-button>
+      <n-button type="primary" size="large" strong @click="handleButtonClick">
         {{ props.buttonText }}
       </n-button>
     </div>
@@ -67,5 +73,5 @@ value.value = props.receivedValue;
 </template>
 
 <style lang="scss" scoped>
-@import "./InputCard.scss";
+@import './InputCard.scss';
 </style>
