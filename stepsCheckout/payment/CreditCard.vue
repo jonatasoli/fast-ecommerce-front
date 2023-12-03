@@ -51,7 +51,12 @@ async function handleSubmitCreditCard() {
     card_issuer: unref(creditCardIssuer),
   })
 
-  await cartStore.setPaymentCreditCard(creditCard)
+  const installmentsMessage = unref(optionInstallments).find((option) => option.value === creditCard.installments)
+
+  await cartStore.setPaymentCreditCard({
+    ...creditCard,
+    installmentsMessage: installmentsMessage?.label || '',
+  })
   return data
 }
 

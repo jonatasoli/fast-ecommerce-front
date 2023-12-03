@@ -3,6 +3,10 @@
     .user {
       display: grid;
       grid-template-columns: 1fr 1fr;
+
+      @media (max-width: 840px) {
+        grid-template-columns: 1fr;
+      }
     }
   
     .product {
@@ -50,6 +54,10 @@
 
          h3 {
           margin: 0.4rem;
+         }
+
+         @media (max-width: 840px) {
+          width: 100%;
          }
       }
     }
