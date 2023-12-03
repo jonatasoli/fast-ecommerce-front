@@ -96,6 +96,7 @@ export const useCartStore = defineStore("cart", () => {
     creditCardExpiration: "",
     creditCardCvv: "",
     installments: 1,
+    installmentsMessage: "",
     typeDocument: "",
     document: "",
   });
@@ -318,7 +319,7 @@ export const useCartStore = defineStore("cart", () => {
       }
       if (responseData.uuid) {
         setCart(responseData);
-      }
+      } 
       return responseData;
     } catch (err) {
       console.error(err);
@@ -755,5 +756,6 @@ export const useCartStore = defineStore("cart", () => {
     clearFreight,
     clearDiscount,
     setCoupon,
+    setCart,
   };
 });
