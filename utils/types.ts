@@ -79,7 +79,9 @@ export interface Cart {
   }
   freight_product_code?: string
   subtotal: string
+  subtotal_with_fee?: string
   total: string
+  total_with_fee?: string
   zipcode: string
   cart_items: CartItem[]
 }
@@ -129,8 +131,10 @@ export interface CreditCard {
   creditCardExpiration: string
   creditCardCvv: string
   installments: number
+  installmentsMessage: string
   typeDocument: string
   document: string
+
 }
 
 export type BaseAddress = {
