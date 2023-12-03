@@ -109,7 +109,7 @@ function handleFinishCheckout() {
 }
 
 onMounted(async () => {
-  if(user.value) {
+  if (unref(user)) {
     await handleSubmitUser()
   }
   if (address.value.shipping_is_payment) {
@@ -117,9 +117,9 @@ onMounted(async () => {
   }
 })
 
-watch(user, () => {
-  if (user.value) {
-    current.value = 2
+watch(user, async() => {
+   if (unref(user)) {
+    await handleSubmitUser()
   }
 })
 
