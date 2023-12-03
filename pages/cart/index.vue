@@ -36,7 +36,10 @@ async function handleAddCoupon(value) {
   if ( response === "INVALID_COUPON") {
     validationCoupon.value = "error"
     messageInvalidCoupon.value = "Cupom Inválido"
-    cartStore.clearDiscount()
+    await cartStore.clearDiscount()
+    await cartStore.setCoupon("")
+    const response = await cartStore.estimate()
+    cartStore.setCart(response)
     return;
   }
   validationCoupon.value = undefined
