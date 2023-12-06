@@ -167,5 +167,6 @@ export type CreditCardPayment = {
   payment_gateway: string
   card_token: string
   card_issuer: string
+  card_brand: string
   installments: number
 }
