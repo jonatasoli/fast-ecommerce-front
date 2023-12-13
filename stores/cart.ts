@@ -124,6 +124,7 @@ export const useCartStore = defineStore("cart", () => {
       return;
     }
     const uuid = cart.value.uuid;
+
     async function createCart() {
       try {
         const headers = {
@@ -146,6 +147,7 @@ export const useCartStore = defineStore("cart", () => {
           cart.value.uuid = responseData.uuid;
           return data;
         }
+
         return {
           data: {
             uuid,
@@ -204,9 +206,11 @@ export const useCartStore = defineStore("cart", () => {
       const responseData = unref(data) as {
         uuid: string;
       };
+
       if (!responseData) {
         return;
       }
+
       addProduct(responseData.uuid);
     });
   }
@@ -319,7 +323,7 @@ export const useCartStore = defineStore("cart", () => {
       }
       if (responseData.uuid) {
         setCart(responseData);
-      } 
+      }
       return responseData;
     } catch (err) {
       console.error(err);
@@ -726,6 +730,72 @@ export const useCartStore = defineStore("cart", () => {
     coupon.value = value
   }
 
+  function getCartData() {
+    return {
+      ...cart.value,
+      affiliate: affiliate.value,
+      shipping_is_payment: address.value.shipping_is_payment,
+      user_address_id: address.value.user_address_id,
+      user_data: user.value.user_data,
+    }
+  }
+
+  /**
+   * Calls the API to add a new payment method (PIX)
+   * @param paymentData: the relevant data about the payment method.
+   */
+  async function addPaymentMethod() {
+    const headers = {
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    const { data, error } = await useFetch(
+      `/api/cart/${cart.value.uuid}/payment/pix`,
+      {
+        headers,
+        method: 'POST',
+        body: {
+          cart: getCartData(),
+          payment: {
+            payment_gateway: 'MERCADOPAGO',
+            installments: 1
+          }
+        }
+      }
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
+  async function getPaymentStatus(paymentId: string) {
+    const headers = {
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    const { data, error } = await useFetch(
+      '/api/cart/payment/status',
+      {
+        headers,
+        method: 'POST',
+        body: { paymentId },
+      }
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
   return {
     cart,
     address,
@@ -757,5 +827,7 @@ export const useCartStore = defineStore("cart", () => {
     clearDiscount,
     setCoupon,
     setCart,
+    addPaymentMethod,
+    getPaymentStatus,
   };
 });

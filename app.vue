@@ -16,9 +16,11 @@ onBeforeMount(async () => {
   await storeCategory.getCategorys();
   await storeUser.getUser();
   await nuxtApp.$router.isReady();
+
   if (affiliate) {
     await cartStore.setAffiliate(affiliate);
   }
+
   if (coupon) {
     await cartStore.setCoupon(coupon);
   }
