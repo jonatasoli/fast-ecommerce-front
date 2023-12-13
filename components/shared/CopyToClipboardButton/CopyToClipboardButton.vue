@@ -22,7 +22,7 @@ import { ClipboardDocumentCheckIcon, ClipboardDocumentIcon } from '@heroicons/vu
 defineProps<{ source: string }>()
 
 const { t } = useI18n()
-const { copy, isSupported, copied,} = useClipboard()
+const { copy, isSupported, copied } = useClipboard()
 
 const buttonContent = computed(() => copied.value ? t('actions.copied') : t('actions.copy-link'))
 </script>

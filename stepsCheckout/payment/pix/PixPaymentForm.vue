@@ -61,6 +61,12 @@ const { data, error, pending, execute: handleGeneratePixcode } = usePixCode({
     duration: 2000 
   })
 })
+
+usePaymentStatus({
+  onError: error => {console.log(error)},
+  onSuccess: () => {},
+  watch: computed(() =>  data.value?.paymentId)
+})
 </script>
 
 <style lang="scss" scoped>

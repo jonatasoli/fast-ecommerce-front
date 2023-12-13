@@ -651,6 +651,24 @@ export const useCartStore = defineStore('cart', () => {
     return data.value.data
   }
 
+  async function getPaymentStatus(paymentId: string) {
+    const { data, error } = await useFetch(
+      '/api/cart/payment/status',
+      {
+        headers: DEFAULT_HEADERS,
+        method: 'POST',
+        body: { paymentId },
+      }
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
   function setUserAddressId(userAddressId: number) {
     address.value.user_address_id = userAddressId
   }
@@ -705,5 +723,6 @@ export const useCartStore = defineStore('cart', () => {
     clearAffiliate,
     setAffiliate,
     addPaymentMethod,
+    getPaymentStatus,
   }
 })
