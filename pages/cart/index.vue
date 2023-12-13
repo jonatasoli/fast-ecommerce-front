@@ -82,11 +82,12 @@ onUpdated(() => {
         <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
-          <n-button
-class="cart__button"
-quaternary
-type="primary"
-size="large">
+          <n-button 
+            class="cart__button"
+            type="primary"
+            size="large"
+            quaternary
+          >
             {{ t("cart.continue") }}
           </n-button>
         </nuxt-link>
