@@ -4,7 +4,8 @@ import { navigateTo } from 'nuxt/app'
 import { useNotification } from 'naive-ui'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
-import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
+import { useCheckoutStore } from '~/stores/checkout'
+import { Pix, CreditCard } from '~/stepsCheckout/payment'
 import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
 import type { FormAddress } from '~/components/checkout'
 
@@ -31,10 +32,10 @@ const formShippingAddress = ref<typeof FormAddress | null>(null)
 const creditCard = ref<typeof CreditCard | null>(null)
 const current = ref<number>(1)
 const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
-const paymentMethod = ref<string>('credit-card')
+const paymentMethod = ref<'credit-card' | 'pix'>('credit-card')
 const shippingIsPayment = ref<boolean | null>(null)
 
-const { t } = useI18n()
+const { t, locale  } = useI18n()
 
 function nextSteps() {
   const steps = {
@@ -47,6 +48,10 @@ function nextSteps() {
 }
 
 async function handleSubmitUser() {
+  if (!user.value) {
+    return
+  }
+
   await cartStore.addUserCart()
   current.value++
 }
@@ -90,17 +95,17 @@ async function handleSubmitUserAddress() {
 
 async function handleSubmitAddPayment() {
   try {
-  if (paymentMethod.value === 'credit-card') {
-    if (!creditCard.value) {
-      console.warn('creditCard ref value is null')
-      return
+    if (paymentMethod.value === 'credit-card') {
+      if (!creditCard.value) {
+        console.warn('creditCard ref value is null')
+        return
+      }
+
+      const { data } = await creditCard.value.handleSubmitCreditCard()
+      if (data.uuid) {
+        current.value++
+      }
     }
-    
-    const { data } = await creditCard.value.handleSubmitCreditCard()
-    if (data.uuid) {
-      current.value++
-    }
-  }
   } catch {
     notification.error({
       title: 'Erro',
@@ -122,6 +127,7 @@ onMounted(async () => {
   if (unref(user)) {
     await handleSubmitUser()
   }
+
   if (address.value.shipping_is_payment) {
     shippingIsPayment.value = address.value.shipping_is_payment
   }
@@ -207,7 +213,8 @@ watch(user, async() => {
       <h2 class="title">
         {{ t('checkout.payment.title') }}
       </h2>
-      <div class="border">
+
+      <div class="border m-w:fit-content">
         <n-radio-group
           v-model:value="paymentMethod"
           class="payment-method"
@@ -216,9 +223,14 @@ watch(user, async() => {
           <n-radio value="credit-card">
             {{ t('checkout.payment.credit_card') }}
           </n-radio>
+          <n-radio v-if="locale === 'pt-br'" value="pix">
+            Pix
+          </n-radio>
         </n-radio-group>
       </div>
-      <CreditCard ref="creditCard" :payment-method="paymentMethod" />
+
+      <CreditCard v-if="paymentMethod === 'credit-card'" ref="creditCard" />
+      <Pix v-else-if="paymentMethod === 'pix'" />
     </div>
 
     <div v-if="current === 4" class="checkout__container checkout__confirm">

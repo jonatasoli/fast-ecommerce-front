@@ -124,6 +124,7 @@ export const useCartStore = defineStore("cart", () => {
       return;
     }
     const uuid = cart.value.uuid;
+
     async function createCart() {
       try {
         const headers = {
@@ -146,6 +147,7 @@ export const useCartStore = defineStore("cart", () => {
           cart.value.uuid = responseData.uuid;
           return data;
         }
+
         return {
           data: {
             uuid,
@@ -204,9 +206,11 @@ export const useCartStore = defineStore("cart", () => {
       const responseData = unref(data) as {
         uuid: string;
       };
+
       if (!responseData) {
         return;
       }
+
       addProduct(responseData.uuid);
     });
   }
@@ -319,7 +323,7 @@ export const useCartStore = defineStore("cart", () => {
       }
       if (responseData.uuid) {
         setCart(responseData);
-      } 
+      }
       return responseData;
     } catch (err) {
       console.error(err);
@@ -726,6 +730,410 @@ export const useCartStore = defineStore("cart", () => {
     coupon.value = value
   }
 
+  async function addUserCart() {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+
+      loading.value = true
+      const {data, error } = await useFetch(`/api/cart/${uuid}/user`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          ...cart.value,
+          affiliate: affiliate.value,
+        }),
+      })
+
+      if (unref(error)) {
+        throw new Error("ERROR_ADD_USER_CART");
+      }
+
+      const responseData = unref(data) as {
+        data: Cart & {
+          user_data: User
+        }
+        success: boolean
+      }
+
+      if (!responseData.success) {
+        throw new Error("ERROR_ADD_USER_CART");
+      }
+      const { user_data: userCart, ...restCart } = responseData.data
+
+      setUserCart(userCart)
+      setCart(restCart)
+      return data
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function addAddressCart(address: CartAddress) {
+    try {
+      const uuid = cart.value.uuid
+
+      if (!uuid) {
+        return
+      }
+
+      const { data, error } = await useFetch(`/api/cart/${uuid}/address`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: {
+          cart: {
+            ...cart.value,
+            affiliate: affiliate.value,
+            user_data: user.value.user_data,
+          },
+          address: {
+            shipping_is_payment: address.shipping_is_payment,
+            user_address: {
+              ...address.user_address,
+              user_id: user.value.user_data.user_id,
+              address_id: null,
+              active: true,
+              address_complement: address.user_address.address_complement || ""
+            },
+            shipping_address: {
+              ...address.shipping_address,
+              user_id: user.value.user_data.user_id,
+              address_id: null,
+              active: true,
+              address_complement: address.shipping_address?.address_complement || ""
+            }
+          },
+        }
+      })
+
+      if (unref(error)) {
+        error.value = null
+        throw new Error("ERROR_ADD_ADDRESS_CART"); // FIXME: show an error message
+      }
+
+      const responseData = unref(data) as {
+        data: Cart & {
+          user_data: User
+          user_address_id: number
+          shipping_address_id: number
+          shipping_is_payment: boolean
+        }
+        success: boolean
+      }
+
+      if (!responseData.success) {
+        throw new Error("ERROR_ADD_ADDRESS_CART"); // FIXME: show an error message
+      }
+
+      const {
+        shipping_is_payment: shippingIsPayment,
+        shipping_address_id: shippingAddressId,
+        user_address_id: userAddressId,
+        ...restCart
+      } = responseData.data
+
+      setShippingIsPayment(shippingIsPayment)
+      setShippingAddress(address?.shipping_address ?? null)
+      setUserAddress(address.user_address)
+      setShippingAddressId(shippingAddressId)
+      setUserAddressId(userAddressId)
+      setCart(restCart)
+
+      return data
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function addMercadoPagoCreditCardPayment(payment: CardPaymentData) {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+      loading.value = true
+
+      const { data, error } = await useFetch(`/api/cart/${uuid}/payment/credit_card`, {
+        method: 'POST',
+        headers: DEFAULT_HEADERS,
+        body: {
+          cart: {
+            ...cart.value,
+            affiliate: affiliate.value,
+            shipping_is_payment: address.value.shipping_is_payment,
+            user_address_id: address.value.user_address_id,
+            user_data: user.value.user_data,
+          },
+          payment
+        },
+      })
+
+      if (unref(error) || !unref(data)) {
+        throw new Error("ERROR_ADD_MERCADO_PAGO_CREDIT_CARD_PAYMENT"); // FIXME: show an error message
+      }
+
+      const responseData = unref(data) as {
+        success: boolean
+        data: Checkout
+      }
+
+      return unref(responseData)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function getCartPreview() {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+
+      const {data, error} = await useFetch(`api/cart/${uuid}/preview`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+
+      if (unref(error)) {
+        error.value = null
+        return;
+      }
+
+      const responseData = unref(data) as {
+        success: boolean
+        data: Checkout
+        }
+      setCart(responseData.data)
+      setUserAddressId(responseData.data.user_address_id)
+      setShippingAddressId(responseData.data.shipping_address_id)
+      setShippingIsPayment(responseData.data.shipping_is_payment)
+      setPayment(responseData.data)
+      return responseData
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async function finishCheckout() {
+    try {
+      const uuid = cart.value.uuid
+      if (!uuid) {
+        return
+      }
+      loading.value = true
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+
+      const { data, error } = await useFetch(`api/cart/${uuid}/checkout`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          ...cart.value,
+          ...user.value,
+          ...payment.value,
+          affiliate: affiliate.value,
+          shipping_is_payment: address.value.shipping_is_payment,
+          user_address_id: address.value.user_address_id,
+          shipping_address_id: address.value.shipping_address_id,
+        }),
+      })
+
+      if (unref(error)) {
+        error.value = null
+        return;
+      }
+
+      const responseData = unref(data) as {
+        status: string
+        message: string
+        order_id: string
+      }
+      return responseData
+    } catch (err) {
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  function clearCart() {
+    cart.value = {
+      uuid: '',
+      affiliate: '',
+      coupon: '',
+      discount: '',
+      freight_product_code: '03298',
+      freight: {
+        price: '',
+        delivery_time: '',
+      },
+      zipcode: '',
+      subtotal: "0",
+      total: "0",
+      cart_items: [],
+    }
+  }
+
+  async function getAddressByZipcode(zipcode: string, typeAddress: string) {
+    try {
+      loading.value = true
+      const { data, error} = await useFetch(`https://viacep.com.br/ws/${zipcode}/json/`)
+      if (unref(error)) {
+        error.value = null
+        return;
+      }
+
+      const responseData = unref(data) as {
+        cep: string
+        logradouro: string
+        complemento: string
+        bairro: string
+        localidade: string
+        uf: string
+        ibge: string
+        gia: string
+        ddd: string
+        siafi: string
+      }
+
+       address.value[typeAddress] = {
+        country: 'Brasil', // TODO: i18n
+        state: responseData.uf,
+        city: responseData.localidade,
+        neighborhood: responseData.bairro,
+        street: responseData.logradouro,
+        street_number: '',
+        address_complement: '',
+        zipcode: responseData.cep,
+      }
+
+      return address.value[typeAddress]
+    } catch (error) {
+      console.error(error)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  function setCart(userCart: Cart) {
+    cart.value = userCart
+  }
+
+  function setUserCart(userCart: User) {
+    user.value.user_data = userCart
+  }
+
+  function setUserAddress(userAddress: UserAddress) {
+    address.value.user_address = userAddress
+  }
+
+  function setShippingAddress(shippingAddress: ShippingAddress) {
+    address.value.shipping_address = shippingAddress
+  }
+
+  function getCartData() {
+    return {
+      ...cart.value,
+      affiliate: affiliate.value,
+      shipping_is_payment: address.value.shipping_is_payment,
+      user_address_id: address.value.user_address_id,
+      user_data: user.value.user_data,
+    }
+  }
+
+  /**
+   * Calls the API to add a new payment method (PIX)
+   * @param paymentData: the relevant data about the payment method.
+   */
+  async function addPaymentMethod() {
+    const { data, error } = await useFetch(
+      `/api/cart/${cart.value.uuid}/payment/pix`,
+      {
+        headers: DEFAULT_HEADERS,
+        method: 'POST',
+        body: {
+          cart: getCartData(),
+          payment: {
+            payment_gateway: 'MERCADOPAGO',
+            installments: 1
+          }
+        }
+      }
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
+  async function getPaymentStatus(paymentId: string) {
+    const { data, error } = await useFetch(
+      '/api/cart/payment/status',
+      {
+        headers: DEFAULT_HEADERS,
+        method: 'POST',
+        body: { paymentId },
+      }
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
+  function setUserAddressId(userAddressId: number) {
+    address.value.user_address_id = userAddressId
+  }
+
+  function setShippingAddressId(shippingAddressId: number | null) {
+    address.value.shipping_address_id = shippingAddressId
+  }
+
+  function setShippingIsPayment(value: boolean) {
+    address.value.shipping_is_payment = value
+  }
+
+  function setPayment(paymentUser: Payment) {
+    payment.value = paymentUser
+  }
+
+  function setPaymentCreditCard(paymentCreditCardUser: CreditCard) {
+    paymentCreditCard.value = paymentCreditCardUser
+  }
+
+  function setAffiliate(value: string) {
+    affiliate.value = value
+  }
+
+  function clearAffiliate() {
+    affiliate.value = ''
+  }
+
   return {
     cart,
     address,
@@ -757,5 +1165,7 @@ export const useCartStore = defineStore("cart", () => {
     clearDiscount,
     setCoupon,
     setCart,
+    addPaymentMethod,
+    getPaymentStatus,
   };
 });

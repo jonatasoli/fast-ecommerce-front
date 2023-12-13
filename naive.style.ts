@@ -96,6 +96,12 @@ export const theme: GlobalThemeOverrides = {
     feedbackFontSizeMedium: '13px',
     feedbackFontSizeSmall: '13px',
   },
+  Card: {
+    borderColor: '#CDCACA'
+  },
+  Divider: {
+    color: '#CDCACA',
+  }
 } as const
 
 export const breakpoints = {

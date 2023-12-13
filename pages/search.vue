@@ -55,7 +55,7 @@ watch(page, () => router.push({
 <template>
   <main class="search container">
     <h1>{{ t('search.title', { search: searchTitle }) }}</h1>
-    <div 
+    <div
       v-if="pending"
       class="search__skeleton"
     >

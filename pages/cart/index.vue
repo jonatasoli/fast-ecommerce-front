@@ -28,7 +28,7 @@ async function handleEstimateFreight(value) {
   messageInvalidCEP.value = ""
   validationCEP.value = undefined
   return response
- 
+
 }
 
 async function handleAddCoupon(value) {
@@ -76,12 +76,17 @@ onUpdated(() => {
         <n-spin size="large" />
       </n-space>
     </div>
+
     <div v-else>
       <div v-if="cartStore.getCart.cart_items.length === 0" class="cart__empty">
         <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
-          <n-button class="cart__button" quaternary type="primary" size="large">
+          <n-button
+class="cart__button"
+quaternary
+type="primary"
+size="large">
             {{ t("cart.continue") }}
           </n-button>
         </nuxt-link>
