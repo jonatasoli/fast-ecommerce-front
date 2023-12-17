@@ -25,7 +25,6 @@
     ]
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^1.0.0",
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",
     "@css-render/vue3-ssr": "^0.15.10",
