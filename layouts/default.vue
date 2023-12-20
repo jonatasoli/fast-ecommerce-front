@@ -28,7 +28,7 @@ const head = useLocaleHead({
       >
         <n-notification-provider>
           <AppHeader />
-          <slot />
+          <slot  />
           <AppFooter />
         </n-notification-provider>
       </n-config-provider>
