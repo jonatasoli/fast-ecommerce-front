@@ -25,6 +25,10 @@ export const useCartStore = defineStore("cart", () => {
     default: () => ref(""),
   });
 
+  const coupon = useCookie<string>("coupon", {
+    default: () => ref(""),
+  });
+
   const cart = useCookie<Cart>("cart", {
     default: () =>
       ref({
@@ -92,6 +96,7 @@ export const useCartStore = defineStore("cart", () => {
     creditCardExpiration: "",
     creditCardCvv: "",
     installments: 1,
+    installmentsMessage: "",
     typeDocument: "",
     document: "",
   });
@@ -239,11 +244,11 @@ export const useCartStore = defineStore("cart", () => {
           body: {
             uuid: cart.value.uuid,
             cart_items: cart.value.cart_items,
-            coupon: cart.value.coupon,
             subtotal: cart.value.subtotal,
             total: cart.value.total,
             zipcode: cart.value.zipcode,
             freight_product_code: cart.value.freight_product_code,
+            coupon: coupon.value,
             affiliate: affiliate.value,
           },
         }
@@ -301,20 +306,20 @@ export const useCartStore = defineStore("cart", () => {
     }
   }
 
-  async function addCoupon(coupon: string) {
+  async function addCoupon(value: string) {
     try {
       if (!coupon) {
         return;
       }
       loading.value = true;
-      cart.value.coupon = coupon;
+      coupon.value = value;
       const responseData = await estimate();
       if (!responseData) {
         return;
       }
       if (responseData.uuid) {
         setCart(responseData);
-      }
+      } 
       return responseData;
     } catch (err) {
       console.error(err);
@@ -362,6 +367,7 @@ export const useCartStore = defineStore("cart", () => {
         body: JSON.stringify({
           ...cart.value,
           affiliate: affiliate.value,
+          coupon: coupon.value,
         }),
       });
 
@@ -408,6 +414,7 @@ export const useCartStore = defineStore("cart", () => {
           cart: {
             ...cart.value,
             affiliate: affiliate.value,
+            coupon: coupon.value,
             user_data: user.value.user_data,
           },
           address: {
@@ -493,6 +500,7 @@ export const useCartStore = defineStore("cart", () => {
             cart: {
               ...cart.value,
               affiliate: affiliate.value,
+              coupon: coupon.value,
               shipping_is_payment: address.value.shipping_is_payment,
               user_address_id: address.value.user_address_id,
               user_data: user.value.user_data,
@@ -574,6 +582,7 @@ export const useCartStore = defineStore("cart", () => {
           ...user.value,
           ...payment.value,
           affiliate: affiliate.value,
+          coupon: coupon.value,
           shipping_is_payment: address.value.shipping_is_payment,
           user_address_id: address.value.user_address_id,
           shipping_address_id: address.value.shipping_address_id,
@@ -713,12 +722,8 @@ export const useCartStore = defineStore("cart", () => {
     cart.value.discount = "0"
   }
 
-  function setAffiliate(value: string) {
-    affiliate.value = value
-  }
-
-  function clearAffiliate() {
-    affiliate.value = ''
+  function setCoupon(value: string) {
+    coupon.value = value
   }
 
   return {
@@ -727,6 +732,7 @@ export const useCartStore = defineStore("cart", () => {
     getCart,
     loading,
     paymentCreditCard,
+    coupon,
     estimate,
     getCartUser,
     addToCart,
@@ -748,6 +754,8 @@ export const useCartStore = defineStore("cart", () => {
     setAffiliate,
     addCoupon,
     clearFreight,
-    clearDiscount
+    clearDiscount,
+    setCoupon,
+    setCart,
   };
 });

@@ -8,7 +8,7 @@ import InputCard from "~/components/cart/InputCard/InputCard.vue";
 import { RadioInput } from "~/components/cart";
 
 const cartStore = useCartStore();
-const { getCart } = storeToRefs(cartStore);
+const { getCart, coupon } = storeToRefs(cartStore);
 const { t } = useI18n();
 const checkedFreightProductCode = ref("PAC");
 const validationCEP = ref<"error" | "success" | "warning" | undefined>(undefined)
@@ -36,7 +36,10 @@ async function handleAddCoupon(value) {
   if ( response === "INVALID_COUPON") {
     validationCoupon.value = "error"
     messageInvalidCoupon.value = "Cupom Inválido"
-    cartStore.clearDiscount()
+    await cartStore.clearDiscount()
+    await cartStore.setCoupon("")
+    const response = await cartStore.estimate()
+    cartStore.setCart(response)
     return;
   }
   validationCoupon.value = undefined
@@ -91,7 +94,7 @@ onUpdated(() => {
             :title="t('cart.inputs.discount.title')"
             placeholder="Cupom de desconto"
             :button-text="t('cart.inputs.discount.buttonText')"
-            :received-value="getCart.coupon"
+            :received-value="coupon"
             :validation="validationCoupon"
             :message="messageInvalidCoupon"
             @on-button-click="handleAddCoupon"

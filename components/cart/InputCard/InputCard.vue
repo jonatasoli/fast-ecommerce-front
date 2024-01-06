@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { BanknotesIcon, ShoppingCartIcon } from "@heroicons/vue/24/outline";
-import { ref } from "#imports";
+import { BanknotesIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline';
+import { ref } from '#imports';
 
 type Props = {
   icon: string;
@@ -9,25 +9,24 @@ type Props = {
   placeholder: string;
   receivedValue: string;
   mask?: string;
-  validation?: "error" | "success" | "warning" | undefined;
+  validation?: 'error' | 'success' | 'warning' | undefined;
   message?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  mask: "",
+  mask: '',
   validation: undefined,
-  message: ""
-})
+  message: '',
+});
 
-const emit = defineEmits(["onButtonClick"]);
+const emit = defineEmits(['onButtonClick']);
 
-const value = ref("");
+const value = ref('');
 value.value = props.receivedValue;
 
 function handleButtonClick() {
-  emit("onButtonClick", value.value);
+  emit('onButtonClick', value.value);
 }
-
 </script>
 
 <template>
@@ -41,7 +40,11 @@ function handleButtonClick() {
     </header>
     <div class="card__input">
       <n-form class="card__form">
-        <n-form-item v-if="$props.mask" :feedback="message" :validation-status="validation">
+        <n-form-item
+          v-if="$props.mask"
+          :feedback="message"
+          :validation-status="validation"
+        >
           <n-input
             v-model:value="value"
             v-mask="`${props.mask}`"
@@ -58,6 +61,7 @@ function handleButtonClick() {
         </n-form-item>
       </n-form>
 
+      <n-button type="primary" size="large" strong @click="handleButtonClick">
         {{ props.buttonText }}
       </n-button>
     </div>
@@ -69,5 +73,5 @@ function handleButtonClick() {
 </template>
 
 <style lang="scss" scoped>
-@import "./InputCard.scss";
+@import './InputCard.scss';
 </style>

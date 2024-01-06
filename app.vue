@@ -9,14 +9,18 @@ const storeUser = useUserStore();
 const storeCategory = useCategoryStore();
 const cartStore = useCartStore();
 const route = useRoute();
-const affiliate: string = (route.query.affiliate as string) ;
+const affiliate: string = route.query.affiliate as string;
+const coupon = (route.query.coupon as string) || "";
 
 onBeforeMount(async () => {
-  await storeCategory.getCategorys();
   await storeUser.getUser();
+  await storeCategory.getCategorys();
   await nuxtApp.$router.isReady();
   if (affiliate) {
     await cartStore.setAffiliate(affiliate);
+  }
+  if (coupon) {
+    await cartStore.setCoupon(coupon);
   }
 });
 

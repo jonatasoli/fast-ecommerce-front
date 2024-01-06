@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { navigateTo } from 'nuxt/app'
+import { useNotification } from 'naive-ui'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
 import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
@@ -21,6 +22,7 @@ definePageMeta({
 })
 const router = useRouter()
 const { isMobile } = useDevice()
+const notification = useNotification()
 const { user } = storeToRefs(useUserStore())
 const cartStore = useCartStore()
 const { address, cart } = storeToRefs(cartStore)
@@ -87,6 +89,7 @@ async function handleSubmitUserAddress() {
 }
 
 async function handleSubmitAddPayment() {
+  try {
   if (paymentMethod.value === 'credit-card') {
     if (!creditCard.value) {
       console.warn('creditCard ref value is null')
@@ -97,6 +100,13 @@ async function handleSubmitAddPayment() {
     if (data.uuid) {
       current.value++
     }
+  }
+  } catch {
+    notification.error({
+      title: 'Erro',
+      content: 'Ocorreu um erro ao adicionar o pagamento, tente novamente mais tarde.',
+      duration: 2500,
+    })
   }
 }
 
@@ -109,7 +119,7 @@ function handleFinishCheckout() {
 }
 
 onMounted(async () => {
-  if(user.value) {
+  if (unref(user)) {
     await handleSubmitUser()
   }
   if (address.value.shipping_is_payment) {
@@ -117,9 +127,9 @@ onMounted(async () => {
   }
 })
 
-watch(user, () => {
-  if (user.value) {
-    current.value = 2
+watch(user, async() => {
+   if (unref(user)) {
+    await handleSubmitUser()
   }
 })
 

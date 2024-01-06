@@ -13,6 +13,7 @@ interface createCardTokenProps {
 
 interface CardToken {
   id: string
+  last_four_digits: string
 }
 interface getInstallmentsProps {
   amount: string
