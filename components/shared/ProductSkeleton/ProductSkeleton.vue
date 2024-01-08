@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="product-skeleton">
@@ -8,7 +6,7 @@
       <n-skeleton
         width="100%"
         height="100%"
-        style="position: absolute; top: 0; left: 0;"
+        style="position: absolute; top: 0; left: 0"
       />
     </div>
     <div class="product-skeleton__content">
@@ -26,5 +24,5 @@
 </template>
 
 <style scoped lang="scss">
-@import './ProductSkeleton.scss';
+  @import './ProductSkeleton.scss';
 </style>

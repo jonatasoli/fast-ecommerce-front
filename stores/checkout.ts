@@ -1,14 +1,14 @@
 interface Checkout {
-  status: string;
-  message: string;
-  order_id: string;
+  status: string
+  message: string
+  order_id: string
 }
 
 export const useCheckoutStore = defineStore('checkout', () => {
   const checkout = ref<Checkout>({
     status: '',
     message: '',
-    order_id: ''
+    order_id: '',
   })
 
   const setCheckout = (data: Checkout) => {
@@ -17,6 +17,6 @@ export const useCheckoutStore = defineStore('checkout', () => {
 
   return {
     checkout,
-    setCheckout
+    setCheckout,
   }
 })

@@ -17,7 +17,6 @@ interface RegisterParams {
   mail: string
   document: string
   phone: string
-
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -28,10 +27,13 @@ export const useAuthStore = defineStore('auth', () => {
       username,
       password,
     }
-    const { data: loginData, pending } = await useFetch<LoginResponse>('/api/auth/login', {
-      method: 'POST',
-      body: payload,
-    })
+    const { data: loginData, pending } = await useFetch<LoginResponse>(
+      '/api/auth/login',
+      {
+        method: 'POST',
+        body: payload,
+      },
+    )
 
     loading.value = pending.value
     if (loginData.value?.success) {
@@ -42,10 +44,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(payload: RegisterParams) {
-    const { data: registerData, pending } = await useFetch<RegisterResponse>('/api/auth/register', {
-      method: 'POST',
-      body: payload,
-    })
+    const { data: registerData, pending } = await useFetch<RegisterResponse>(
+      '/api/auth/register',
+      {
+        method: 'POST',
+        body: payload,
+      },
+    )
 
     loading.value = pending.value
     return registerData.value

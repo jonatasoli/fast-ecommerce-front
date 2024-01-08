@@ -7,16 +7,19 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   try {
-    const res = await fetch(`${serverBaseURL}/cart/${uuid}/payment/credit_card`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+    const res = await fetch(
+      `${serverBaseURL}/cart/${uuid}/payment/credit_card`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
       },
-      body: JSON.stringify(body),
-    })
+    )
     const data = await res.json()
-    
+
     if (!data.uuid) {
       throw createError({
         statusCode: 400,

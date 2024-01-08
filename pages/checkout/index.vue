@@ -1,147 +1,143 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { navigateTo } from 'nuxt/app'
-import { useNotification } from 'naive-ui'
-import { useUserStore } from '~/stores/user'
-import { useCartStore } from '~/stores/cart'
-import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
-import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
-import type { FormAddress } from '~/components/checkout'
+  import { storeToRefs } from 'pinia'
+  import { navigateTo } from 'nuxt/app'
+  import { useNotification } from 'naive-ui'
+  import { useUserStore } from '~/stores/user'
+  import { useCartStore } from '~/stores/cart'
+  import CreditCard from '~/stepsCheckout/payment/CreditCard.vue'
+  import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
+  import type { FormAddress } from '~/components/checkout'
 
-definePageMeta({
-  layout: 'checkout',
-  middleware: [
-    function () {
-      const { cart } = storeToRefs(useCartStore())
+  definePageMeta({
+    layout: 'checkout',
+    middleware: [
+      function () {
+        const { cart } = storeToRefs(useCartStore())
 
-      if (!cart.value.cart_items.length) {
-        return navigateTo('/cart')
-      }
-    },
-  ],
-})
-const router = useRouter()
-const { isMobile } = useDevice()
-const notification = useNotification()
-const { user } = storeToRefs(useUserStore())
-const cartStore = useCartStore()
-const { address, cart } = storeToRefs(cartStore)
-const formUserAddress = ref<typeof FormAddress | null>(null)
-const formShippingAddress = ref<typeof FormAddress | null>(null)
-const creditCard = ref<typeof CreditCard | null>(null)
-const current = ref<number>(1)
-const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
-const paymentMethod = ref<string>('credit-card')
-const shippingIsPayment = ref<boolean | null>(null)
+        if (!cart.value.cart_items.length) {
+          return navigateTo('/cart')
+        }
+      },
+    ],
+  })
+  const router = useRouter()
+  const { isMobile } = useDevice()
+  const notification = useNotification()
+  const { user } = storeToRefs(useUserStore())
+  const cartStore = useCartStore()
+  const { address, cart } = storeToRefs(cartStore)
+  const formUserAddress = ref<typeof FormAddress | null>(null)
+  const formShippingAddress = ref<typeof FormAddress | null>(null)
+  const creditCard = ref<typeof CreditCard | null>(null)
+  const current = ref<number>(1)
+  const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
+  const paymentMethod = ref<string>('credit-card')
+  const shippingIsPayment = ref<boolean | null>(null)
 
-const { t } = useI18n()
+  const { t } = useI18n()
 
-function nextSteps() {
-  const steps = {
-    1: handleSubmitUser,
-    2: handleSubmitUserAddress,
-    3: handleSubmitAddPayment,
-    4: async () => { },
+  function nextSteps() {
+    const steps = {
+      1: handleSubmitUser,
+      2: handleSubmitUserAddress,
+      3: handleSubmitAddPayment,
+      4: async () => {},
+    }
+    return steps[current.value]()
   }
-  return steps[current.value]()
-}
 
-async function handleSubmitUser() {
-  await cartStore.addUserCart()
-  current.value++
-}
+  async function handleSubmitUser() {
+    await cartStore.addUserCart()
+    current.value++
+  }
 
-async function handleSubmitUserAddress() {
-  try {
-    if (!shippingIsPayment.value || !formUserAddress.value) {
-      console.warn('shipping_is_payment or formUserAddress is null')
-      return
-    }
-
-    const { valid: validUserAddress } = await formUserAddress.value.validate()
-  
-    if (!validUserAddress && shippingIsPayment.value === null) {
-      return
-    }
-
-
-    if (!shippingIsPayment.value && formShippingAddress.value) {
-      const { valid: validShippingAddress } = await formShippingAddress.value.validate()
-      if (!validShippingAddress) {
+  async function handleSubmitUserAddress() {
+    try {
+      if (!shippingIsPayment.value || !formUserAddress.value) {
+        console.warn('shipping_is_payment or formUserAddress is null')
         return
       }
-    }
 
-    const shippingAddress = shippingIsPayment.value
-      ? formUserAddress.value?.values
-      : formShippingAddress.value?.values
+      const { valid: validUserAddress } = await formUserAddress.value.validate()
 
-    await cartStore.addAddressCart({
-      shipping_is_payment: shippingIsPayment.value,
-      user_address: formUserAddress.value?.values,
-      shipping_address: shippingAddress,
-    })
+      if (!validUserAddress && shippingIsPayment.value === null) {
+        return
+      }
 
-    current.value++
-  } catch (error) {
-    console.error(error)
-  }
-}
+      if (!shippingIsPayment.value && formShippingAddress.value) {
+        const { valid: validShippingAddress } =
+          await formShippingAddress.value.validate()
+        if (!validShippingAddress) {
+          return
+        }
+      }
 
-async function handleSubmitAddPayment() {
-  try {
-  if (paymentMethod.value === 'credit-card') {
-    if (!creditCard.value) {
-      console.warn('creditCard ref value is null')
-      return
-    }
-    
-    const { data } = await creditCard.value.handleSubmitCreditCard()
-    if (data.uuid) {
+      const shippingAddress = shippingIsPayment.value
+        ? formUserAddress.value?.values
+        : formShippingAddress.value?.values
+
+      await cartStore.addAddressCart({
+        shipping_is_payment: shippingIsPayment.value,
+        user_address: formUserAddress.value?.values,
+        shipping_address: shippingAddress,
+      })
+
       current.value++
+    } catch (error) {
+      console.error(error)
     }
   }
-  } catch {
-    notification.error({
-      title: 'Erro',
-      content: 'Ocorreu um erro ao adicionar o pagamento, tente novamente mais tarde.',
-      duration: 2500,
-    })
+
+  async function handleSubmitAddPayment() {
+    try {
+      if (paymentMethod.value === 'credit-card') {
+        if (!creditCard.value) {
+          console.warn('creditCard ref value is null')
+          return
+        }
+
+        const { data } = await creditCard.value.handleSubmitCreditCard()
+        if (data.uuid) {
+          current.value++
+        }
+      }
+    } catch {
+      notification.error({
+        title: 'Erro',
+        content:
+          'Ocorreu um erro ao adicionar o pagamento, tente novamente mais tarde.',
+        duration: 2500,
+      })
+    }
   }
-}
 
-function handleUpdateShippingIsPayment(value) {
-  cartStore.setShippingIsPayment(value)
-}
-
-function handleFinishCheckout() {
-  router.push('/checkout/finish')
-}
-
-onMounted(async () => {
-  if (unref(user)) {
-    await handleSubmitUser()
+  function handleUpdateShippingIsPayment(value) {
+    cartStore.setShippingIsPayment(value)
   }
-  if (address.value.shipping_is_payment) {
-    shippingIsPayment.value = address.value.shipping_is_payment
-  }
-})
 
-watch(user, async() => {
-   if (unref(user)) {
-    await handleSubmitUser()
+  function handleFinishCheckout() {
+    router.push('/checkout/finish')
   }
-})
 
+  onMounted(async () => {
+    if (unref(user)) {
+      await handleSubmitUser()
+    }
+    if (address.value.shipping_is_payment) {
+      shippingIsPayment.value = address.value.shipping_is_payment
+    }
+  })
+
+  watch(user, async () => {
+    if (unref(user)) {
+      await handleSubmitUser()
+    }
+  })
 </script>
 
 <template>
   <div class="container checkout">
-    <n-steps
-      v-if="!isMobile"
-      :current="current"
-      :status="currentStatus"
-    >
+    <n-steps v-if="!isMobile" :current="current" :status="currentStatus">
       <n-step :title="t('checkout.steps.login')" />
       <n-step :title="t('checkout.steps.shipping')" />
       <n-step :title="t('checkout.steps.payment')" />
@@ -154,9 +150,12 @@ watch(user, async() => {
           {{ t('checkout.user.login.part1') }}
           <NuxtLink to="/login?redirect=/checkout" class="link">
             {{ t('checkout.user.login.part2') }}
-          </NuxtLink> {{ t('checkout.user.login.part3') }} <NuxtLink to="/register" class="link">
+          </NuxtLink>
+          {{ t('checkout.user.login.part3') }}
+          <NuxtLink to="/register" class="link">
             {{ t('checkout.user.login.part4') }}
-          </NuxtLink> {{ t('checkout.user.login.part5') }}
+          </NuxtLink>
+          {{ t('checkout.user.login.part5') }}
         </div>
       </div>
     </div>
@@ -181,7 +180,11 @@ watch(user, async() => {
       </h2>
       <n-form-item
         :label="t('checkout.shipping.shipping_is_payment')"
-        :feedback="shippingIsPayment === null ? t('checkout.shipping.select_option') : undefined"
+        :feedback="
+          shippingIsPayment === null
+            ? t('checkout.shipping.select_option')
+            : undefined
+        "
         :validation-status="shippingIsPayment === null ? 'error' : undefined"
       >
         <n-radio-group v-model:value="shippingIsPayment">
@@ -259,5 +262,5 @@ watch(user, async() => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/pages/checkout.scss';
+  @import '@/assets/scss/pages/checkout.scss';
 </style>

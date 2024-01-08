@@ -1,6 +1,6 @@
 .search {
   padding: 0 1rem 3rem;
-  
+
   &__pagination {
     margin-top: 3rem;
     margin-bottom: 3rem;
@@ -10,7 +10,8 @@
     min-height: 40rem;
   }
 
-  &__skeleton, &__products {
+  &__skeleton,
+  &__products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
@@ -27,5 +28,4 @@
       grid-template-columns: repeat(1, 1fr);
     }
   }
-
 }

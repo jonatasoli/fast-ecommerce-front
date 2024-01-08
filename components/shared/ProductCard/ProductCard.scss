@@ -52,7 +52,7 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      font-size: 0.875rem;;
+      font-size: 0.875rem;
       transition: all 0.3s ease;
       font-family: Montserrat, sans-serif;
 
@@ -92,7 +92,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
-      background-color: rgba($color: $primary-color, $alpha: .2);
+      background-color: rgba($color: $primary-color, $alpha: 0.2);
       top: 0;
       left: 0;
       right: 0;

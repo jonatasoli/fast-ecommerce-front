@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+  import { ref } from 'vue'
 
-type Props = {
-  checkedValue: string;
-};
+  type Props = {
+    checkedValue: string
+  }
 
-const props = defineProps<Props>();
-const emit = defineEmits(['radio-change']);
+  const props = defineProps<Props>()
+  const emit = defineEmits(['radio-change'])
 
-const checkedValue = ref(props.checkedValue);
+  const checkedValue = ref(props.checkedValue)
 
-function handleChange(value: string) {
-  emit('radio-change', value);
-}
+  function handleChange(value: string) {
+    emit('radio-change', value)
+  }
 </script>
 
 <template>
@@ -31,9 +31,9 @@ function handleChange(value: string) {
 </template>
 
 <style scoped>
-.container {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  justify-content: end;
-}
+  .container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: end;
+  }
 </style>

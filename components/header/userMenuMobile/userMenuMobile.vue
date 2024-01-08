@@ -1,26 +1,26 @@
 <script lang="ts" setup>
-import { UserCircleIcon } from "@heroicons/vue/24/outline";
-import { reactive, ref, useI18n } from "#imports";
-import { useUserStore } from "@/stores/user";
-import { useAuthStore } from "@/stores/auth";
+  import { UserCircleIcon } from '@heroicons/vue/24/outline'
+  import { reactive, ref, useI18n } from '#imports'
+  import { useUserStore } from '@/stores/user'
+  import { useAuthStore } from '@/stores/auth'
 
-const show = ref(false);
-const storeUser = useUserStore();
-const storeAuth = useAuthStore();
+  const show = ref(false)
+  const storeUser = useUserStore()
+  const storeAuth = useAuthStore()
 
-const userState = reactive({
-  user: storeUser.user,
-  authenticated: storeUser.authenticated,
-});
+  const userState = reactive({
+    user: storeUser.user,
+    authenticated: storeUser.authenticated,
+  })
 
-const { t } = useI18n();
+  const { t } = useI18n()
 
-async function logout() {
-  await storeAuth.logout();
-  storeUser.reset();
-  userState.user = storeUser.user;
-  userState.authenticated = storeUser.authenticated;
-}
+  async function logout() {
+    await storeAuth.logout()
+    storeUser.reset()
+    userState.user = storeUser.user
+    userState.authenticated = storeUser.authenticated
+  }
 </script>
 
 <template>
@@ -46,13 +46,13 @@ size="large"
           </n-icon>
 
           <p class="menu__auth">
-            {{ t("userMenu.welcome") }}
+            {{ t('userMenu.welcome') }}
             <NuxtLink to="/login">
-              {{ t("userMenu.login") }}
+              {{ t('userMenu.login') }}
             </NuxtLink>
-            {{ t("userMenu.or") }}
+            {{ t('userMenu.or') }}
             <NuxtLink to="/register">
-              {{ t("userMenu.register") }}
+              {{ t('userMenu.register') }}
             </NuxtLink>
           </p>
         </div>
@@ -66,10 +66,10 @@ size="large"
 
           <div>
             <p class="menu__auth">
-              {{ t("userMenu.welcome") }} {{ userState.user.name }}
+              {{ t('userMenu.welcome') }} {{ userState.user.name }}
             </p>
             <button class="menu__auth--logout" @click="logout">
-              {{ t("userMenu.logout") }}
+              {{ t('userMenu.logout') }}
             </button>
           </div>
         </div>
@@ -86,5 +86,5 @@ size="large"
 </template>
 
 <style lang="scss" scoped>
-@import "./userMenuMobile.scss";
+  @import './userMenuMobile.scss';
 </style>
