@@ -18,9 +18,11 @@ export default defineEventHandler(async (event): Promise<LoginResponse> => {
   const body = await readBody(event)
   const serverBaseURL = process.env.SERVER_BASE_URL
 
-  const bodyEncoded = Object.keys(body).map((key) => {
-    return `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`
-  }).join('&')
+  const bodyEncoded = Object.keys(body)
+    .map((key) => {
+      return `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`
+    })
+    .join('&')
 
   try {
     const res = await fetch(`${serverBaseURL}/user/token`, {

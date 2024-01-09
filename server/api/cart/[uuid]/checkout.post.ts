@@ -1,4 +1,4 @@
-import { defineEventHandler, getCookie, readBody, createError } from "h3"
+import { defineEventHandler, getCookie, readBody, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const serverBaseURL = process.env.SERVER_BASE_URL
@@ -11,19 +11,17 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
     const data = await res.json()
 
     return data
-
   } catch (error: unknown) {
     throw createError({
       statusCode: 400,
       message: (error as Error).message,
-     })
+    })
   }
-
 })

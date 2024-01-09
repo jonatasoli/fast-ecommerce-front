@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { datePtBR, ptBR } from 'naive-ui';
-import { useLocaleHead, useRuntimeConfig } from '#imports';
-import { AppFooter, AppHeader } from '@/components/app';
-import { breakpoints, theme } from '@/naive.style';
+  import { datePtBR, ptBR } from 'naive-ui'
+  import { useLocaleHead, useRuntimeConfig } from '#imports'
+  import { AppFooter, AppHeader } from '@/components/app'
+  import { breakpoints, theme } from '@/naive.style'
 
-const config = useRuntimeConfig();
-const head = useLocaleHead({
-  addSeoAttributes: true,
-});
+  const config = useRuntimeConfig()
+  const head = useLocaleHead({
+    addSeoAttributes: true,
+  })
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const head = useLocaleHead({
       >
         <n-notification-provider>
           <AppHeader />
-          <slot  />
+          <slot />
           <AppFooter />
         </n-notification-provider>
       </n-config-provider>
@@ -37,5 +37,5 @@ const head = useLocaleHead({
 </template>
 
 <style lang="scss">
-@import '@/assets/scss/main.scss';
+  @import '@/assets/scss/main.scss';
 </style>

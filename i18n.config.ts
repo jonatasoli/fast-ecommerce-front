@@ -6,5 +6,4 @@ export default defineI18nConfig(() => ({
   locale: LOCALES.PT_BR,
   fallbackLocale: LOCALES.PT_BR,
   messages: { [LOCALES.PT_BR]: ptBR },
-  })
-)
+}))

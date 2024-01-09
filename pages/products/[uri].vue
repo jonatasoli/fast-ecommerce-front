@@ -1,73 +1,73 @@
 <script lang="ts" setup>
-import { useCartStore } from '@/stores/cart';
-import { currencyFormat } from '@/utils/helpers';
-import {
-  LOCALES,
-  computed,
-  createError,
-  ref,
-  useFetch,
-  useI18n,
-  useRoute,
-  useRouter,
-  useRuntimeConfig,
-} from '#imports';
-import type { ProductItem } from '~/utils/types';
+  import { useCartStore } from '@/stores/cart'
+  import { currencyFormat } from '@/utils/helpers'
+  import {
+    LOCALES,
+    computed,
+    createError,
+    ref,
+    useFetch,
+    useI18n,
+    useRoute,
+    useRouter,
+    useRuntimeConfig,
+  } from '#imports'
+  import type { ProductItem } from '~/utils/types'
 
-const route = useRoute();
-const router = useRouter();
-const config = useRuntimeConfig();
-const { t, locale } = useI18n();
-const cartStore = useCartStore();
+  const route = useRoute()
+  const router = useRouter()
+  const config = useRuntimeConfig()
+  const { t, locale } = useI18n()
+  const cartStore = useCartStore()
 
-const { data: product, error } = await useFetch<ProductItem>(
-  `${config.public.serverUrl}/product/${route.params.uri}`
-);
+  const { data: product, error } = await useFetch<ProductItem>(
+    `${config.public.serverUrl}/product/${route.params.uri}`,
+  )
 
-if (error.value || !product.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Page not found',
-    fatal: true,
-  });
-}
+  if (error.value || !product.value) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Page not found',
+      fatal: true,
+    })
+  }
 
-const price = computed(() => currencyFormat(product.value?.price || 0));
-const installments = computed(() => {
-  let count = 4;
-  let amount = currencyFormat(0);
+  const price = computed(() => currencyFormat(product.value?.price || 0))
+  const installments = computed(() => {
+    let count = 4
+    let amount = currencyFormat(0)
 
-  if (product.value) {
-    if (product.value.installments_list) {
-      count = product.value.installments_list.count || count;
-      amount = currencyFormat(
-        product.value.installments_list.value || product.value.price
-      );
-    } else {
-      amount = currencyFormat(Math.round(product.value.price / count));
+    if (product.value) {
+      if (product.value.installments_list) {
+        count = product.value.installments_list.count || count
+        amount = currencyFormat(
+          product.value.installments_list.value || product.value.price,
+        )
+      } else {
+        amount = currencyFormat(Math.round(product.value.price / count))
+      }
     }
+
+    return { count, amount }
+  })
+  const value = ref(null)
+
+  async function addProductToCart() {
+    if (!product.value) {
+      return
+    }
+
+    await cartStore.addToCart({
+      image_path: product.value.image_path,
+      name: product.value.name,
+      price: product.value.price,
+      product_id: product.value.product_id,
+      quantity: 1,
+    })
+    router.push('/cart')
   }
 
-  return { count, amount };
-});
-const value = ref(null);
-
-async function addProductToCart() {
-  if (!product.value) {
-    return;
-  }
-
-  await cartStore.addToCart({
-    image_path: product.value.image_path,
-    name: product.value.name,
-    price: product.value.price,
-    product_id: product.value.product_id,
-    quantity: 1,
-  });
-  router.push('/cart');
-}
-
-const isPtBr = computed(() => locale.value === LOCALES.PT_BR);
+  const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
 </script>
 
 <template>
@@ -117,7 +117,10 @@ const isPtBr = computed(() => locale.value === LOCALES.PT_BR);
           </i18n-t>
         </p>
         <div class="product__content--buy">
-          <div v-if="product.quantity === 0" class="product__content--out-of-stock">
+          <div
+            v-if="product.quantity === 0"
+            class="product__content--out-of-stock"
+          >
             {{ t('productItem.outOfStock') }}
           </div>
           <n-button
@@ -171,5 +174,5 @@ const isPtBr = computed(() => locale.value === LOCALES.PT_BR);
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/pages/products/product.scss';
+  @import '@/assets/scss/pages/products/product.scss';
 </style>

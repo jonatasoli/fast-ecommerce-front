@@ -4,7 +4,7 @@
   padding-top: 4rem;
   margin-bottom: 4rem;
 
-  @media(max-width: 840px) {
+  @media (max-width: 840px) {
     padding: 2rem 2rem;
   }
 
@@ -17,14 +17,14 @@
       width: 500px;
       height: 500px;
 
-      @media(max-width: 840px) {
+      @media (max-width: 840px) {
         margin: 0 auto;
         width: 300px;
         height: 300px;
       }
     }
 
-    @media(max-width: 840px) {
+    @media (max-width: 840px) {
       flex-direction: column;
       gap: 2rem;
     }
@@ -95,12 +95,10 @@
     }
 
     &--text {
-      color : #333639;
+      color: #333639;
     }
     &--collapse {
       margin-top: 2rem;
-
-      
     }
 
     &--collapse-item {

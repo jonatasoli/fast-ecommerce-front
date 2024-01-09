@@ -18,7 +18,7 @@
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.25rem;
-  color: #AAA;
+  color: #aaa;
 
   @media (min-width: 768px) {
     margin-bottom: 3rem;
@@ -34,14 +34,15 @@
     align-items: center;
     height: 50vh;
     font-size: 1.5rem;
-    color: #A6ACAF
+    color: #a6acaf;
   }
 
   &__pagination {
     margin-top: 3rem;
   }
 
-  &__skeleton, &__products {
+  &__skeleton,
+  &__products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;

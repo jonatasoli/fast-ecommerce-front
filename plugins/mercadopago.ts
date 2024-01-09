@@ -23,7 +23,7 @@ interface getInstallmentsProps {
 
 interface Installments {
   payer_costs: {
-    installments: number,
+    installments: number
     recommended_message: string
   }[]
 }
@@ -39,12 +39,13 @@ declare module '#app' {
 }
 
 interface CustomMercadoPago {
-  new (publicKey: string, options: { locale: string }): unknown;
+  new (publicKey: string, options: { locale: string }): unknown
 }
 
 type CustomWindow = {
   MercadoPago: CustomMercadoPago
-} & Window & typeof globalThis
+} & Window &
+  typeof globalThis
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   await loadMercadoPago()

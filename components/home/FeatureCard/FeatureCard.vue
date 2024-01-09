@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { computed } from '#imports'
-import type { FeatureItem } from '@/utils/types'
+  import { computed } from '#imports'
+  import type { FeatureItem } from '@/utils/types'
 
-type Props = {
-  item: FeatureItem
-}
+  type Props = {
+    item: FeatureItem
+  }
 
-const props = defineProps<Props>()
+  const props = defineProps<Props>()
 
-const style = computed(() => ({ backgroundImage: `url('${props.item.image}')` }))
-const route = computed(() => `/categories/${props.item.uri}`)
+  const style = computed(() => ({
+    backgroundImage: `url('${props.item.image}')`,
+  }))
+  const route = computed(() => `/categories/${props.item.uri}`)
 </script>
 
 <template>
@@ -24,5 +26,5 @@ const route = computed(() => `/categories/${props.item.uri}`)
 </template>
 
 <style lang="scss" scoped>
-@import './FeatureCard.scss';
+  @import './FeatureCard.scss';
 </style>

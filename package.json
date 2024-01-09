@@ -12,6 +12,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint --ext \".ts,.js,.vue\" --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext \".ts,.js,.vue\" --ignore-path .gitignore .",
+    "format": "prettier .  --write",
     "prepare": "husky install",
     "start": "node .output/server/index.mjs",
     "test": "vitest run",
@@ -21,7 +22,8 @@
   },
   "lint-staged": {
     "**/*.{js,ts,vue,html,css}": [
-      "npm run lint:fix"
+      "npm run lint:fix",
+      "npm run format"
     ]
   },
   "devDependencies": {
@@ -51,6 +53,7 @@
     "lint-staged": "^15.0.2",
     "naive-ui": "^2.35.0",
     "nuxt": "^3.0.0",
+    "prettier": "^3.1.1",
     "sass": "^1.69.5",
     "typescript": "^5.1.3",
     "unplugin-vue-components": "^0.25.2",
