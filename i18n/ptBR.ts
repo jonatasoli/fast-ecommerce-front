@@ -1,5 +1,6 @@
 export default {
-  address: 'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
+  address:
+    'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
     news: 'Novidades',
     latest: 'Novidades',
@@ -26,7 +27,8 @@ export default {
 
   footer: {
     contact: {
-      title: 'Entre em contato conosco através do botão WHATSAPP, ou deixe seu email',
+      title:
+        'Entre em contato conosco através do botão WHATSAPP, ou deixe seu email',
       placeholder: 'Digite seu e-mail',
       subscribe: 'Assinar',
     },
@@ -133,7 +135,8 @@ export default {
 
       error: {
         title: 'Erro ao realizar cadastro',
-        content: 'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
+        content:
+          'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
       },
     },
   },
@@ -231,7 +234,6 @@ export default {
       back: 'Voltar',
       finish: 'Confirmar Pedido',
     },
-
   },
 
   finishCheckout: {
@@ -240,7 +242,8 @@ export default {
     description: 'Em breve você receberá um e-mail com os detalhes do pedido',
     button: 'Voltar para a página inicial',
     titleError: 'Erro ao realizar o pedido',
-    descriptionError: 'Houve um problema ao realizar o seu pedido, verifique o email enviado e tente novamente em instantes',
+    descriptionError:
+      'Houve um problema ao realizar o seu pedido, verifique o email enviado e tente novamente em instantes',
     buttonError: 'Voltar para o carrinho',
-  }
+  },
 }

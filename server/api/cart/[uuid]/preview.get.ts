@@ -1,4 +1,4 @@
-import { defineEventHandler, getCookie, createError} from 'h3'
+import { defineEventHandler, getCookie, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const serverBaseURL = process.env.SERVER_BASE_URL
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     const res = await fetch(`${serverBaseURL}/cart/${uuid}/preview`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
     const data = await res.json()
@@ -28,6 +28,6 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: (error as Error).message,
-     })
+    })
   }
 })

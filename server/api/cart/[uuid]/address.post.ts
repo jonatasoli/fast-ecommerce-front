@@ -11,17 +11,17 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
     const data = await res.json()
 
     if (data.cart) {
-     throw createError({
-      statusCode: 400,
-      message: data,
-     })
+      throw createError({
+        statusCode: 400,
+        message: data,
+      })
     }
 
     return {
@@ -32,6 +32,6 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       message: (error as Error).message,
-     })
+    })
   }
 })

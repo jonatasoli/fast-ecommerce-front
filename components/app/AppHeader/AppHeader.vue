@@ -1,30 +1,35 @@
 <script lang="ts" setup>
-import {
-  MagnifyingGlassIcon,
-  ShoppingCartIcon,
-} from "@heroicons/vue/24/outline";
-import { NavBar, SideNav, UserMenu, UserMenuMobile } from "~/components/header";
-import { ref, useDevice, useRouter } from "#imports";
+  import {
+    MagnifyingGlassIcon,
+    ShoppingCartIcon,
+  } from '@heroicons/vue/24/outline'
+  import {
+    NavBar,
+    SideNav,
+    UserMenu,
+    UserMenuMobile,
+  } from '~/components/header'
+  import { ref, useDevice, useRouter } from '#imports'
 
-const { isMobile } = useDevice();
-const router = useRouter();
-const search = ref("");
+  const { isMobile } = useDevice()
+  const router = useRouter()
+  const search = ref('')
 
-function doSearch() {
-  const trimSearch = search.value.trim();
+  function doSearch() {
+    const trimSearch = search.value.trim()
 
-  if (!trimSearch) {
-    return;
+    if (!trimSearch) {
+      return
+    }
+
+    const encodedSearch = encodeURIComponent(trimSearch)
+    router.push(`/search?q=${encodedSearch}`)
+    search.value = ''
   }
 
-  const encodedSearch = encodeURIComponent(trimSearch);
-  router.push(`/search?q=${encodedSearch}`);
-  search.value = "";
-}
-
-onMounted(async () => {
-  await useCategoryStore().getCategorys();
-});
+  onMounted(async () => {
+    await useCategoryStore().getCategorys()
+  })
 </script>
 
 <template>
@@ -70,5 +75,5 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
-@import "./AppHeader.scss";
+  @import './AppHeader.scss';
 </style>

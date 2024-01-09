@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { computed, useI18n } from '#imports';
-import { currencyFormat } from '@/utils/helpers';
-import type { ProductItem } from '@/utils/types';
+  import { computed, useI18n } from '#imports'
+  import { currencyFormat } from '@/utils/helpers'
+  import type { ProductItem } from '@/utils/types'
 
-type Props = {
-  product: ProductItem;
-};
+  type Props = {
+    product: ProductItem
+  }
 
-const props = defineProps<Props>();
+  const props = defineProps<Props>()
 
-const { t } = useI18n();
-const emit = defineEmits(['addToCart']);
+  const { t } = useI18n()
+  const emit = defineEmits(['addToCart'])
 
-const productImage = computed(() => ({
-  backgroundImage: `url('${props.product.image_path}')`,
-}));
-const price = computed(() => currencyFormat(props.product.price));
-const route = `/products/${props.product.uri}`;
+  const productImage = computed(() => ({
+    backgroundImage: `url('${props.product.image_path}')`,
+  }))
+  const price = computed(() => currencyFormat(props.product.price))
+  const route = `/products/${props.product.uri}`
 
-function handleAddToCart() {
-  emit('addToCart', props.product);
-}
+  function handleAddToCart() {
+    emit('addToCart', props.product)
+  }
 </script>
 
 <template>
@@ -46,5 +46,5 @@ function handleAddToCart() {
 </template>
 
 <style lang="scss" scoped>
-@import './ProductCard.scss';
+  @import './ProductCard.scss';
 </style>

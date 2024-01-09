@@ -2,17 +2,17 @@
   padding-top: 4rem;
 
   &__container {
-   min-height: 50vh;
-   width: 100%;
-   margin-top: 4rem;
+    min-height: 50vh;
+    width: 100%;
+    margin-top: 4rem;
 
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
       width: 90vw;
       margin: 2rem auto;
     }
   }
 
-  @media(max-width: 768px) {
+  @media (max-width: 768px) {
     padding-top: 0;
   }
 
@@ -22,7 +22,7 @@
     justify-content: center;
     gap: 1rem;
 
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
       margin-bottom: 4rem;
     }
   }
@@ -37,7 +37,7 @@
     align-items: center;
     justify-content: center;
 
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
       font-size: 1rem;
       width: 50%;
     }
@@ -66,4 +66,3 @@
     }
   }
 }
-

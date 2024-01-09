@@ -1,30 +1,30 @@
 interface IDataOrder {
-  cancelledAt: string | null;
-  cancelledReason: string | null;
-  freight: string;
-  orderDate: string;
-  orderId: string;
-  orderStatus: string;
-  products: CartItem[];
-  trackingNumber: string | null;
+  cancelledAt: string | null
+  cancelledReason: string | null
+  freight: string
+  orderDate: string
+  orderId: string
+  orderStatus: string
+  products: CartItem[]
+  trackingNumber: string | null
 }
 
 export function useOrders(userId: string) {
-  const config = useRuntimeConfig();
-  const serverUrl = config.public.serverUrl;
-  const pending = ref(false);
-  const data = ref<IDataOrder[]>();
-  const error = ref<string | null>(null);
+  const config = useRuntimeConfig()
+  const serverUrl = config.public.serverUrl
+  const pending = ref(false)
+  const data = ref<IDataOrder[]>()
+  const error = ref<string | null>(null)
 
   async function execute() {
     try {
-      pending.value = true;
+      pending.value = true
 
       const { data: responseData } = await useFetch<Order[] | undefined>(
-        `${serverUrl}/order/${userId}`
-      );
+        `${serverUrl}/order/${userId}`,
+      )
 
-      const responseDataValue = unref(responseData);
+      const responseDataValue = unref(responseData)
       if (responseDataValue) {
         data.value = responseDataValue.map((order) => ({
           cancelledAt: order.cancelled_at,
@@ -35,21 +35,21 @@ export function useOrders(userId: string) {
           orderStatus: order.order_status,
           products: order.products,
           trackingNumber: order.tracking_number,
-        }));
+        }))
       }
-      pending.value = false;
+      pending.value = false
     } catch (err) {
-      error.value = (err as Error).message;
-      pending.value = false;
+      error.value = (err as Error).message
+      pending.value = false
     }
   }
 
-  onMounted(() => execute());
+  onMounted(() => execute())
 
   return {
     pending,
     data,
     error,
     execute,
-  };
+  }
 }

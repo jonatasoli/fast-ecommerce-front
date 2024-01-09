@@ -20,11 +20,14 @@ export const useCategoryStore = defineStore('categories', () => {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-      const { data, pending } = await useFetch(`${serverUrl}/catalog/categories`, {
-        headers,
-      })
+      const { data, pending } = await useFetch(
+        `${serverUrl}/catalog/categories`,
+        {
+          headers,
+        },
+      )
 
-      const responseData = await unref(data) as {
+      const responseData = (await unref(data)) as {
         categories: CategoryItem[]
       }
       categories.value = responseData.categories

@@ -27,22 +27,26 @@
       }
     ],
     "curly": ["error", "all"],
-    "vue/max-attributes-per-line": ["error", {
-      "singleline": {
-        "max": 4
-      },
-      "multiline": {
-        "max": 1
+    "vue/max-attributes-per-line": [
+      "error",
+      {
+        "singleline": {
+          "max": 4
+        },
+        "multiline": {
+          "max": 1
+        }
       }
-    }],
+    ],
     "vue/multi-word-component-names": "off",
+    "vue/comment-directive": 0,
     "no-console": "off",
     "no-restricted-syntax": [
       "error",
       {
-          "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(warn|error|info|trace)$/]",
-          "message": "Unexpected property on console object was called"
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(warn|error|info|trace)$/]",
+        "message": "Unexpected property on console object was called"
       }
-  ]
+    ]
   }
 }

@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-const { user, pending: pendingUser } = storeToRefs(useUserStore());
-const userId = user.value?.userId ?? "";
-const { data: orders, pending } = await useOrders(userId);
+  const { user, pending: pendingUser } = storeToRefs(useUserStore())
+  const userId = user.value?.userId ?? ''
+  const { data: orders, pending } = await useOrders(userId)
 
-definePageMeta({
-  middleware: [
-    function () {
-      const { authenticated } = storeToRefs(useUserStore());
-      if (!authenticated.value) {
-        return navigateTo("/");
-      }
-    },
-  ],
-});
+  definePageMeta({
+    middleware: [
+      function () {
+        const { authenticated } = storeToRefs(useUserStore())
+        if (!authenticated.value) {
+          return navigateTo('/')
+        }
+      },
+    ],
+  })
 </script>
 
 <template>
@@ -65,5 +65,5 @@ definePageMeta({
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/scss/pages/orders.scss";
+  @import '@/assets/scss/pages/orders.scss';
 </style>

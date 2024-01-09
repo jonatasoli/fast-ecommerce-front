@@ -1,35 +1,35 @@
-import { defineStore } from "pinia";
-import { ref } from "#imports";
+import { defineStore } from 'pinia'
+import { ref } from '#imports'
 
 interface IDataUser {
-  name: string;
-  document: string;
-  email: string;
-  phone: string;
-  fullName: string;
-  role: string | null;
-  userId: string;
+  name: string
+  document: string
+  email: string
+  phone: string
+  fullName: string
+  role: string | null
+  userId: string
 }
 
-export const useUserStore = defineStore("user", () => {
-  const user = ref<IDataUser | null>(null);
-  const authenticated = ref(false);
-  const pending = ref(false);
+export const useUserStore = defineStore('user', () => {
+  const user = ref<IDataUser | null>(null)
+  const authenticated = ref(false)
+  const pending = ref(false)
 
   async function getUser() {
-    pending.value = true;
+    pending.value = true
 
     const { data: responseData, error } = await useFetch<User | undefined>(
-      "/api/auth/user"
-    );
+      '/api/auth/user',
+    )
 
-    const responseDataValue = unref(responseData);
+    const responseDataValue = unref(responseData)
 
     if (unref(error)) {
-      pending.value = false;
-      user.value = null;
-      authenticated.value = false;
-      return;
+      pending.value = false
+      user.value = null
+      authenticated.value = false
+      return
     }
 
     if (responseDataValue) {
@@ -41,16 +41,16 @@ export const useUserStore = defineStore("user", () => {
         fullName: responseDataValue.fullName,
         role: responseDataValue.role,
         userId: responseDataValue.user_id,
-      };
-      authenticated.value = true;
+      }
+      authenticated.value = true
     }
 
-    pending.value = false;
+    pending.value = false
   }
 
   function reset() {
-    user.value = null;
-    authenticated.value = false;
+    user.value = null
+    authenticated.value = false
   }
 
   return {
@@ -59,5 +59,5 @@ export const useUserStore = defineStore("user", () => {
     user,
     getUser,
     reset,
-  };
-});
+  }
+})

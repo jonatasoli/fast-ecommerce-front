@@ -17,7 +17,6 @@
 
   &:hover {
     .feature-hero {
-
       &__image {
         a {
           transform: scale(1.05);
@@ -25,7 +24,6 @@
       }
     }
   }
-  
 
   &__image {
     width: 100%;
@@ -33,7 +31,7 @@
     min-height: 15rem;
     position: relative;
     overflow: hidden;
-    
+
     @media (min-width: 640px) {
       min-height: 18rem;
       flex: 0 0 50%;
@@ -84,7 +82,7 @@
       line-height: 130%;
       font-size: 1.5rem;
 
-      @media (min-width: 640px ) {
+      @media (min-width: 640px) {
         font-size: 2.5rem;
       }
 

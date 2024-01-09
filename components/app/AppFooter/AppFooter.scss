@@ -3,7 +3,7 @@
 footer {
   width: 100%;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  
+
   .footer {
     width: 100%;
     background-color: $home-background;
@@ -28,7 +28,7 @@ footer {
         line-height: 1.5rem;
         text-transform: uppercase;
         padding-bottom: 1rem;
-        border-bottom: 1px solid rgba($color: $primary-color, $alpha: .5);
+        border-bottom: 1px solid rgba($color: $primary-color, $alpha: 0.5);
         margin-bottom: 1rem;
       }
 
@@ -40,7 +40,7 @@ footer {
         @media screen and (min-width: 768px) {
           grid-template-columns: repeat(3, 1fr);
         }
-        
+
         @media screen and (min-width: 1024px) {
           grid-template-columns: repeat(6, 1fr);
         }
@@ -52,10 +52,10 @@ footer {
           text-transform: uppercase;
 
           a {
-            font-size: .875rem;
+            font-size: 0.875rem;
             line-height: 1.25rem;
             text-align: center;
-            color: #DDD;
+            color: #ddd;
             text-decoration: none;
             font-weight: 300;
 
@@ -69,7 +69,7 @@ footer {
 
     &__address {
       padding: 1.5rem 1rem;
-      border-top: 1px solid rgba($color: $primary-color, $alpha: .5);
+      border-top: 1px solid rgba($color: $primary-color, $alpha: 0.5);
 
       @media screen and (min-width: 1200px) {
         padding-left: 0;
@@ -77,9 +77,9 @@ footer {
       }
 
       address {
-        font-size: .75rem;
-        color: #FFF;
-        opacity: .7;
+        font-size: 0.75rem;
+        color: #fff;
+        opacity: 0.7;
         line-height: 1.25rem;
       }
     }

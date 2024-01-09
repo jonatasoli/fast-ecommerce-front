@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { datePtBR, ptBR } from 'naive-ui'
-import { useLocaleHead, useNuxtApp, useRuntimeConfig } from '#imports'
-import { breakpoints, theme } from '@/naive.style'
+  import { datePtBR, ptBR } from 'naive-ui'
+  import { useLocaleHead, useNuxtApp, useRuntimeConfig } from '#imports'
+  import { breakpoints, theme } from '@/naive.style'
 
-const nuxtApp = useNuxtApp()
-const config = useRuntimeConfig()
-const head = useLocaleHead({
-  addSeoAttributes: true,
-})
+  const nuxtApp = useNuxtApp()
+  const config = useRuntimeConfig()
+  const head = useLocaleHead({
+    addSeoAttributes: true,
+  })
 
-nuxtApp.hook('page:finish', () => {
-  window.scrollTo(0, 0)
-})
+  nuxtApp.hook('page:finish', () => {
+    window.scrollTo(0, 0)
+  })
 </script>
 
 <template>
@@ -19,16 +19,8 @@ nuxtApp.hook('page:finish', () => {
     <Head>
       <Title>Gatto Rosa</Title>
       <template v-if="config.public.isProd">
-        <Link
-          v-for="link in head.link"
-          :key="link.id"
-          v-bind="link"
-        />
-        <Meta
-          v-for="meta in head.meta"
-          :key="meta.id"
-          v-bind="meta"
-        />
+        <Link v-for="link in head.link" :key="link.id" v-bind="link" />
+        <Meta v-for="meta in head.meta" :key="meta.id" v-bind="meta" />
       </template>
     </Head>
     <Body>
@@ -47,5 +39,5 @@ nuxtApp.hook('page:finish', () => {
 </template>
 
 <style lang="scss">
-@import '@/assets/scss/main.scss';
+  @import '@/assets/scss/main.scss';
 </style>

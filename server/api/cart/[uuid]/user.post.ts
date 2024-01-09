@@ -1,4 +1,4 @@
-import { defineEventHandler, getCookie, readBody, createError} from 'h3'
+import { defineEventHandler, getCookie, readBody, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const serverBaseURL = process.env.SERVER_BASE_URL
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     })
