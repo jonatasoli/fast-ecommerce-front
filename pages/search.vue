@@ -15,7 +15,7 @@
 
   const route = useRoute()
   const router = useRouter()
-  const query = route.query.q?.toString() ?? ''
+  const query = computed(() => route.query.q?.toString() ?? '')
   const config = useRuntimeConfig()
   const OFFSET = 16
   const { t } = useI18n()
@@ -34,7 +34,7 @@
 
   const totalPages = ref(data.value?.total_pages ? data.value.total_pages : 1)
   const products = computed<ProductItem[]>(() => data.value?.products || [])
-  const searchTitle = computed(() => decodeURIComponent(query))
+  const searchTitle = computed(() => decodeURIComponent(query.value))
   const cartStore = useCartStore()
 
   async function handleAddToCart(product: ProductItem) {
