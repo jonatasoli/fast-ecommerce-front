@@ -85,6 +85,8 @@ export interface Cart {
   total_with_fee?: string
   zipcode: string
   cart_items: CartItem[]
+  detail?: string
+  stackerror?: string
 }
 
 export interface Address {
