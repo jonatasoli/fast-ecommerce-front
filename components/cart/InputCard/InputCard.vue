@@ -7,7 +7,7 @@
     title: string
     buttonText: string
     placeholder: string
-    receivedValue: string
+    receivedValue: string | null
     mask?: string
     validation?: 'error' | 'success' | 'warning' | undefined
     message?: string
@@ -22,7 +22,7 @@
   const emit = defineEmits(['onButtonClick'])
 
   const value = ref('')
-  value.value = props.receivedValue
+  value.value = props.receivedValue ?? ''
 
   function handleButtonClick() {
     emit('onButtonClick', value.value)

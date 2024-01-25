@@ -119,169 +119,101 @@ export const useCartStore = defineStore('cart', () => {
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
 
-  function addToCart(item: CartItem) {
-    if (!item) {
-      return
-    }
-    const uuid = cart.value.uuid
-    async function createCart() {
-      try {
-        const headers = {
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        }
-        if (!uuid) {
-          const { data, error } = await useFetch(`${serverUrl}/cart/`, {
-            method: 'POST',
-            headers,
-          })
-
-          if (unref(error)) {
-            error.value = null
-            return
-          }
-          const responseData = unref(data) as {
-            uuid: string
-          }
-          cart.value.uuid = responseData.uuid
-          return data
-        }
-        return {
-          data: {
-            uuid,
-          },
-        }
-      } catch (err) {
-        console.error(err)
+  async function createCart() {
+    try {
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       }
-    }
 
-    async function addProduct(uuid: string = cart.value.uuid) {
-      try {
-        loading.value = true
-        const headers = {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        }
-        const { data, error } = await useFetch(
-          `${serverUrl}/cart/${uuid}/product`,
-          {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-              product_id: item.product_id,
-              name: item.name,
-              image_path: item.image_path,
-              quantity: item.quantity,
-              price: item.price,
-              discount_price: 0,
-            }),
-          },
-        )
-        if (unref(error)) {
-          error.value = null
-          return
-        }
+      const { data, error } = await useFetch(`${serverUrl}/cart/`, {
+        method: 'POST',
+        headers,
+      })
 
-        const responseData = unref(data) as Cart
-
-        setCart(unref(responseData))
-
-        const responseEstimateData = await estimate()
-        if (!responseEstimateData) {
-          return
-        }
-        setCart(responseEstimateData)
-      } catch (err) {
-        console.error(err)
-      } finally {
-        loading.value = false
+      if (unref(error)) {
+        error.value = null
+        return
       }
-    }
-
-    createCart().then((data) => {
       const responseData = unref(data) as {
         uuid: string
       }
-      if (!responseData) {
-        return
-      }
-      addProduct(responseData.uuid)
-    })
-  }
-
-  async function updateQuantity(id: number, quantity: number | null) {
-    try {
-      const product = cart.value.cart_items.find((p) => p.product_id === id)
-      if (!product || !quantity) {
-        return
-      }
-      product.quantity = quantity
-      const responseData = await estimate()
-      if (!responseData) {
-        return
-      }
-      setCart(responseData)
+      cart.value.uuid = responseData.uuid
+      return data
     } catch (err) {
       console.error(err)
     }
   }
 
-  async function estimate() {
+  async function addProduct(uuid: string = cart.value.uuid, item) {
     try {
       loading.value = true
       const headers = {
+        accept: 'application/json',
         'content-type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': '*',
       }
-
       const { data, error } = await useFetch(
-        `/api/cart/${cart.value.uuid}/estimate`,
+        `${serverUrl}/cart/${uuid}/product`,
         {
           method: 'POST',
           headers,
-          body: {
-            uuid: cart.value.uuid,
-            cart_items: cart.value.cart_items,
-            subtotal: cart.value.subtotal,
-            total: cart.value.total,
-            zipcode: cart.value.zipcode,
-            freight_product_code: cart.value.freight_product_code,
-            coupon: coupon.value,
-            affiliate: affiliate.value,
-          },
+          body: JSON.stringify({
+            product_id: item.product_id,
+            name: item.name,
+            image_path: item.image_path,
+            quantity: item.quantity,
+            price: item.price,
+            discount_price: 0,
+          }),
         },
       )
-
       if (unref(error)) {
-        return unref(error)?.data.message
+        error.value = null
+        return
       }
 
       const responseData = unref(data) as Cart
+
+      setCart(unref(responseData))
+
       return responseData
     } catch (err) {
-      return err
+      console.error(err)
     } finally {
       loading.value = false
     }
   }
+  async function addToCart(item: CartItem) {
+    if (!item) {
+      return
+    }
+    let uuid = cart.value.uuid
 
-  async function removeItem(id: number) {
+    if (!uuid) {
+      const data = await createCart()
+      const responseDataValue = unref(data) as {
+        uuid: string
+      }
+      uuid = responseDataValue?.uuid
+    }
+
+    await addProduct(uuid, item)
+  }
+
+  function removeItem(id: number) {
     try {
       const cartItems = unref(cart).cart_items
       cart.value.cart_items = cartItems.filter((p) => p.product_id !== id)
       if (cartItems.length === 1) {
         cart.value.uuid = ''
-        return
       }
-      await estimate()
     } catch (err) {
       console.error(err)
     }
   }
 
-  async function calculateFreight(zipcode: string, freightProductCode: string) {
+  function calculateFreight(zipcode: string, freightProductCode: string) {
     try {
       if (!zipcode) {
         return
@@ -289,16 +221,6 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = true
       cart.value.zipcode = zipcode
       cart.value.freight_product_code = freightProductCode
-
-      const responseData = await estimate()
-      if (!responseData) {
-        return { error: 'ERROR_CALCULATE_FREIGHT' }
-      }
-
-      if (responseData.uuid) {
-        setCart(responseData)
-      }
-      return responseData
     } catch (err) {
       console.error(err)
     } finally {
@@ -306,21 +228,13 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addCoupon(value: string) {
+  function addCoupon(value: string) {
     try {
       if (!coupon) {
         return
       }
       loading.value = true
       coupon.value = value
-      const responseData = await estimate()
-      if (!responseData) {
-        return
-      }
-      if (responseData.uuid) {
-        setCart(responseData)
-      }
-      return responseData
     } catch (err) {
       console.error(err)
     } finally {
@@ -729,14 +643,13 @@ export const useCartStore = defineStore('cart', () => {
   return {
     cart,
     address,
+    affiliate,
     getCart,
     loading,
     paymentCreditCard,
     coupon,
-    estimate,
     getCartUser,
     addToCart,
-    updateQuantity,
     calculateFreight,
     removeItem,
     addUserCart,
