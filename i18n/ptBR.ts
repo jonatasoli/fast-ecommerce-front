@@ -238,6 +238,7 @@ export default {
 
   finishCheckout: {
     pending: 'Aguarde um momento...',
+    pendingDescription: 'Por favor aguarde, não feche ou atualize a página!',
     title: 'Seu pagamento está sendo processado',
     description: 'Em breve você receberá um e-mail com os detalhes do pedido',
     button: 'Voltar para a página inicial',

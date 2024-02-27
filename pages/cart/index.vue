@@ -28,14 +28,28 @@
   async function handleEstimateFreight(value) {
     await cartStore.calculateFreight(value, unref(checkedFreightProductCode))
     await refreshEstimate()
+    if (unref(error)) {
+      handleFreightError(unref(error))
+      return
+    }
+
+    messageInvalidCEP.value = ''
+    validationCEP.value = undefined
+  }
+
+  function handleFreightError(error) {
     if (unref(error) === 'INVALID_CEP') {
       messageInvalidCEP.value = 'CEP Inválido'
       validationCEP.value = 'error'
       cartStore.clearFreight()
-      return
+    } else {
+      notification.error({
+        title: 'Erro',
+        content:
+          'Algo deu errado ao calcular o frete. Tente novamente mais tarde.',
+        duration: 2500,
+      })
     }
-    messageInvalidCEP.value = ''
-    validationCEP.value = undefined
   }
 
   async function handleAddCoupon(value) {

@@ -38,6 +38,9 @@
   <div class="finish">
     <div v-if="pending" class="finish__container">
       <h2 class="finish__title">{{ t('finishCheckout.pending') }}</h2>
+      <p class="finish__description">
+        {{ t('finishCheckout.pendingDescription') }}
+      </p>
       <n-space>
         <n-spin size="large" />
       </n-space>
