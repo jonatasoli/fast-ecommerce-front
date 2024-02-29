@@ -32,7 +32,15 @@
     })
   }
 
+  function calculateDiscount(price: number, discount: number) {
+    return price - discount
+  }
+
   const price = computed(() => currencyFormat(product.value?.price || 0))
+  const priceWithDiscount = unref(product)?.discount
+    ? calculateDiscount(product.value.price, product.value.discount)
+    : unref(product)?.price
+  const newPrice = computed(() => currencyFormat(priceWithDiscount || 0))
   const installments = computed(() => {
     let count = 4
     let amount = currencyFormat(0)
@@ -59,6 +67,7 @@
 
     await cartStore.addToCart({
       image_path: product.value.image_path,
+      discount_price: product.value.discount,
       name: product.value.name,
       price: product.value.price,
       product_id: product.value.product_id,
@@ -103,9 +112,14 @@
           </n-space>
           <hr class="divider" />
         </div>
-        <p class="product__content--price">
-          {{ price }}
-        </p>
+        <div class="product__content--container-price">
+          <p v-if="product.discount" class="product__content--old-price">
+            De: {{ price }}
+          </p>
+          <p class="product__content--price">
+            <span v-if="product.discount">Por:</span>{{ newPrice }}
+          </p>
+        </div>
         <p v-if="isPtBr" class="product__content--installments">
           <i18n-t keypath="productPage.installments">
             <template #count>

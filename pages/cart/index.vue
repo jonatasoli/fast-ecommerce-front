@@ -3,7 +3,7 @@
   import { TrashIcon } from '@heroicons/vue/24/outline'
   import { useDebounceFn } from '@vueuse/core'
   import { useNotification } from 'naive-ui'
-  import { currencyFormat, useI18n } from '#imports'
+  import { currencyFormat, useI18n, type CartItem } from '#imports'
   import { useCartStore } from '@/stores/cart'
   import InputCard from '~/components/cart/InputCard/InputCard.vue'
   import { RadioInput } from '~/components/cart'
@@ -116,6 +116,13 @@
       cartStore.getCart.freight_product_code = 'PAC'
     }
   })
+
+  function calculateDiscount(item: CartItem) {
+    return (
+      currencyFormat(item.price - item.discount_price) ||
+      currencyFormat(item.price)
+    )
+  }
 </script>
 
 <template>
@@ -210,8 +217,14 @@
                       @update:value="updateQuantity"
                     />
                   </div>
-                  <div class="value">
-                    {{ currencyFormat(item?.price) }}
+                  <div class="container-price">
+                    <p v-if="Number(item.discount_price)" class="old-price">
+                      De: {{ currencyFormat(item?.price) }}
+                    </p>
+                    <p class="price">
+                      <span v-if="Number(item.discount_price)">Por:</span>
+                      {{ calculateDiscount(item) }}
+                    </p>
                   </div>
                   <div>
                     <n-button

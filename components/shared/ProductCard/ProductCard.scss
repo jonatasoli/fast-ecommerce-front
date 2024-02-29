@@ -61,11 +61,25 @@
       }
     }
 
-    p {
+    .container-price {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: #333639;
+      margin: 0;
+    }
+
+    .price {
       font-size: 1.25rem;
       color: $primary-color;
       font-weight: 600;
       font-family: Montserrat, sans-serif;
+      margin: 0;
     }
   }
 
