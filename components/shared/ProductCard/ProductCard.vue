@@ -12,10 +12,18 @@
   const { t } = useI18n()
   const emit = defineEmits(['addToCart'])
 
+  function calculateDiscount(price: number, discount: number) {
+    return price - discount
+  }
+
   const productImage = computed(() => ({
     backgroundImage: `url('${props.product.image_path}')`,
   }))
   const price = computed(() => currencyFormat(props.product.price))
+  const priceWithDiscount = props.product.discount
+    ? calculateDiscount(props.product.price, props.product.discount)
+    : props.product.price
+  const newPrice = computed(() => currencyFormat(priceWithDiscount || 0))
   const route = `/products/${props.product.uri}`
 
   function handleAddToCart() {
@@ -34,7 +42,12 @@
           {{ product.name }}
         </NuxtLink>
       </div>
-      <p>{{ price }}</p>
+      <div class="container-price">
+        <p v-if="props.product.discount" class="old-price">De: {{ price }}</p>
+        <p class="price">
+          <span v-if="props.product.discount">Por:</span>{{ newPrice }}
+        </p>
+      </div>
     </div>
     <div v-if="product.quantity === 0" class="product-item__out-of-stock">
       {{ t('productItem.outOfStock') }}

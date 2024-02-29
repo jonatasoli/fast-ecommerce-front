@@ -103,9 +103,21 @@
               }
             }
 
-            .value {
+            .container-price {
+              display: flex;
+              flex-direction: column;
+            }
+
+            .old-price {
+              text-decoration: line-through;
+              color: #333639;
+              margin: 0;
+            }
+
+            .price {
               font-size: 1.15rem;
               font-weight: 600;
+              margin: 0;
             }
           }
         }
