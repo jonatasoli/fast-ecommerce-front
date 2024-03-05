@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { defineStore } from "pinia";
 import type {
   Cart,
@@ -19,10 +20,11 @@ import {
   useNuxtApp,
   type CreditCard,
 } from "#imports";
+import type { AddPixPaymentMehodResponse } from "~/types/cart";
 
 export const useCartStore = defineStore("cart", () => {
-  const affiliate = useCookie<string>("affiliate", {
-    default: () => ref(""),
+  const affiliate = useCookie<string | null>("affiliate", {
+    default: () => ref(null),
   });
 
   const coupon = useCookie<string>("coupon", {
@@ -33,8 +35,8 @@ export const useCartStore = defineStore("cart", () => {
     default: () =>
       ref({
         uuid: "",
-        affiliate: "",
-        coupon: "",
+        affiliate: null,
+        coupon: null,
         discount: "",
         freight_product_code: "PAC",
         freight: {
@@ -106,18 +108,31 @@ export const useCartStore = defineStore("cart", () => {
     payment_method_id: "",
     payment_intent: "",
     customer_id: "",
-    card_token: "",
+    card_token: null,
     pix_qr_code: "",
     pix_qr_code_base64: "",
     pix_payment_id: 0,
     gateway_provider: "",
     installments: 0,
+    shipping_address_id: "",
+    user_address_id: 0,
+    shipping_is_payment: false,
+    subtotal_with_fee: 0,
+    total_with_fee: 0,
   });
 
   const loading = ref(false);
   const getCart = computed(() => cart.value);
   const { $config } = useNuxtApp();
   const serverUrl = $config.public.serverUrl;
+
+  function setPaymentData(data: Payment) {
+    payment.value = {
+      ...payment.value,
+      ...data
+    }
+  }
+
 
   function addToCart(item: CartItem) {
     if (!item) {
@@ -602,6 +617,7 @@ export const useCartStore = defineStore("cart", () => {
         status: string;
         message: string;
         order_id: string;
+        gateway_payment_id: string;
       };
       return responseData;
     } catch (err) {
@@ -612,8 +628,8 @@ export const useCartStore = defineStore("cart", () => {
   function clearCart() {
     cart.value = {
       uuid: "",
-      affiliate: "",
-      coupon: "",
+      affiliate: null,
+      coupon: null,
       discount: "",
       freight_product_code: "03298",
       freight: {
@@ -711,7 +727,7 @@ export const useCartStore = defineStore("cart", () => {
   }
 
   function clearAffiliate() {
-    affiliate.value = "";
+    affiliate.value = null;
   }
 
   function clearFreight() {
@@ -744,13 +760,13 @@ export const useCartStore = defineStore("cart", () => {
    * Calls the API to add a new payment method (PIX)
    * @param paymentData: the relevant data about the payment method.
    */
-  async function addPaymentMethod() {
+  async function addPixPaymentMethod() {
     const headers = {
       "content-type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
 
-    const { data, error } = await useFetch(
+    const { data, error } = await useFetch<AddPixPaymentMehodResponse>(
       `/api/cart/${cart.value.uuid}/payment/pix`,
       {
         headers,
@@ -758,8 +774,7 @@ export const useCartStore = defineStore("cart", () => {
         body: {
           cart: getCartData(),
           payment: {
-            payment_gateway: 'MERCADOPAGO',
-            installments: 1
+            payment_gateway: 'MERCADOPAGO'
           }
         }
       }
@@ -770,10 +785,44 @@ export const useCartStore = defineStore("cart", () => {
       throw new Error(errorMessage)
     }
 
+    const { data: {
+      shipping_is_payment,
+      user_address_id,
+      shipping_address_id,
+      payment_method,
+      payment_intent,
+      customer_id,
+      pix_qr_code,
+      pix_qr_code_base64,
+      pix_payment_id,
+      gateway_provider,
+      installments,
+      total_with_fee,
+      subtotal_with_fee,
+      payment_method_id,
+    } } = data.value
+
+    setPaymentData({
+      shipping_is_payment,
+      user_address_id,
+      shipping_address_id,
+      payment_method,
+      payment_method_id,
+      payment_intent: payment_intent?.toString(),
+      customer_id,
+      pix_qr_code,
+      pix_qr_code_base64,
+      pix_payment_id: pix_payment_id ? parseInt(pix_payment_id) : 0,
+      gateway_provider,
+      installments,
+      subtotal_with_fee: subtotal_with_fee ? parseInt(subtotal_with_fee) : 0,
+      total_with_fee: total_with_fee ? parseInt(total_with_fee) : 0
+    })
+
     return data.value.data
   }
 
-  async function getPaymentStatus(paymentId: string) {
+  async function getPixPaymentStatus(paymentId: string) {
     const headers = {
       "content-type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -827,7 +876,7 @@ export const useCartStore = defineStore("cart", () => {
     clearDiscount,
     setCoupon,
     setCart,
-    addPaymentMethod,
-    getPaymentStatus,
+    addPixPaymentMethod,
+    getPixPaymentStatus,
   };
 });

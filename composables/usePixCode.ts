@@ -22,14 +22,21 @@ export function usePixCode({ onError }: IPixCodeProps = {}) {
   async function execute() {
     try {
       pending.value = true
-      const response = await cart.addPaymentMethod()
-      
-      data.value = {
-        link: response.pix_qr_code,
-        qrCode: useImageFromBase64(response.pix_qr_code_base4),
-        paymentId: response.pix_payment_id
+      const pixResponse = await cart.addPixPaymentMethod()
+      const checkoutResponse = await cart.finishCheckout()
+
+      if (!checkoutResponse) {
+        throw new Error('Error when creating checkout.')
       }
+
+      data.value = {
+        link: pixResponse.pix_qr_code,
+        qrCode: useImageFromBase64(pixResponse.pix_qr_code_base64),
+        paymentId: checkoutResponse.gateway_payment_id
+      }
+
       pending.value = false
+    
     } catch (err) {
       error.value = (err as Error).message
       

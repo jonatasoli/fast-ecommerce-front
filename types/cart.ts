@@ -52,8 +52,10 @@ export interface CartCreditCardData extends CartData {
 export interface CartDataPix extends CartData {
   payment_method: "pix"
   pix_qr_code: string
-  pix_qr_code_base4: string
+  pix_qr_code_base64: string
   pix_payment_id: string
+  payment_intent: number | null
+  payment_method_id: string
 }
 
 export type AddPixPaymentMehodResponse = ServerResponse<{
