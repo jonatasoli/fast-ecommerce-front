@@ -22,7 +22,11 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
     '@vueuse/nuxt',
+    '@nuxtjs/sentry',
   ],
+  sentry: {
+    dsn: process.env.SENTRY_DSN, // Enter your project's DSN.
+  },
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
     locales: [{ iso: 'pt-BR', code: LOCALES.PT_BR }],
