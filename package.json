@@ -64,8 +64,8 @@
   "dependencies": {
     "@mercadopago/sdk-js": "^0.0.3",
     "@nuxtjs/google-fonts": "^3.0.1",
-    "@nuxtjs/sentry": "^8.0.7",
     "@pinia/nuxt": "^0.5.1",
+    "@sentry/tracing": "^7.105.0",
     "@sentry/vue": "^7.105.0",
     "@types/jest": "^29.5.7",
     "@vee-validate/zod": "^4.11.8",
