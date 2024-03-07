@@ -3,7 +3,14 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "noImplicitAny": false,
-    "checkJs": true
+    "checkJs": true,
+    "sourceMap": true,
+    "inlineSources": true,
+
+    // Set `sourceRoot` to  "/" to strip the build path prefix
+    // from generated source code references.
+    // This improves issue grouping in Sentry.
+    "sourceRoot": "/"
   },
   "exclude": ["node_modules", "cypress"]
 }
