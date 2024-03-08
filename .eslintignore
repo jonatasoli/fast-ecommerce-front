@@ -5,4 +5,7 @@ node_modules
 .cache
 .output
 .env
+new-relic.js
+*new-relic.js
+.new-relic.js
 dist

@@ -8,6 +8,18 @@ const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
   ssr: false,
+  head: {
+    __dangerouslyDisableSanitizers: ["script"],
+    script: [
+      {
+        hid: "NEWRELIC",
+        src: "new-relic.js",
+        defer: true,
+        type: "text/javascript",
+        charset: "utf-8",
+      },
+    ],
+  },
   components: [
     {
       path: '~/components',
