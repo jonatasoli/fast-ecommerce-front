@@ -4,6 +4,7 @@
   import * as zod from 'zod'
 
   import { toTypedSchema } from '@vee-validate/zod'
+  import { useNotification } from 'naive-ui'
   import { useAuthStore } from '@/stores/auth'
   import { definePageMeta, ref, useI18n, useRoute, useRouter } from '#imports'
 
@@ -12,21 +13,18 @@
   })
   const router = useRouter()
   const route = useRoute()
+  const notification = useNotification()
   const redirect = ref(route.query.redirect as string | undefined)
   const { t } = useI18n()
   const error = ref('')
   const validationSchema = toTypedSchema(
     zod.object({
-      username: zod
-        .string()
-        .nonempty(t('login.formValidation.requiredUsername')),
-      password: zod
-        .string()
-        .nonempty(t('login.formValidation.requiredPassword')),
+      username: zod.string().min(3, t('login.formValidation.requiredUsername')),
+      password: zod.string().min(6, t('login.formValidation.requiredPassword')),
     }),
   )
 
-  const { handleSubmit, defineField } = useForm({
+  const { handleSubmit, defineField, setFieldError } = useForm({
     validationSchema,
     initialValues: {
       username: '',
@@ -46,12 +44,12 @@
   const [username, usernameProps] = defineField('username', naiveConfig)
   const [password, passwordProps] = defineField('password', naiveConfig)
 
-  const { login } = useAuthStore()
+  const authStore = useAuthStore()
 
   const onSubmit = handleSubmit(async (values) => {
     const { username, password } = values
     const cleanCPF = username.replace(/\D/g, '')
-    const res = await login({ username: cleanCPF, password })
+    const res = await authStore.login({ username: cleanCPF, password })
     if (!res?.success) {
       const getError =
         res?.error === 'INVALID_CREDENTIALS'
@@ -68,6 +66,30 @@
     }
     router.push('/')
   })
+
+  async function handleForgotPassword() {
+    if (!unref(username)) {
+      setFieldError('username', t('login.formValidation.requiredUsername'))
+      return
+    }
+    const cleanCPF = unref(username)?.replace(/\D/g, '') ?? ''
+    const response = await authStore.requestResetPassword(cleanCPF)
+
+    if (!response?.success) {
+      notification.error({
+        title: 'Erro',
+        content: t('login.requestResetPassword.error'),
+        duration: 2500,
+      })
+      return
+    }
+
+    notification.success({
+      title: t('login.requestResetPassword.success.title'),
+      content: t('login.requestResetPassword.success.content'),
+      duration: 5000,
+    })
+  }
 </script>
 
 <template>
@@ -129,6 +151,7 @@
           strong
           round
           class="login__form-actions-button"
+          @click="handleForgotPassword"
         >
           <template #icon>
             <n-icon>
