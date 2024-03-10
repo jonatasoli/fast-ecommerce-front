@@ -56,6 +56,39 @@ export const useAuthStore = defineStore('auth', () => {
     return registerData.value
   }
 
+  async function requestResetPassword(document: string) {
+    const { data: forgotPasswordData, pending } =
+      await useFetch<RegisterResponse>('/api/auth/request-reset-password', {
+        method: 'POST',
+        body: {
+          document,
+        },
+      })
+
+    loading.value = pending.value
+    return forgotPasswordData.value
+  }
+
+  async function resetPassword(data: {
+    document: string
+    newPassword: string
+    token: string
+  }) {
+    const { document, newPassword, token } = data
+    const { data: resetPasswordData, pending } =
+      await useFetch<RegisterResponse>('/api/auth/reset-password', {
+        method: 'PATCH',
+        body: {
+          document,
+          newPassword,
+          token,
+        },
+      })
+
+    loading.value = pending.value
+    return resetPasswordData.value
+  }
+
   async function logout() {
     await useFetch<LogoutResponse>('/api/auth/logout')
   }
@@ -63,6 +96,8 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     login,
     register,
+    requestResetPassword,
+    resetPassword,
     logout,
     loading,
   }

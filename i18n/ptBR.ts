@@ -100,6 +100,42 @@ export default {
       requiredUsername: 'CPF é obrigatório',
       requiredPassword: 'Senha é obrigatória',
     },
+    requestResetPassword: {
+      error:
+        'Não foi possível enviar a solicitação. Verifique se o CPF está correto.',
+      success: {
+        title: 'Solicitação enviada com sucesso',
+        content:
+          'Em instantes você receberá um e-mail com as instruções para alterar sua senha',
+      },
+    },
+  },
+
+  resetPassword: {
+    title: 'Recuperar senha',
+    document: 'CPF',
+    newPassword: 'Nova senha',
+    confirmPassword: 'Confirmar nova senha',
+    submit: 'Alterar senha',
+    formValidation: {
+      documentRequired: 'CPF é obrigatório',
+      requiredNewPassword: 'Nova senha é obrigatória',
+      requiredConfirmPassword: 'Confirmação de senha é obrigatória',
+      passwordMismatch: 'Senhas não conferem',
+      serverError: 'Erro ao realizar alteração de senha',
+    },
+    message: {
+      error: {
+        title: 'Erro',
+        content:
+          'Não foi possível resetar a senha. Solicite um novo link de recuperação.',
+      },
+      success: {
+        title: 'Senha alterada com sucesso',
+        content: 'Você já pode realizar o login',
+      },
+    },
+    return: 'Voltar',
   },
 
   register: {
