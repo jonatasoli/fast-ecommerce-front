@@ -852,6 +852,7 @@ export const useCartStore = defineStore("cart", () => {
     loading,
     paymentCreditCard,
     coupon,
+    payment,
     estimate,
     getCartUser,
     addToCart,

@@ -4,20 +4,36 @@ interface IConfig {
   watch: MaybeRefOrGetter<string | undefined>
 }
 
+const PAYMENT_STATUS = {
+  ERROR: "REJECTED",
+  SUCCESS: "APPROVED",
+  PENDING: "PENDING",
+  WAITING: null
+}
+
 const STATUS_CHECK_INTERVAL = 5000 // 1 second 
 const STATUS_CHECK_TIMEOUT = 50000 // 5 minutes
 
 
+const mapStatus = (status: keyof typeof PAYMENT_STATUS) => {
+  if (status) {
+    return status.toUpperCase()
+  }
+
+  return PAYMENT_STATUS.WAITING
+}
+
 export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: IConfig) => {
   const cartStore = useCartStore()
-  const status = ref<string>()
+  const status = ref<PAYMENT_STATUS[keyof typeof PAYMENT_STATUS]>()
 
   const getPaymentStatus = async (paymentId: string): Promise<void> => {
     try {
       const response = await cartStore.getPixPaymentStatus(paymentId)
-      status.value = response.status
+      // status.value = mapStatus(response.status)
+      status.value = PAYMENT_STATUS.SUCCESS
     } catch (err) {
-      status.value = "error"
+      status.value = PAYMENT_STATUS.ERROR
     }
   }
 
@@ -31,14 +47,14 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
     setTimeout(checkStatus, STATUS_CHECK_TIMEOUT)
   }
 
-  const timeoutError = () => {
+  const processError = () => {
     onError({
       message: 'Parece que houve um erro no pagamento. Tente novamente.',
       name: 'ProcessingError',
     })
   }
 
-  const processError  = () => {
+  const timeoutError  = () => {
     onError({
       message: 'O QR code expirou. Para continuar, gere outro.',
       name: 'Timeout',
@@ -48,11 +64,12 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
   const checkStatus = () => {
     clearInterval(intervalCheck)
 
-    if (status.value === 'PENDING') {
+    // Tempo acabou e status é pendente ou null (inicial)
+    if ([PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(status.value)) {
       return timeoutError()
     }
 
-    if (status.value === 'success') {
+    if (status.value === PAYMENT_STATUS.SUCCESS) {
       return onSuccess()
     }
 
@@ -63,21 +80,16 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
     watch(() => unref(watchSource), (value) => {
       if (!unref(value)) {
         console.warn('no payment id')
-        
       }
       startChecking(unref(value) as string)
     })
 
-    watch(() => unref(status), value => {
-      if (value === 'PENDING' || !value) {return}
-
-      clearInterval(intervalCheck)
-
-      if (value === 'success') {
-        return onSuccess()
+    watch(() => unref(status), () => {
+      if ([PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(status.value)) {
+        return
       }
 
-      return processError()
+      checkStatus()
     })
   })
 

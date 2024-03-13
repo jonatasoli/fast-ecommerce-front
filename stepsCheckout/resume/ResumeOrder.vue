@@ -44,13 +44,17 @@ const preview = ref<Checkout>({
 
 onMounted(async () => {
   const response = await cartStore.getCartPreview();
+
   if (!response) {
     return;
   }
+
   const { success, data } = unref(response);
+
   if (!success) {
     return;
   }
+
   preview.value = data;
 });
 

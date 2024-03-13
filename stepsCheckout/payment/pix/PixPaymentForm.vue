@@ -1,11 +1,11 @@
 <template>
   <n-card class="pix-payment-form">
     <LoadingProvider :active="pending">
-      <n-space v-if="error" align="center" vertical>
-        <h1>{{ t('title.error') }}</h1>
-        <p>{{ t('error.pix-qr-code') }}</p>
+      <n-space v-if="errorData" align="center" vertical>
+        <h1>{{ errorData.title }}</h1>
+        <p>{{ errorData.message }}</p>
 
-        <n-button type="primary" ghost @click.prevent="handleGeneratePixcode">
+        <n-button type="primary" ghost @click.prevent="handleRetryPix">
           {{ t('actions.try-again') }}
         </n-button>
       </n-space>
@@ -50,11 +50,29 @@
 
 <script setup lang="ts">
 import { useNotification } from 'naive-ui';
+import {useCartStore} from "#imports";
 
 const { t } = useI18n()
 const notification = useNotification()
+const cartStore = useCartStore()
 
-const { data, error, pending, execute: handleGeneratePixcode } = usePixCode({
+const emit = defineEmits(["success"])
+
+interface IErrorData { title: string; message: string }
+
+const error = ref<IErrorData>()
+const errorData = computed<IErrorData | undefined>((): IErrorData | undefined => {
+  if (pixError.value) {
+    return {
+      title: t('title.error'),
+      message: t('error.pix-qr-code'),
+    }
+  }
+
+  return error.value
+})
+
+const { data, error: pixError, pending, execute: handleGeneratePixCode } = usePixCode({
   onError: () => notification.error({ 
     content: t('error.pix-qr-code'),
     closable: true,
@@ -62,9 +80,38 @@ const { data, error, pending, execute: handleGeneratePixcode } = usePixCode({
   })
 })
 
+const handleRetryPix = async () => {
+  await cartStore.estimate()
+  await handleGeneratePixCode()
+}
+
 usePaymentStatus({
-  onError: _ => {},
-  onSuccess: () => {},
+  onError: err => {
+    console.error(err)
+
+    notification.error({ 
+      content: err.message,
+      closable: true,
+      duration: 2000 
+    })
+
+    error.value = {
+      title: err.name === 'Timeout' 
+                        ? 'Tempo Esgotado!' 
+                        : 'Erro ao Processar Pagamento',
+      message: err.message
+    }
+  },
+  onSuccess: () => {
+    notification.success({
+      title: 'Pagamento Confirmado!',
+      content: 'O seu pagamento foi confirmado!',
+      closable: true,
+      duration: 2000 
+    })
+
+    emit("success")
+  },
   watch: computed(() =>  data.value?.paymentId)
 })
 </script>

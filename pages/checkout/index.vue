@@ -4,7 +4,6 @@ import { navigateTo } from 'nuxt/app'
 import { useNotification } from 'naive-ui'
 import { useUserStore } from '~/stores/user'
 import { useCartStore } from '~/stores/cart'
-import { useCheckoutStore } from '~/stores/checkout'
 import { Pix, CreditCard } from '~/stepsCheckout/payment'
 import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
 import type { FormAddress } from '~/components/checkout'
@@ -230,7 +229,7 @@ watch(user, async() => {
       </div>
 
       <CreditCard v-if="paymentMethod === 'credit-card'" ref="creditCard" />
-      <Pix v-else-if="paymentMethod === 'pix'" />
+      <Pix v-else-if="paymentMethod === 'pix'" @success="current = 4" />
     </div>
 
     <div v-if="current === 4" class="checkout__container checkout__confirm">
