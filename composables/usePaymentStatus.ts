@@ -11,8 +11,8 @@ const PAYMENT_STATUS = {
   WAITING: null
 }
 
-const STATUS_CHECK_INTERVAL = 5000 // 1 second 
-const STATUS_CHECK_TIMEOUT = 50000 // 5 minutes
+const STATUS_CHECK_INTERVAL = 1000 // 1 second
+const STATUS_CHECK_TIMEOUT = 1000 * 60 * 5 // 5 minutes
 
 
 const mapStatus = (status: keyof typeof PAYMENT_STATUS) => {
@@ -30,21 +30,20 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
   const getPaymentStatus = async (paymentId: string): Promise<void> => {
     try {
       const response = await cartStore.getPixPaymentStatus(paymentId)
-      // status.value = mapStatus(response.status)
-      status.value = PAYMENT_STATUS.SUCCESS
+      status.value = mapStatus(response.status)
     } catch (err) {
       status.value = PAYMENT_STATUS.ERROR
     }
   }
 
-  let intervalCheck
+  let intervalCheck, timeoutCheck
   const startChecking = (paymentId: string) => {
     intervalCheck = setInterval(
       async () => await getPaymentStatus(paymentId),
       STATUS_CHECK_INTERVAL
     )
 
-    setTimeout(checkStatus, STATUS_CHECK_TIMEOUT)
+    timeoutCheck = setTimeout(checkStatus, STATUS_CHECK_TIMEOUT)
   }
 
   const processError = () => {
@@ -63,6 +62,7 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
 
   const checkStatus = () => {
     clearInterval(intervalCheck)
+      clearTimeout(timeoutCheck)
 
     // Tempo acabou e status é pendente ou null (inicial)
     if ([PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(status.value)) {

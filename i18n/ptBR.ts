@@ -230,8 +230,8 @@ export default {
       next: 'Próximo',
       back: 'Voltar',
       finish: 'Confirmar Pedido',
+      home: 'Home'
     },
-
   },
 
   finishCheckout: {

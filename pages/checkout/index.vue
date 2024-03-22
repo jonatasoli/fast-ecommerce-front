@@ -122,6 +122,10 @@ function handleFinishCheckout() {
   router.push('/checkout/finish')
 }
 
+function handleGoHome() {
+  router.push('/')
+}
+
 onMounted(async () => {
   if (unref(user)) {
     await handleSubmitUser()
@@ -237,7 +241,7 @@ watch(user, async() => {
     </div>
 
     <div v-if="current" class="checkout__actions">
-      <n-button
+       <n-button
         v-if="current > 2"
         quaternary
         strong
@@ -246,6 +250,7 @@ watch(user, async() => {
       >
         {{ t('checkout.actions.back') }}
       </n-button>
+
       <n-button
         v-if="current < 4 && user"
         type="primary"
@@ -256,15 +261,26 @@ watch(user, async() => {
       >
         {{ t('checkout.actions.next') }}
       </n-button>
-      <n-button
-        v-if="current === 4"
-        type="primary"
-        strong
-        class="btn-checkout"
-        @click="handleFinishCheckout"
-      >
-        {{ t('checkout.actions.finish') }}
-      </n-button>
+      <template v-if="current === 4">
+        <n-button
+          v-if="paymentMethod == 'pix'"
+          type="primary"
+          strong
+          class="btn-checkout"
+          @click="handleGoHome"
+        >
+          {{ t('checkout.actions.home') }}
+        </n-button>
+        <n-button
+          v-else
+          type="primary"
+          strong
+          class="btn-checkout"
+          @click="handleFinishCheckout"
+        >
+          {{ t('checkout.actions.finish') }}
+        </n-button>
+      </template>
     </div>
   </div>
 </template>

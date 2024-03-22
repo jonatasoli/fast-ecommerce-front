@@ -43,6 +43,10 @@ const preview = ref<Checkout>({
 });
 
 onMounted(async () => {
+  if (cartStore.payment.payment_method === 'pix') {
+    return
+  }
+
   const response = await cartStore.getCartPreview();
 
   if (!response) {
@@ -58,19 +62,24 @@ onMounted(async () => {
   preview.value = data;
 });
 
+
+const data = computed(() => {
+  return cartStore.payment.payment_method === 'pix' ? cartStore.getCart : unref(preview)
+})
+
 function hiddenCreditCardNumber(number) {
   const fourLastDigits = number.slice(-4);
   return `**** **** **** ${fourLastDigits}`;
 }
 
 const subtotal = computed(() => {
-  const haveFee = unref(preview).subtotal_with_fee !== "0";
-  return haveFee ? unref(preview).subtotal_with_fee : unref(preview).subtotal;
+  const haveFee = unref(data).subtotal_with_fee !== "0";
+  return haveFee ? unref(data).subtotal_with_fee : unref(data).subtotal;
 })
 
 const total = computed(() => {
-  const haveFee = unref(preview).total_with_fee !== "0";
-  return haveFee ? unref(preview).total_with_fee : unref(preview).total
+  const haveFee = unref(data).total_with_fee !== "0";
+  return haveFee ? unref(data).total_with_fee : unref(data).total
 })
 </script>
 
@@ -118,7 +127,7 @@ const total = computed(() => {
       </n-grid>
       <div class="divider" />
       <div
-        v-for="product in preview.cart_items"
+        v-for="product in data.cart_items"
         :key="product.product_id"
         class="products"
       >

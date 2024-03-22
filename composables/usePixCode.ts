@@ -23,6 +23,7 @@ export function usePixCode({ onError }: IPixCodeProps = {}) {
     try {
       pending.value = true
       const pixResponse = await cart.addPixPaymentMethod()
+      await cart.getCartPreview()
       const checkoutResponse = await cart.finishCheckout()
 
       if (!checkoutResponse) {
