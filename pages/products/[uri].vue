@@ -42,7 +42,7 @@
     : unref(product)?.price
   const newPrice = computed(() => currencyFormat(priceWithDiscount || 0))
   const installments = computed(() => {
-    let count = 4
+    let count = 3
     let amount = currencyFormat(0)
 
     if (product.value) {
