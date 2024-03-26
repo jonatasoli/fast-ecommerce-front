@@ -1,4 +1,5 @@
 import { CATEGORIES } from './enums'
+import type { Cart } from '#build/components'
 
 type Description = {
   content: string
@@ -184,3 +185,46 @@ export type CreditCardPayment = {
   card_brand: string
   installments: number
 }
+
+type Response<T> = {
+  success: boolean
+  data?: T
+  error?: string
+}
+
+export type LoginResponse = Response<{
+  role: string
+}>
+
+export type LogoutResponse = Response<null>
+
+export type RegisterResponse = Response<null>
+
+export type UserResponse = Response<User>
+
+export type AddUserCart = Response<
+  {
+    user_data: User
+  } & Cart
+>
+
+export type AddressResponse = Response<
+  {
+    user_data: User
+    user_address_id: number
+    shipping_address_id: number
+    shipping_is_payment: boolean
+  } & Cart
+>
+
+export type CreditCardResponse = Response<Checkout>
+
+export type PaymentResponse = Response<{
+  status: string
+  message: string
+  order_id: number
+}>
+
+export type EstimateResponse = Response<Cart>
+
+export type PreviewResponse = Response<Checkout>

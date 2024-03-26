@@ -3,7 +3,6 @@ import type {
   Cart,
   CartAddress,
   CartItem,
-  Checkout,
   CreditCardPayment,
   Payment,
   ShippingAddress,
@@ -126,10 +125,13 @@ export const useCartStore = defineStore('cart', () => {
         'Access-Control-Allow-Origin': '*',
       }
 
-      const { data, error } = await useFetch(`${serverUrl}/cart/`, {
-        method: 'POST',
-        headers,
-      })
+      const { data, error } = await useFetch<{ uuid: string }>(
+        `${serverUrl}/cart/`,
+        {
+          method: 'POST',
+          headers,
+        },
+      )
 
       if (unref(error)) {
         error.value = null
@@ -192,10 +194,8 @@ export const useCartStore = defineStore('cart', () => {
 
     if (!uuid) {
       const data = await createCart()
-      const responseDataValue = unref(data) as {
-        uuid: string
-      }
-      uuid = responseDataValue?.uuid
+      const responseDataValue = unref(data)
+      uuid = responseDataValue?.uuid ?? ''
     }
 
     await addProduct(uuid, item)
@@ -289,14 +289,9 @@ export const useCartStore = defineStore('cart', () => {
         throw new Error('ERROR_ADD_USER_CART')
       }
 
-      const responseData = unref(data) as {
-        data: Cart & {
-          user_data: User
-        }
-        success: boolean
-      }
+      const responseData = unref(data)
 
-      if (!responseData.success) {
+      if (!responseData?.success || !responseData?.data) {
         throw new Error('ERROR_ADD_USER_CART')
       }
       const { user_data: userCart, ...restCart } = responseData.data
@@ -357,17 +352,9 @@ export const useCartStore = defineStore('cart', () => {
         throw new Error('ERROR_ADD_ADDRESS_CART') // FIXME: show an error message
       }
 
-      const responseData = unref(data) as {
-        data: Cart & {
-          user_data: User
-          user_address_id: number
-          shipping_address_id: number
-          shipping_is_payment: boolean
-        }
-        success: boolean
-      }
+      const responseData = unref(data)
 
-      if (!responseData.success) {
+      if (!responseData?.success || !responseData?.data) {
         throw new Error('ERROR_ADD_ADDRESS_CART') // FIXME: show an error message
       }
 
@@ -428,10 +415,7 @@ export const useCartStore = defineStore('cart', () => {
         throw new Error('ERROR_ADD_MERCADO_PAGO_CREDIT_CARD_PAYMENT') // FIXME: show an error message
       }
 
-      const responseData = unref(data) as {
-        success: boolean
-        data: Checkout
-      }
+      const responseData = unref(data)
 
       return unref(responseData)
     } catch (err) {
@@ -448,7 +432,7 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const { data, error } = await useFetch(`api/cart/${uuid}/preview`, {
+      const { data, error } = await useFetch(`/api/cart/${uuid}/preview`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -461,10 +445,12 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const responseData = unref(data) as {
-        success: boolean
-        data: Checkout
+      const responseData = unref(data)
+
+      if (!responseData?.success || !responseData?.data) {
+        throw new Error('ERROR_GET_PREVIEW') // FIXME: show an error message
       }
+
       setCart(responseData.data)
       setUserAddressId(responseData.data.user_address_id)
       setShippingAddressId(responseData.data.shipping_address_id)
@@ -508,11 +494,7 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const responseData = unref(data) as {
-        status: string
-        message: string
-        order_id: string
-      }
+      const responseData = unref(data)
       return responseData
     } catch (err) {
       console.error(err)

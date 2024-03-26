@@ -1,8 +1,5 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
-import type { RegisterResponse } from '@/server/api/auth/register.post'
-import type { LogoutResponse } from '@/server/api/auth/logout.get'
-import type { LoginResponse } from '@/server/api/auth/login.post'
 import { ref, useFetch } from '#imports'
 
 interface LoginParams {
@@ -27,13 +24,10 @@ export const useAuthStore = defineStore('auth', () => {
       username,
       password,
     }
-    const { data: loginData, pending } = await useFetch<LoginResponse>(
-      '/api/auth/login',
-      {
-        method: 'POST',
-        body: payload,
-      },
-    )
+    const { data: loginData, pending } = await useFetch('/api/auth/login', {
+      method: 'POST',
+      body: payload,
+    })
 
     loading.value = pending.value
     if (loginData.value?.success) {
@@ -44,7 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(payload: RegisterParams) {
-    const { data: registerData, pending } = await useFetch<RegisterResponse>(
+    const { data: registerData, pending } = await useFetch(
       '/api/auth/register',
       {
         method: 'POST',
@@ -57,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    await useFetch<LogoutResponse>('/api/auth/logout')
+    await useFetch('/api/auth/logout')
   }
 
   return {
