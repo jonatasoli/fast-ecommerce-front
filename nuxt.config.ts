@@ -9,14 +9,14 @@ const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 export default defineNuxtConfig({
   ssr: false,
   head: {
-    __dangerouslyDisableSanitizers: ["script"],
+    __dangerouslyDisableSanitizers: ['script'],
     script: [
       {
-        hid: "NEWRELIC",
-        src: "new-relic.js",
+        hid: 'NEWRELIC',
+        src: 'new-relic.js',
         defer: true,
-        type: "text/javascript",
-        charset: "utf-8",
+        type: 'text/javascript',
+        charset: 'utf-8',
       },
     ],
   },
@@ -53,6 +53,7 @@ export default defineNuxtConfig({
     { src: '@/plugins/vue-the-mask', mode: 'client' },
     { src: '@/plugins/mercadopago', mode: 'client' },
     { src: '@/plugins/talkto', mode: 'client' },
+    { src: '@/plugins/ga', mode: 'client' },
   ],
   build: {
     analyze: true,
@@ -90,6 +91,7 @@ export default defineNuxtConfig({
     public: {
       serverUrl: SERVER_BASE_URL,
       mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
+      gtagId: process.env.GTAG_ID,
       isProd: process.env.NODE_ENV === 'production',
       sentry: {
         dsn: process.env.SENTRY_DSN,
