@@ -8,6 +8,10 @@
     layout: 'empty',
   })
 
+  useHead({
+    title: 'Esqueci minha senha',
+  })
+
   const { t } = useI18n()
   const authStore = useAuthStore()
   const route = useRoute()

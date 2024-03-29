@@ -11,6 +11,10 @@
     layout: 'empty',
   })
 
+  useHead({
+    title: 'Registro',
+  })
+
   const { register } = useAuthStore()
   const router = useRouter()
   const { t } = useI18n()

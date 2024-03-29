@@ -13,6 +13,10 @@
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
 
+  useHead({
+    title: 'Home',
+  })
+
   const { t, te } = useI18n()
   const store = useProductsStore()
 
@@ -83,6 +87,7 @@
       price: product.price,
       product_id: product.product_id,
       quantity: 1,
+      discount_price: product.discount,
     })
 
     router.push('/cart')

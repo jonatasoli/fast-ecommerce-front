@@ -13,6 +13,10 @@
       },
     ],
   })
+
+  useHead({
+    title: 'Meus pedidos',
+  })
 </script>
 
 <template>

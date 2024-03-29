@@ -17,6 +17,11 @@
       },
     ],
   })
+
+  useHead({
+    title: 'Finalização Checkout',
+  })
+
   const { t } = useI18n()
   const cartStore = useCartStore()
   const pending = ref<boolean>(false)

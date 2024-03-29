@@ -24,6 +24,15 @@
       : `${serverUrl}/catalog/category/products/${route.params.uri}`,
   )
 
+  const categoryTitle = computed(() => {
+    const { uri } = route.params
+    return typeof uri === 'string' ? uri.replace(/-/g, ' ') : ''
+  })
+
+  useHead({
+    title: capitalizeFirstLetter(categoryTitle.value),
+  })
+
   const { data, pending } = await useFetch<PaginatedProducts>(url.value, {
     watch: [page, url],
     query: {
@@ -62,15 +71,11 @@
       price: product.price,
       product_id: product.product_id,
       quantity: 1,
+      discount_price: product.discount,
     })
 
     router.push('/cart')
   }
-
-  const categoryTitle = computed(() => {
-    const { uri } = route.params
-    return typeof uri === 'string' ? uri.replace(/-/g, ' ') : ''
-  })
 
   watch(page, () =>
     router.push({

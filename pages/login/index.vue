@@ -11,6 +11,11 @@
   definePageMeta({
     layout: 'empty',
   })
+
+  useHead({
+    title: 'Login',
+  })
+
   const router = useRouter()
   const route = useRoute()
   const notification = useNotification()
