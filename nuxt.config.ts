@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
     '@vueuse/nuxt',
+    'nuxt-gtag',
   ],
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
@@ -48,12 +49,26 @@ export default defineNuxtConfig({
       inject: true,
     },
   },
+  gtag: {
+    enabled: process.env.NODE_ENV === 'production',
+    loadingStrategy: 'async',
+    tags: [
+      {
+        id: process.env.GTAG_ID ?? '',
+        config: {
+          send_page_view: true,
+          linker: {
+            domains: [process.env.I18N_BASE_URL],
+          },
+        },
+      },
+    ],
+  },
   plugins: [
     { src: '@/plugins/vue-tel-input', mode: 'client' },
     { src: '@/plugins/vue-the-mask', mode: 'client' },
     { src: '@/plugins/mercadopago', mode: 'client' },
     { src: '@/plugins/talkto', mode: 'client' },
-    { src: '@/plugins/ga', mode: 'client' },
   ],
   build: {
     analyze: true,

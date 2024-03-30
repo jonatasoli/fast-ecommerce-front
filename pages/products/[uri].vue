@@ -24,6 +24,10 @@
     `${config.public.serverUrl}/product/${route.params.uri}`,
   )
 
+  useHead({
+    title: capitalizeFirstLetter(unref(product)?.name) || 'Produto',
+  })
+
   if (error.value || !product.value) {
     throw createError({
       statusCode: 404,

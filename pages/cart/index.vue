@@ -8,6 +8,10 @@
   import InputCard from '~/components/cart/InputCard/InputCard.vue'
   import { RadioInput } from '~/components/cart'
 
+  useHead({
+    title: 'Carrinho',
+  })
+
   const cartStore = useCartStore()
   const notification = useNotification()
   const { getCart, coupon, loading } = storeToRefs(cartStore)

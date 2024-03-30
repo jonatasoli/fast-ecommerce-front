@@ -20,6 +20,11 @@
       },
     ],
   })
+
+  useHead({
+    title: 'Checkout',
+  })
+
   const router = useRouter()
   const { isMobile } = useDevice()
   const notification = useNotification()
