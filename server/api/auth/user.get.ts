@@ -1,16 +1,5 @@
 import { defineEventHandler, getCookie, createError } from 'h3'
-
-interface UserSuccessResponse {
-  user_id: string
-  role: string | null
-  name: string
-  document: string
-  email: string
-  phone: string
-  fullName: string
-}
-
-export type UserResponse = UserSuccessResponse
+import type { UserResponse } from '~/utils/types'
 
 export default defineEventHandler(async (event): Promise<UserResponse> => {
   try {

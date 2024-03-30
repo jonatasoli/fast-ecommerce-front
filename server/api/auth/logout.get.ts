@@ -1,14 +1,5 @@
 import { defineEventHandler, setCookie } from 'h3'
-interface LogoutSuccessResponse {
-  success: true
-}
-
-interface LogoutErrorResponse {
-  success: false
-  error: string
-}
-
-export type LogoutResponse = LogoutSuccessResponse | LogoutErrorResponse
+import type { LogoutResponse } from '~/utils/types'
 
 export default defineEventHandler((event): LogoutResponse => {
   try {

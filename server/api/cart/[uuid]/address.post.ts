@@ -1,6 +1,7 @@
 import { defineEventHandler, getCookie, readBody, createError } from 'h3'
+import type { AddressResponse } from '~/utils/types'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<AddressResponse> => {
   const serverBaseURL = process.env.SERVER_BASE_URL
   const uuid = event.context.params?.uuid
   const token = getCookie(event, 'token')

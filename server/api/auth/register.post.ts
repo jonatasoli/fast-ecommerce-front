@@ -1,15 +1,5 @@
 import { defineEventHandler, readBody } from 'h3'
-
-interface RegisterSuccessResponse {
-  success: true
-}
-
-interface RegisterErrorResponse {
-  success: false
-  error: string
-}
-
-export type RegisterResponse = RegisterSuccessResponse | RegisterErrorResponse
+import type { RegisterResponse } from '~/utils/types'
 
 export default defineEventHandler(async (event): Promise<RegisterResponse> => {
   const body = await readBody(event)

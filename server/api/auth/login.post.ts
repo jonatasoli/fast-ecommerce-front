@@ -1,18 +1,5 @@
 import { defineEventHandler, readBody, setCookie } from 'h3'
-
-interface LoginSuccessResponse {
-  success: true
-  data: {
-    role: string
-  }
-}
-
-interface LoginErrorResponse {
-  success: false
-  error: string
-}
-
-export type LoginResponse = LoginSuccessResponse | LoginErrorResponse
+import type { LoginResponse } from '~/utils/types'
 
 export default defineEventHandler(async (event): Promise<LoginResponse> => {
   const body = await readBody(event)
