@@ -1,10 +1,16 @@
 {
-	"extends": "./.nuxt/tsconfig.json",
-	"compilerOptions": {
-		"resolveJsonModule": true,
-		"noImplicitAny": false,
-		"checkJs": true,
-	},
-	"exclude": ["node_modules", "cypress"],
-}
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "checkJs": true,
+    "sourceMap": true,
+    "inlineSources": true,
 
+    // Set `sourceRoot` to  "/" to strip the build path prefix
+    // from generated source code references.
+    // This improves issue grouping in Sentry.
+    "sourceRoot": "/"
+  },
+  "exclude": ["node_modules", "cypress"]
+}

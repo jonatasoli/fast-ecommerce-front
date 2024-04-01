@@ -39,9 +39,12 @@ export const useProductsStore = defineStore('products', () => {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-      const res = await fetch(`${serverUrl}/catalog/category/products/${category}`, {
-        headers,
-      })
+      const res = await fetch(
+        `${serverUrl}/catalog/category/products/${category}`,
+        {
+          headers,
+        },
+      )
       const data = await res.json()
       products.value = data.product
     } catch (err) {

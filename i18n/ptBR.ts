@@ -1,5 +1,6 @@
 export default {
-  address: 'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
+  address:
+    'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
     news: 'Novidades',
     latest: 'Novidades',
@@ -26,7 +27,8 @@ export default {
 
   footer: {
     contact: {
-      title: 'Entre em contato conosco através do botão WHATSAPP, ou deixe seu email',
+      title:
+        'Entre em contato conosco através do botão WHATSAPP, ou deixe seu email',
       placeholder: 'Digite seu e-mail',
       subscribe: 'Assinar',
     },
@@ -98,6 +100,42 @@ export default {
       requiredUsername: 'CPF é obrigatório',
       requiredPassword: 'Senha é obrigatória',
     },
+    requestResetPassword: {
+      error:
+        'Não foi possível enviar a solicitação. Verifique se o CPF está correto.',
+      success: {
+        title: 'Solicitação enviada com sucesso',
+        content:
+          'Em instantes você receberá um e-mail com as instruções para alterar sua senha',
+      },
+    },
+  },
+
+  resetPassword: {
+    title: 'Recuperar senha',
+    document: 'CPF',
+    newPassword: 'Nova senha',
+    confirmPassword: 'Confirmar nova senha',
+    submit: 'Alterar senha',
+    formValidation: {
+      documentRequired: 'CPF é obrigatório',
+      requiredNewPassword: 'Nova senha é obrigatória',
+      requiredConfirmPassword: 'Confirmação de senha é obrigatória',
+      passwordMismatch: 'Senhas não conferem',
+      serverError: 'Erro ao realizar alteração de senha',
+    },
+    message: {
+      error: {
+        title: 'Erro',
+        content:
+          'Não foi possível resetar a senha. Solicite um novo link de recuperação.',
+      },
+      success: {
+        title: 'Senha alterada com sucesso',
+        content: 'Você já pode realizar o login',
+      },
+    },
+    return: 'Voltar',
   },
 
   register: {
@@ -133,7 +171,8 @@ export default {
 
       error: {
         title: 'Erro ao realizar cadastro',
-        content: 'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
+        content:
+          'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
       },
     },
   },
@@ -236,11 +275,13 @@ export default {
 
   finishCheckout: {
     pending: 'Aguarde um momento...',
+    pendingDescription: 'Por favor aguarde, não feche ou atualize a página!',
     title: 'Seu pagamento está sendo processado',
     description: 'Em breve você receberá um e-mail com os detalhes do pedido',
     button: 'Voltar para a página inicial',
     titleError: 'Erro ao realizar o pedido',
-    descriptionError: 'Houve um problema ao realizar o seu pedido, verifique o email enviado e tente novamente em instantes',
+    descriptionError:
+      'Houve um problema ao realizar o seu pedido, verifique o email enviado e tente novamente em instantes',
     buttonError: 'Voltar para o carrinho',
-  }
+  },
 }

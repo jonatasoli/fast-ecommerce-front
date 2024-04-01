@@ -24,3 +24,7 @@ export enum CATEGORIES {
   BOOKS = 'livros-',
   SCISSORS = 'tesouras',
 }
+
+export enum STATUS_ORDER {
+  PAYMENT_PAID = 'Pagamento Aprovado',
+}

@@ -1,27 +1,35 @@
 <script lang="ts" setup>
-import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline'
-import { NavBar, SideNav, UserMenu, UserMenuMobile } from '~/components/header'
-import { ref, useDevice, useRouter } from '#imports'
+  import {
+    MagnifyingGlassIcon,
+    ShoppingCartIcon,
+  } from '@heroicons/vue/24/outline'
+  import {
+    NavBar,
+    SideNav,
+    UserMenu,
+    UserMenuMobile,
+  } from '~/components/header'
+  import { ref, useDevice, useRouter } from '#imports'
 
-const { isMobile } = useDevice()
-const router = useRouter()
-const search = ref('')
+  const { isMobile } = useDevice()
+  const router = useRouter()
+  const search = ref('')
 
-function doSearch() {
-  const trimSearch = search.value.trim()
+  function doSearch() {
+    const trimSearch = search.value.trim()
 
-  if (!trimSearch) {
-    return
+    if (!trimSearch) {
+      return
+    }
+
+    const encodedSearch = encodeURIComponent(trimSearch)
+    router.push(`/search?q=${encodedSearch}`)
+    search.value = ''
   }
 
-  const encodedSearch = encodeURIComponent(trimSearch)
-  router.push(`/search?q=${encodedSearch}`)
-  search.value = ''
-}
-
-onMounted(async() => {
-  await useCategoryStore().getCategorys()
-})
+  onMounted(async () => {
+    await useCategoryStore().getCategorys()
+  })
 </script>
 
 <template>
@@ -29,7 +37,7 @@ onMounted(async() => {
     <div class="header__top">
       <SideNav v-if="isMobile" />
       <NuxtLink to="/" class="logo">
-        <img src="~/assets/logo-gold.png" alt="Gatto Rosa">
+        <img src="~/assets/logo-gold.png" alt="Gatto Rosa" />
       </NuxtLink>
       <div v-if="!isMobile" class="search-bar">
         <div class="search-bar__group">
@@ -37,9 +45,9 @@ onMounted(async() => {
           <input
             v-model="search"
             type="text"
-            placeholder="Digite o que você procura" 
+            placeholder="Digite o que você procura"
             @keyup.enter="doSearch"
-          >
+          />
           <button @click="doSearch">
             <n-icon>
               <MagnifyingGlassIcon />
@@ -51,12 +59,7 @@ onMounted(async() => {
         <UserMenuMobile v-if="isMobile" />
         <UserMenu v-else />
       </div>
-      <n-button
-        quaternary
-        circle
-        type="primary"
-        size="large"
-      >
+      <n-button quaternary circle type="primary" size="large">
         <template #icon>
           <nuxt-link to="/cart">
             <n-icon :size="30">
@@ -66,11 +69,11 @@ onMounted(async() => {
         </template>
       </n-button>
     </div>
-    
+
     <NavBar v-if="!isMobile" />
   </header>
 </template>
 
 <style lang="scss" scoped>
-@import './AppHeader.scss';
+  @import './AppHeader.scss';
 </style>

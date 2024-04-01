@@ -2,11 +2,7 @@ import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import { LOCALES } from './utils/enums'
 
-const {
-  VITEST,
-  NODE_ENV,
-  SERVER_BASE_URL,
-} = process.env
+const { VITEST, NODE_ENV, SERVER_BASE_URL } = process.env
 
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
@@ -15,6 +11,18 @@ export default defineNuxtConfig({
     autoImport: true
   },
   ssr: false,
+  head: {
+    __dangerouslyDisableSanitizers: ["script"],
+    script: [
+      {
+        hid: "NEWRELIC",
+        src: "new-relic.js",
+        defer: true,
+        type: "text/javascript",
+        charset: "utf-8",
+      },
+    ],
+  },
   components: [
     {
       path: '~/components',
@@ -51,23 +59,22 @@ export default defineNuxtConfig({
   ],
   build: {
     analyze: true,
-    transpile:
-      transpileNaive
-        ? [
-            'naive-ui',
-            'vueuc',
-            '@css-render/vue3-ssr',
-            '@nuxtjs/i18n',
-            '@juggle/resize-observer',
-          ]
-        : ['@nuxtjs/i18n', '@juggle/resize-observer'],
+    transpile: transpileNaive
+      ? [
+          'naive-ui',
+          'vueuc',
+          '@css-render/vue3-ssr',
+          '@nuxtjs/i18n',
+          '@juggle/resize-observer',
+        ]
+      : ['@nuxtjs/i18n', '@juggle/resize-observer'],
   },
   vite: {
     optimizeDeps: {
       include:
         process.env.NODE_ENV === 'development'
           ? ['naive-ui', 'vueuc', 'date-fns-tz/formatInTimeZone']
-          : []
+          : [],
     },
     css: {
       preprocessorOptions: {
@@ -80,13 +87,17 @@ export default defineNuxtConfig({
       Components({
         resolvers: [NaiveUiResolver()],
       }),
-    ],  
+    ],
   },
   runtimeConfig: {
     public: {
       serverUrl: SERVER_BASE_URL,
       mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
       isProd: process.env.NODE_ENV === 'production',
+      sentry: {
+        dsn: process.env.SENTRY_DSN,
+        env: process.env.SENTRY_ENV,
+      },
     },
   },
 })

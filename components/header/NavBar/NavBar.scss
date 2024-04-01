@@ -9,22 +9,22 @@ nav {
   .dropdown {
     @media (min-width: 768px) {
       position: absolute;
-      padding-top: .25rem;
+      padding-top: 0.25rem;
       left: 50%;
       transform: translateX(-50%);
       transition: all 0.2s;
       visibility: hidden;
       opacity: 0;
-      top: calc(100% + .5rem);
+      top: calc(100% + 0.5rem);
       z-index: 999;
     }
-    
+
     & > ul {
-      padding: .5rem 0;
+      padding: 0.5rem 0;
       background-color: $primary-color;
       min-width: 13.5rem;
-      border-radius: .25rem;
-      box-shadow: 0 3px 5px rgba($color: #000, $alpha: .1);
+      border-radius: 0.25rem;
+      box-shadow: 0 3px 5px rgba($color: #000, $alpha: 0.1);
     }
   }
 
@@ -65,8 +65,8 @@ nav {
     align-items: center;
     height: 48px;
     transition: all 0.3s ease;
-    font-size: .75rem;
-  
+    font-size: 0.75rem;
+
     &:hover {
       background-color: $primary-color-hover;
     }
@@ -81,7 +81,7 @@ nav {
 
     @media screen and (min-width: 1024px) {
       height: 56px;
-      font-size: .875rem;
+      font-size: 0.875rem;
     }
   }
 
@@ -89,10 +89,10 @@ nav {
     display: flex;
     align-items: center;
     width: 100%;
-    padding-right: .75rem;
-    padding-left: .75rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
     height: 40px;
-  
+
     &:hover {
       background-color: $primary-color-hover;
     }

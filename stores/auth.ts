@@ -17,7 +17,6 @@ interface RegisterParams {
   mail: string
   document: string
   phone: string
-
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -28,10 +27,13 @@ export const useAuthStore = defineStore('auth', () => {
       username,
       password,
     }
-    const { data: loginData, pending } = await useFetch<LoginResponse>('/api/auth/login', {
-      method: 'POST',
-      body: payload,
-    })
+    const { data: loginData, pending } = await useFetch<LoginResponse>(
+      '/api/auth/login',
+      {
+        method: 'POST',
+        body: payload,
+      },
+    )
 
     loading.value = pending.value
     if (loginData.value?.success) {
@@ -42,13 +44,49 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(payload: RegisterParams) {
-    const { data: registerData, pending } = await useFetch<RegisterResponse>('/api/auth/register', {
-      method: 'POST',
-      body: payload,
-    })
+    const { data: registerData, pending } = await useFetch<RegisterResponse>(
+      '/api/auth/register',
+      {
+        method: 'POST',
+        body: payload,
+      },
+    )
 
     loading.value = pending.value
     return registerData.value
+  }
+
+  async function requestResetPassword(document: string) {
+    const { data: forgotPasswordData, pending } =
+      await useFetch<RegisterResponse>('/api/auth/request-reset-password', {
+        method: 'POST',
+        body: {
+          document,
+        },
+      })
+
+    loading.value = pending.value
+    return forgotPasswordData.value
+  }
+
+  async function resetPassword(data: {
+    document: string
+    newPassword: string
+    token: string
+  }) {
+    const { document, newPassword, token } = data
+    const { data: resetPasswordData, pending } =
+      await useFetch<RegisterResponse>('/api/auth/reset-password', {
+        method: 'PATCH',
+        body: {
+          document,
+          newPassword,
+          token,
+        },
+      })
+
+    loading.value = pending.value
+    return resetPasswordData.value
   }
 
   async function logout() {
@@ -58,6 +96,8 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     login,
     register,
+    requestResetPassword,
+    resetPassword,
     logout,
     loading,
   }

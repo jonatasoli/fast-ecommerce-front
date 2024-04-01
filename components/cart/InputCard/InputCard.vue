@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { BanknotesIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline';
-import { ref } from '#imports';
+  import { BanknotesIcon, ShoppingCartIcon } from '@heroicons/vue/24/outline'
+  import { ref } from '#imports'
 
-type Props = {
-  icon: string;
-  title: string;
-  buttonText: string;
-  placeholder: string;
-  receivedValue: string;
-  mask?: string;
-  validation?: 'error' | 'success' | 'warning' | undefined;
-  message?: string;
-};
+  type Props = {
+    icon: string
+    title: string
+    buttonText: string
+    placeholder: string
+    receivedValue: string | null
+    mask?: string
+    validation?: 'error' | 'success' | 'warning' | undefined
+    message?: string
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  mask: '',
-  validation: undefined,
-  message: '',
-});
+  const props = withDefaults(defineProps<Props>(), {
+    mask: '',
+    validation: undefined,
+    message: '',
+  })
 
-const emit = defineEmits(['onButtonClick']);
+  const emit = defineEmits(['onButtonClick'])
 
-const value = ref('');
-value.value = props.receivedValue;
+  const value = ref('')
+  value.value = props.receivedValue ?? ''
 
-function handleButtonClick() {
-  emit('onButtonClick', value.value);
-}
+  function handleButtonClick() {
+    emit('onButtonClick', value.value)
+  }
 </script>
 
 <template>
@@ -77,5 +77,5 @@ strong
 </template>
 
 <style lang="scss" scoped>
-@import './InputCard.scss';
+  @import './InputCard.scss';
 </style>

@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   if (process.server) {
     const { collect } = setup(nuxtApp.vueApp)
     const originalRenderMeta = nuxtApp.ssrContext?.renderMeta
-    
+
     nuxtApp.ssrContext = nuxtApp.ssrContext ?? ({} as NuxtSSRContext)
 
     if (nuxtApp.ssrContext) {

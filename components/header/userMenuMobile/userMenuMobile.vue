@@ -1,36 +1,30 @@
 <script lang="ts" setup>
-import { UserCircleIcon } from '@heroicons/vue/24/outline'
-import { reactive, ref, useI18n } from '#imports'
-import { useUserStore } from '@/stores/user'
-import { useAuthStore } from '@/stores/auth'
+  import { UserCircleIcon } from '@heroicons/vue/24/outline'
+  import { reactive, ref, useI18n } from '#imports'
+  import { useUserStore } from '@/stores/user'
+  import { useAuthStore } from '@/stores/auth'
 
-const show = ref(false)
-const storeUser = useUserStore()
-const storeAuth = useAuthStore()
+  const show = ref(false)
+  const storeUser = useUserStore()
+  const storeAuth = useAuthStore()
 
-const userState = reactive({
-  user: storeUser.user,
-  authenticated: storeUser.authenticated,
-})
+  const userState = reactive({
+    user: storeUser.user,
+    authenticated: storeUser.authenticated,
+  })
 
-const { t } = useI18n()
+  const { t } = useI18n()
 
-async function logout() {
-  await storeAuth.logout()
-  storeUser.reset()
-  userState.user = storeUser.user
-  userState.authenticated = storeUser.authenticated
-}
+  async function logout() {
+    await storeAuth.logout()
+    storeUser.reset()
+    userState.user = storeUser.user
+    userState.authenticated = storeUser.authenticated
+  }
 </script>
 
 <template>
-  <n-button
-    quaternary
-    circle
-    type="primary"
-    size="large"
-    @click="show = true"
-  >
+  <n-button quaternary circle type="primary" size="large" @click="show = true">
     <template #icon>
       <n-icon :size="30">
         <UserCircleIcon />
@@ -38,14 +32,8 @@ async function logout() {
     </template>
   </n-button>
 
-  <n-drawer
-    v-model:show="show"
-    placement="right"
-    width="80%"
-  >
-    <n-drawer-content
-      closable
-    >
+  <n-drawer v-model:show="show" placement="right" width="80%">
+    <n-drawer-content closable>
       <template v-if="!userState.authenticated" #header>
         <div class="menu__header">
           <n-icon :size="30" color="#DA9A39">
@@ -56,7 +44,9 @@ async function logout() {
             {{ t('userMenu.welcome') }}
             <NuxtLink to="/login">
               {{ t('userMenu.login') }}
-            </NuxtLink> {{ t('userMenu.or') }} <NuxtLink to="/register">
+            </NuxtLink>
+            {{ t('userMenu.or') }}
+            <NuxtLink to="/register">
               {{ t('userMenu.register') }}
             </NuxtLink>
           </p>
@@ -79,10 +69,17 @@ async function logout() {
           </div>
         </div>
       </template>
+      <nav>
+        <ul>
+          <li>
+            <NuxtLink to="/orders" class="menu__link"> Meus pedidos </NuxtLink>
+          </li>
+        </ul>
+      </nav>
     </n-drawer-content>
   </n-drawer>
 </template>
 
 <style lang="scss" scoped>
-@import './userMenuMobile.scss';
+  @import './userMenuMobile.scss';
 </style>

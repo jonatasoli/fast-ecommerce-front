@@ -1,94 +1,150 @@
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { TrashIcon } from "@heroicons/vue/24/outline";
-import { useDebounceFn } from "@vueuse/core";
-import { currencyFormat, useI18n } from "#imports";
-import { useCartStore } from "@/stores/cart";
-import InputCard from "~/components/cart/InputCard/InputCard.vue";
-import { RadioInput } from "~/components/cart";
+  import { storeToRefs } from 'pinia'
+  import { TrashIcon } from '@heroicons/vue/24/outline'
+  import { useDebounceFn } from '@vueuse/core'
+  import { useNotification } from 'naive-ui'
+  import { currencyFormat, useI18n, type CartItem } from '#imports'
+  import { useCartStore } from '@/stores/cart'
+  import InputCard from '~/components/cart/InputCard/InputCard.vue'
+  import { RadioInput } from '~/components/cart'
 
-const cartStore = useCartStore();
-const { getCart, coupon } = storeToRefs(cartStore);
-const { t } = useI18n();
-const checkedFreightProductCode = ref("PAC");
-const validationCEP = ref<"error" | "success" | "warning" | undefined>(undefined)
-const validationCoupon = ref<"error" | "success" | "warning" | undefined>(undefined)
-const messageInvalidCoupon = ref("")
-const messageInvalidCEP = ref("")
+  const cartStore = useCartStore()
+  const notification = useNotification()
+  const { getCart, coupon, loading } = storeToRefs(cartStore)
+  const { t } = useI18n()
+  const checkedFreightProductCode = ref('PAC')
+  const validationCEP = ref<'error' | 'success' | 'warning' | undefined>(
+    undefined,
+  )
+  const validationCoupon = ref<'error' | 'success' | 'warning' | undefined>(
+    undefined,
+  )
+  const messageInvalidCoupon = ref('')
+  const messageInvalidCEP = ref('')
+  const cart = ref<Cart>()
 
-async function handleEstimateFreight(value) {
-  const response = await cartStore.calculateFreight(value, unref(checkedFreightProductCode));
-  if ( response === "INVALID_CEP") {
-    messageInvalidCEP.value = "CEP Inválido"
-    validationCEP.value = "error"
-    cartStore.clearFreight()
-    return;
+  const { data, pending, error, refresh: refreshEstimate } = await useEstimate()
+
+  async function handleEstimateFreight(value) {
+    await cartStore.calculateFreight(value, unref(checkedFreightProductCode))
+    await refreshEstimate()
+    if (unref(error)) {
+      handleFreightError(unref(error))
+      return
+    }
+
+    messageInvalidCEP.value = ''
+    validationCEP.value = undefined
   }
 
-  messageInvalidCEP.value = ""
-  validationCEP.value = undefined
-  return response
-
-}
-
-async function handleAddCoupon(value) {
-  const response = await cartStore.addCoupon(value);
-  if ( response === "INVALID_COUPON") {
-    validationCoupon.value = "error"
-    messageInvalidCoupon.value = "Cupom Inválido"
-    await cartStore.clearDiscount()
-    await cartStore.setCoupon("")
-    const response = await cartStore.estimate()
-    cartStore.setCart(response)
-    return;
+  function handleFreightError(error) {
+    if (unref(error) === 'INVALID_CEP') {
+      messageInvalidCEP.value = 'CEP Inválido'
+      validationCEP.value = 'error'
+      cartStore.clearFreight()
+    } else {
+      notification.error({
+        title: 'Erro',
+        content:
+          'Algo deu errado ao calcular o frete. Tente novamente mais tarde.',
+        duration: 2500,
+      })
+    }
   }
-  validationCoupon.value = undefined
-  messageInvalidCoupon.value = ""
-  return response
-}
 
-const debounceFn = useDebounceFn(
-  (id, quantity) => {
-    cartStore.updateQuantity(id, quantity);
-  },
-  1000,
-  { maxWait: 5000 }
-);
-
-function updateQuantity(id, quantity) {
-  debounceFn(id, quantity);
-}
-
-function handleRadioChange(value) {
-  checkedFreightProductCode.value = value;
-}
-onUpdated(() => {
-  if (cartStore.getCart.freight_product_code === null) {
-    cartStore.getCart.freight_product_code = 'PAC';
+  async function handleAddCoupon(value) {
+    const response = await cartStore.addCoupon(value)
+    await refreshEstimate()
+    if (unref(error) === 'INVALID_COUPON') {
+      validationCoupon.value = 'error'
+      messageInvalidCoupon.value = 'Cupom Inválido'
+      await cartStore.clearDiscount()
+      await cartStore.setCoupon('')
+      return
+    }
+    validationCoupon.value = undefined
+    messageInvalidCoupon.value = ''
+    return response
   }
-});
+
+  const debounceFn = useDebounceFn(
+    async () => {
+      const cartItems = cart.value?.cart_items
+      if (!cartItems) {
+        return
+      }
+      await refreshEstimate(cartItems)
+
+      if (unref(data)?.detail === 'Product Sold Out.') {
+        notification.error({
+          title: 'Erro',
+          content: 'A quantidade solicitada não está disponível no estoque.',
+          duration: 2500,
+        })
+      }
+    },
+    1000,
+    { maxWait: 5000 },
+  )
+
+  function updateQuantity() {
+    debounceFn()
+  }
+
+  function handleRemoveItem(productId) {
+    cartStore.removeItem(productId)
+    refreshEstimate()
+  }
+
+  function handleRadioChange(value) {
+    checkedFreightProductCode.value = value
+  }
+
+  watch(
+    () => unref(data),
+    () => {
+      const receivedValue = unref(data)
+      if (receivedValue?.cart_items) {
+        cartStore.setCart(receivedValue)
+        cart.value = receivedValue
+      }
+    },
+  )
+
+  onUpdated(() => {
+    if (cartStore.getCart.freight_product_code === null) {
+      cartStore.getCart.freight_product_code = 'PAC'
+    }
+  })
+
+  function calculateDiscount(item: CartItem) {
+    return (
+      currencyFormat(item.price - item.discount_price) ||
+      currencyFormat(item.price)
+    )
+  }
 </script>
 
 <template>
   <main class="cart">
-    <div v-if="cartStore.loading" class="cart__loading">
+    <div v-if="pending || loading" class="cart__loading">
       <n-space>
         <n-spin size="large" />
       </n-space>
     </div>
 
     <div v-else>
-      <div v-if="cartStore.getCart.cart_items.length === 0" class="cart__empty">
+      <div v-if="!cart?.cart_items?.length" class="cart__empty">
         <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
-          <n-button 
+          <n-button
             class="cart__button"
             type="primary"
             size="large"
             quaternary
           >
-            {{ t("cart.continue") }}
+            {{ t('cart.continue') }}
           </n-button>
         </nuxt-link>
       </div>
@@ -116,16 +172,14 @@ onUpdated(() => {
             :message="messageInvalidCEP"
             @on-button-click="handleEstimateFreight"
           >
-            <div v-if="getCart?.freight?.price" class="cart__freigth">
+            <div v-if="cart?.freight?.price" class="cart__freigth">
               <div>
-                {{ t("cart.freight.part1") }}
-                {{ getCart.freight.delivery_time }}
-                {{ t("cart.freight.part2") }}
+                {{ t('cart.freight.part1') }}
+                {{ cart.freight.delivery_time }}
+                {{ t('cart.freight.part2') }}
               </div>
               <div>
-                {{
-                  currencyFormat(getCart.freight.price, undefined, "freight")
-                }}
+                {{ currencyFormat(cart.freight.price, undefined, 'freight') }}
               </div>
             </div>
           </InputCard>
@@ -146,7 +200,7 @@ onUpdated(() => {
               </div>
               <div class="table-body">
                 <div
-                  v-for="item in getCart.cart_items"
+                  v-for="item in cart?.cart_items"
                   :key="item.product_id"
                   class="table-row"
                 >
@@ -166,11 +220,17 @@ onUpdated(() => {
                       :min="1"
                       :max="999"
                       on
-                      @update:value="updateQuantity(item.product_id, $event)"
+                      @update:value="updateQuantity"
                     />
                   </div>
-                  <div class="value">
-                    {{ currencyFormat(item?.price) }}
+                  <div class="container-price">
+                    <p v-if="Number(item.discount_price)" class="old-price">
+                      De: {{ currencyFormat(item?.price) }}
+                    </p>
+                    <p class="price">
+                      <span v-if="Number(item.discount_price)">Por:</span>
+                      {{ calculateDiscount(item) }}
+                    </p>
                   </div>
                   <div>
                     <n-button
@@ -178,7 +238,7 @@ onUpdated(() => {
                       quaternary
                       type="primary"
                       size="large"
-                      @click="cartStore.removeItem(item.product_id)"
+                      @click="handleRemoveItem(item.product_id)"
                     >
                       <template #icon>
                         <TrashIcon />
@@ -193,23 +253,20 @@ onUpdated(() => {
           <div class="cart__not-empty--summary">
             <div class="summary-values">
               <p>{{ t('cart.summary.products') }}</p>
-              <p>{{ currencyFormat(getCart.subtotal) }}</p>
+              <p>{{ currencyFormat(cart.subtotal) }}</p>
             </div>
 
-            <div v-if="getCart.discount !== '0'" class="summary-values">
-              <p>{{ t("cart.summary.discount") }}</p>
-              <p>- {{  currencyFormat(getCart.discount) }}</p>
+            <div v-if="cart.discount !== '0'" class="summary-values">
+              <p>{{ t('cart.summary.discount') }}</p>
+              <p>- {{ currencyFormat(cart.discount) }}</p>
             </div>
 
             <div class="summary-values">
-              <p>{{ t("cart.summary.shipping") }}</p>
+              <p>{{ t('cart.summary.shipping') }}</p>
               <p>
                 {{
-                  currencyFormat(
-                    getCart?.freight?.price,
-                    undefined,
-                    "freight"
-                  ) || 0
+                  currencyFormat(cart?.freight?.price, undefined, 'freight') ||
+                  0
                 }}
               </p>
             </div>
@@ -217,7 +274,7 @@ onUpdated(() => {
 
             <div class="summary-values amount">
               <p>{{ t('cart.summary.total') }}</p>
-              <p>{{ currencyFormat(getCart.total) }}</p>
+              <p>{{ currencyFormat(cart.total) }}</p>
             </div>
 
             <p v-if="!getCart?.freight?.price" class="alert-freight">
@@ -252,5 +309,5 @@ onUpdated(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/pages/cart.scss";
+  @import '@/assets/scss/pages/cart.scss';
 </style>

@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    NAlert: typeof import('naive-ui')['NAlert']
+    NAlert: (typeof import('naive-ui'))['NAlert']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NCarousel: typeof import('naive-ui')['NCarousel']
@@ -23,8 +23,8 @@ declare module 'vue' {
     NDropdown: typeof import('naive-ui')['NDropdown']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
-    NGi: typeof import('naive-ui')['NGi']
-    NGrid: typeof import('naive-ui')['NGrid']
+    NGi: (typeof import('naive-ui'))['NGi']
+    NGrid: (typeof import('naive-ui'))['NGrid']
     NIcon: typeof import('naive-ui')['NIcon']
     NImage: typeof import('naive-ui')['NImage']
     NInput: typeof import('naive-ui')['NInput']
@@ -35,13 +35,11 @@ declare module 'vue' {
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioButton: typeof import('naive-ui')['NRadioButton']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
-    NSelect: typeof import('naive-ui')['NSelect']
     NSkeleton: typeof import('naive-ui')['NSkeleton']
     NSpace: typeof import('naive-ui')['NSpace']
     NSpin: typeof import('naive-ui')['NSpin']
-    NStep: typeof import('naive-ui')['NStep']
-    NSteps: typeof import('naive-ui')['NSteps']
-    NSwitch: typeof import('naive-ui')['NSwitch']
+    NStep: (typeof import('naive-ui'))['NStep']
+    NSteps: (typeof import('naive-ui'))['NSteps']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

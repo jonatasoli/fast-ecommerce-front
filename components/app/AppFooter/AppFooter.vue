@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useI18n } from '#imports'
-import { useNavLinks } from '~/components/header/nav-links'
+  import { useI18n } from '#imports'
+  import { useNavLinks } from '~/components/header/nav-links'
 
-const { t } = useI18n()
-const store = useCategoryStore()
-const { data } = await useAsyncData(() => store.getCategorys())
-const responseData = unref(data) as {
-  categories: CategoryItem[]
-}
-const { navLinks } = useNavLinks(responseData.categories)
+  const { t } = useI18n()
+  const store = useCategoryStore()
+  const { data } = await useAsyncData(() => store.getCategorys())
+  const responseData = unref(data) as {
+    categories: CategoryItem[]
+  }
+  const { navLinks } = useNavLinks(responseData.categories)
 </script>
 
 <template>
@@ -36,5 +36,5 @@ const { navLinks } = useNavLinks(responseData.categories)
 </template>
 
 <style scoped lang="scss">
-@import './AppFooter.scss';
+  @import './AppFooter.scss';
 </style>

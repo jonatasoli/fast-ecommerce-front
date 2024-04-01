@@ -1,46 +1,46 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { currencyFormat, useI18n, onMounted, ref, unref } from "#imports";
-import { useCartStore } from "~/stores/cart";
-import type { Checkout } from "~/utils/types";
+  import { storeToRefs } from 'pinia'
+  import { currencyFormat, useI18n, onMounted, ref, unref } from '#imports'
+  import { useCartStore } from '~/stores/cart'
+  import type { Checkout } from '~/utils/types'
 
-const cartStore = useCartStore();
-const { t } = useI18n();
-const { address, paymentCreditCard } = storeToRefs(cartStore);
-const { isMobile } = useDevice();
-const preview = ref<Checkout>({
-  uuid: "",
-  cart_items: [],
-  affiliate: "",
-  total: "",
-  total_with_fee: "",
-  subtotal: "",
-  subtotal_with_fee: "",
-  coupon: "",
-  discount: "",
-  installments: 0,
-  payment_method: "",
-  payment_method_id: "",
-  shipping_is_payment: false,
-  gateway_provider: "",
-  customer_id: "",
-  zipcode: "",
-  user_address_id: 0,
-  shipping_address_id: null,
-  freight_product_code: "03298",
-  freight: {
-    price: "",
-    delivery_time: "",
-    max_date: "",
-  },
-  user_data: {
-    document: "",
-    name: "",
-    email: "",
-    phone: "",
-    user_id: null,
-  },
-});
+  const cartStore = useCartStore()
+  const { t } = useI18n()
+  const { address, paymentCreditCard } = storeToRefs(cartStore)
+  const { isMobile } = useDevice()
+  const preview = ref<Checkout>({
+    uuid: '',
+    cart_items: [],
+    affiliate: '',
+    total: '',
+    total_with_fee: '',
+    subtotal: '',
+    subtotal_with_fee: '',
+    coupon: '',
+    discount: '',
+    installments: 0,
+    payment_method: '',
+    payment_method_id: '',
+    shipping_is_payment: false,
+    gateway_provider: '',
+    customer_id: '',
+    zipcode: '',
+    user_address_id: 0,
+    shipping_address_id: null,
+    freight_product_code: '03298',
+    freight: {
+      price: '',
+      delivery_time: '',
+      max_date: '',
+    },
+    user_data: {
+      document: '',
+      name: '',
+      email: '',
+      phone: '',
+      user_id: null,
+    },
+  })
 
 onMounted(async () => {
   if (cartStore.payment.payment_method === 'pix') {
@@ -62,53 +62,52 @@ onMounted(async () => {
   preview.value = data;
 });
 
-
 const data = computed(() => {
   return cartStore.payment.payment_method === 'pix' ? cartStore.getCart : unref(preview)
 })
 
 function hiddenCreditCardNumber(number) {
-  const fourLastDigits = number.slice(-4);
-  return `**** **** **** ${fourLastDigits}`;
-}
+  const fourLastDigits = number.slice(-4)
+    return `**** **** **** ${fourLastDigits}`
+  }
 
-const subtotal = computed(() => {
-  const haveFee = unref(data).subtotal_with_fee !== "0";
-  return haveFee ? unref(data).subtotal_with_fee : unref(data).subtotal;
-})
+  const subtotal = computed(() => {
+    const haveFee = unref(data).subtotal_with_fee !== '0'
+    return haveFee ? unref(data).subtotal_with_fee : unref(data).subtotal
+  })
 
-const total = computed(() => {
-  const haveFee = unref(data).total_with_fee !== "0";
-  return haveFee ? unref(data).total_with_fee : unref(data).total
-})
+  const total = computed(() => {
+    const haveFee = unref(data).total_with_fee !== '0'
+    return haveFee ? unref(data).total_with_fee : unref(data).total
+  })
 </script>
 
 <template>
   <div>
     <h2 class="title">
-      {{ t("checkout.finally.title") }}
+      {{ t('checkout.finally.title') }}
     </h2>
     <div class="border">
       <n-grid :x-gap="20" cols="1 800:12">
         <n-gi :span="8">
           <h3 class="title">
-            {{ t("checkout.steps.login") }}
+            {{ t('checkout.steps.login') }}
           </h3>
           <ul>
             <li>
-              {{ preview.user_data.name }}
+              {{ data.user_data.name }}
             </li>
             <li>
-              {{ preview.user_data.email }}
+              {{ data.user_data.email }}
             </li>
             <li>
-              {{ preview.user_data.phone }}
+              {{ data.user_data.phone }}
             </li>
           </ul>
         </n-gi>
         <n-gi :span="4">
           <h3 class="title">
-            {{ t("checkout.shipping.title") }}
+            {{ t('checkout.shipping.title') }}
           </h3>
           <ul>
             <li>
@@ -148,7 +147,7 @@ const total = computed(() => {
                 {{ product.name }}
               </div>
               <div class="product__quantity">
-                {{ t("checkout.finally.quantity") }}: {{ product.quantity }}
+                {{ t('checkout.finally.quantity') }}: {{ product.quantity }}
               </div>
             </div>
           </n-gi>
@@ -168,27 +167,24 @@ const total = computed(() => {
               </h3>
             </div>
           </n-gi>
-
         </n-grid>
       </div>
       <div class="divider" />
       <n-grid :x-gap="20" cols="1 800:12">
         <n-gi span="1 800:8">
-          <h3 class="title">
-            Pagamento
-          </h3>
+          <h3 class="title">Pagamento</h3>
           <div v-if="preview.payment_method === 'credit_card'" class="payment">
             <ul>
-            <li>
-              {{ paymentCreditCard.creditCardName }}
-            </li>
-            <li>
-              {{ hiddenCreditCardNumber(paymentCreditCard.creditCardNumber) }}
-            </li>
-            <li>
-              {{ paymentCreditCard.installmentsMessage }}
-            </li>
-          </ul>
+              <li>
+                {{ paymentCreditCard.creditCardName }}
+              </li>
+              <li>
+                {{ hiddenCreditCardNumber(paymentCreditCard.creditCardNumber) }}
+              </li>
+              <li>
+                {{ paymentCreditCard.installmentsMessage }}
+              </li>
+            </ul>
           </div>
           <div v-if="isMobile" class="divider" />
         </n-gi>
@@ -226,5 +222,5 @@ const total = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "./ResumeOrder.scss";
+  @import './ResumeOrder.scss';
 </style>

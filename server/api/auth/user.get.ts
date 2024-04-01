@@ -1,22 +1,16 @@
-import { defineEventHandler, getCookie } from 'h3'
+import { defineEventHandler, getCookie, createError } from 'h3'
 
 interface UserSuccessResponse {
-  success: true
-  data: {
-    name: string
-    document: string
-    email: string
-    phone: string
-    fullName: string
-  }
+  user_id: string
+  role: string | null
+  name: string
+  document: string
+  email: string
+  phone: string
+  fullName: string
 }
 
-interface UserErrorResponse {
-  success: false
-  error: string
-}
-
-export type UserResponse = UserSuccessResponse | UserErrorResponse
+export type UserResponse = UserSuccessResponse
 
 export default defineEventHandler(async (event): Promise<UserResponse> => {
   try {
@@ -25,10 +19,10 @@ export default defineEventHandler(async (event): Promise<UserResponse> => {
     const serverBaseURL = process.env.SERVER_BASE_URL
 
     if (!document && !token) {
-      return {
-        success: false,
-        error: 'USER_NOT_AUTHENTICATED',
-      }
+      throw createError({
+        statusCode: 400,
+        message: 'USER_NOT_AUTHENTICATED',
+      })
     }
 
     const res = await fetch(`${serverBaseURL}/user/${document}`, {
@@ -38,21 +32,21 @@ export default defineEventHandler(async (event): Promise<UserResponse> => {
         Authorization: `Bearer ${token}`,
       },
     })
+
     const data = await res.json()
+
     if (!data || !data.name) {
-      return {
-        success: false,
-        error: 'USER_NOT_FOUND',
-      }
+      throw createError({
+        statusCode: 400,
+        message: 'USER_NOT_FOUND',
+      })
     }
-    return {
-      success: true,
-      data,
-    }
+
+    return data
   } catch {
-    return {
-      success: false,
-      error: 'SERVER_ERROR',
-    }
+    throw createError({
+      statusCode: 500,
+      message: 'SERVER_ERROR',
+    })
   }
 })

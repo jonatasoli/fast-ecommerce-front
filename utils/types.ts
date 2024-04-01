@@ -51,9 +51,11 @@ export type FeatureItem = {
 export type CartItem = {
   name: string
   image_path: string
+  discount_price: number
   product_id: number
   price: number
   quantity: number
+  uri?: string
 }
 
 export type CategoryOption = {
@@ -84,6 +86,8 @@ export interface Cart {
   total_with_fee?: string
   zipcode: string
   cart_items: CartItem[]
+  detail?: string
+  stackerror?: string
 }
 
 export interface Address {
@@ -123,6 +127,17 @@ export type User = {
   phone: string
 }
 
+export type Order = {
+  order_id: number
+  order_date: string
+  order_status: string
+  cancelled_at: string | null
+  cancelled_reason: string | null
+  tracking_number: string | null
+  freight: string
+  products: CartItem[]
+}
+
 export interface Checkout extends Cart, Payment {
   user_data: User
   shipping_is_payment: boolean
@@ -139,7 +154,6 @@ export interface CreditCard {
   installmentsMessage: string
   typeDocument: string
   document: string
-
 }
 
 export type BaseAddress = {
