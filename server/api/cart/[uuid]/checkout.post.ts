@@ -1,6 +1,13 @@
-import { defineEventHandler, getCookie, readBody, createError, H3Error } from 'h3'
+import {
+  defineEventHandler,
+  getCookie,
+  readBody,
+  createError,
+  H3Error,
+} from 'h3'
+import type { PaymentResponse } from '~/utils/types'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<PaymentResponse> => {
   const serverBaseURL = process.env.SERVER_BASE_URL
   const uuid = event.context.params?.uuid
   const token = getCookie(event, 'token')
@@ -19,11 +26,10 @@ export default defineEventHandler(async (event) => {
     const data = await res.json()
     return data
   } catch (error: unknown) {
-    console.error(error)
     throw createError({
       statusCode: 400,
       message: (error as Error).message,
-      data:  (error as H3Error).data,
-     })
+      data: (error as H3Error).data,
+    })
   }
 })

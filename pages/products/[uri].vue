@@ -24,6 +24,10 @@
     `${config.public.serverUrl}/product/${route.params.uri}`,
   )
 
+  useHead({
+    title: capitalizeFirstLetter(unref(product)?.name) || 'Produto',
+  })
+
   if (error.value || !product.value) {
     throw createError({
       statusCode: 404,
@@ -42,7 +46,7 @@
     : unref(product)?.price
   const newPrice = computed(() => currencyFormat(priceWithDiscount || 0))
   const installments = computed(() => {
-    let count = 4
+    let count = 3
     let amount = currencyFormat(0)
 
     if (product.value) {

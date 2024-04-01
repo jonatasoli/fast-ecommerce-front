@@ -8,6 +8,10 @@
   import InputCard from '~/components/cart/InputCard/InputCard.vue'
   import { RadioInput } from '~/components/cart'
 
+  useHead({
+    title: 'Carrinho',
+  })
+
   const cartStore = useCartStore()
   const notification = useNotification()
   const { getCart, coupon, loading } = storeToRefs(cartStore)
@@ -138,12 +142,7 @@
         <p>{{ t('cart.empty') }} :(</p>
 
         <nuxt-link to="/">
-          <n-button
-            class="cart__button"
-            type="primary"
-            size="large"
-            quaternary
-          >
+          <n-button class="cart__button" type="primary" size="large" quaternary>
             {{ t('cart.continue') }}
           </n-button>
         </nuxt-link>

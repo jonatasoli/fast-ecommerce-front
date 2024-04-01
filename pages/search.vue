@@ -20,6 +20,10 @@
   const OFFSET = 16
   const { t } = useI18n()
 
+  useHead({
+    title: 'Busca',
+  })
+
   const { page } = getPageFromRoute()
   const url = `${config.public.serverUrl}/catalog/`
 
@@ -48,6 +52,7 @@
       price: product.price,
       product_id: product.product_id,
       quantity: 1,
+      discount_price: product.discount,
     })
 
     router.push('/cart')

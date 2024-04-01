@@ -8,18 +8,18 @@ const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
   imports: {
-    autoImport: true
+    autoImport: true,
   },
   ssr: false,
   head: {
-    __dangerouslyDisableSanitizers: ["script"],
+    __dangerouslyDisableSanitizers: ['script'],
     script: [
       {
-        hid: "NEWRELIC",
-        src: "new-relic.js",
+        hid: 'NEWRELIC',
+        src: 'new-relic.js',
         defer: true,
-        type: "text/javascript",
-        charset: "utf-8",
+        type: 'text/javascript',
+        charset: 'utf-8',
       },
     ],
   },
@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
     '@vueuse/nuxt',
+    'nuxt-gtag',
   ],
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
@@ -50,6 +51,21 @@ export default defineNuxtConfig({
       download: true,
       inject: true,
     },
+  },
+  gtag: {
+    enabled: process.env.NODE_ENV === 'production',
+    loadingStrategy: 'async',
+    tags: [
+      {
+        id: process.env.GTAG_ID ?? '',
+        config: {
+          send_page_view: true,
+          linker: {
+            domains: [process.env.I18N_BASE_URL],
+          },
+        },
+      },
+    ],
   },
   plugins: [
     { src: '@/plugins/vue-tel-input', mode: 'client' },
@@ -93,6 +109,7 @@ export default defineNuxtConfig({
     public: {
       serverUrl: SERVER_BASE_URL,
       mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
+      gtagId: process.env.GTAG_ID,
       isProd: process.env.NODE_ENV === 'production',
       sentry: {
         dsn: process.env.SENTRY_DSN,

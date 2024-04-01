@@ -1,6 +1,7 @@
 import { defineEventHandler, readBody, H3Error } from 'h3'
+import type { EstimateResponse } from '~/utils/types'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<EstimateResponse> => {
   const serverBaseURL = process.env.SERVER_BASE_URL
   const uuid = event.context.params?.uuid
   const body = await readBody(event)

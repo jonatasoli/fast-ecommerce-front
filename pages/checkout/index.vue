@@ -20,6 +20,11 @@
       },
     ],
   })
+
+  useHead({
+    title: 'Checkout',
+  })
+
   const router = useRouter()
   const { isMobile } = useDevice()
   const notification = useNotification()
@@ -34,7 +39,7 @@
   const paymentMethod = ref<'credit-card' | 'pix'>('credit-card')
   const shippingIsPayment = ref<boolean | null>(null)
 
-  const { t, locale  } = useI18n()
+  const { t, locale } = useI18n()
 
   function nextSteps() {
     const steps = {
@@ -108,7 +113,8 @@
     } catch {
       notification.error({
         title: 'Erro',
-        content: 'Ocorreu um erro ao adicionar o pagamento, tente novamente mais tarde.',
+        content:
+          'Ocorreu um erro ao adicionar o pagamento, tente novamente mais tarde.',
         duration: 2500,
       })
     }
@@ -123,8 +129,8 @@
   }
 
   function handleGoHome() {
-   router.push('/')
- }
+    router.push('/')
+  }
 
   onMounted(async () => {
     if (unref(user)) {
@@ -228,9 +234,7 @@
           <n-radio value="credit-card">
             {{ t('checkout.payment.credit_card') }}
           </n-radio>
-          <n-radio v-if="locale === 'pt-br'" value="pix">
-            Pix
-          </n-radio>
+          <n-radio v-if="locale === 'pt-br'" value="pix"> Pix </n-radio>
         </n-radio-group>
       </div>
 
@@ -243,7 +247,7 @@
     </div>
 
     <div v-if="current" class="checkout__actions">
-       <n-button
+      <n-button
         v-if="current > 2"
         quaternary
         strong

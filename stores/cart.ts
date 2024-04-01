@@ -4,7 +4,6 @@ import type {
   Cart,
   CartAddress,
   CartItem,
-  Checkout,
   CreditCardPayment,
   Payment,
   ShippingAddress,
@@ -20,7 +19,7 @@ import {
   useNuxtApp,
   type CreditCard,
 } from '#imports'
-import type { AddPixPaymentMehodResponse } from "~/types/cart";
+import type { AddPixPaymentMehodResponse } from '~/types/cart'
 import type { PixPaymentStatusResponse } from '~/types/payment'
 
 export const useCartStore = defineStore('cart', () => {
@@ -120,7 +119,7 @@ export const useCartStore = defineStore('cart', () => {
     shipping_is_payment: false,
     subtotal_with_fee: 0,
     total_with_fee: 0,
-  });
+  })
 
   const loading = ref(false)
   const getCart = computed(() => cart.value)
@@ -130,20 +129,49 @@ export const useCartStore = defineStore('cart', () => {
   function setPaymentData(data: Payment) {
     payment.value = {
       ...payment.value,
-      ...data
+      ...data,
+    }
+  }
+
+  async function createCart() {
+    try {
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+
+      const { data, error } = await useFetch<{ uuid: string }>(
+        `${serverUrl}/cart/`,
+        {
+          method: 'POST',
+          headers,
+        },
+      )
+
+      if (unref(error)) {
+        error.value = null
+        return
+      }
+      const responseData = unref(data) as {
+        uuid: string
+      }
+      cart.value.uuid = responseData.uuid
+      return data
+    } catch (err) {
+      console.error(err)
     }
   }
 
   async function addProduct(uuid: string = cart.value.uuid, item) {
-      try {
-        loading.value = true
-        const headers = {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        }
-        const {data, error} = await useFetch(
-            `${serverUrl}/cart/${uuid}/product`,
+    try {
+      loading.value = true
+      const headers = {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+      const { data, error } = await useFetch(
+        `${serverUrl}/cart/${uuid}/product`,
         {
           method: 'POST',
           headers,
@@ -174,32 +202,6 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function createCart() {
-    try {
-      const headers = {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      }
-
-      const { data, error } = await useFetch(`${serverUrl}/cart/`, {
-        method: 'POST',
-        headers,
-      })
-
-      if (unref(error)) {
-        error.value = null
-        return
-      }
-      const responseData = unref(data) as {
-        uuid: string
-      }
-      cart.value.uuid = responseData.uuid
-      return data
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   async function addToCart(item: CartItem) {
     if (!item) {
       return
@@ -208,10 +210,8 @@ export const useCartStore = defineStore('cart', () => {
 
     if (!uuid) {
       const data = await createCart()
-      const responseDataValue = unref(data) as {
-        uuid: string
-      }
-      uuid = responseDataValue?.uuid
+      const responseDataValue = unref(data)
+      uuid = responseDataValue?.uuid ?? ''
     }
 
     await addProduct(uuid, item)
@@ -305,14 +305,9 @@ export const useCartStore = defineStore('cart', () => {
         throw new Error('ERROR_ADD_USER_CART')
       }
 
-      const responseData = unref(data) as {
-        data: Cart & {
-          user_data: User
-        }
-        success: boolean
-      }
+      const responseData = unref(data)
 
-      if (!responseData.success) {
+      if (!responseData?.success || !responseData?.data) {
         throw new Error('ERROR_ADD_USER_CART')
       }
       const { user_data: userCart, ...restCart } = responseData.data
@@ -373,17 +368,9 @@ export const useCartStore = defineStore('cart', () => {
         throw new Error('ERROR_ADD_ADDRESS_CART') // FIXME: show an error message
       }
 
-      const responseData = unref(data) as {
-        data: Cart & {
-          user_data: User
-          user_address_id: number
-          shipping_address_id: number
-          shipping_is_payment: boolean
-        }
-        success: boolean
-      }
+      const responseData = unref(data)
 
-      if (!responseData.success) {
+      if (!responseData?.success || !responseData?.data) {
         throw new Error('ERROR_ADD_ADDRESS_CART') // FIXME: show an error message
       }
 
@@ -444,10 +431,7 @@ export const useCartStore = defineStore('cart', () => {
         throw new Error('ERROR_ADD_MERCADO_PAGO_CREDIT_CARD_PAYMENT') // FIXME: show an error message
       }
 
-      const responseData = unref(data) as {
-        success: boolean
-        data: Checkout
-      }
+      const responseData = unref(data)
 
       return unref(responseData)
     } catch (err) {
@@ -464,7 +448,7 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const { data, error } = await useFetch(`api/cart/${uuid}/preview`, {
+      const { data, error } = await useFetch(`/api/cart/${uuid}/preview`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -477,9 +461,10 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const responseData = unref(data) as {
-        success: boolean
-        data: Checkout
+      const responseData = unref(data)
+
+      if (!responseData?.success || !responseData?.data) {
+        throw new Error('ERROR_GET_PREVIEW') // FIXME: show an error message
       }
 
       setCart(responseData.data)
@@ -529,7 +514,7 @@ export const useCartStore = defineStore('cart', () => {
         status: string
         message: string
         order_id: string
-        gateway_payment_id: string;
+        gateway_payment_id: string
       }
       return responseData
     } catch (err) {
@@ -674,9 +659,9 @@ export const useCartStore = defineStore('cart', () => {
    */
   async function addPixPaymentMethod() {
     const headers = {
-      "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    }
 
     const { data, error } = await useFetch<AddPixPaymentMehodResponse>(
       `/api/cart/${cart.value.uuid}/payment/pix`,
@@ -686,33 +671,36 @@ export const useCartStore = defineStore('cart', () => {
         body: {
           cart: getCartData(),
           payment: {
-            payment_gateway: 'MERCADOPAGO'
-          }
-        }
-      }
+            payment_gateway: 'MERCADOPAGO',
+          },
+        },
+      },
     )
 
     if (unref(error) || !data.value || !data.value.success) {
-      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      const errorMessage =
+        unref(error)?.message ?? 'Request returned empty body.'
       throw new Error(errorMessage)
     }
 
-    const { data: {
-      shipping_is_payment,
-      user_address_id,
-      shipping_address_id,
-      payment_method,
-      payment_intent,
-      customer_id,
-      pix_qr_code,
-      pix_qr_code_base64,
-      pix_payment_id,
-      gateway_provider,
-      installments,
-      total_with_fee,
-      subtotal_with_fee,
-      payment_method_id,
-    } } = data.value
+    const {
+      data: {
+        shipping_is_payment,
+        user_address_id,
+        shipping_address_id,
+        payment_method,
+        payment_intent,
+        customer_id,
+        pix_qr_code,
+        pix_qr_code_base64,
+        pix_payment_id,
+        gateway_provider,
+        installments,
+        total_with_fee,
+        subtotal_with_fee,
+        payment_method_id,
+      },
+    } = data.value
 
     setPaymentData({
       shipping_is_payment,
@@ -728,7 +716,7 @@ export const useCartStore = defineStore('cart', () => {
       gateway_provider,
       installments,
       subtotal_with_fee: subtotal_with_fee ? parseInt(subtotal_with_fee) : 0,
-      total_with_fee: total_with_fee ? parseInt(total_with_fee) : 0
+      total_with_fee: total_with_fee ? parseInt(total_with_fee) : 0,
     })
 
     return data.value.data
@@ -736,9 +724,9 @@ export const useCartStore = defineStore('cart', () => {
 
   async function getPixPaymentStatus(paymentId: string) {
     const headers = {
-      "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    }
 
     const { data, error } = await useFetch<PixPaymentStatusResponse>(
       '/api/cart/payment/status',
@@ -746,29 +734,30 @@ export const useCartStore = defineStore('cart', () => {
         headers,
         method: 'POST',
         body: { paymentId },
-      }
+      },
     )
 
     if (unref(error) || !data.value || !data.value.success) {
-      const errorMessage = unref(error)?.message ?? 'Request returned empty body.'
+      const errorMessage =
+        unref(error)?.message ?? 'Request returned empty body.'
       throw new Error(errorMessage)
     }
 
     return data.value.data
   }
 
-   async function estimate() {
+  async function estimate() {
     try {
-      loading.value = true;
+      loading.value = true
       const headers = {
-        "content-type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3000",
-      };
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+      }
 
       const { data, error } = await useFetch(
         `/api/cart/${cart.value.uuid}/estimate`,
         {
-          method: "POST",
+          method: 'POST',
           headers,
           body: {
             uuid: cart.value.uuid,
@@ -780,19 +769,19 @@ export const useCartStore = defineStore('cart', () => {
             coupon: coupon.value,
             affiliate: affiliate.value,
           },
-        }
-      );
+        },
+      )
 
       if (unref(error)) {
-        return unref(error)?.data.message;
+        return unref(error)?.data.message
       }
 
-      const responseData = unref(data) as Cart;
-      return responseData;
+      const responseData = unref(data) as Cart
+      return responseData
     } catch (err) {
-      return err;
+      return err
     } finally {
-      loading.value = false;
+      loading.value = false
     }
   }
 
