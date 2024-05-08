@@ -8,6 +8,36 @@
   const head = useLocaleHead({
     addSeoAttributes: true,
   })
+  const showBanner = ref(true)
+  const cookiesAccepted = computed(() => {
+    return localStorage.getItem('cookiesAccepted') === 'true'
+  })
+  const { gtag, initialize } = useGtag()
+
+  function acceptCookies() {
+    localStorage.setItem('cookiesAccepted', 'true')
+    initialize()
+    gtag('consent', 'update', {
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      ad_storage: 'granted',
+      analytics_storage: 'granted',
+    })
+    showBanner.value = false
+  }
+
+  onMounted(() => {
+    if (cookiesAccepted.value) {
+      initialize()
+      gtag('consent', 'update', {
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        ad_storage: 'granted',
+        analytics_storage: 'granted',
+      })
+      showBanner.value = false
+    }
+  })
 </script>
 
 <template>
@@ -29,6 +59,7 @@
         <n-notification-provider>
           <AppHeader />
           <slot />
+          <BannerCookies v-if="showBanner" :accept-cookies="acceptCookies" />
           <AppFooter />
         </n-notification-provider>
       </n-config-provider>

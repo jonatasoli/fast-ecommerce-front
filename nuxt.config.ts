@@ -53,7 +53,7 @@ export default defineNuxtConfig({
     },
   },
   gtag: {
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: false,
     loadingStrategy: 'async',
     tags: [
       {
@@ -65,6 +65,20 @@ export default defineNuxtConfig({
           },
         },
       },
+    ],
+    initCommands: [
+      // Setup up consent mode
+      [
+        'consent',
+        'default',
+        {
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          ad_storage: 'denied',
+          analytics_storage: 'denied',
+          wait_for_update: 300,
+        },
+      ],
     ],
   },
   plugins: [
