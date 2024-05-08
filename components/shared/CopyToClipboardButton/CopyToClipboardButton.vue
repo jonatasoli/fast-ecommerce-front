@@ -1,6 +1,6 @@
 <template>
   <div class="copy-to-clipbord-button">
-    <n-button 
+    <n-button
       v-if="isSupported"
       :type="copied ? 'success' : 'primary'"
       ghost
@@ -17,14 +17,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ClipboardDocumentCheckIcon, ClipboardDocumentIcon } from '@heroicons/vue/24/outline'
+  import {
+    ClipboardDocumentCheckIcon,
+    ClipboardDocumentIcon,
+  } from '@heroicons/vue/24/outline'
 
-defineProps<{ source: string }>()
+  defineProps<{ source: string }>()
 
-const { t } = useI18n()
-const { copy, isSupported, copied } = useClipboard()
+  const { t } = useI18n()
+  const { copy, isSupported, copied } = useClipboard()
 
-const buttonContent = computed(() => copied.value ? t('actions.copied') : t('actions.copy-link'))
+  const buttonContent = computed(() =>
+    copied.value ? t('actions.copied') : t('actions.copy-link'),
+  )
 </script>
 
 <style lang="scss" scoped>
@@ -38,7 +43,7 @@ const buttonContent = computed(() => copied.value ? t('actions.copied') : t('act
 </style>
 
 <i18n lang="json">
-  {
+{
   "pt-br": {
     "actions": {
       "copy-link": "Copiar Link",

@@ -5,15 +5,14 @@ interface IConfig {
 }
 
 const PAYMENT_STATUS = {
-  ERROR: "REJECTED",
-  SUCCESS: "APPROVED",
-  PENDING: "PENDING",
-  WAITING: null
+  ERROR: 'REJECTED',
+  SUCCESS: 'APPROVED',
+  PENDING: 'PENDING',
+  WAITING: null,
 }
 
 const STATUS_CHECK_INTERVAL = 1000 // 1 second
 const STATUS_CHECK_TIMEOUT = 1000 * 60 * 5 // 5 minutes
-
 
 const mapStatus = (status: keyof typeof PAYMENT_STATUS) => {
   if (status) {
@@ -23,7 +22,11 @@ const mapStatus = (status: keyof typeof PAYMENT_STATUS) => {
   return PAYMENT_STATUS.WAITING
 }
 
-export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: IConfig) => {
+export const usePaymentStatus = ({
+  onError,
+  onSuccess,
+  watch: watchSource,
+}: IConfig) => {
   const cartStore = useCartStore()
   const status = ref<PAYMENT_STATUS[keyof typeof PAYMENT_STATUS]>()
 
@@ -40,7 +43,7 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
   const startChecking = (paymentId: string) => {
     intervalCheck = setInterval(
       async () => await getPaymentStatus(paymentId),
-      STATUS_CHECK_INTERVAL
+      STATUS_CHECK_INTERVAL,
     )
 
     timeoutCheck = setTimeout(checkStatus, STATUS_CHECK_TIMEOUT)
@@ -53,7 +56,7 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
     })
   }
 
-  const timeoutError  = () => {
+  const timeoutError = () => {
     onError({
       message: 'O QR code expirou. Para continuar, gere outro.',
       name: 'Timeout',
@@ -62,10 +65,12 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
 
   const checkStatus = () => {
     clearInterval(intervalCheck)
-      clearTimeout(timeoutCheck)
+    clearTimeout(timeoutCheck)
 
     // Tempo acabou e status é pendente ou null (inicial)
-    if ([PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(status.value)) {
+    if (
+      [PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(status.value)
+    ) {
       return timeoutError()
     }
 
@@ -77,24 +82,33 @@ export const usePaymentStatus = ({ onError, onSuccess, watch: watchSource }: ICo
   }
 
   onMounted(() => {
-    watch(() => unref(watchSource), (value) => {
-      if (!unref(value)) {
-        console.warn('no payment id')
-      }
-      startChecking(unref(value) as string)
-    })
+    watch(
+      () => unref(watchSource),
+      (value) => {
+        if (!unref(value)) {
+          console.warn('no payment id')
+        }
+        startChecking(unref(value) as string)
+      },
+    )
 
-    watch(() => unref(status), () => {
-      if ([PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(status.value)) {
-        return
-      }
+    watch(
+      () => unref(status),
+      () => {
+        if (
+          [PAYMENT_STATUS.PENDING, PAYMENT_STATUS.WAITING].includes(
+            status.value,
+          )
+        ) {
+          return
+        }
 
-      checkStatus()
-    })
+        checkStatus()
+      },
+    )
   })
 
   return {
-    status
+    status,
   }
 }
-

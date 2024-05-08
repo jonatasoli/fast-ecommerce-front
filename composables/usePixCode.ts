@@ -33,14 +33,13 @@ export function usePixCode({ onError }: IPixCodeProps = {}) {
       data.value = {
         link: pixResponse.pix_qr_code,
         qrCode: useImageFromBase64(pixResponse.pix_qr_code_base64),
-        paymentId: checkoutResponse.gateway_payment_id
+        paymentId: checkoutResponse.gateway_payment_id,
       }
 
       pending.value = false
-    
     } catch (err) {
       error.value = (err as Error).message
-      
+
       if (onError) {
         onError(unref(error))
       }
@@ -55,6 +54,6 @@ export function usePixCode({ onError }: IPixCodeProps = {}) {
     pending,
     data,
     error,
-    execute
+    execute,
   }
 }

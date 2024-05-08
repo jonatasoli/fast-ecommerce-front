@@ -1,4 +1,4 @@
-import type { ServerResponse } from "./api"
+import type { ServerResponse } from './api'
 
 export interface CartItem {
   product_id: string
@@ -11,7 +11,7 @@ export interface CartItem {
 
 export interface CartFreight {
   price: string
-  delivery_time: number,
+  delivery_time: number
   max_date: string
 }
 
@@ -27,7 +27,7 @@ export interface CartData {
   shipping_is_payment: boolean
   user_address_id: number
   shipping_address_id: string | null
-  customer_id: string,
+  customer_id: string
   gateway_provider: string
   installments: number
   subtotal_with_fee: string
@@ -43,14 +43,14 @@ export interface CartUserData {
 }
 
 export interface CartCreditCardData extends CartData {
-  payment_method: "credit_card"
+  payment_method: 'credit_card'
   payment_method_id: string | null
   payment_intent: string | null
   card_token: string | null
 }
 
 export interface CartDataPix extends CartData {
-  payment_method: "pix"
+  payment_method: 'pix'
   pix_qr_code: string
   pix_qr_code_base64: string
   pix_payment_id: string
@@ -58,8 +58,10 @@ export interface CartDataPix extends CartData {
   payment_method_id: string
 }
 
-export type AddPixPaymentMehodResponse = ServerResponse<{
-  cart_items: CartItem[]
-  freight: CartFreight
-  user_data: CartUserData
-} & CartDataPix> 
+export type AddPixPaymentMehodResponse = ServerResponse<
+  {
+    cart_items: CartItem[]
+    freight: CartFreight
+    user_data: CartUserData
+  } & CartDataPix
+>

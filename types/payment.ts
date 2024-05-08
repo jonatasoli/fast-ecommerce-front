@@ -1,4 +1,4 @@
-import type { ServerResponse } from "./api"
+import type { ServerResponse } from './api'
 
 export type PixPaymentStatusResponse = ServerResponse<{
   payment_id: number

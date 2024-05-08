@@ -1,18 +1,25 @@
 import { defineEventHandler, getCookie, readBody, createError } from 'h3'
 import type { AddPixPaymentMehodResponse } from '~/types/cart'
 
-async function AddPixPaymentMehod(cartId: string, userToken: string, body: Record<string, unknown>) {
+async function AddPixPaymentMehod(
+  cartId: string,
+  userToken: string,
+  body: Record<string, unknown>,
+) {
   const serverBaseURL = process.env.SERVER_BASE_URL
 
   try {
-    const response = await fetch(`${serverBaseURL}/cart/${cartId}/payment/pix`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userToken}`,
+    const response = await fetch(
+      `${serverBaseURL}/cart/${cartId}/payment/pix`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(body),
       },
-      body: JSON.stringify(body),
-    })
+    )
 
     if (response.status !== 201) {
       throw createError({
@@ -32,9 +39,9 @@ async function AddPixPaymentMehod(cartId: string, userToken: string, body: Recor
 
     return {
       success: true,
-      data
+      data,
     }
-  } catch(error: unknown) {
+  } catch (error: unknown) {
     console.error(error)
 
     throw createError({
@@ -44,10 +51,12 @@ async function AddPixPaymentMehod(cartId: string, userToken: string, body: Recor
   }
 }
 
-export default defineEventHandler(async (event): Promise<AddPixPaymentMehodResponse> => {
-  const cartId = event.context.params?.uuid as string
-  const userToken = getCookie(event, 'token') as string
-  const body = await readBody(event)
+export default defineEventHandler(
+  async (event): Promise<AddPixPaymentMehodResponse> => {
+    const cartId = event.context.params?.uuid as string
+    const userToken = getCookie(event, 'token') as string
+    const body = await readBody(event)
 
-  return await AddPixPaymentMehod(cartId, userToken, body)
-})
+    return await AddPixPaymentMehod(cartId, userToken, body)
+  },
+)

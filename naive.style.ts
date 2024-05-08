@@ -97,11 +97,11 @@ export const theme: GlobalThemeOverrides = {
     feedbackFontSizeSmall: '13px',
   },
   Card: {
-    borderColor: '#CDCACA'
+    borderColor: '#CDCACA',
   },
   Divider: {
     color: '#CDCACA',
-  }
+  },
 } as const
 
 export const breakpoints = {

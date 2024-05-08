@@ -1,21 +1,24 @@
-import type { PixPaymentStatusResponse } from "~/types/payment"
+import type { PixPaymentStatusResponse } from '~/types/payment'
 
 async function getPaymentStatus(paymentId: string, userToken: string) {
   const serverBaseURL = process.env.SERVER_BASE_URL
 
   try {
-    const response = await fetch(`${serverBaseURL}/payment/payment_status?gateway_payment_id=${paymentId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userToken}`,
+    const response = await fetch(
+      `${serverBaseURL}/payment/payment_status?gateway_payment_id=${paymentId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
       },
-    })
+    )
 
     if (response.status !== 200) {
       throw createError({
         statusCode: response.status,
-        message: response.statusText
+        message: response.statusText,
       })
     }
 
@@ -23,9 +26,9 @@ async function getPaymentStatus(paymentId: string, userToken: string) {
 
     return {
       success: true,
-      data
+      data,
     }
-  } catch(error: unknown) {
+  } catch (error: unknown) {
     console.error(error)
 
     throw createError({
@@ -35,9 +38,11 @@ async function getPaymentStatus(paymentId: string, userToken: string) {
   }
 }
 
-export default defineEventHandler(async (event): Promise<PixPaymentStatusResponse> => {
-  const userToken = getCookie(event, 'token') as string
-  const { paymentId } = await readBody<{ paymentId: string }>(event)
+export default defineEventHandler(
+  async (event): Promise<PixPaymentStatusResponse> => {
+    const userToken = getCookie(event, 'token') as string
+    const { paymentId } = await readBody<{ paymentId: string }>(event)
 
-  return await getPaymentStatus(paymentId, userToken)
-})
+    return await getPaymentStatus(paymentId, userToken)
+  },
+)

@@ -42,32 +42,34 @@
     },
   })
 
-onMounted(async () => {
-  if (cartStore.payment.payment_method === 'pix') {
-    return
-  }
+  onMounted(async () => {
+    if (cartStore.payment.payment_method === 'pix') {
+      return
+    }
 
-  const response = await cartStore.getCartPreview();
+    const response = await cartStore.getCartPreview()
 
-  if (!response) {
-    return;
-  }
+    if (!response) {
+      return
+    }
 
-  const { success, data } = unref(response);
+    const { success, data } = unref(response)
 
-  if (!success) {
-    return;
-  }
+    if (!success) {
+      return
+    }
 
-  preview.value = data;
-});
+    preview.value = data
+  })
 
-const data = computed(() => {
-  return cartStore.payment.payment_method === 'pix' ? cartStore.getCart : unref(preview)
-})
+  const data = computed(() => {
+    return cartStore.payment.payment_method === 'pix'
+      ? cartStore.getCart
+      : unref(preview)
+  })
 
-function hiddenCreditCardNumber(number) {
-  const fourLastDigits = number.slice(-4)
+  function hiddenCreditCardNumber(number) {
+    const fourLastDigits = number.slice(-4)
     return `**** **** **** ${fourLastDigits}`
   }
 

@@ -61,11 +61,7 @@
         </n-form-item>
       </n-form>
 
-      <n-button
-        type="primary"
-        size="large"
-        strong
-        @click="handleButtonClick">
+      <n-button type="primary" size="large" strong @click="handleButtonClick">
         {{ props.buttonText }}
       </n-button>
     </div>
