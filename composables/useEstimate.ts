@@ -8,6 +8,10 @@ export function useEstimate() {
 
   const cartStore = useCartStore()
   const { cart, coupon, affiliate } = storeToRefs(cartStore)
+  const cartItems = cart.value.cart_items
+  const filteredCartItems = cartItems.filter(
+    (item) => item.available_quantity > 0,
+  )
 
   async function execute(cartItems: CartItem[]) {
     try {
@@ -20,22 +24,23 @@ export function useEstimate() {
 
       const uuid = unref(cart).uuid
 
-      const { data: responseData, error: fetchError } = await useFetch<
-        Cart | undefined
-      >(`/api/cart/${uuid}/estimate`, {
-        method: 'POST',
-        headers,
-        body: {
-          uuid: cart.value.uuid,
-          cart_items: cartItems,
-          subtotal: cart.value.subtotal,
-          total: cart.value.total,
-          zipcode: cart.value.zipcode,
-          freight_product_code: cart.value.freight_product_code,
-          coupon,
-          affiliate,
+      const { data: responseData, error: fetchError } = await useFetch(
+        `/api/cart/${uuid}/estimate`,
+        {
+          method: 'POST',
+          headers,
+          body: {
+            uuid: cart.value.uuid,
+            cart_items: cartItems,
+            subtotal: cart.value.subtotal,
+            total: cart.value.total,
+            zipcode: cart.value.zipcode,
+            freight_product_code: cart.value.freight_product_code,
+            coupon,
+            affiliate,
+          },
         },
-      })
+      )
 
       const responseDataValue = unref(responseData)
 
@@ -57,13 +62,13 @@ export function useEstimate() {
     }
   }
 
-  async function refresh(cartItems: CartItem[] = cart.value.cart_items) {
+  async function refresh(cartItems: CartItem[] = filteredCartItems) {
     fetching.value = true
     await execute(cartItems)
     fetching.value = false
   }
 
-  onMounted(() => execute(cart.value.cart_items))
+  onMounted(() => execute(filteredCartItems))
 
   return {
     pending,

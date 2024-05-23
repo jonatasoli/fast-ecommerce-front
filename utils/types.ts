@@ -52,6 +52,7 @@ export type FeatureItem = {
 export type CartItem = {
   name: string
   image_path: string
+  available_quantity: number
   discount_price: number
   product_id: number
   price: number
@@ -225,6 +226,6 @@ export type PaymentResponse = Response<{
   order_id: number
 }>
 
-export type EstimateResponse = Response<Cart>
+export type EstimateResponse = Cart
 
 export type PreviewResponse = Response<Checkout>
