@@ -75,6 +75,7 @@
       name: product.value.name,
       price: product.value.price,
       product_id: product.value.product_id,
+      available_quantity: product.value.quantity,
       quantity: 1,
     })
     router.push('/cart')
