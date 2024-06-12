@@ -1,7 +1,7 @@
 import { defineEventHandler, getCookie, readBody, createError } from 'h3'
 import type { AddPixPaymentMehodResponse } from '~/types/cart'
 
-async function AddPixPaymentMehod(
+async function AddPixPaymentMethod(
   cartId: string,
   userToken: string,
   body: Record<string, unknown>,
@@ -57,6 +57,6 @@ export default defineEventHandler(
     const userToken = getCookie(event, 'token') as string
     const body = await readBody(event)
 
-    return await AddPixPaymentMehod(cartId, userToken, body)
+    return await AddPixPaymentMethod(cartId, userToken, body)
   },
 )

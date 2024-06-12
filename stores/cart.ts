@@ -656,7 +656,6 @@ export const useCartStore = defineStore('cart', () => {
 
   /**
    * Calls the API to add a new payment method (PIX)
-   * @param paymentData: the relevant data about the payment method.
    */
   async function addPixPaymentMethod() {
     const headers = {
