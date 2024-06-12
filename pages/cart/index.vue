@@ -217,7 +217,7 @@
                       v-model:value="item.quantity"
                       button-placement="both"
                       :min="1"
-                      :max="999"
+                      :max="item.available_quantity"
                       on
                       @update:value="updateQuantity"
                     />
@@ -308,5 +308,191 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/cart.scss';
+  .cart {
+    &__empty {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        font-size: 1.5rem;
+      }
+
+      :deep(.n-button) {
+        text-decoration: underline;
+        padding: 0.5rem 1rem;
+
+        .n-button__content {
+          font-size: 1.25rem;
+          font-weight: 600;
+        }
+      }
+    }
+
+    &__not-empty {
+      padding: 1rem 2rem;
+
+      @media (max-width: 840px) {
+        padding: 1rem;
+      }
+
+      &--container {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+
+        @media (max-width: 840px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      &--products {
+        border-radius: 8px;
+        border: 1px solid #cdcaca;
+
+        h1 {
+          text-align: center;
+
+          strong {
+            color: $primary-color;
+            font-size: 2.5rem;
+          }
+        }
+        .table-container {
+          padding: 1rem;
+
+          .table-header {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) 60px;
+            gap: 3rem;
+            font-size: 1.15rem;
+
+            @media (max-width: 840px) {
+              display: none;
+            }
+          }
+
+          .table-body {
+            margin-top: 1rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .table-row {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr) 60px;
+              gap: 3rem;
+
+              @media (max-width: 840px) {
+                grid-template-columns: 3fr 1fr 1fr;
+              }
+
+              .product {
+                display: flex;
+                gap: 1rem;
+
+                @media (max-width: 840px) {
+                  grid-column-start: 1;
+                  grid-column-end: 4;
+                }
+              }
+
+              .quantity {
+                width: 45%;
+                text-align: center;
+
+                @media (max-width: 840px) {
+                  width: 100%;
+                }
+              }
+
+              .container-price {
+                display: flex;
+                flex-direction: column;
+              }
+
+              .old-price {
+                text-decoration: line-through;
+                color: #333639;
+                margin: 0;
+              }
+
+              .price {
+                font-size: 1.15rem;
+                font-weight: 600;
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+
+      &--summary {
+        border-radius: 8px;
+        border: 1px solid #cdcaca;
+        padding: 1rem;
+        max-height: 20rem;
+
+        hr {
+          height: 1px;
+          background-color: #cdcaca;
+          border: none;
+        }
+
+        .summary-values {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .amount {
+          font-size: 1.25rem;
+          font-weight: 600;
+        }
+
+        .btn-checkout {
+          margin-top: 1rem;
+          width: 100%;
+        }
+
+        .btn-continue-buying {
+          width: 100%;
+          text-decoration: underline;
+        }
+
+        .alert-freight {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: $primary-color;
+          text-align: center;
+          background-color: #f9e9d2;
+          padding: 0.5rem;
+          margin: 0 0 1rem 0;
+        }
+      }
+    }
+
+    &__loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+    }
+
+    &__freigth {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      color: $home-background;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+    }
+  }
 </style>

@@ -88,6 +88,7 @@
       product_id: product.product_id,
       quantity: 1,
       discount_price: product.discount,
+      available_quantity: product.quantity,
     })
 
     router.push('/cart')
