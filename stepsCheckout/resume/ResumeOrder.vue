@@ -3,6 +3,7 @@
   import { currencyFormat, useI18n, onMounted, ref, unref } from '#imports'
   import { useCartStore } from '~/stores/cart'
   import type { Checkout } from '~/utils/types'
+  import PixIcon from '~/assets/images/pix-icon.svg'
 
   const cartStore = useCartStore()
   const { t } = useI18n()
@@ -43,10 +44,6 @@
   })
 
   onMounted(async () => {
-    if (cartStore.payment.payment_method === 'pix') {
-      return
-    }
-
     const response = await cartStore.getCartPreview()
 
     if (!response) {
@@ -62,11 +59,7 @@
     preview.value = data
   })
 
-  const data = computed(() => {
-    return cartStore.payment.payment_method === 'pix'
-      ? cartStore.getCart
-      : unref(preview)
-  })
+  const data = computed(() => unref(preview))
 
   function hiddenCreditCardNumber(number) {
     const fourLastDigits = number.slice(-4)
@@ -89,6 +82,7 @@
     <h2 class="title">
       {{ t('checkout.finally.title') }}
     </h2>
+
     <div class="border">
       <n-grid :x-gap="20" cols="1 800:12">
         <n-gi :span="8">
@@ -96,15 +90,9 @@
             {{ t('checkout.steps.login') }}
           </h3>
           <ul>
-            <li>
-              {{ data.user_data.name }}
-            </li>
-            <li>
-              {{ data.user_data.email }}
-            </li>
-            <li>
-              {{ data.user_data.phone }}
-            </li>
+            <li>{{ data.user_data.name }}</li>
+            <li>{{ data.user_data.email }}</li>
+            <li>{{ data.user_data.phone }}</li>
           </ul>
         </n-gi>
         <n-gi :span="4">
@@ -171,10 +159,12 @@
           </n-gi>
         </n-grid>
       </div>
+
       <div class="divider" />
       <n-grid :x-gap="20" cols="1 800:12">
         <n-gi span="1 800:8">
           <h3 class="title">Pagamento</h3>
+
           <div v-if="preview.payment_method === 'credit_card'" class="payment">
             <ul>
               <li>
@@ -188,6 +178,14 @@
               </li>
             </ul>
           </div>
+
+          <div v-else-if="preview.payment_method === 'pix'" class="payment">
+            <n-space justify="start" align="center">
+              <img :src="PixIcon" />
+              <p>Pix</p>
+            </n-space>
+          </div>
+
           <div v-if="isMobile" class="divider" />
         </n-gi>
         <n-gi span="1 800:3">

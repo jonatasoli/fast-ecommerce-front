@@ -5,23 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf18f138-e580-458d-ab53-bb93efdd11d6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/components/cart/InputCard/InputCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/InputCard/InputCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/shared/CopyToClipboardButton/CopyToClipboardButton.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/CopyToClipboardButton/CopyToClipboardButton.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/shared/Loading/LoadingProvider.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/shared/Loading/LoadingProvider.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composables/usePaymentStatus.ts" beforeDir="false" afterPath="$PROJECT_DIR$/composables/usePaymentStatus.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composables/usePixCode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/composables/usePixCode.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/pix-icon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/components.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/i18n/ptBR.ts" beforeDir="false" afterPath="$PROJECT_DIR$/i18n/ptBR.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/naive.style.ts" beforeDir="false" afterPath="$PROJECT_DIR$/naive.style.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/api/cart/[uuid]/payment/pix.post.ts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/cart/[uuid]/payment/pix.post.ts.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/api/cart/payment/status.post.ts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/cart/payment/status.post.ts.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stepsCheckout/payment/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/stepsCheckout/payment/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stepsCheckout/payment/pix/PixPaymentForm.scss" beforeDir="false" afterPath="$PROJECT_DIR$/stepsCheckout/payment/pix/PixPaymentForm.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stepsCheckout/payment/pix/PixPaymentForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stepsCheckout/payment/pix/PixPaymentForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stepsCheckout/payment/pix/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/stepsCheckout/payment/pix/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/checkout/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/checkout/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stepsCheckout/payment/CreditCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stepsCheckout/payment/CreditCard.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stepsCheckout/resume/ResumeOrder.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stepsCheckout/resume/ResumeOrder.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/cart.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/cart.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/payment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/payment.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +43,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feature/add-pix-payment",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.karma.karma_node_package_dir": "",
     "javascript.nodejs.core.library.configured.version": "18.18.2",
     "javascript.nodejs.core.library.typings.version": "18.18.14",
+    "last_opened_file_path": "//wsl.localhost/ubuntu/home/felipe/Organizations/FastEComerce/fast-ecommerce-front/assets/images",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -62,14 +55,28 @@
     "nodejs_interpreter_path": "wsl://Ubuntu@/home/felipe/.nvm/versions/node/v18.18.2/bin/node",
     "nodejs_package_manager_path": "yarn",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "\\\\wsl.localhost\\Ubuntu\\home\\felipe\\Organizations\\FastEComerce\\fast-ecommerce-front\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "\\\\wsl.localhost\\ubuntu\\home\\felipe\\Organizations\\FastEComerce\\fast-ecommerce-front\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\ubuntu\home\felipe\Organizations\FastEComerce\fast-ecommerce-front\assets\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\ubuntu\home\felipe\Organizations\FastEComerce\fast-ecommerce-front\server\api\cart\[uuid]" />
+      <recent name="\\wsl.localhost\ubuntu\home\felipe\Organizations\FastEComerce\fast-ecommerce-front\server\api\cart" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="NodeJSConfigurationType" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-7a29c1521ef0-c986f194a52a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.11799.298" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17890.13" />
       </set>
     </attachedChunks>
   </component>
@@ -84,6 +91,7 @@
       <workItem from="1711126514265" duration="6010000" />
       <workItem from="1711502636497" duration="5000" />
       <workItem from="1711976913591" duration="2590000" />
+      <workItem from="1718217209121" duration="6489000" />
     </task>
     <servers />
   </component>

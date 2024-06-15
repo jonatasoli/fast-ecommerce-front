@@ -270,6 +270,7 @@ export default {
       back: 'Voltar',
       finish: 'Confirmar Pedido',
       home: 'Home',
+      change_payment_method: 'Alterar Método de Pagamento'
     },
   },
 

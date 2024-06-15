@@ -4,7 +4,7 @@
   import { useNotification } from 'naive-ui'
   import { useUserStore } from '~/stores/user'
   import { useCartStore } from '~/stores/cart'
-  import { Pix, CreditCard } from '~/stepsCheckout/payment'
+  import { CreditCard } from '~/stepsCheckout/payment'
   import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
   import type { FormAddress } from '~/components/checkout'
 
@@ -40,6 +40,8 @@
   const shippingIsPayment = ref<boolean | null>(null)
 
   const { t, locale } = useI18n()
+  const isLoading = ref(false)
+
 
   function nextSteps() {
     const steps = {
@@ -105,11 +107,19 @@
           return
         }
 
+        isLoading.value = false
         const { data } = await creditCard.value.handleSubmitCreditCard()
         if (data.uuid) {
           current.value++
         }
       }
+
+      if (paymentMethod.value === 'pix') {
+        isLoading.value = true
+        await cartStore.addPixPaymentMethod()
+        current.value++
+      }
+
     } catch {
       notification.error({
         title: 'Erro',
@@ -117,6 +127,8 @@
           'Ocorreu um erro ao adicionar o pagamento, tente novamente mais tarde.',
         duration: 2500,
       })
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -239,7 +251,7 @@
       </div>
 
       <CreditCard v-if="paymentMethod === 'credit-card'" ref="creditCard" />
-      <Pix v-else-if="paymentMethod === 'pix'" @success="current = 4" />
+<!--      <Pix v-else-if="paymentMethod === 'pix'" @success="current = 4" />-->
     </div>
 
     <div v-if="current === 4" class="checkout__container checkout__confirm">
@@ -252,6 +264,7 @@
         quaternary
         strong
         class="btn-checkout"
+        :disabled="isLoading"
         @click="current--"
       >
         {{ t('checkout.actions.back') }}
@@ -263,11 +276,23 @@
         strong
         class="btn-checkout"
         submit
-        @click="nextSteps"
+        :loading="isLoading"
+        :disabled="isLoading"
+        @click.prevent="nextSteps"
       >
         {{ t('checkout.actions.next') }}
       </n-button>
+
       <template v-if="current === 4">
+        <n-button
+          type="info"
+          strong
+          class="btn-checkout"
+          @click="current = 3"
+        >
+          {{ t('checkout.actions.change_payment_method') }}
+        </n-button>
+
         <n-button
           v-if="paymentMethod == 'pix'"
           type="primary"
@@ -277,6 +302,7 @@
         >
           {{ t('checkout.actions.home') }}
         </n-button>
+
         <n-button
           v-else
           type="primary"
@@ -287,6 +313,7 @@
           {{ t('checkout.actions.finish') }}
         </n-button>
       </template>
+
     </div>
   </div>
 </template>
