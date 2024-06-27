@@ -126,7 +126,27 @@ export const useCartStore = defineStore('cart', () => {
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
 
-  function setPaymentData(data: Payment) {
+  function resetPaymentMethod() {
+    setPaymentData({
+      payment_method: '',
+      payment_method_id: '',
+      payment_intent: '',
+      customer_id: '',
+      card_token: '',
+      pix_payment_id: 0,
+      pix_qr_code: '',
+      pix_qr_code_base64: '',
+      gateway_provider: '',
+      installments: 0,
+      shipping_address_id: '',
+      user_address_id: 0,
+      shipping_is_payment: false,
+      subtotal_with_fee: 0,
+      total_with_fee: 0,
+    })
+  }
+
+  function setPaymentData(data: Partial<Payment>) {
     payment.value = {
       ...payment.value,
       ...data,
@@ -517,10 +537,17 @@ export const useCartStore = defineStore('cart', () => {
         order_id: string
         gateway_payment_id: string
       }
+
+      setOrderId(responseData.order_id)
+
       return responseData
     } catch (err) {
       console.error(err)
     }
+  }
+
+  function setOrderId(orderId: string) {
+    cart.value.orderId = orderId
   }
 
   function clearCart() {
@@ -658,13 +685,15 @@ export const useCartStore = defineStore('cart', () => {
    * Calls the API to add a new payment method (PIX)
    */
   async function addPixPaymentMethod() {
+    const uuid = cart.value.uuid
+
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
     }
 
     const { data, error } = await useFetch<AddPixPaymentMehodResponse>(
-      `/api/cart/${cart.value.uuid}/payment/pix`,
+      `/api/cart/${uuid}/payment/pix`,
       {
         headers,
         method: 'POST',
@@ -819,5 +848,6 @@ export const useCartStore = defineStore('cart', () => {
     setCart,
     addPixPaymentMethod,
     getPixPaymentStatus,
+    resetPaymentMethod,
   }
 })

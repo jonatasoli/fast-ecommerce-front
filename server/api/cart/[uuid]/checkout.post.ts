@@ -23,6 +23,13 @@ export default defineEventHandler(async (event): Promise<PaymentResponse> => {
       body: JSON.stringify(body),
     })
 
+    if (res.status === 503) {
+      throw createError({
+        statusCode: 503,
+        message: 'Checkout error',
+      })
+    }
+
     const data = await res.json()
     return data
   } catch (error: unknown) {

@@ -2,10 +2,16 @@
   import { storeToRefs } from 'pinia'
   import { navigateTo } from 'nuxt/app'
   import { useNotification } from 'naive-ui'
+  import {
+    PencilIcon,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+  } from '@heroicons/vue/24/outline'
   import { useUserStore } from '~/stores/user'
   import { useCartStore } from '~/stores/cart'
   import { CreditCard } from '~/stepsCheckout/payment'
   import ResumeOrder from '~/stepsCheckout/resume/ResumeOrder.vue'
+  import PixModal from '~/components/checkout/PixModal/PixModal.vue'
   import type { FormAddress } from '~/components/checkout'
 
   definePageMeta({
@@ -38,10 +44,10 @@
   const currentStatus = ref<'process' | 'finish' | 'wait'>('process')
   const paymentMethod = ref<'credit-card' | 'pix'>('credit-card')
   const shippingIsPayment = ref<boolean | null>(null)
+  const showPixQrCodeModal = ref<boolean>(false)
 
   const { t, locale } = useI18n()
   const isLoading = ref(false)
-
 
   function nextSteps() {
     const steps = {
@@ -119,7 +125,6 @@
         await cartStore.addPixPaymentMethod()
         current.value++
       }
-
     } catch {
       notification.error({
         title: 'Erro',
@@ -137,11 +142,12 @@
   }
 
   function handleFinishCheckout() {
-    router.push('/checkout/finish')
-  }
+    if (paymentMethod.value !== 'pix') {
+      router.push('/checkout/finish')
+      return
+    }
 
-  function handleGoHome() {
-    router.push('/')
+    showPixQrCodeModal.value = true
   }
 
   onMounted(async () => {
@@ -250,8 +256,11 @@
         </n-radio-group>
       </div>
 
-      <CreditCard v-if="paymentMethod === 'credit-card'" ref="creditCard" />
-<!--      <Pix v-else-if="paymentMethod === 'pix'" @success="current = 4" />-->
+      <CreditCard
+        v-if="paymentMethod === 'credit-card'"
+        ref="creditCard"
+        style="margin-top: 20px"
+      />
     </div>
 
     <div v-if="current === 4" class="checkout__container checkout__confirm">
@@ -267,54 +276,47 @@
         :disabled="isLoading"
         @click="current--"
       >
+        <template #icon><ChevronDoubleLeftIcon /></template>
         {{ t('checkout.actions.back') }}
       </n-button>
 
       <n-button
         v-if="current < 4 && user"
         type="primary"
-        strong
         class="btn-checkout"
         submit
+        strong
         :loading="isLoading"
         :disabled="isLoading"
         @click.prevent="nextSteps"
       >
         {{ t('checkout.actions.next') }}
+        <template #icon><ChevronDoubleRightIcon /></template>
       </n-button>
 
       <template v-if="current === 4">
-        <n-button
-          type="info"
-          strong
-          class="btn-checkout"
-          @click="current = 3"
-        >
+        <n-button type="primary" strong class="btn-checkout" ghost>
+          <template #icon> <PencilIcon /> </template>
           {{ t('checkout.actions.change_payment_method') }}
         </n-button>
 
         <n-button
-          v-if="paymentMethod == 'pix'"
           type="primary"
-          strong
           class="btn-checkout"
-          @click="handleGoHome"
-        >
-          {{ t('checkout.actions.home') }}
-        </n-button>
-
-        <n-button
-          v-else
-          type="primary"
           strong
-          class="btn-checkout"
           @click="handleFinishCheckout"
         >
           {{ t('checkout.actions.finish') }}
         </n-button>
       </template>
-
     </div>
+
+    <teleport v-if="showPixQrCodeModal && paymentMethod == 'pix'" to="body">
+      <PixModal
+        v-model="showPixQrCodeModal"
+        @cancel="handleChangePaymentForm"
+      />
+    </teleport>
   </div>
 </template>
 

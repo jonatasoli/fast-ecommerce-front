@@ -76,6 +76,7 @@ export interface Cart {
   affiliate: string | null
   coupon: string | null
   discount: string
+  orderId?: string
   freight: {
     price: string
     delivery_time: string

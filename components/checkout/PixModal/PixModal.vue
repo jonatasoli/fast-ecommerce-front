@@ -1,16 +1,17 @@
 <template>
-  <n-card class="pix-payment-form">
+  <n-modal
+    v-model:show="show"
+    :mask-closable="false"
+    preset="dialog"
+    title="Pagamento"
+    content="Qr Code!"
+    style="width: max(1200px, 60vw)"
+    class="pix-payment-form"
+    :closable="false"
+    :close-on-esc="false"
+  >
     <LoadingProvider :active="pending">
-      <n-space v-if="errorData" align="center" vertical>
-        <h1>{{ errorData.title }}</h1>
-        <p>{{ errorData.message }}</p>
-
-        <n-button type="primary" ghost @click.prevent="handleRetryPix">
-          {{ t('actions.try-again') }}
-        </n-button>
-      </n-space>
-
-      <n-space v-else align="center" vertical>
+      <n-space align="center" vertical>
         <h1>{{ t('title.pix-payment') }}</h1>
         <small>{{ t('title.pix-payment-subtitle') }}</small>
 
@@ -48,92 +49,91 @@
           <!-- pix-key-container::end -->
         </n-space>
       </n-space>
+
+      <n-space justify="center">
+        <n-button type="error" ghost @click.prevent="handleClose">
+          Cancelar
+        </n-button>
+      </n-space>
     </LoadingProvider>
-  </n-card>
+  </n-modal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
   import { useNotification } from 'naive-ui'
-  import { useCartStore } from '#imports'
+  import CopyToClipboardButton from '~/components/shared/CopyToClipboardButton/CopyToClipboardButton.vue'
 
   const { t } = useI18n()
+  const props = defineProps<{ modelValue: boolean }>()
+  const show = useVModel(props)
   const notification = useNotification()
-  const cartStore = useCartStore()
+  const cart = useCartStore()
+  const pending = ref(true)
+  const router = useRouter()
 
-  const emit = defineEmits(['success'])
-
-  interface IErrorData {
-    title: string
-    message: string
-  }
-
-  const error = ref<IErrorData>()
-  const errorData = computed<IErrorData | undefined>(
-    (): IErrorData | undefined => {
-      if (pixError.value) {
-        return {
-          title: t('title.error'),
-          message: t('error.pix-qr-code'),
-        }
-      }
-
-      return error.value
-    },
-  )
-
-  const {
-    data,
-    error: pixError,
-    pending,
-    execute: handleGeneratePixCode,
-  } = usePixCode({
-    onError: () =>
-      notification.error({
-        content: t('error.pix-qr-code'),
-        closable: true,
-        duration: 2000,
-      }),
+  const data = computed(() => {
+    return {
+      link: cart.payment.pix_qr_code as string,
+      qrCode: useImageFromBase64(cart.payment.pix_qr_code_base64 as string),
+      paymentId: cart.payment.payment_method_id,
+    }
   })
 
-  const handleRetryPix = async () => {
-    await cartStore.estimate()
-    await handleGeneratePixCode()
-  }
+  onMounted(async () => {
+    pending.value = true
+    const response = await cart.finishCheckout()
 
-  usePaymentStatus({
-    onError: (err) => {
-      console.error(err)
-
+    pending.value = false
+    if (response === null) {
       notification.error({
-        content: err.message,
+        content: 'Erro ao finalizar compra. Tente novamente.',
+        duration: 4000,
+        closable: true,
+      })
+      return
+    }
+
+    startStatusChecking(data.value.paymentId)
+  })
+
+  const { start: startStatusChecking, stop: stopChecking } = usePaymentStatus({
+    onError: () => {
+      notification.error({
+        content: 'Error',
         closable: true,
         duration: 2000,
       })
-
-      error.value = {
-        title:
-          err.name === 'Timeout'
-            ? 'Tempo Esgotado!'
-            : 'Erro ao Processar Pagamento',
-        message: err.message,
-      }
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       notification.success({
         title: 'Pagamento Confirmado!',
-        content: 'O seu pagamento foi confirmado!',
+        content: 'O seu  pagamento foi confirmado!',
         closable: true,
         duration: 2000,
       })
 
-      emit('success')
+      await router.replace('/checkout/finish')
+    },
+    onTimeout: () => {
+      notification.warning({
+        title: 'Timeout',
+        content: 'O tempo acabou, tentando novamente',
+        closable: true,
+        duration: 2000,
+      })
     },
     watch: computed(() => data.value?.paymentId),
   })
+
+  async function handleClose() {
+    stopChecking()
+    show.value = false
+    await router.replace('/')
+  }
 </script>
 
 <style lang="scss" scoped>
-  @import './PixPaymentForm.scss';
+  @import './PixModal.scss';
 </style>
 
 <i18n lang="json">
