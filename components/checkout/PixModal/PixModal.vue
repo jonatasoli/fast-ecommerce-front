@@ -37,14 +37,12 @@
           <!-- qr-code-container::end -->
 
           <!-- pix-key-container::begin -->
-          <div
-            class="pix-payment-form__container__link-container flex-center bordered"
-          >
+          <div class="pix-payment-form__container__link-container flex-center bordered">
             <h3>{{ t('messages.copy-link-intro') }}</h3>
             <p>{{ t('messages.copy-link-instructions') }}</p>
 
             <n-input :value="data?.link" disabled />
-            <CopyToClipboardButton :source="data?.link as string" />
+            <CopyToClipboardButton :source="(data?.link as string)" />
           </div>
           <!-- pix-key-container::end -->
         </n-space>

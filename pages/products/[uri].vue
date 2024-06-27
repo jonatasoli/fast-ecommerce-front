@@ -21,7 +21,7 @@
   const cartStore = useCartStore()
 
   const { data: product, error } = await useFetch<ProductItem>(
-    `${config.public.serverUrl}/product/${route.params.uri}`,
+    `${config.public.serverUrl}/product/uri/${route.params.uri}`,
   )
 
   useHead({
