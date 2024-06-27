@@ -11,12 +11,6 @@
   import { useCartStore } from '~/stores/cart'
   import type { CreditCard } from '~/utils/types'
 
-  interface Props {
-    paymentMethod: string
-  }
-
-  defineProps<Props>()
-
   const { $mercadoPago } = useNuxtApp()
   const cartStore = useCartStore()
   const { cart, paymentCreditCard } = storeToRefs(cartStore)
@@ -121,7 +115,7 @@
   })
 </script>
 <template>
-  <div v-if="paymentMethod === 'credit-card'" class="border">
+  <div class="border">
     <FormCreditCard
       ref="formCreditCard"
       :option-installments="optionInstallments"

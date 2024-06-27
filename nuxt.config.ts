@@ -7,6 +7,9 @@ const { VITEST, NODE_ENV, SERVER_BASE_URL } = process.env
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
+  imports: {
+    autoImport: true,
+  },
   ssr: false,
   head: {
     __dangerouslyDisableSanitizers: ['script'],
