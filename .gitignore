@@ -9,3 +9,5 @@ dist
 
 # Sentry Config File
 .sentryclirc
+.idea
+.idea/**

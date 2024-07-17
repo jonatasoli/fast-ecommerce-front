@@ -3,6 +3,7 @@
   import { currencyFormat, useI18n, onMounted, ref, unref } from '#imports'
   import { useCartStore } from '~/stores/cart'
   import type { Checkout } from '~/utils/types'
+  import PixIcon from '~/assets/images/pix-icon.svg'
 
   const cartStore = useCartStore()
   const { t } = useI18n()
@@ -44,15 +45,21 @@
 
   onMounted(async () => {
     const response = await cartStore.getCartPreview()
+
     if (!response) {
       return
     }
+
     const { success, data } = unref(response)
+
     if (!success) {
       return
     }
+
     preview.value = data
   })
+
+  const data = computed(() => unref(preview))
 
   function hiddenCreditCardNumber(number) {
     const fourLastDigits = number.slice(-4)
@@ -60,13 +67,13 @@
   }
 
   const subtotal = computed(() => {
-    const haveFee = unref(preview).subtotal_with_fee !== '0'
-    return haveFee ? unref(preview).subtotal_with_fee : unref(preview).subtotal
+    const haveFee = unref(data).subtotal_with_fee !== '0'
+    return haveFee ? unref(data).subtotal_with_fee : unref(data).subtotal
   })
 
   const total = computed(() => {
-    const haveFee = unref(preview).total_with_fee !== '0'
-    return haveFee ? unref(preview).total_with_fee : unref(preview).total
+    const haveFee = unref(data).total_with_fee !== '0'
+    return haveFee ? unref(data).total_with_fee : unref(data).total
   })
 </script>
 
@@ -75,6 +82,7 @@
     <h2 class="title">
       {{ t('checkout.finally.title') }}
     </h2>
+
     <div class="border">
       <n-grid :x-gap="20" cols="1 800:12">
         <n-gi :span="8">
@@ -82,15 +90,9 @@
             {{ t('checkout.steps.login') }}
           </h3>
           <ul>
-            <li>
-              {{ preview.user_data.name }}
-            </li>
-            <li>
-              {{ preview.user_data.email }}
-            </li>
-            <li>
-              {{ preview.user_data.phone }}
-            </li>
+            <li>{{ data.user_data.name }}</li>
+            <li>{{ data.user_data.email }}</li>
+            <li>{{ data.user_data.phone }}</li>
           </ul>
         </n-gi>
         <n-gi :span="4">
@@ -114,7 +116,7 @@
       </n-grid>
       <div class="divider" />
       <div
-        v-for="product in preview.cart_items"
+        v-for="product in data.cart_items"
         :key="product.product_id"
         class="products"
       >
@@ -157,10 +159,12 @@
           </n-gi>
         </n-grid>
       </div>
+
       <div class="divider" />
       <n-grid :x-gap="20" cols="1 800:12">
         <n-gi span="1 800:8">
           <h3 class="title">Pagamento</h3>
+
           <div v-if="preview.payment_method === 'credit_card'" class="payment">
             <ul>
               <li>
@@ -174,6 +178,14 @@
               </li>
             </ul>
           </div>
+
+          <div v-else-if="preview.payment_method === 'pix'" class="payment">
+            <n-space justify="start" align="center">
+              <img :src="PixIcon" />
+              <p>Pix</p>
+            </n-space>
+          </div>
+
           <div v-if="isMobile" class="divider" />
         </n-gi>
         <n-gi span="1 800:3">

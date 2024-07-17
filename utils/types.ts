@@ -73,9 +73,10 @@ export type PaginatedProducts = {
 
 export interface Cart {
   uuid: string
-  affiliate: string
-  coupon: string
+  affiliate: string | null
+  coupon: string | null
   discount: string
+  orderId?: string
   freight: {
     price: string
     delivery_time: string
@@ -104,16 +105,21 @@ export interface Address {
 }
 
 export interface Payment {
+  shipping_is_payment: boolean
+  user_address_id: number
+  shipping_address_id: string | null
   payment_method: string
   payment_method_id: string
   payment_intent?: string | null
   customer_id: string
-  card_token?: string
+  card_token?: string | null
   pix_qr_code?: string
   pix_qr_code_base64?: string
   pix_payment_id?: number
   gateway_provider: string
   installments: number
+  subtotal_with_fee: number
+  total_with_fee: number
 }
 
 export type User = {

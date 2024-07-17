@@ -269,18 +269,21 @@ export default {
       next: 'Próximo',
       back: 'Voltar',
       finish: 'Confirmar Pedido',
+      home: 'Home',
+      change_payment_method: 'Alterar Método de Pagamento',
     },
   },
 
   finishCheckout: {
     pending: 'Aguarde um momento...',
     pendingDescription: 'Por favor aguarde, não feche ou atualize a página!',
-    title: 'Seu pagamento está sendo processado',
     description: 'Em breve você receberá um e-mail com os detalhes do pedido',
     button: 'Voltar para a página inicial',
     titleError: 'Erro ao realizar o pedido',
     descriptionError:
       'Houve um problema ao realizar o seu pedido, verifique o email enviado e tente novamente em instantes',
     buttonError: 'Voltar para o carrinho',
+    pixTitle: 'Seu pagamento foi finalizado',
+    cardTitle: 'Seu pagamento está sendo processado',
   },
 }

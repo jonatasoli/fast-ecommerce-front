@@ -1,4 +1,10 @@
-import { defineEventHandler, getCookie, readBody, createError } from 'h3'
+import {
+  defineEventHandler,
+  getCookie,
+  readBody,
+  createError,
+  H3Error,
+} from 'h3'
 import type { PaymentResponse } from '~/utils/types'
 
 export default defineEventHandler(async (event): Promise<PaymentResponse> => {
@@ -16,13 +22,21 @@ export default defineEventHandler(async (event): Promise<PaymentResponse> => {
       },
       body: JSON.stringify(body),
     })
-    const data = await res.json()
 
+    if (res.status === 503) {
+      throw createError({
+        statusCode: 503,
+        message: 'Checkout error',
+      })
+    }
+
+    const data = await res.json()
     return data
   } catch (error: unknown) {
     throw createError({
       statusCode: 400,
       message: (error as Error).message,
+      data: (error as H3Error).data,
     })
   }
 })

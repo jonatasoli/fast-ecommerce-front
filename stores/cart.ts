@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { defineStore } from 'pinia'
 import type {
   Cart,
@@ -18,6 +19,8 @@ import {
   useNuxtApp,
   type CreditCard,
 } from '#imports'
+import type { AddPixPaymentMehodResponse } from '~/types/cart'
+import type { PixPaymentStatusResponse } from '~/types/payment'
 
 export const useCartStore = defineStore('cart', () => {
   const affiliate = useCookie<string>('affiliate', {
@@ -111,12 +114,44 @@ export const useCartStore = defineStore('cart', () => {
     pix_payment_id: 0,
     gateway_provider: '',
     installments: 0,
+    shipping_address_id: '',
+    user_address_id: 0,
+    shipping_is_payment: false,
+    subtotal_with_fee: 0,
+    total_with_fee: 0,
   })
 
   const loading = ref(false)
   const getCart = computed(() => cart.value)
   const { $config } = useNuxtApp()
   const serverUrl = $config.public.serverUrl
+
+  function resetPaymentMethod() {
+    setPaymentData({
+      payment_method: '',
+      payment_method_id: '',
+      payment_intent: '',
+      customer_id: '',
+      card_token: '',
+      pix_payment_id: 0,
+      pix_qr_code: '',
+      pix_qr_code_base64: '',
+      gateway_provider: '',
+      installments: 0,
+      shipping_address_id: '',
+      user_address_id: 0,
+      shipping_is_payment: false,
+      subtotal_with_fee: 0,
+      total_with_fee: 0,
+    })
+  }
+
+  function setPaymentData(data: Partial<Payment>) {
+    payment.value = {
+      ...payment.value,
+      ...data,
+    }
+  }
 
   async function createCart() {
     try {
@@ -187,6 +222,7 @@ export const useCartStore = defineStore('cart', () => {
       loading.value = false
     }
   }
+
   async function addToCart(item: CartItem) {
     if (!item) {
       return
@@ -456,7 +492,7 @@ export const useCartStore = defineStore('cart', () => {
       setUserAddressId(responseData.data.user_address_id)
       setShippingAddressId(responseData.data.shipping_address_id)
       setShippingIsPayment(responseData.data.shipping_is_payment)
-      setPayment(responseData.data)
+      setPayment(responseData.data as unknown as Payment)
       return responseData
     } catch (err) {
       console.error(err)
@@ -495,11 +531,23 @@ export const useCartStore = defineStore('cart', () => {
         return
       }
 
-      const responseData = unref(data)
+      const responseData = unref(data) as {
+        status: string
+        message: string
+        order_id: string
+        gateway_payment_id: string
+      }
+
+      setOrderId(responseData.order_id)
+
       return responseData
     } catch (err) {
       console.error(err)
     }
+  }
+
+  function setOrderId(orderId: string) {
+    cart.value.orderId = orderId
   }
 
   function clearCart() {
@@ -623,6 +671,149 @@ export const useCartStore = defineStore('cart', () => {
     coupon.value = value
   }
 
+  function getCartData() {
+    return {
+      ...cart.value,
+      affiliate: affiliate.value,
+      shipping_is_payment: address.value.shipping_is_payment,
+      user_address_id: address.value.user_address_id,
+      user_data: user.value.user_data,
+    }
+  }
+
+  /**
+   * Calls the API to add a new payment method (PIX)
+   */
+  async function addPixPaymentMethod() {
+    const uuid = cart.value.uuid
+
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    }
+
+    const { data, error } = await useFetch<AddPixPaymentMehodResponse>(
+      `/api/cart/${uuid}/payment/pix`,
+      {
+        headers,
+        method: 'POST',
+        body: {
+          cart: getCartData(),
+          payment: {
+            payment_gateway: 'MERCADOPAGO',
+          },
+        },
+      },
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage =
+        unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    const {
+      data: {
+        shipping_is_payment,
+        user_address_id,
+        shipping_address_id,
+        payment_method,
+        payment_intent,
+        customer_id,
+        pix_qr_code,
+        pix_qr_code_base64,
+        pix_payment_id,
+        gateway_provider,
+        installments,
+        total_with_fee,
+        subtotal_with_fee,
+        payment_method_id,
+      },
+    } = data.value
+
+    setPaymentData({
+      shipping_is_payment,
+      user_address_id,
+      shipping_address_id,
+      payment_method,
+      payment_method_id,
+      payment_intent: payment_intent?.toString(),
+      customer_id,
+      pix_qr_code,
+      pix_qr_code_base64,
+      pix_payment_id: pix_payment_id ? parseInt(pix_payment_id) : 0,
+      gateway_provider,
+      installments,
+      subtotal_with_fee: subtotal_with_fee ? parseInt(subtotal_with_fee) : 0,
+      total_with_fee: total_with_fee ? parseInt(total_with_fee) : 0,
+    })
+
+    return data.value.data
+  }
+
+  async function getPixPaymentStatus(paymentId: string) {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    }
+
+    const { data, error } = await useFetch<PixPaymentStatusResponse>(
+      '/api/cart/payment/status',
+      {
+        headers,
+        method: 'POST',
+        body: { paymentId },
+      },
+    )
+
+    if (unref(error) || !data.value || !data.value.success) {
+      const errorMessage =
+        unref(error)?.message ?? 'Request returned empty body.'
+      throw new Error(errorMessage)
+    }
+
+    return data.value.data
+  }
+
+  async function estimate() {
+    try {
+      loading.value = true
+      const headers = {
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+      }
+
+      const { data, error } = await useFetch(
+        `/api/cart/${cart.value.uuid}/estimate`,
+        {
+          method: 'POST',
+          headers,
+          body: {
+            uuid: cart.value.uuid,
+            cart_items: cart.value.cart_items,
+            subtotal: cart.value.subtotal,
+            total: cart.value.total,
+            zipcode: cart.value.zipcode,
+            freight_product_code: cart.value.freight_product_code,
+            coupon: coupon.value,
+            affiliate: affiliate.value,
+          },
+        },
+      )
+
+      if (unref(error)) {
+        return unref(error)?.data.message
+      }
+
+      const responseData = unref(data) as Cart
+      return responseData
+    } catch (err) {
+      return err
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     cart,
     address,
@@ -631,6 +822,8 @@ export const useCartStore = defineStore('cart', () => {
     loading,
     paymentCreditCard,
     coupon,
+    payment,
+    estimate,
     getCartUser,
     addToCart,
     calculateFreight,
@@ -653,5 +846,8 @@ export const useCartStore = defineStore('cart', () => {
     clearDiscount,
     setCoupon,
     setCart,
+    addPixPaymentMethod,
+    getPixPaymentStatus,
+    resetPaymentMethod,
   }
 })
