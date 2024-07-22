@@ -14,6 +14,18 @@
   const { isMobile } = useDevice()
   const router = useRouter()
   const search = ref('')
+  // const locationOptions = reactive([
+  //   {
+  //     label: t('BR'),
+  //     key: Locations.BR.toString(),
+  //   },
+  //   {
+  //     label: t('EU'),
+  //     key: Locations.EU.toString(),
+  //   }
+  // ])
+
+  // const location = useLocation()
 
   function doSearch() {
     const trimSearch = search.value.trim()
@@ -26,6 +38,10 @@
     router.push(`/search?q=${encodedSearch}`)
     search.value = ''
   }
+
+  // function handleChangeLocation(key: number) {
+  //   location.value = Locations[key]
+  // }
 
   onMounted(async () => {
     await useCategoryStore().getCategorys()
@@ -59,6 +75,7 @@
         <UserMenuMobile v-if="isMobile" />
         <UserMenu v-else />
       </div>
+      <!-- cart-button::begin -->
       <n-button quaternary circle type="primary" size="large">
         <template #icon>
           <nuxt-link to="/cart">
@@ -68,6 +85,18 @@
           </nuxt-link>
         </template>
       </n-button>
+      <!-- cart-button::end -->
+      <!-- location-button::begin -->
+      <!-- <n-dropdown 
+        trigger="hover"
+        :options="locationOptions"
+        @select="handleChangeLocation"
+      >
+        <n-button quaternary circle type="primary" size="large">
+          {{ location || 'Local' }}
+        </n-button>
+      </n-dropdown> -->
+      <!-- location-button::end -->
     </div>
 
     <NavBar v-if="!isMobile" />
@@ -77,3 +106,16 @@
 <style lang="scss" scoped>
   @import './AppHeader.scss';
 </style>
+
+<i18n lang="json">
+{
+  "pt": {
+    "BR": "Brasil",
+    "EU": "Europa"
+  },
+  "en": {
+    "BR": "Brazil",
+    "EU": "Europe"
+  }
+}
+</i18n>

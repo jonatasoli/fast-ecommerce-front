@@ -26,8 +26,15 @@
   const messageInvalidCoupon = ref('')
   const messageInvalidCEP = ref('')
   const cart = ref<Cart>()
-
+  const showLocationModal = ref<bool>(false)
   const { data, pending, error, refresh: refreshEstimate } = await useEstimate()
+
+  onMounted(() => {
+    const { location } = useLocation()
+    if (!location.value) {
+      showLocationModal.value = true
+    }
+  })
 
   async function handleEstimateFreight(value) {
     await cartStore.calculateFreight(value, unref(checkedFreightProductCode))
@@ -131,6 +138,12 @@
 
 <template>
   <main class="cart">
+    <!-- location-modal::begin -->
+    <teleport to="body">
+      <LocationModal v-model:show="showLocationModal" />
+    </teleport>
+    <!-- location-modal::end -->
+
     <div v-if="pending || loading" class="cart__loading">
       <n-space>
         <n-spin size="large" />
@@ -160,17 +173,30 @@
             :message="messageInvalidCoupon"
             @on-button-click="handleAddCoupon"
           />
+          <!-- zipcode::begin -->
           <InputCard
-            icon="cart"
             :title="t('cart.inputs.shipping.title')"
             :button-text="t('cart.inputs.shipping.buttonText')"
-            placeholder="Informe seu CEP"
             :received-value="getCart.zipcode"
-            mask="#####-###"
-            :validation="validationCEP"
             :message="messageInvalidCEP"
+            :validation="validationCEP"
+            icon="cart"
+            mask="#####-###"
+            placeholder="Informe seu CEP"
             @on-button-click="handleEstimateFreight"
           >
+            <n-space>
+              A localidade está errada? Clique
+              <n-button
+                text
+                type="primary"
+                strong
+                @click.prevent="showLocationModal = true"
+              >
+                aqui
+              </n-button>
+              para mudar.
+            </n-space>
             <div v-if="cart?.freight?.price" class="cart__freigth">
               <div>
                 {{ t('cart.freight.part1') }}
