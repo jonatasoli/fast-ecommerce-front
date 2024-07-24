@@ -63,6 +63,7 @@
     "vue-eslint-parser": "^9.3.2"
   },
   "dependencies": {
+    "@growthbunker/vueflags": "^0.1.14",
     "@mercadopago/sdk-js": "^0.0.3",
     "@nuxtjs/google-fonts": "^3.0.1",
     "@pinia/nuxt": "^0.5.1",

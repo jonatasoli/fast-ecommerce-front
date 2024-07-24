@@ -86,6 +86,7 @@ export default defineNuxtConfig({
     { src: '@/plugins/vue-the-mask', mode: 'client' },
     { src: '@/plugins/mercadopago', mode: 'client' },
     { src: '@/plugins/talkto', mode: 'client' },
+    { src: '@/plugins/vueflags', mode: 'client' },
   ],
   build: {
     analyze: true,
