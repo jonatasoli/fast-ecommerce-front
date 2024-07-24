@@ -24,8 +24,9 @@
     `${config.public.serverUrl}/product/uri/${route.params.uri}`,
   )
 
+  const productValue = unref(product)
   useHead({
-    title: capitalizeFirstLetter(unref(product)?.name) || 'Produto',
+    title: productValue ? capitalizeFirstLetter(productValue.name) : 'Produto',
   })
 
   if (error.value || !product.value) {
