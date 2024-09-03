@@ -54,6 +54,10 @@
   const onSubmit = handleSubmit(async (values) => {
     const { username, password } = values
     const cleanCPF = username.replace(/\D/g, '')
+    const token = await grecaptcha.execute(
+      '6LdTEDUqAAAAAIJKc7S2PyXtqrfIDpDkrYeD54_A',
+      { action: 'submit' },
+    )
     const res = await authStore.login({ username: cleanCPF, password })
     if (!res?.success) {
       const getError =
@@ -65,10 +69,11 @@
     }
 
     error.value = ''
-    if (redirect.value) {
+    if (redirect.value && token) {
       router.push(redirect.value)
       return
     }
+
     router.push('/')
   })
 

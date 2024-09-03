@@ -39,6 +39,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-gtag',
   ],
+
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
     locales: [{ iso: 'pt-BR', code: LOCALES.PT_BR }],
