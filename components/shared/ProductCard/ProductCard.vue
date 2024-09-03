@@ -12,6 +12,10 @@
   const { t } = useI18n()
   const emit = defineEmits(['addToCart'])
 
+  const storeUser = useUserStore()
+  const authenticated = storeUser.authenticated
+
+  const showModal = ref(false)
   function calculateDiscount(price: number, discount: number) {
     return price - discount
   }
@@ -32,6 +36,11 @@
 </script>
 
 <template>
+  <alertme-modal
+    :modal-value="showModal"
+    :product-id="props.product.product_id"
+    @update:modal-value="(val) => (showModal = val)"
+  />
   <div class="product-item">
     <div class="product-item__image">
       <NuxtLink :style="productImage" :to="route" />
@@ -49,9 +58,19 @@
         </p>
       </div>
     </div>
-    <div v-if="product.quantity === 0" class="product-item__out-of-stock">
+    <div
+      v-if="product.quantity === 0 && !authenticated"
+      class="product-item__out-of-stock"
+    >
       {{ t('productItem.outOfStock') }}
     </div>
+    <button
+      v-else-if="product.quantity === 0 && authenticated"
+      class="product-item__alert-me"
+      @click="showModal = true"
+    >
+      {{ t('productItem.alertMe') }}
+    </button>
     <button v-else class="product-item__buy" @click="handleAddToCart">
       {{ t('productItem.buy') }}
     </button>

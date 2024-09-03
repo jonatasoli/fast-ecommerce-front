@@ -37,6 +37,7 @@ export default {
   productItem: {
     buy: 'Comprar',
     outOfStock: 'Produto indisponível',
+    alertMe: 'Avise-me quando voltar',
   },
 
   home: {
@@ -285,5 +286,13 @@ export default {
     buttonError: 'Voltar para o carrinho',
     pixTitle: 'Seu pagamento foi finalizado',
     cardTitle: 'Seu pagamento está sendo processado',
+  },
+
+  alertmeModal: {
+    title: 'Avise-me',
+    phoneLabel: 'Telefone',
+    phonePlaceholder: 'Digite seu telefone',
+    emailLabel: 'E-mail',
+    emailPlaceholder: 'Digite seu e-mail',
   },
 }

@@ -235,3 +235,9 @@ export type PaymentResponse = Response<{
 export type EstimateResponse = Cart
 
 export type PreviewResponse = Response<Checkout>
+
+export type AlertMePayload = {
+  email: string
+  phone: string
+  product_id: number
+}
