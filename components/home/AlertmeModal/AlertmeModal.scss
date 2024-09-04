@@ -1,0 +1,37 @@
+.alertme-form {
+  width: 100%;
+  margin-bottom: 20px;
+
+  &__container {
+    max-width: 1000px;
+    width: 100%;
+    justify-content: space-between !important;
+
+    @media screen and (max-width: 750px) {
+      flex-direction: column !important;
+    }
+
+    .copy-to-clipbord-button {
+      margin-top: 20px;
+    }
+  }
+
+  h1 {
+    font-size: xx-large;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  span {
+    margin-bottom: 3rem !important;
+  }
+
+  ul {
+    list-style: decimal;
+    font-size: large;
+  }
+
+  .n-space {
+    margin-top: 20px;
+  }
+}

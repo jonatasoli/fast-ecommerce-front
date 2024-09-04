@@ -37,6 +37,19 @@
     })
   }
 
+  const storeUser = useUserStore()
+  const authenticated = storeUser.authenticated
+
+  const showModal = ref(false)
+
+  function handleShowModal() {
+    if (authenticated) {
+      showModal.value = true
+    } else {
+      router.push('/login')
+    }
+  }
+
   function calculateDiscount(price: number, discount: number) {
     return price - discount
   }
@@ -87,6 +100,11 @@
 
 <template>
   <main v-if="product" class="product">
+    <alertme-modal
+      :modal-value="showModal"
+      :product-id="product.product_id"
+      @update:modal-value="(val) => (showModal = val)"
+    />
     <div class="product__info">
       <img
         class="product__info--image"
@@ -137,12 +155,16 @@
           </i18n-t>
         </p>
         <div class="product__content--buy">
-          <div
+          <n-button
             v-if="product.quantity === 0"
-            class="product__content--out-of-stock"
+            type="secondary"
+            size="large"
+            strong
+            block
+            @click="handleShowModal"
           >
-            {{ t('productItem.outOfStock') }}
-          </div>
+            {{ t('productItem.alertMe') }}
+          </n-button>
           <n-button
             v-else
             type="primary"
