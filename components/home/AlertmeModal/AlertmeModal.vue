@@ -35,7 +35,9 @@
         <n-button @click="handleNegativeClick">Cancelar</n-button>
       </n-form-item>
       <n-form-item>
-        <n-button type="primary" @click="handlePositiveClick">Enviar</n-button>
+        <n-button type="primary" @click="handlePositiveClick">{{
+          t('alertmeModal.sendButton')
+        }}</n-button>
       </n-form-item>
     </template>
   </n-modal>
@@ -84,18 +86,18 @@
   const rules = {
     phone: {
       required: true,
-      message: 'Por favor, digite seu telefone',
+      message: t('alertmeModal.rules.phoneRequired'),
       trigger: ['input', 'blur', 'submit'],
     },
     email: [
       {
         required: true,
-        message: 'Por favor, digite seu email',
+        message: t('alertmeModal.rules.emailRequired'),
         trigger: ['input', 'blur', 'submit'],
       },
       {
         type: 'email',
-        message: 'Por favor, digite um email válido',
+        message: t('alertmeModal.rules.emailInvalid'),
         trigger: ['input', 'blur', 'submit'],
       },
     ],

@@ -294,5 +294,11 @@ export default {
     phonePlaceholder: 'Digite seu telefone',
     emailLabel: 'E-mail',
     emailPlaceholder: 'Digite seu e-mail',
+    sendButton: 'Enviar',
+    rules: {
+      phoneRequired: 'Por favor, digite seu telefone',
+      emailRequired: 'Por favor, digite seu e-mail',
+      emailInvalid: 'E-mail inválido',
+    },
   },
 }

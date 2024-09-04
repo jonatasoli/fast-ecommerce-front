@@ -60,7 +60,6 @@ export const useProductsStore = defineStore('products', () => {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token.value}`,
       },
       body: formValue,
