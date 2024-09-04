@@ -15,7 +15,17 @@
   const storeUser = useUserStore()
   const authenticated = storeUser.authenticated
 
+  const router = useRouter()
+
   const showModal = ref(false)
+
+  function handleShowModal() {
+    if (authenticated) {
+      showModal.value = true
+    } else {
+      router.push('/login')
+    }
+  }
   function calculateDiscount(price: number, discount: number) {
     return price - discount
   }
@@ -58,16 +68,10 @@
         </p>
       </div>
     </div>
-    <div
-      v-if="product.quantity === 0 && !authenticated"
-      class="product-item__out-of-stock"
-    >
-      {{ t('productItem.outOfStock') }}
-    </div>
     <button
-      v-else-if="product.quantity === 0 && authenticated"
+      v-if="product.quantity === 0"
       class="product-item__alert-me"
-      @click="showModal = true"
+      @click="handleShowModal"
     >
       {{ t('productItem.alertMe') }}
     </button>
