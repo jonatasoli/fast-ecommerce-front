@@ -1,8 +1,10 @@
 // plugins/recaptcha.js
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
+  const { $config } = nuxtApp
+  const srcSiteKey = $config.public.srcSiteKey as string
   if (process.client) {
     const script = document.createElement('script')
-    script.src = `https://www.google.com/recaptcha/api.js?render=6LdTEDUqAAAAAIJKc7S2PyXtqrfIDpDkrYeD54_A`
+    script.src = srcSiteKey
     script.async = true
     script.defer = true
     document.head.appendChild(script)

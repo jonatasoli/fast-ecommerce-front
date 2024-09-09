@@ -15,6 +15,7 @@ declare module 'vue' {
     NCollapseItem: (typeof import('naive-ui'))['NCollapseItem']
     NCollapseTransition: (typeof import('naive-ui'))['NCollapseTransition']
     NConfigProvider: (typeof import('naive-ui'))['NConfigProvider']
+    NDataTable: (typeof import('naive-ui'))['NDataTable']
     NDatePicker: (typeof import('naive-ui'))['NDatePicker']
     NDivide: (typeof import('naive-ui'))['NDivide']
     NDivider: (typeof import('naive-ui'))['NDivider']

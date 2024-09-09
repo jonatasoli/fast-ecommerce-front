@@ -97,6 +97,7 @@ export default defineNuxtConfig({
           '@css-render/vue3-ssr',
           '@nuxtjs/i18n',
           '@juggle/resize-observer',
+          '@nuxtjs/dotenv',
         ]
       : ['@nuxtjs/i18n', '@juggle/resize-observer'],
   },
@@ -124,6 +125,8 @@ export default defineNuxtConfig({
     public: {
       serverUrl: SERVER_BASE_URL,
       mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
+      srcSiteKey: process.env.SRC_SITE_KEY,
+      siteKey: process.env.SITE_KEY,
       gtagId: process.env.GTAG_ID,
       isProd: process.env.NODE_ENV === 'production',
       sentry: {
