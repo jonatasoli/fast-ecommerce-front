@@ -1,10 +1,10 @@
 // plugins/recaptcha.js
 export default defineNuxtPlugin((nuxtApp) => {
   const { $config } = nuxtApp
-  const srcSiteKey = $config.public.srcSiteKey as string
+  const recaptchaSecretKey = $config.public.recaptchaSecretKey as string
   if (process.client) {
     const script = document.createElement('script')
-    script.src = srcSiteKey
+    script.src = recaptchaSecretKey
     script.async = true
     script.defer = true
     document.head.appendChild(script)

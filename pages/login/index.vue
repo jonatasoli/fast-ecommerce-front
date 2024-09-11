@@ -16,7 +16,7 @@
     title: 'Login',
   })
   const config = useRuntimeConfig()
-  const siteKey = config.public.siteKey
+  const recaptchaKey = config.public.recaptchaKey
   const router = useRouter()
   const route = useRoute()
   const notification = useNotification()
@@ -55,7 +55,7 @@
   const onSubmit = handleSubmit(async (values) => {
     const { username, password } = values
     const cleanCPF = username.replace(/\D/g, '')
-    const token = await grecaptcha.execute(siteKey, { action: 'submit' })
+    const token = await grecaptcha.execute(recaptchaKey, { action: 'submit' })
     const res = await authStore.login({ username: cleanCPF, password })
     if (!res?.success) {
       const getError =
