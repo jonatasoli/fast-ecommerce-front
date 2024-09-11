@@ -16,6 +16,8 @@
   })
 
   const { register } = useAuthStore()
+  const config = useRuntimeConfig()
+  const recaptchaKey = config.public.recaptchaKey
   const router = useRouter()
   const { t } = useI18n()
 
@@ -88,7 +90,8 @@
 
   const onSubmit = handleSubmit(async (values) => {
     const res = await register(values)
-    if (!res?.success) {
+    const token = await grecaptcha.execute(recaptchaKey, { action: 'submit' })
+    if (!res?.success && !token) {
       notification.error({
         title: t('register.notification.error.title'),
         content: t('register.notification.error.content'),

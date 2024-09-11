@@ -39,6 +39,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-gtag',
   ],
+
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
     locales: [{ iso: 'pt-BR', code: LOCALES.PT_BR }],
@@ -96,6 +97,7 @@ export default defineNuxtConfig({
           '@css-render/vue3-ssr',
           '@nuxtjs/i18n',
           '@juggle/resize-observer',
+          '@nuxtjs/dotenv',
         ]
       : ['@nuxtjs/i18n', '@juggle/resize-observer'],
   },
@@ -123,6 +125,8 @@ export default defineNuxtConfig({
     public: {
       serverUrl: SERVER_BASE_URL,
       mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
+      recaptchaSecretKey: process.env.RECAPTCHA_SECRET_KEY,
+      recaptchaKey: process.env.RECAPTCHA_KEY,
       gtagId: process.env.GTAG_ID,
       isProd: process.env.NODE_ENV === 'production',
       sentry: {
