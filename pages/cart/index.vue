@@ -97,7 +97,8 @@
 
   function handleRemoveItem(productId) {
     cartStore.removeItem(productId)
-    refreshEstimate()
+    const cartItems = cart.value?.cart_items
+    refreshEstimate(cartItems)
   }
 
   function handleRadioChange(value) {
