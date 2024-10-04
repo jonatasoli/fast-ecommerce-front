@@ -1,9 +1,7 @@
-interface IDataCart extends Cart {}
-
 export function useEstimate() {
   const pending = ref(false)
   const fetching = ref(false)
-  const data = ref<IDataCart>()
+  const data = ref()
   const error = ref<string | null>(null)
 
   const cartStore = useCartStore()

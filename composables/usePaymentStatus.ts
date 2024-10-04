@@ -50,7 +50,7 @@ export const usePaymentStatus = ({
     try {
       const response = await cartStore.getPixPaymentStatus(paymentId)
       return mapStatus(response.status)
-    } catch (err) {
+    } catch {
       return mapStatus(PAYMENT_STATUS.ERROR)
     }
   }

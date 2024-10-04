@@ -42,7 +42,7 @@ export default defineNuxtConfig({
 
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
-    locales: [{ iso: 'pt-BR', code: LOCALES.PT_BR }],
+    locales: [{ language: 'pt-BR', code: LOCALES.PT_BR }],
     defaultLocale: LOCALES.PT_BR,
     vueI18n: './i18n.config.ts',
   },
@@ -86,7 +86,7 @@ export default defineNuxtConfig({
     { src: '@/plugins/vue-tel-input', mode: 'client' },
     { src: '@/plugins/vue-the-mask', mode: 'client' },
     { src: '@/plugins/mercadopago', mode: 'client' },
-    { src: '@/plugins/talkto', mode: 'client' },
+    { src: '@/plugins/whatsapp', mode: 'client' },
   ],
   build: {
     analyze: true,
@@ -127,6 +127,7 @@ export default defineNuxtConfig({
       mercadoPagoPublicKey: process.env.MERCADO_PAGO_PUBLIC_KEY,
       recaptchaSecretKey: process.env.RECAPTCHA_SECRET_KEY,
       recaptchaKey: process.env.RECAPTCHA_KEY,
+      whatsappNumber: process.env.WHATSAPP_NUMBER,
       gtagId: process.env.GTAG_ID,
       isProd: process.env.NODE_ENV === 'production',
       sentry: {

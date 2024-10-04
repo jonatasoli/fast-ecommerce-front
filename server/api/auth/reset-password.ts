@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       success: false,
       error: 'RESET_PASSWORD_ERROR',
     }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: 'SERVER_ERROR',
