@@ -8,20 +8,17 @@
   import { defineProps } from 'vue'
   import { useNuxtApp } from '#app'
 
-  // Defina as propriedades do componente
   const props = defineProps<{
     message?: string
     buttonText?: string
   }>()
 
-  // Acesse o contexto do Nuxt
   const { $whatsapp } = useNuxtApp()
 
-  // Método para redirecionar ao WhatsApp
   const contactWhatsApp = () => {
     const whatsappMessage =
       props.message || 'Olá, gostaria de saber mais informações.'
-    $whatsapp(whatsappMessage) // Chama a função do plugin
+    $whatsapp(whatsappMessage)
   }
 </script>
 
@@ -43,7 +40,5 @@
       width: 50px;
       height: 50px;
     }
-
-    // Efeito de pulso para chamar atenção
   }
 </style>

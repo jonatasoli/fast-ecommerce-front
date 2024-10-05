@@ -1,9 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface IDataCart extends Cart {}
+
 export function useEstimate() {
+  const config = useRuntimeConfig()
   const pending = ref(false)
   const fetching = ref(false)
-  const data = ref()
+  const data = ref<IDataCart>()
   const error = ref<string | null>(null)
-
+  const serverUrl = config.public.serverUrl
   const cartStore = useCartStore()
   const { cart, coupon, affiliate } = storeToRefs(cartStore)
   const cartItems = cart.value.cart_items
@@ -17,7 +21,7 @@ export function useEstimate() {
 
       const headers = {
         'content-type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': serverUrl,
       }
 
       const uuid = unref(cart).uuid
