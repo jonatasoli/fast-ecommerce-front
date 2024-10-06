@@ -95,7 +95,7 @@
     debounceFn()
   }
 
-  function handleRemoveItem(productId) {
+  function handleRemoveItem(productId: number) {
     cartStore.removeItem(productId)
     const cartItems = cart.value?.cart_items
     refreshEstimate(cartItems)

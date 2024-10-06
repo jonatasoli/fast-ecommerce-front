@@ -3,6 +3,7 @@
   import { useLocaleHead, useRuntimeConfig } from '#imports'
   import { AppFooter, AppHeader } from '@/components/app'
   import { breakpoints, theme } from '@/naive.style'
+  import WhatsappButton from '~/components/whatsappButton/whatsappButton.vue'
 
   const config = useRuntimeConfig()
   const head = useLocaleHead({
@@ -60,6 +61,10 @@
           <AppHeader />
           <slot />
           <BannerCookies v-if="showBanner" :accept-cookies="acceptCookies" />
+          <WhatsappButton
+            message="Olá, gostaria de fazer um pedido!"
+            button-text="Fale Conosco"
+          />
           <AppFooter />
         </n-notification-provider>
       </n-config-provider>
