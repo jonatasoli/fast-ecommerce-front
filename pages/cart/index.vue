@@ -105,6 +105,21 @@
     checkedFreightProductCode.value = value
   }
 
+  function currencyFormatFrete(
+    value: number,
+    locale = 'pt-BR',
+    type?: string,
+  ): string {
+    if (value === 0.01 && type === 'freight') {
+      return 'Grátis'
+    }
+
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value)
+  }
+
   watch(
     () => unref(data),
     () => {
@@ -179,7 +194,13 @@
                 {{ t('cart.freight.part2') }}
               </div>
               <div>
-                {{ currencyFormat(cart.freight.price, undefined, 'freight') }}
+                {{
+                  currencyFormatFrete(
+                    Number(cart.freight.price),
+                    undefined,
+                    'freight',
+                  )
+                }}
               </div>
             </div>
           </InputCard>
