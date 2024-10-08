@@ -30,8 +30,15 @@
   const { data, pending, error, refresh: refreshEstimate } = await useEstimate()
 
   async function handleEstimateFreight(value) {
+    if (!value || value.trim() === '') {
+      messageInvalidCEP.value = 'O CEP informado está vazio ou é inválido.'
+      validationCEP.value = 'error'
+      getCart.value.zipcode = value
+      return
+    }
     await cartStore.calculateFreight(value, unref(checkedFreightProductCode))
-    await refreshEstimate()
+    const cartItems = cart.value?.cart_items
+    await refreshEstimate(cartItems)
     if (unref(error)) {
       handleFreightError(unref(error))
       return
@@ -74,10 +81,14 @@
   const debounceFn = useDebounceFn(
     async () => {
       const cartItems = cart.value?.cart_items
+      const zipcode = cart.value?.zipcode
       if (!cartItems) {
         return
       }
       await refreshEstimate(cartItems)
+      if (zipcode) {
+        await handleEstimateFreight(zipcode)
+      }
 
       if (unref(data)?.detail === 'Product Sold Out.') {
         notification.error({
@@ -95,14 +106,17 @@
     debounceFn()
   }
 
-  function handleRemoveItem(productId: number) {
+  async function handleRemoveItem(productId: number) {
     cartStore.removeItem(productId)
     const cartItems = cart.value?.cart_items
-    refreshEstimate(cartItems)
+
+    await refreshEstimate(cartItems)
   }
 
-  function handleRadioChange(value) {
+  async function handleRadioChange(value) {
     checkedFreightProductCode.value = value
+
+    await handleEstimateFreight(getCart.value.zipcode)
   }
 
   function currencyFormatFrete(
@@ -143,6 +157,12 @@
       currencyFormat(item.price)
     )
   }
+
+  const formattedTotal = computed(() => {
+    return validationCEP.value === 'error'
+      ? ''
+      : currencyFormat(cart.value?.total)
+  })
 </script>
 
 <template>
@@ -295,10 +315,10 @@
 
             <div class="summary-values amount">
               <p>{{ t('cart.summary.total') }}</p>
-              <p>{{ currencyFormat(cart.total) }}</p>
+              <p>{{ formattedTotal }}</p>
             </div>
 
-            <p v-if="!getCart?.freight?.price" class="alert-freight">
+            <p v-if="!formattedTotal" class="alert-freight">
               Calcule o frete para finalizar a compra
             </p>
             <nuxt-link v-else to="/checkout">
