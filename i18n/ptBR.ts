@@ -64,6 +64,7 @@ export default {
       title: 'Produto',
       quantity: 'Quantidade',
       unitPrice: 'Preço Unitário',
+      error: 'A quantidade solicitada não está disponível no estoque.',
     },
     summary: {
       products: 'Produtos',
@@ -84,6 +85,11 @@ export default {
     freight: {
       part1: 'Entrega - até',
       part2: 'dias úteis',
+      error: 'Algo deu errado ao calcular o frete. Tente novamente mais tarde.',
+    },
+
+    coupon: {
+      invalid: 'Cupom Inválido',
     },
   },
 
@@ -233,7 +239,7 @@ export default {
         street: 'Rua',
         number: 'Número',
         complement: 'Complemento',
-        zipcodeInvalid: 'CEP inválido',
+        zipcodeInvalid: 'CEP informado está vazio ou é inválido',
         zipcodeRequired: 'CEP é obrigatório',
         countryRequired: 'País é obrigatório',
         stateRequired: 'Estado é obrigatório',

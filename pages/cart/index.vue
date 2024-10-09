@@ -31,7 +31,7 @@
 
   async function handleEstimateFreight(value) {
     if (!value || value.trim() === '') {
-      messageInvalidCEP.value = 'O CEP informado está vazio ou é inválido.'
+      messageInvalidCEP.value = t('checkout.shipping.form.zipcodeInvalid')
       validationCEP.value = 'error'
       getCart.value.zipcode = value
       return
@@ -50,14 +50,13 @@
 
   function handleFreightError(error) {
     if (unref(error) === 'INVALID_CEP') {
-      messageInvalidCEP.value = 'CEP Inválido'
+      messageInvalidCEP.value = t('checkout.shipping.form.zipcodeInvalid')
       validationCEP.value = 'error'
       cartStore.clearFreight()
     } else {
       notification.error({
         title: 'Erro',
-        content:
-          'Algo deu errado ao calcular o frete. Tente novamente mais tarde.',
+        content: t('cart.freight.error'),
         duration: 2500,
       })
     }
@@ -68,7 +67,7 @@
     await refreshEstimate()
     if (unref(error) === 'INVALID_COUPON') {
       validationCoupon.value = 'error'
-      messageInvalidCoupon.value = 'Cupom Inválido'
+      messageInvalidCoupon.value = t('cart.coupon.invalid')
       await cartStore.clearDiscount()
       await cartStore.setCoupon('')
       return
@@ -93,7 +92,7 @@
       if (unref(data)?.detail === 'Product Sold Out.') {
         notification.error({
           title: 'Erro',
-          content: 'A quantidade solicitada não está disponível no estoque.',
+          content: t('cart.products.error'),
           duration: 2500,
         })
       }
@@ -119,7 +118,7 @@
     await handleEstimateFreight(getCart.value.zipcode)
   }
 
-  function currencyFormatFrete(
+  function currencyFormatFreight(
     value: number,
     locale = 'pt-BR',
     type?: string,
@@ -215,7 +214,7 @@
               </div>
               <div>
                 {{
-                  currencyFormatFrete(
+                  currencyFormatFreight(
                     Number(cart.freight.price),
                     undefined,
                     'freight',
@@ -306,8 +305,11 @@
               <p>{{ t('cart.summary.shipping') }}</p>
               <p>
                 {{
-                  currencyFormat(cart?.freight?.price, undefined, 'freight') ||
-                  0
+                  currencyFormatFreight(
+                    Number(cart?.freight?.price),
+                    undefined,
+                    'freight',
+                  ) || 0
                 }}
               </p>
             </div>
