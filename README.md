@@ -6,7 +6,7 @@ This project is configured to use environment variables and runtime configuratio
 
 Environment Variables
 
-Make sure to set the following environment variables in your .env file:
+### Make sure to set the following environment variables in your .env file:
 
     - SERVER_BASE_URL: The base URL of the server where the application is running.
     - MERCADO_PAGO_PUBLIC_KEY: The public key for integrating Mercado Pago payments.
@@ -35,15 +35,15 @@ SENTRY_ENV=production
 
 ## Configuration Guide
 
-Mercado Pago Integration
+### Mercado Pago Integration
 
 To enable payments through Mercado Pago, make sure to set your public key under MERCADO_PAGO_PUBLIC_KEY. You can obtain this key from the Mercado Pago Developers Portal.
 
-Sentry Error Tracking
+### Sentry Error Tracking
 
 For error tracking, this application is integrated with Sentry. Make sure to set your SENTRY_DSN and the environment (SENTRY_ENV) to distinguish between environments (e.g., production, staging).
 
-WhatsApp Integration
+### WhatsApp Integration
 
 To enable WhatsApp integration, set the phone number with the WHATSAPP_NUMBER environment variable. This will allow users to contact through WhatsApp via the provided number.
 
