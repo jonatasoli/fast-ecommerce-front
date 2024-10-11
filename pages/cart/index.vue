@@ -159,7 +159,9 @@
 
   const formattedTotal = computed(() => {
     return validationCEP.value === 'error'
-      ? ''
+
+      ? 0
+
       : currencyFormat(cart.value?.total)
   })
 </script>
@@ -305,11 +307,16 @@
               <p>{{ t('cart.summary.shipping') }}</p>
               <p>
                 {{
-                  currencyFormatFreight(
-                    Number(cart?.freight?.price),
-                    undefined,
-                    'freight',
-                  ) || 0
+
+                  cart?.freight?.price !== undefined &&
+                  cart?.freight?.price !== null
+                    ? currencyFormatFreight(
+                        Number(cart.freight.price),
+                        undefined,
+                        'freight',
+                      )
+                    : currencyFormat(0)
+
                 }}
               </p>
             </div>
