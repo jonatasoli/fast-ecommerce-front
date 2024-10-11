@@ -159,10 +159,8 @@
 
   const formattedTotal = computed(() => {
     return validationCEP.value === 'error'
-
       ? 0
-
-      : currencyFormat(cart.value?.total)
+    : currencyFormat(cart.value?.total)
   })
 </script>
 
