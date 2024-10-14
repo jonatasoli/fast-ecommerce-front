@@ -19,7 +19,7 @@ Environment Variables
     - SENTRY_ENV: The environment for Sentry (e.g., production, staging).
 
 
-    Example **.env** File
+    Example __.env__ File
 
 ```bash
 SERVER_BASE_URL=https://api.example.com
