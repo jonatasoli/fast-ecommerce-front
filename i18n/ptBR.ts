@@ -160,6 +160,8 @@ export default {
       invalidDocument: 'CPF inválido',
       invalidPhone: 'Informe um telefone válido',
       invalidEmail: 'Informe um e-mail válido',
+      invalidUsername:
+        'Apenas letras minúsculas e números, sem espaços ou caracteres especiais',
       passwordMismatch: 'Senhas não conferem',
       serverError: 'Erro ao realizar cadastro',
     },
