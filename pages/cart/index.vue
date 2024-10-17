@@ -68,6 +68,7 @@
     if (unref(error) === 'INVALID_COUPON') {
       validationCoupon.value = 'error'
       messageInvalidCoupon.value = t('checkout.shipping.form.invalidCoupon')
+      
       await cartStore.clearDiscount()
       await cartStore.setCoupon('')
       return
@@ -93,6 +94,7 @@
         notification.error({
           title: t('register.notification.validationCep.error.title'),
           content: t('register.notification.validationCep.error.contentStock'),
+
           duration: 2500,
         })
       }
@@ -118,13 +120,15 @@
     await handleEstimateFreight(getCart.value.zipcode)
   }
 
-  function currencyFormatFrete(
+
+  function currencyFormatFreight(
     value: number,
     locale = 'pt-BR',
     type?: string,
   ): string {
     if (value === 0.01 && type === 'freight') {
       return t('config.free')
+
     }
 
     return new Intl.NumberFormat(locale, {
@@ -159,8 +163,9 @@
 
   const formattedTotal = computed(() => {
     return validationCEP.value === 'error'
-      ? ''
-      : currencyFormat(cart.value?.total)
+      ? 0
+    : currencyFormat(cart.value?.total)
+
   })
 </script>
 
@@ -214,7 +219,8 @@
               </div>
               <div>
                 {{
-                  currencyFormatFrete(
+
+                  currencyFormatFreight(
                     Number(cart.freight.price),
                     undefined,
                     'freight',
@@ -305,8 +311,16 @@
               <p>{{ t('cart.summary.shipping') }}</p>
               <p>
                 {{
-                  currencyFormat(cart?.freight?.price, undefined, 'freight') ||
-                  0
+
+                  cart?.freight?.price !== undefined &&
+                  cart?.freight?.price !== null
+                    ? currencyFormatFreight(
+                        Number(cart.freight.price),
+                        undefined,
+                        'freight',
+                      )
+                    : currencyFormat(0)
+
                 }}
               </p>
             </div>

@@ -21,7 +21,7 @@ export function useOrders(userId: string) {
       pending.value = true
 
       const { data: responseData } = await useFetch<Order[] | undefined>(
-        `${serverUrl}/order/${userId}`,
+        `${serverUrl}/order/user/${userId}`,
       )
 
       const responseDataValue = unref(responseData)
