@@ -166,6 +166,8 @@ export default {
       invalidDocument: 'CPF inválido',
       invalidPhone: 'Informe um telefone válido',
       invalidEmail: 'Informe um e-mail válido',
+      invalidUsername:
+        'Apenas letras minúsculas e números, sem espaços ou caracteres especiais',
       passwordMismatch: 'Senhas não conferem',
       serverError: 'Erro ao realizar cadastro',
     },
@@ -179,6 +181,16 @@ export default {
         title: 'Erro ao realizar cadastro',
         content:
           'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
+      },
+
+      validationCep: {
+        error: {
+          title: 'Erro',
+          contentFreight:
+            'Algo deu errado ao calcular o frete. Tente novamente mais tarde',
+          contentStock:
+            'A quantidade solicitada não está disponível no estoque.',
+        },
       },
     },
   },
@@ -239,8 +251,11 @@ export default {
         street: 'Rua',
         number: 'Número',
         complement: 'Complemento',
-        zipcodeInvalid: 'CEP informado está vazio ou é inválido',
+        zipcodeInvalid: 'CEP está vazio ou é inválido.',
         zipcodeRequired: 'CEP é obrigatório',
+        cepError: 'error',
+        couponError: 'error',
+        invalidCoupon: 'Cupom Inválido',
         countryRequired: 'País é obrigatório',
         stateRequired: 'Estado é obrigatório',
         cityRequired: 'Cidade é obrigatório',
@@ -291,5 +306,9 @@ export default {
     buttonError: 'Voltar para o carrinho',
     pixTitle: 'Seu pagamento foi finalizado',
     cardTitle: 'Seu pagamento está sendo processado',
+  },
+
+  config: {
+    free: 'Grátis',
   },
 }
