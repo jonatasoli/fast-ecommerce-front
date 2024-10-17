@@ -28,8 +28,8 @@
         username: z
           .string()
           .nonempty(t('register.formValidation.requiredUsername'))
-          .regex(/^[a-z0-9]+$/, t('register.formValidation.invalidUsername')) // Apenas letras minúsculas e números, sem espaços ou caracteres especiais
-          .transform((val) => val.toLowerCase()), // Transforma todas as letras em minúsculas
+          .regex(/^[a-z0-9]+$/, t('register.formValidation.invalidUsername'))
+          .transform((val) => val.toLowerCase()),
         mail: z
           .string()
           .email(t('register.formValidation.invalidEmail'))

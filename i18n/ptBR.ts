@@ -176,6 +176,16 @@ export default {
         content:
           'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
       },
+
+      validationCep: {
+        error: {
+          title: 'Erro',
+          contentFreight:
+            'Algo deu errado ao calcular o frete. Tente novamente mais tarde',
+          contentStock:
+            'A quantidade solicitada não está disponível no estoque.',
+        },
+      },
     },
   },
   userMenu: {
@@ -235,8 +245,11 @@ export default {
         street: 'Rua',
         number: 'Número',
         complement: 'Complemento',
-        zipcodeInvalid: 'CEP inválido',
+        zipcodeInvalid: 'CEP está vazio ou é inválido.',
         zipcodeRequired: 'CEP é obrigatório',
+        cepError: 'error',
+        couponError: 'error',
+        invalidCoupon: 'Cupom Inválido',
         countryRequired: 'País é obrigatório',
         stateRequired: 'Estado é obrigatório',
         cityRequired: 'Cidade é obrigatório',
@@ -287,5 +300,9 @@ export default {
     buttonError: 'Voltar para o carrinho',
     pixTitle: 'Seu pagamento foi finalizado',
     cardTitle: 'Seu pagamento está sendo processado',
+  },
+
+  config: {
+    free: 'Grátis',
   },
 }
