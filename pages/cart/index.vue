@@ -55,8 +55,8 @@
       cartStore.clearFreight()
     } else {
       notification.error({
-        title: 'Erro',
-        content: t('cart.freight.error'),
+        title: t('register.notification.validationCep.error.title'),
+        content: t('register.notification.validationCep.error.contentFreight'),
         duration: 2500,
       })
     }
@@ -67,7 +67,8 @@
     await refreshEstimate()
     if (unref(error) === 'INVALID_COUPON') {
       validationCoupon.value = 'error'
-      messageInvalidCoupon.value = t('cart.coupon.invalid')
+      messageInvalidCoupon.value = t('checkout.shipping.form.invalidCoupon')
+      
       await cartStore.clearDiscount()
       await cartStore.setCoupon('')
       return
@@ -91,8 +92,9 @@
 
       if (unref(data)?.detail === 'Product Sold Out.') {
         notification.error({
-          title: 'Erro',
-          content: t('cart.products.error'),
+          title: t('register.notification.validationCep.error.title'),
+          content: t('register.notification.validationCep.error.contentStock'),
+
           duration: 2500,
         })
       }
@@ -118,13 +120,15 @@
     await handleEstimateFreight(getCart.value.zipcode)
   }
 
+
   function currencyFormatFreight(
     value: number,
     locale = 'pt-BR',
     type?: string,
   ): string {
     if (value === 0.01 && type === 'freight') {
-      return 'Grátis'
+      return t('config.free')
+
     }
 
     return new Intl.NumberFormat(locale, {
@@ -161,6 +165,7 @@
     return validationCEP.value === 'error'
       ? 0
     : currencyFormat(cart.value?.total)
+
   })
 </script>
 
@@ -214,6 +219,7 @@
               </div>
               <div>
                 {{
+
                   currencyFormatFreight(
                     Number(cart.freight.price),
                     undefined,

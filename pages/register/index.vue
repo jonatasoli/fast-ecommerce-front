@@ -27,7 +27,9 @@
         name: z.string().nonempty(t('register.formValidation.requiredName')),
         username: z
           .string()
-          .nonempty(t('register.formValidation.requiredUsername')),
+          .nonempty(t('register.formValidation.requiredUsername'))
+          .regex(/^[a-z0-9]+$/, t('register.formValidation.invalidUsername'))
+          .transform((val) => val.toLowerCase()),
         mail: z
           .string()
           .email(t('register.formValidation.invalidEmail'))
