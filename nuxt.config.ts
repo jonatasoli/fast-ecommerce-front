@@ -87,6 +87,7 @@ export default defineNuxtConfig({
     { src: '@/plugins/vue-the-mask', mode: 'client' },
     { src: '@/plugins/mercadopago', mode: 'client' },
     { src: '@/plugins/whatsapp', mode: 'client' },
+    { src: '@/plugins/dompurify', mode: 'client' },
   ],
   build: {
     analyze: true,
