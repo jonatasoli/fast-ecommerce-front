@@ -160,9 +160,10 @@
       <h2 class="product__description--title">
         {{ product.name }}
       </h2>
-      <p class="product__description--text">
-        {{ product?.description?.content }}
-      </p>
+      <p
+        class="product__description--text"
+        v-html="product?.description?.content"
+      ></p>
     </div>
     <n-collapse
       v-if="product.description"
@@ -175,9 +176,10 @@
         name="1"
         class="product__description--collapse-item"
       >
-        <p class="product__description--text">
-          {{ product?.description?.composition }}
-        </p>
+        <p
+          class="product__description--text"
+          v-html="product?.description?.composition"
+        ></p>
       </n-collapse-item>
       <n-collapse-item
         v-if="product?.description?.how_to_use"
@@ -185,9 +187,10 @@
         name="2"
         class="product__description--collapse-item"
       >
-        <p class="product__description--text-white-space">
-          {{ product?.description?.how_to_use }}
-        </p>
+        <p
+          class="product__description--text-white-space"
+          v-html="product?.description?.how_to_use"
+        ></p>
       </n-collapse-item>
     </n-collapse>
   </main>
