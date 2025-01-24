@@ -1,4 +1,6 @@
 export default {
+  terms:
+    'Aceito os Termos e Condições e a Política de Privacidade da Gatto Rosa.',
   address:
     'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
@@ -170,6 +172,7 @@ export default {
         'Apenas letras minúsculas e números, sem espaços ou caracteres especiais',
       passwordMismatch: 'Senhas não conferem',
       serverError: 'Erro ao realizar cadastro',
+      acceptTerms: 'O usuário deve aceitar os termos e condições',
     },
     notification: {
       success: {
