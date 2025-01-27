@@ -41,6 +41,13 @@ export default {
     outOfStock: 'Produto indisponível',
   },
 
+  pageNotFound: {
+    notFound:
+      'O produto que você digitou não existe ou a url fornecida está incorreta',
+    tryAgain: 'visite nossa página de início',
+    home: 'Voltar para página inicial',
+  },
+
   home: {
     news: {
       title: 'Novidades',
