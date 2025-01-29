@@ -129,6 +129,8 @@ export default defineNuxtConfig({
       recaptchaSecretKey: process.env.RECAPTCHA_SECRET_KEY,
       recaptchaKey: process.env.RECAPTCHA_KEY,
       whatsappNumber: process.env.WHATSAPP_NUMBER,
+      urlLogo: process.env.URL_LOGO,
+      altLogo: process.env.ALT_LOGO,
       gtagId: process.env.GTAG_ID,
       isProd: process.env.NODE_ENV === 'production',
       sentry: {

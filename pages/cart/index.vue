@@ -83,6 +83,14 @@
         cartStore.clearDiscount()
         validationCoupon.value = 'error'
         messageInvalidCoupon.value = t('checkout.shipping.form.invalidCoupon')
+
+        notification.error({
+          title: t('register.notification.validationCoupon.error.title'),
+          content: t(
+            'register.notification.validationCoupon.error.contentCoupon',
+          ),
+          duration: 2500,
+        })
       } else {
         validationCoupon.value = 'success'
         messageInvalidCoupon.value = ''

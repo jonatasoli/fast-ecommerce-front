@@ -14,6 +14,9 @@
   const { isMobile } = useDevice()
   const router = useRouter()
   const search = ref('')
+  const config = useRuntimeConfig()
+  const Logo = config.public.urlLogo
+  const AltLogo = config.public.urlAltLogo
 
   function doSearch() {
     const trimSearch = search.value.trim()
@@ -37,7 +40,7 @@
     <div class="header__top">
       <SideNav v-if="isMobile" />
       <NuxtLink to="/" class="logo">
-        <img src="~/assets/logo-gold.png" alt="Gatto Rosa" />
+        <img :src="Logo" :alt="AltLogo" />
       </NuxtLink>
       <div v-if="!isMobile" class="search-bar">
         <div class="search-bar__group">
