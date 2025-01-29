@@ -62,20 +62,9 @@
     }
   }
 
-  async function handleAddCoupon(value) {
-    const response = await cartStore.addCoupon(value)
-    await refreshEstimate()
-    if (unref(error) === 'INVALID_COUPON') {
-      validationCoupon.value = 'error'
-      messageInvalidCoupon.value = t('checkout.shipping.form.invalidCoupon')
-
-      await cartStore.clearDiscount()
-      await cartStore.setCoupon('')
-      return
-    }
-    validationCoupon.value = undefined
-    messageInvalidCoupon.value = ''
-    return response
+  function handleAddCoupon(value) {
+    cartStore.addCoupon(value)
+    debounceFn()
   }
 
   const debounceFn = useDebounceFn(
@@ -85,7 +74,20 @@
       if (!cartItems) {
         return
       }
-      await refreshEstimate(cartItems)
+
+      const res = await refreshEstimate(cartItems)
+
+      if (res && res.detail) {
+        coupon.value = ''
+        cartStore.setCoupon('')
+        cartStore.clearDiscount()
+        validationCoupon.value = 'error'
+        messageInvalidCoupon.value = t('checkout.shipping.form.invalidCoupon')
+      } else {
+        validationCoupon.value = 'success'
+        messageInvalidCoupon.value = ''
+      }
+
       if (zipcode) {
         await handleEstimateFreight(zipcode)
       }
@@ -94,7 +96,6 @@
         notification.error({
           title: t('register.notification.validationCep.error.title'),
           content: t('register.notification.validationCep.error.contentStock'),
-
           duration: 2500,
         })
       }
@@ -163,6 +164,12 @@
     return validationCEP.value === 'error'
       ? 0
       : currencyFormat(cart.value?.total)
+  })
+
+  onUnmounted(() => {
+    coupon.value = ''
+    cartStore.setCoupon('')
+    cartStore.clearDiscount()
   })
 </script>
 
