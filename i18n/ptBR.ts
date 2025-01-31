@@ -1,4 +1,5 @@
 export default {
+
   terms: {
     acceptTerms:
       'Aceito os Termos e Condições e a Política de Privacidade da Gatto Rosa.',
