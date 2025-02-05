@@ -1,6 +1,9 @@
 <script lang="ts" setup>
   import { defineProps, defineEmits } from 'vue'
 
+  import { useI18n } from '#imports'
+
+
   const props = defineProps({
     isOpen: {
       type: Boolean,
@@ -10,6 +13,9 @@
 
   const emit = defineEmits(['close'])
 
+  const { t } = useI18n()
+
+
   const closeModal = () => {
     emit('close')
   }
@@ -17,17 +23,22 @@
 <template>
   <div v-if="props.isOpen" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
-      <h2 class="modal-title">Alerta Importante</h2>
+
+      <h2 class="modal-title">{{ t('terms.importantAlert') }}</h2>
       <p class="modal-body">
-        <strong>TERMO DE USO:</strong><br />
-        1 - USO EXCLUSIVO PARA PROFISSIONAIS ESPECIALIZADOS.<br />
-        2 - USAR LUVAS DURANTE O PROCEDIMENTO<br />
-        3 - NÃO APLICAR NA PELE, PRODUTO DESENVOLVIDO PARA O CABELO<br />
-        4 - FAZER TESTE DE MECHAS COMO PROVA ANTES DO USO<br />
-        5 - NÃO ACONSELHAMOS O USO DOMÉSTICO<br />
-        <em>* AO COMPRAR, AFIRMO SER UM PROFISSIONAL CABELEIREIRO</em>
+        <strong>{{ t('terms.termsOfUse') }}</strong
+        ><br />
+        {{ t('terms.exclusiveUse') }}<br />
+        {{ t('terms.useGlovesToProcedure') }}<br />
+        {{ t('terms.notApplySkin') }}<br />
+        {{ t('terms.doTestBeforeUse') }}<br />
+        {{ t('terms.notAdviseHouseHoldUse') }}<br />
+        <em>{{ t('terms.buyPurchasing') }}</em>
       </p>
-      <button class="close-modal-btn" @click="closeModal">Fechar</button>
+      <button class="close-modal-btn" @click="closeModal">
+        {{ t('terms.close') }}
+      </button>
+
     </div>
   </div>
 </template>

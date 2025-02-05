@@ -8,11 +8,18 @@
   })
 
   const { t } = useI18n()
+
+  const config = useRuntimeConfig()
+  const Logo = config.public.urlLogo
+  const AltLogo = config.public.urlAltLogo
+
 </script>
 <template>
   <div class="error-page">
     <div class="logo">
-      <img src="~/assets/logo-gold.png" alt="Gatto Rosa" />
+
+      <img :src="Logo" :alt="AltLogo" />
+
     </div>
     <p class="error-message">
       {{ t('pageNotFound.notFound') }}

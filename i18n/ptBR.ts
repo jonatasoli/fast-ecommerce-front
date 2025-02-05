@@ -1,6 +1,18 @@
 export default {
-  terms:
-    'Aceito os Termos e Condições e a Política de Privacidade da Gatto Rosa.',
+
+  terms: {
+    acceptTerms:
+      'Aceito os Termos e Condições e a Política de Privacidade da Gatto Rosa.',
+    importantAlert: 'Alerta Importante',
+    termsOfUse: 'TERMO DE USO: ',
+    exclusiveUse: '1 - USO EXCLUSIVO PARA PROFISSIONAIS ESPECIALIZADOS',
+    useGlovesToProcedure: ' 2 - USAR LUVAS DURANTE O PROCEDIMENTO',
+    notApplySkin: '3 - NÃO APLICAR NA PELE, PRODUTO DESENVOLVIDO PARA O CABELO',
+    doTestBeforeUse: '4 - FAZER TESTE DE MECHAS COMO PROVA ANTES DO USO',
+    notAdviseHouseHoldUse: '5 - NÃO ACONSELHAMOS O USO DOMÉSTICO',
+    buyPurchasing: '* AO COMPRAR, AFIRMO SER UM PROFISSIONAL CABELEIREIRO',
+    close: 'Fechar',
+  },
   address:
     'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
@@ -191,6 +203,14 @@ export default {
         title: 'Erro ao realizar cadastro',
         content:
           'Não foi possível realizar o cadastro, verifique os dados e tente novamente',
+      },
+
+      validationCoupon: {
+        error: {
+          title: 'Erro',
+          contentCoupon:
+            'Algo deu errado ao adicionar o cupom. Tente novamente',
+        },
       },
 
       validationCep: {

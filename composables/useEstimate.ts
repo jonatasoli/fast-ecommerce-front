@@ -5,7 +5,7 @@ export function useEstimate() {
   const config = useRuntimeConfig()
   const pending = ref(false)
   const fetching = ref(false)
-  const data = ref<IDataCart>()
+  const data = ref<IDataCart | null>(null)
   const error = ref<string | null>(null)
   const serverUrl = config.public.serverUrl
   const cartStore = useCartStore()
@@ -38,8 +38,8 @@ export function useEstimate() {
             total: cart.value.total,
             zipcode: cart.value.zipcode,
             freight_product_code: cart.value.freight_product_code,
-            coupon,
-            affiliate,
+            coupon: coupon.value,
+            affiliate: affiliate.value,
           },
         },
       )
@@ -48,9 +48,11 @@ export function useEstimate() {
 
       if (unref(fetchError)) {
         error.value = unref(fetchError)?.data.message
+        pending.value = false
+        return null
       }
 
-      if (responseDataValue && responseDataValue?.cart_items) {
+      if (responseDataValue && responseDataValue.cart_items) {
         data.value = responseDataValue
         error.value = null
       } else {
@@ -58,16 +60,19 @@ export function useEstimate() {
       }
 
       pending.value = false
+      return responseDataValue
     } catch (err) {
       error.value = (err as Error).message
       pending.value = false
+      return null
     }
   }
 
   async function refresh(cartItems: CartItem[] = filteredCartItems) {
     fetching.value = true
-    await execute(cartItems)
+    const res = await execute(cartItems)
     fetching.value = false
+    return res
   }
 
   onMounted(() => execute(filteredCartItems))
