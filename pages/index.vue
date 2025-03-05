@@ -12,6 +12,7 @@
   import { useProductsStore } from '~/stores/products'
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
+  import BannerWarning from '~/components/app/BannerWarning/BannerWarning.vue'
 
   useHead({
     title: 'Home',
@@ -19,6 +20,11 @@
 
   const { t, te } = useI18n()
   const store = useProductsStore()
+  const showModal = ref(true)
+
+  const closeModal = () => {
+    showModal.value = false
+  }
 
   const categoryStore = useCategoryStore()
   const cartStore = useCartStore()
@@ -97,6 +103,7 @@
 
 <template>
   <main class="home">
+    <BannerWarning :is-open="showModal" @close="closeModal" />
     <div
       v-if="carousel && carousel.length > 0"
       class="home__carousel container"
