@@ -53,7 +53,7 @@
     "husky": "9.1.6",
     "lint-staged": "^15.0.2",
     "naive-ui": "^2.35.0",
-    "nuxt": "^3.12.4",
+    "nuxt": "^3.16.0",
     "prettier": "^3.1.1",
     "sass": "^1.69.5",
     "typescript": "^5.5.0",
