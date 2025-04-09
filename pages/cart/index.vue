@@ -372,6 +372,8 @@
 </template>
 
 <style lang="scss" scoped>
+  @use '~scss/variables' as *;
+
   .cart {
     &__empty {
       text-align: center;

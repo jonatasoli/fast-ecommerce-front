@@ -24,5 +24,5 @@
 </template>
 
 <style scoped lang="scss">
-  @import './ProductSkeleton.scss';
+  @use './ProductSkeleton.scss' as *;
 </style>

@@ -191,5 +191,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/login.scss';
+  @use '@/assets/scss/pages/login.scss' as *;
 </style>

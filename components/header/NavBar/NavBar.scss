@@ -1,4 +1,4 @@
-@import '@/assets/scss/variables';
+@use '~scss/variables' as *;
 
 nav {
   background-color: $primary-color;

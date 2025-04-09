@@ -1,4 +1,4 @@
-@import '@/assets/scss/variables';
+@use '~scss/variables' as *;
 
 footer {
   width: 100%;

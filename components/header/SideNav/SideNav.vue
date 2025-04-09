@@ -52,5 +52,5 @@
 </template>
 
 <style scoped lang="scss">
-  @import './SideNav.scss';
+  @use './SideNav.scss';
 </style>

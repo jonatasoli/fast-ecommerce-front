@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import { LOCALES } from './utils/enums'
@@ -102,6 +103,9 @@ export default defineNuxtConfig({
         ]
       : ['@nuxtjs/i18n', '@juggle/resize-observer'],
   },
+  alias: {
+    '~scss': resolve(__dirname, 'assets/scss'),
+  },
   vite: {
     optimizeDeps: {
       include:
@@ -112,7 +116,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "@/assets/scss/main.scss";',
+          additionalData: `@use "~scss/variables.scss" as *;`,
         },
       },
     },

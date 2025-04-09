@@ -135,5 +135,5 @@
 </template>
 
 <style scoped lang="scss">
-  @import './userMenu.scss';
+  @use './userMenu.scss' as *;
 </style>

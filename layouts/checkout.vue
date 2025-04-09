@@ -43,7 +43,7 @@
 </template>
 
 <style lang="scss">
-  @import '@/assets/scss/main.scss';
+  @use '@/assets/scss/main.scss' as *;
 
   .header {
     background-color: #000000;

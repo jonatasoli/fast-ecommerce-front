@@ -78,5 +78,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './AppHeader.scss';
+  @use './AppHeader.scss';
 </style>

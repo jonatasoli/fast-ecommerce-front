@@ -73,5 +73,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './InputCard.scss';
+  @use './InputCard.scss' as *;
 </style>

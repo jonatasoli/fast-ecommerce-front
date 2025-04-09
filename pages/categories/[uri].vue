@@ -117,5 +117,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/category.scss';
+  @use '@/assets/scss/pages/category.scss' as *;
 </style>

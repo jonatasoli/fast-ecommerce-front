@@ -1,3 +1,5 @@
+@use '~scss/variables' as *;
+
 .feature-hero {
   @media (min-width: 640px) {
     display: flex;

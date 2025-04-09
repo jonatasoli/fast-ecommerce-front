@@ -212,5 +212,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './FormAddress.scss';
+  @use './FormAddress.scss' as *;
 </style>

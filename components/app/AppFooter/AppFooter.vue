@@ -36,5 +36,5 @@
 </template>
 
 <style scoped lang="scss">
-  @import './AppFooter.scss';
+  @use './AppFooter.scss' as *;
 </style>
