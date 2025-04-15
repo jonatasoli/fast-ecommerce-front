@@ -26,5 +26,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './FeatureCard.scss';
+  @use './FeatureCard.scss' as *;
 </style>

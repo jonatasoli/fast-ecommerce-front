@@ -239,5 +239,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/register.scss';
+  @use '@/assets/scss/pages/register.scss' as *;
 </style>

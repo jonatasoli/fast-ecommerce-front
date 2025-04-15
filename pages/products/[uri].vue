@@ -197,5 +197,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/products/product.scss';
+  @use '@/assets/scss/pages/products/product.scss' as *;
 </style>

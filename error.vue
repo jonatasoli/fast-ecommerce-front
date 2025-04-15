@@ -12,14 +12,11 @@
   const config = useRuntimeConfig()
   const Logo = config.public.urlLogo
   const AltLogo = config.public.urlAltLogo
-
 </script>
 <template>
   <div class="error-page">
     <div class="logo">
-
       <img :src="Logo" :alt="AltLogo" />
-
     </div>
     <p class="error-message">
       {{ t('pageNotFound.notFound') }}
@@ -33,6 +30,8 @@
 </template>
 
 <style lang="scss" scoped>
+  @use '~scss/variables' as *;
+
   $error-bg-color: #f7f7f7;
   $error-text-color: #333;
   $error-code-color: #e63946;

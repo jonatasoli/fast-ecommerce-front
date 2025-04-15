@@ -93,5 +93,5 @@
 </template>
 
 <style scoped lang="scss">
-  @import '~/assets/scss/pages/search';
+  @use '~/assets/scss/pages/search' as *;
 </style>

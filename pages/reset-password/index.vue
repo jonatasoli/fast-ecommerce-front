@@ -173,5 +173,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/resetPassword.scss';
+  @use '@/assets/scss/pages/resetPassword.scss' as *;
 </style>

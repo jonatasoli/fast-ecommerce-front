@@ -133,7 +133,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import './PixModal.scss';
+  @use './PixModal.scss' as *;
 </style>
 
 <i18n lang="json">

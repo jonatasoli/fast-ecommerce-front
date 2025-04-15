@@ -59,5 +59,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './ProductCard.scss';
+  @use './ProductCard.scss' as *;
 </style>

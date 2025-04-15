@@ -321,5 +321,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/checkout.scss';
+  @use '@/assets/scss/pages/checkout.scss' as *;
 </style>

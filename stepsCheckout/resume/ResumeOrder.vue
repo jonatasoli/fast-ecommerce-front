@@ -222,5 +222,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './ResumeOrder.scss';
+  @use './ResumeOrder.scss' as *;
 </style>

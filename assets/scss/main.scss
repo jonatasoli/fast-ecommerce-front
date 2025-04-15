@@ -1,6 +1,6 @@
-@import 'variables';
-@import 'generic/reset';
-@import 'utils/layout';
+@use 'variables' as *;
+@use 'generic/reset' as *;
+@use 'utils/layout' as *;
 
 html:has(nav.--open) {
   overflow: hidden;

@@ -5,6 +5,7 @@
 </template>
 
 <style lang="scss" scoped>
+  @use '~scss/variables' as *;
   .loading {
     display: flex;
     justify-content: center;

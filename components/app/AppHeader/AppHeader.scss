@@ -1,4 +1,4 @@
-@import '@/assets/scss/variables.scss';
+@use '~scss/variables' as *;
 
 .header {
   background-color: #000000;

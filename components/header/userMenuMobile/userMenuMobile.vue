@@ -81,5 +81,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import './userMenuMobile.scss';
+  @use './userMenuMobile.scss' as *;
 </style>

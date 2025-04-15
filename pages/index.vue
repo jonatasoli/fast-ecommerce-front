@@ -143,5 +143,5 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/scss/pages/index.scss';
+  @use '@/assets/scss/pages/index.scss' as *;
 </style>

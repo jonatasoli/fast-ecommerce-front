@@ -29,5 +29,5 @@
 </template>
 
 <style scoped lang="scss">
-  @import './FeatureHero.scss';
+  @use './FeatureHero.scss' as *;
 </style>
