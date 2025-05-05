@@ -94,14 +94,14 @@ export interface Cart {
 }
 
 export interface Address {
-  country: string
-  state: string
-  city: string
-  neighborhood: string
-  street: string
-  street_number: string
-  address_complement: string
-  zipcode: string
+  country?: string
+  state?: string
+  city?: string
+  neighborhood?: string
+  street?: string
+  street_number?: string
+  address_complement?: string
+  zipcode?: string
 }
 
 export interface Payment {
@@ -128,7 +128,10 @@ export type User = {
   email: string
   document: string
   phone: string
+  addresses: Address[]
 }
+
+export type UserBase = Omit<User, 'user_id' | 'addresses'>
 
 export type Order = {
   order_id: number

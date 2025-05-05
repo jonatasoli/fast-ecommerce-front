@@ -86,6 +86,15 @@
       },
     },
     {
+      key: 'profile',
+      label: 'Perfil',
+      props: {
+        onClick: () => {
+          router.push('/profile')
+        },
+      },
+    },
+    {
       key: 'logout',
       label: 'Sair',
       props: {

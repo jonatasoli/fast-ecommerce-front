@@ -1,5 +1,4 @@
 export default {
-
   terms: {
     acceptTerms:
       'Aceito os Termos e Condições e a Política de Privacidade da Gatto Rosa.',
@@ -73,6 +72,14 @@ export default {
   productPage: {
     installments: 'em até {count} de {amount} sem juros',
     variants: 'Selecione uma opção:',
+  },
+  profile: {
+    notification: {
+      error: {
+        title: 'Error',
+        content: 'Erro ao tentar buscar usuário, Tente novamente',
+      },
+    },
   },
 
   cart: {
@@ -254,6 +261,12 @@ export default {
     user: {
       title: 'Informações pessoais',
       name: 'Nome',
+      document: 'Documento',
+      zipcode: 'Código Postal',
+      buttons: {
+        edit: 'Editar',
+        save: 'Salvar',
+      },
       email: 'E-mail',
       phone: 'Telefone',
       login: {
