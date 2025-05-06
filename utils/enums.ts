@@ -1,9 +1,13 @@
 export enum LOCALES {
-  PT_BR = 'pt-br',
+  PT_BR = 'pt-BR',
+  EN_US = 'en-US',
+  PT_PT = 'pt-PT',
 }
 
 export enum CURRENCIES {
-  'pt-br' = 'BRL',
+  'pt-BR' = 'BRL',
+  'en-US' = 'USD',
+  'pt-PT' = 'EUR',
 }
 
 export enum CATEGORIES {

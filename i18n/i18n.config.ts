@@ -1,8 +1,9 @@
+import { enUS } from './enUS' // importação direta do novo idioma
 import { ptBR } from './index'
 
 export default defineI18nConfig(() => ({
   legacy: false,
-  locale: 'pt-BR', // Fallback apenas, não padrão
+  locale: 'pt-BR',
   fallbackLocale: 'pt-BR',
   detectBrowserLanguage: {
     useCookie: true,
@@ -12,6 +13,6 @@ export default defineI18nConfig(() => ({
   },
   messages: {
     'pt-BR': ptBR,
-    // adicione outros idiomas se necessário
+    'en-US': enUS,
   },
 }))

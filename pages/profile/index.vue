@@ -5,6 +5,23 @@
   import { useUserStore } from '@/stores/user'
   import { useI18n, useCookie, type UserBase } from '#imports'
 
+  definePageMeta({
+    layout: 'default',
+    middleware: [
+      function () {
+        const { user } = storeToRefs(useUserStore())
+
+        if (!user.value) {
+          return navigateTo('/cart')
+        }
+      },
+    ],
+  })
+
+  useHead({
+    title: 'Profile',
+  })
+
   const storeUser = useUserStore()
   const lang = useCookie('i18n_redirected')
   const notification = useNotification()

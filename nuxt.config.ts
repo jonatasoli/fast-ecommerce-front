@@ -43,8 +43,18 @@ export default defineNuxtConfig({
 
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
-    locales: [{ language: 'pt-BR', code: LOCALES.PT_BR }],
+    strategy: 'no_prefix',
+    locales: [
+      { language: 'pt-BR', code: LOCALES.PT_BR },
+      { language: 'en-US', code: LOCALES.EN_US },
+      { language: 'pt-PT', code: LOCALES.PT_PT },
+    ],
     defaultLocale: LOCALES.PT_BR,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      fallbackLocale: LOCALES.PT_BR,
+    },
     vueI18n: './i18n.config.ts',
   },
   googleFonts: {
