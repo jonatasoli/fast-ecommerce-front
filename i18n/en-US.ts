@@ -125,12 +125,12 @@ export default {
   login: {
     title: 'Login',
     username: 'CPF',
-    password: 'Password',
-    forgotPassword: 'Forgot my password',
+    password: 'Passcode',
+    forgotPassword: 'Forgot my Passcode',
     submit: 'Login',
     register: 'Not a customer yet',
     formValidation: {
-      invalidCredentials: 'Invalid username or password',
+      invalidCredentials: 'Invalid username or Passcode',
       serverError: 'Login error',
       requiredUsername: 'CPF is required',
       requiredPassword: 'Password is required',
@@ -140,7 +140,7 @@ export default {
       success: {
         title: 'Request sent successfully',
         content:
-          'You will soon receive an email with instructions to reset your password',
+          'You will soon receive an email with instructions to reset your Passcode',
       },
     },
   },
@@ -155,7 +155,7 @@ export default {
       documentRequired: 'CPF is required',
       requiredNewPassword: 'New password is required',
       requiredConfirmPassword: 'Password confirmation is required',
-      passwordMismatch: 'Passwords do not match',
+      passwordMismatch: 'passwords do not match',
       serverError: 'Error changing password',
     },
     message: {
@@ -186,8 +186,8 @@ export default {
       requiredName: 'Name is required',
       requiredEmail: 'Email is required',
       requiredDocument: 'CPF is required',
-      requiredPassword: 'Password is required',
-      passwordMinLength: 'Password must be at least 6 characters',
+      requiredPassword: 'password is required',
+      passwordMinLength: 'password must be at least 6 characters',
       requiredConfirmPassword: 'Password confirmation is required',
       requiredPhone: 'Phone is required',
       invalidDocument: 'Invalid CPF',
