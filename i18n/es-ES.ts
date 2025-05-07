@@ -128,7 +128,7 @@ export default {
   login: {
     title: 'Iniciar sesión',
     username: 'CPF',
-    password: 'Contraseña',
+    password: 'contraseña',
     forgotPassword: 'Olvidé mi contraseña',
     submit: 'Entrar',
     register: 'Aún no soy cliente',
@@ -160,7 +160,7 @@ export default {
       requiredNewPassword: 'La nueva contraseña es obligatoria',
       requiredConfirmPassword:
         'La confirmación de la contraseña es obligatoria',
-      passwordMismatch: 'Las contraseñas no coinciden',
+      passwordMismatch: 'las contraseñas no coinciden',
       serverError: 'Error al cambiar la contraseña',
     },
     message: {
@@ -183,7 +183,7 @@ export default {
     name: 'Nombre',
     email: 'Correo electrónico',
     document: 'CPF',
-    password: 'Contraseña',
+    password: 'contraseña',
     confirmPassword: 'Confirmar contraseña',
     phone: 'Ingresa tu teléfono',
     submit: 'Registrarse',
@@ -193,7 +193,7 @@ export default {
       requiredEmail: 'El correo electrónico es obligatorio',
       requiredDocument: 'El CPF es obligatorio',
       requiredPassword: 'La contraseña es obligatoria',
-      passwordMinLength: 'La contraseña debe tener al menos 6 caracteres',
+      passwordMinLength: 'la contraseña debe tener al menos 6 caracteres',
       requiredConfirmPassword:
         'La confirmación de la contraseña es obligatoria',
       requiredPhone: 'El teléfono es obligatorio',
@@ -202,7 +202,7 @@ export default {
       invalidEmail: 'Ingrese un correo electrónico válido',
       invalidUsername:
         'Solo letras minúsculas y números, sin espacios ni caracteres especiales',
-      passwordMismatch: 'Las contraseñas no coinciden',
+      passwordMismatch: 'las contraseñas no coinciden',
       serverError: 'Error al registrarse',
       acceptTerms: 'El usuario debe aceptar los términos y condiciones',
     },
