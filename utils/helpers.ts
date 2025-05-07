@@ -24,6 +24,10 @@ export function currencyFormat(
   return format(value)
 }
 
+export function detectCurrencyByLocale(locale: string): 'BRL' | 'USD' | 'EUR' {
+  return CURRENCY_MAP[locale] || 'BRL'
+}
+
 export function dateFormat(value, locale = LOCALES.PT_BR): string {
   const date = new Date(value)
   const { format } = new Intl.DateTimeFormat(locale, {

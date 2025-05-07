@@ -48,6 +48,7 @@ export default defineNuxtConfig({
       { language: 'pt-BR', code: LOCALES.PT_BR },
       { language: 'en-US', code: LOCALES.EN_US },
       { language: 'pt-PT', code: LOCALES.PT_PT },
+      { language: 'es-ES', code: LOCALES.ES_ES },
     ],
     defaultLocale: LOCALES.PT_BR,
     detectBrowserLanguage: {

@@ -1,4 +1,6 @@
 import { enUS } from './enUS' // importação direta do novo idioma
+import { esES } from './esES' // importação direta do novo idioma
+import { ptPT } from './ptPT'
 import { ptBR } from './index'
 
 export default defineI18nConfig(() => ({
@@ -14,5 +16,7 @@ export default defineI18nConfig(() => ({
   messages: {
     'pt-BR': ptBR,
     'en-US': enUS,
+    'pt-PT': ptPT,
+    'es-ES': esES,
   },
 }))

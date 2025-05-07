@@ -24,15 +24,18 @@
   const cartStore = useCartStore()
   const router = useRouter()
   const serverUrl = useRuntimeConfig().public.serverUrl
+  const locale = useCookie('i18n_redirected').value || 'pt-BR'
+  const currency = detectCurrencyByLocale(locale)
 
   const { data: carousel } = await useAsyncData(() =>
     store.getProductsShowcase(),
   )
   const { data: featured } = await useFetch<{ products: ProductItem[] }>(
-    `${serverUrl}/catalog/featured`,
+    `${serverUrl}/catalog/featured?currency=${currency}`,
   )
+
   const { data: latest } = await useFetch<{ products: ProductItem[] }>(
-    `${serverUrl}/catalog/latest`,
+    `${serverUrl}/catalog/latest?currency=${currency}`,
   )
 
   const productToFeature = ({
