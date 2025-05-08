@@ -40,7 +40,7 @@
           .nonempty(t('register.formValidation.requiredDocument')),
         password: z
           .string()
-          .min(6, t('register.formValidation.passwordMinLengthLabel'))
+          .min(6, t('register.formValidation.passMinLengthLabel'))
           .nonempty(t('register.formValidation.requiredPassword')),
         confirmPassword: z
           .string()
@@ -55,7 +55,7 @@
           return value.password === value.confirmPassword
         },
         {
-          message: t('register.formValidation.passwordMismatchLabel'),
+          message: t('register.formValidation.passMismatchLabel'),
           path: ['confirmPassword'],
         },
       ),
@@ -171,14 +171,14 @@
           <n-input v-bind="document" :placeholder="t('register.document')" />
         </n-form-item>
         <n-form-item
-          :label="t('register.passwordLabel')"
+          :label="t('register.passLabel')"
           path="password"
           v-bind="password"
         >
           <n-input
             v-bind="password"
             type="password"
-            :placeholder="t('register.passwordLabel')"
+            :placeholder="t('register.passLabel')"
           />
         </n-form-item>
         <n-form-item

@@ -31,7 +31,7 @@
           .min(6, t('resetPassword.formValidation.requiredConfirmPassword')),
       })
       .refine((data) => data.newPassword === data.confirmPassword, {
-        message: t('resetPassword.formValidation.passwordMismatchLabel'),
+        message: t('resetPassword.formValidation.passMismatchLabel'),
         path: ['confirmPassword'],
       }),
   )
