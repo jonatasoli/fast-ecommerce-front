@@ -122,14 +122,14 @@
           />
         </n-form-item>
         <n-form-item
-          :label="t('login.password')"
+          :label="t('login.passwordLabel')"
           path="password"
           v-bind="passwordProps"
         >
           <n-input
             v-model:value="password"
             type="password"
-            :placeholder="t('login.password')"
+            :placeholder="t('login.passwordLabel')"
           />
         </n-form-item>
       </n-form>
