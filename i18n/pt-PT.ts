@@ -52,6 +52,19 @@ export default {
     outOfStock: 'Esgotado',
   },
 
+  profilePage: {
+    myOrders: 'As minhas encomendas',
+    profile: 'Perfil',
+    out: 'sair',
+    noOrdersTitle: 'Não tem nenhuma encomenda',
+    buyNow: 'Comprar agora',
+    order: 'Encomenda',
+    status: 'Estado',
+    unitPrice: 'Valor unitário',
+    quantity: 'Quantidade',
+    date: 'Data',
+  },
+
   pageNotFound: {
     notFound: 'O produto que procurou não existe ou o link está incorreto',
     tryAgain: 'visite a nossa página inicial',
@@ -116,6 +129,7 @@ export default {
       part2: 'dias úteis',
       error:
         'Ocorreu um erro ao calcular o envio. Por favor tente novamente mais tarde.',
+      shippingNationwide: 'Envio para todo o país',
     },
 
     coupon: {
@@ -237,6 +251,7 @@ export default {
     welcome: 'Olá, {user}',
     visitor: 'visitante',
     myAccount: 'Aceder à minha conta',
+    placeholder: 'Digite o que você procura',
     login: 'Entrar',
     logout: 'Sair',
     or: 'ou',
@@ -271,6 +286,7 @@ export default {
         save: 'Guardar',
       },
       email: 'Email',
+      chooseLanguage: 'Escolha o idioma',
       phone: 'Telefone',
       login: {
         part1: 'Por favor',
@@ -352,6 +368,12 @@ export default {
     buttonError: 'Voltar ao carrinho',
     pixTitle: 'O seu pagamento foi concluído',
     cardTitle: 'O seu pagamento está a ser processado',
+  },
+
+  bannerCookies: {
+    accept: 'Aceitar e fechar',
+    message:
+      'Este site utiliza cookies para melhorar a sua experiência de navegação. Ao continuar a navegar no site, está a concordar com a nossa utilização de cookies.',
   },
 
   config: {

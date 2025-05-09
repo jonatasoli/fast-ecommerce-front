@@ -8,14 +8,14 @@
   import InputCard from '~/components/cart/InputCard/InputCard.vue'
   import { RadioInput } from '~/components/cart'
 
+  const { t } = useI18n()
   useHead({
-    title: 'Carrinho',
+    title: t('cart.titlePage'),
   })
 
   const cartStore = useCartStore()
   const notification = useNotification()
   const { getCart, coupon, loading } = storeToRefs(cartStore)
-  const { t } = useI18n()
   const checkedFreightProductCode = ref('PAC')
   const validationCEP = ref<'error' | 'success' | 'warning' | undefined>(
     undefined,
@@ -205,7 +205,7 @@
           <InputCard
             icon="cupom"
             :title="t('cart.inputs.discount.title')"
-            placeholder="Cupom de desconto"
+            :placeholder="t('cart.inputs.discount.title')"
             :button-text="t('cart.inputs.discount.buttonText')"
             :received-value="coupon"
             :validation="validationCoupon"
@@ -216,7 +216,7 @@
             icon="cart"
             :title="t('cart.inputs.shipping.title')"
             :button-text="t('cart.inputs.shipping.buttonText')"
-            placeholder="Informe seu CEP"
+            :placeholder="t('cart.inputs.shipping.placeholder')"
             :received-value="getCart.zipcode"
             mask="#####-###"
             :validation="validationCEP"

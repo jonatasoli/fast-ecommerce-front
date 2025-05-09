@@ -52,6 +52,19 @@ export default {
     outOfStock: 'Produto indisponível',
   },
 
+  profilePage: {
+    myOrders: 'Meus pedidos',
+    profile: 'Perfil',
+    out: 'sair',
+    noOrdersTitle: 'Não tem nenhuma encomenda',
+    buyNow: 'Comprar agora',
+    order: 'Encomenda',
+    status: 'Estado',
+    unitPrice: 'Valor unitário',
+    quantity: 'Quantidade',
+    date: 'Data',
+  },
+
   pageNotFound: {
     notFound:
       'O produto que você digitou não existe ou a url fornecida está incorreta',
@@ -83,6 +96,7 @@ export default {
   },
 
   cart: {
+    titlePage: 'Carrinho',
     title: 'Meu Carrinho',
     empty: 'Seu carrinho está vazio',
     total: 'Total',
@@ -104,6 +118,7 @@ export default {
       shipping: {
         title: 'Insira seu CEP para calcular o frete e o prazo de entrega',
         buttonText: 'Calcular',
+        placeholder: 'Informe seu CEP',
       },
       discount: {
         title: 'Cupom de desconto',
@@ -114,6 +129,7 @@ export default {
       part1: 'Entrega - até',
       part2: 'dias úteis',
       error: 'Algo deu errado ao calcular o frete. Tente novamente mais tarde.',
+      shippingNationwide: 'Envio para todo o país',
     },
 
     coupon: {
@@ -235,6 +251,7 @@ export default {
     welcome: 'Olá, {user}',
     visitor: 'visitante',
     myAccount: 'Acessar minha conta',
+    placeholder: 'Digite o que você procura',
     login: 'Login',
     logout: 'Sair',
     or: 'ou',
@@ -268,6 +285,7 @@ export default {
         save: 'Salvar',
       },
       email: 'E-mail',
+      chooseLanguage: 'Escolha o idioma',
       phone: 'Telefone',
       login: {
         part1: 'Faça seu',
@@ -349,6 +367,41 @@ export default {
     buttonError: 'Voltar para o carrinho',
     pixTitle: 'Seu pagamento foi finalizado',
     cardTitle: 'Seu pagamento está sendo processado',
+  },
+
+  modalPix: {
+    title: {
+      pixPayment: 'Quase Pronto!',
+      pixPaymentSubtitle: 'Siga as instruções abaixo para finalizar!',
+      error: 'Erro ao gerar código de pagamento.',
+    },
+    actions: {
+      copyLink: 'Copiar Link',
+      copied: 'Copiado',
+      tryAgain: 'Tentar Novamente',
+      error: {
+        copyToClipbordNotSupported:
+          'Infelizmente seu browser não suporta essa funcionalidade.',
+      },
+    },
+    messages: {
+      copyLinkIntro: 'Ou copie este código para fazer o pagamento',
+      copyLinkInstructions:
+        'Escolha pagar via Pix no aplicativo do seu banco e depois, cole o código abaixo.',
+      qrCodeInstructions:
+        'Escolha pagar via Pix no aplicativo do seu banco e depois, escaneie o código abaixo.',
+      qrCodeIntro: 'Escaneie o QR code abaixo',
+    },
+    error: {
+      'pix-qr-code':
+        'Parece que houve um erro ao gerar o código QR. Por favor, tente novamente.',
+    },
+  },
+
+  bannerCookies: {
+    accept: 'Aceitar e fechar',
+    message:
+      'Este site utiliza cookies para melhorar a sua experiência de navegação. Ao continuar a navegar no site, está a concordar com a nossa utilização de cookies.',
   },
 
   config: {

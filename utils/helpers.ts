@@ -1,27 +1,28 @@
-import { CURRENCIES, LOCALES, STATUS_ORDER } from './enums'
-import { ref, useRoute } from '#imports'
+import { LOCALES, STATUS_ORDER } from './enums'
+import { ref, useRoute, useLocaleFromCookie } from '#imports'
 
 export function currencyFormat(
-  value,
-  locale = LOCALES.PT_BR,
-  type = '',
+  value: number,
+  passedLocale?: string,
+  type: string = '',
 ): string {
-  const currency = CURRENCIES[locale] || LOCALES.PT_BR
+  const locale = passedLocale || useLocaleFromCookie()
+  const currency = CURRENCY_MAP[locale] || CURRENCY_MAP['pt-BR']
 
-  const { format } = new Intl.NumberFormat(locale, {
+  const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
   })
 
   if (!value) {
-    return format(0)
+    return formatter.format(0)
   }
 
   if (type === 'freight') {
-    return format(value)
+    return formatter.format(value)
   }
 
-  return format(value)
+  return formatter.format(value)
 }
 
 export function detectCurrencyByLocale(locale: string): 'BRL' | 'USD' | 'EUR' {

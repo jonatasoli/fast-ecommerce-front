@@ -54,6 +54,18 @@ export default {
     outOfStock: 'Producto fuera de stock',
   },
 
+  profilePage: {
+    myOrders: 'Mis pedidos',
+    profile: 'Perfil',
+    out: 'cerrar sesión',
+    noOrdersTitle: 'No tienes ningún pedido',
+    buyNow: 'Comprar ahora',
+    order: 'Pedido',
+    status: 'Estado',
+    unitPrice: 'Precio unitario',
+    quantity: 'Cantidad',
+    date: 'Fecha',
+  },
   pageNotFound: {
     notFound:
       'El producto que buscó no existe o la URL proporcionada es incorrecta',
@@ -118,6 +130,7 @@ export default {
       part2: 'días hábiles',
       error:
         'Hubo un problema al calcular el envío. Intenta de nuevo más tarde.',
+      shippingNationwide: 'Envíos a todo el país',
     },
 
     coupon: {
@@ -241,6 +254,7 @@ export default {
     welcome: 'Hola, {user}',
     visitor: 'visitante',
     myAccount: 'Acceder a mi cuenta',
+    placeholder: 'Escribe lo que estás buscando',
     login: 'Iniciar sesión',
     logout: 'Cerrar sesión',
     or: 'o',
@@ -274,6 +288,7 @@ export default {
         save: 'Guardar',
       },
       email: 'Correo electrónico',
+      chooseLanguage: 'Elige el idioma',
       phone: 'Teléfono',
       login: {
         part1: 'Haz tu',
@@ -356,6 +371,12 @@ export default {
     buttonError: 'Volver al carrito',
     pixTitle: 'Tu pago ha sido finalizado',
     cardTitle: 'Tu pago está siendo procesado',
+  },
+
+  bannerCookies: {
+    accept: 'Aceptar y cerrar',
+    message:
+      'Este sitio web utiliza cookies para mejorar su experiencia de navegación. Al continuar navegando por el sitio, usted acepta nuestro uso de cookies.',
   },
 
   config: {

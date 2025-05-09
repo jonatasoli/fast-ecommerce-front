@@ -73,13 +73,11 @@
   watch(
     () => user.value.document,
     (doc) => {
-      const digits = doc.replace(/\D/g, '') // Remove tudo que não for número
+      const digits = doc.replace(/\D/g, '')
 
       if (digits.length <= 11) {
-        // CPF tem 11 dígitos
         maskDocument.value = '###.###.###-##'
       } else {
-        // CNPJ tem 14 dígitos
         maskDocument.value = '##.###.###/####-##'
       }
     },
@@ -87,23 +85,23 @@
   )
 
   onMounted(() => {
-    getUserData() // Chama a função para carregar os dados assim que o componente for montado
+    getUserData()
   })
 </script>
 
 <template>
   <div class="user-page">
     <div class="header">
-      <h1 class="title">{{ $t('checkout.user.title') }}</h1>
+      <h1 class="title">{{ t('checkout.user.title') }}</h1>
     </div>
 
     <div class="form">
       <n-form :model="user" label-placement="top" size="large">
-        <n-form-item :label="$t('checkout.user.name')">
+        <n-form-item :label="t('checkout.user.name')">
           <n-input v-model:value="user.name" readonly />
         </n-form-item>
 
-        <n-form-item :label="$t('checkout.user.document')">
+        <n-form-item :label="t('checkout.user.document')">
           <n-input
             v-model:value="user.document"
             v-mask="`${maskDocument}`"
@@ -111,15 +109,15 @@
           />
         </n-form-item>
 
-        <n-form-item :label="$t('checkout.user.phone')">
+        <n-form-item :label="t('checkout.user.phone')">
           <n-input v-model:value="user.phone" readonly />
         </n-form-item>
 
-        <n-form-item :label="$t('checkout.user.email')">
+        <n-form-item :label="t('checkout.user.email')">
           <n-input v-model:value="user.email" readonly />
         </n-form-item>
 
-        <n-form-item label="Escolha o idioma:">
+        <n-form-item :label="t('checkout.user.chooseLanguage')">
           <n-select
             v-model:value="lang"
             :options="locales"
@@ -129,10 +127,10 @@
 
         <div class="buttons">
           <n-button type="primary" ghost>{{
-            $t('checkout.user.buttons.edit')
+            t('checkout.user.buttons.edit')
           }}</n-button>
           <n-button type="primary">{{
-            $t('checkout.user.buttons.save')
+            t('checkout.user.buttons.save')
           }}</n-button>
         </div>
       </n-form>

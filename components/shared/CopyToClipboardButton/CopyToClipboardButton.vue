@@ -1,3 +1,21 @@
+<script lang="ts" setup>
+  import {
+    ClipboardDocumentCheckIcon,
+    ClipboardDocumentIcon,
+  } from '@heroicons/vue/24/outline'
+  import { useI18n } from '#imports'
+
+  defineProps<{ source: string }>()
+
+  const { t } = useI18n()
+  const { copy, isSupported, copied } = useClipboard()
+
+  const buttonContent = computed(() =>
+    copied.value
+      ? t('modalPix.actions.copied')
+      : t('modalPix.actions.copyLink'),
+  )
+</script>
 <template>
   <div class="copy-to-clipbord-button">
     <n-button
@@ -12,25 +30,11 @@
         <ClipboardDocumentIcon v-else />
       </n-icon>
     </n-button>
-    <p v-else>{{ t('errors.copy-to-clipbord-not-supported') }}</p>
+    <p v-else>
+      {{ t('modalPix.actions.error.copyToClipbordNotSupported') }}
+    </p>
   </div>
 </template>
-
-<script lang="ts" setup>
-  import {
-    ClipboardDocumentCheckIcon,
-    ClipboardDocumentIcon,
-  } from '@heroicons/vue/24/outline'
-
-  defineProps<{ source: string }>()
-
-  const { t } = useI18n()
-  const { copy, isSupported, copied } = useClipboard()
-
-  const buttonContent = computed(() =>
-    copied.value ? t('actions.copied') : t('actions.copy-link'),
-  )
-</script>
 
 <style lang="scss" scoped>
   button {

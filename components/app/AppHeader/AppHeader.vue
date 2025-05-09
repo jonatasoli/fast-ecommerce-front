@@ -9,12 +9,13 @@
     UserMenu,
     UserMenuMobile,
   } from '~/components/header'
-  import { ref, useDevice, useRouter } from '#imports'
+  import { ref, useDevice, useRouter, useI18n } from '#imports'
 
   const { isMobile } = useDevice()
   const router = useRouter()
   const search = ref('')
   const config = useRuntimeConfig()
+  const { t } = useI18n()
   const Logo = config.public.urlLogo
   const AltLogo = config.public.urlAltLogo
 
@@ -44,11 +45,10 @@
       </NuxtLink>
       <div v-if="!isMobile" class="search-bar">
         <div class="search-bar__group">
-          <!-- FIXME: i18n -->
           <input
             v-model="search"
             type="text"
-            placeholder="Digite o que você procura"
+            :placeholder="t('userMenu.placeholder')"
             @keyup.enter="doSearch"
           />
           <button @click="doSearch">

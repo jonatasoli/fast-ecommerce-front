@@ -1,66 +1,6 @@
-<template>
-  <n-modal
-    v-model:show="show"
-    :mask-closable="false"
-    preset="dialog"
-    title="Pagamento"
-    content="Qr Code!"
-    style="width: max(1200px, 60vw)"
-    class="pix-payment-form"
-    :closable="false"
-    :close-on-esc="false"
-  >
-    <LoadingProvider :active="pending">
-      <n-space align="center" vertical>
-        <h1>{{ t('title.pix-payment') }}</h1>
-        <small>{{ t('title.pix-payment-subtitle') }}</small>
-
-        <n-space
-          class="pix-payment-form__container"
-          justify="space-between"
-          :wrap="false"
-        >
-          <!-- qr-code-container::begin -->
-          <div
-            class="pix-payment-form__container__qr-code-container flex-center bordered"
-          >
-            <h3>{{ t('messages.qr-code-intro') }}</h3>
-            <p>{{ t('messages.qr-code-instructions') }}</p>
-
-            <n-image
-              class="pix-payment-form__container__qr-code"
-              width="300"
-              height="300"
-              :src="data?.qrCode"
-            />
-          </div>
-          <!-- qr-code-container::end -->
-
-          <!-- pix-key-container::begin -->
-          <div
-            class="pix-payment-form__container__link-container flex-center bordered"
-          >
-            <h3>{{ t('messages.copy-link-intro') }}</h3>
-            <p>{{ t('messages.copy-link-instructions') }}</p>
-
-            <n-input :value="data?.link" disabled />
-            <CopyToClipboardButton :source="data?.link as string" />
-          </div>
-          <!-- pix-key-container::end -->
-        </n-space>
-      </n-space>
-
-      <n-space justify="center">
-        <n-button type="error" ghost @click.prevent="handleClose">
-          Cancelar
-        </n-button>
-      </n-space>
-    </LoadingProvider>
-  </n-modal>
-</template>
-
 <script lang="ts" setup>
   import { useNotification } from 'naive-ui'
+  import { useI18n } from '#imports'
   import CopyToClipboardButton from '~/components/shared/CopyToClipboardButton/CopyToClipboardButton.vue'
 
   const { t } = useI18n()
@@ -131,6 +71,63 @@
     await router.replace('/')
   }
 </script>
+<template>
+  <n-modal
+    v-model:show="show"
+    :mask-closable="false"
+    preset="dialog"
+    title="Pagamento"
+    content="Qr Code!"
+    style="width: max(1200px, 60vw)"
+    class="pix-payment-form"
+    :closable="false"
+    :close-on-esc="false"
+  >
+    <LoadingProvider :active="pending">
+      <n-space align="center" vertical>
+        <h1>{{ t('modalPix.title.pixPayment') }}</h1>
+        <small>{{ t('modalPix.title.pixPaymentSubtitle') }}</small>
+
+        <n-space
+          class="pix-payment-form__container"
+          justify="space-between"
+          :wrap="false"
+        >
+          <!-- qr-code-container::begin -->
+          <div
+            class="pix-payment-form__container__qr-code-container flex-center bordered"
+          >
+            <h3>{{ t('modalPix.messages.qrCodeIntro') }}</h3>
+            <p>{{ t('modalPix.messages.qrCodeInstructions') }}</p>
+
+            <n-image
+              class="pix-payment-form__container__qr-code"
+              width="300"
+              height="300"
+              :src="data?.qrCode"
+            />
+          </div>
+
+          <div
+            class="pix-payment-form__container__link-container flex-center bordered"
+          >
+            <h3>{{ t('modalPix.messages.copyLinkIntro') }}</h3>
+            <p>{{ t('modalPix.messages.copyLinkInstructions') }}</p>
+
+            <n-input :value="data?.link" disabled />
+            <CopyToClipboardButton :source="data?.link as string" />
+          </div>
+        </n-space>
+      </n-space>
+
+      <n-space justify="center">
+        <n-button type="error" ghost @click.prevent="handleClose">
+          Cancelar
+        </n-button>
+      </n-space>
+    </LoadingProvider>
+  </n-modal>
+</template>
 
 <style lang="scss" scoped>
   @use './PixModal.scss' as *;
