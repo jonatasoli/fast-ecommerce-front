@@ -360,6 +360,13 @@ export default {
     },
   },
 
+  resumeOrder: {
+    subtotal: 'Subtotal',
+    freight: 'Envío',
+    discount: 'Descuento',
+    total: 'Total',
+  },
+
   finishCheckout: {
     pending: 'Por favor espera...',
     pendingDescription: '¡Por favor, no cierres ni actualices la página!',

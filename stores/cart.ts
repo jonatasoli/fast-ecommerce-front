@@ -430,7 +430,7 @@ export const useCartStore = defineStore('cart', () => {
       }
 
       const { data, error } = await useFetch(
-        `/api/cart/${uuid}/payment/credit_card`,
+        `/api/cart/${uuid}/payment/credit-card`,
         {
           method: 'POST',
           headers,

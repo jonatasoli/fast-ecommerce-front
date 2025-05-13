@@ -353,6 +353,13 @@ export default {
     },
   },
 
+  resumeOrder: {
+    subtotal: 'Subtotal',
+    freight: 'Shipping',
+    discount: 'Discount',
+    total: 'Total',
+  },
+
   finishCheckout: {
     pending: 'Please wait...',
     pendingDescription: 'Please wait, do not close or refresh the page!',

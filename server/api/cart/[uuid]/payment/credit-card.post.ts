@@ -10,7 +10,7 @@ export default defineEventHandler(
 
     try {
       const res = await fetch(
-        `${serverBaseURL}/cart/${uuid}/payment/credit_card`,
+        `${serverBaseURL}/cart/${uuid}/payment/credit-card`,
         {
           method: 'POST',
           headers: {
@@ -20,6 +20,7 @@ export default defineEventHandler(
           body: JSON.stringify(body),
         },
       )
+
       const data = await res.json()
 
       if (!data.uuid) {

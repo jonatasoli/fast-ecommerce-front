@@ -12,7 +12,7 @@
         const { user } = storeToRefs(useUserStore())
 
         if (!user.value) {
-          return navigateTo('/cart')
+          return navigateTo('/')
         }
       },
     ],
@@ -25,6 +25,8 @@
   const storeUser = useUserStore()
   const lang = useCookie('i18n_redirected')
   const notification = useNotification()
+  const isEditing = ref(false)
+  const cartStore = useCartStore()
 
   const { t } = useI18n()
 
@@ -67,6 +69,15 @@
 
   function changeLanguage(lang: string) {
     document.cookie = `i18n_redirected=${lang}; path=/; max-age=31536000`
+  }
+
+  function handleSave() {
+    isEditing.value = false
+    changeLanguage(lang.value ?? '')
+
+    cartStore.clearCart()
+    cartStore.clearAffiliate()
+
     location.reload()
   }
 
@@ -98,38 +109,44 @@
     <div class="form">
       <n-form :model="user" label-placement="top" size="large">
         <n-form-item :label="t('checkout.user.name')">
-          <n-input v-model:value="user.name" readonly />
+          <n-input v-model:value="user.name" :disabled="!isEditing" readonly />
         </n-form-item>
 
         <n-form-item :label="t('checkout.user.document')">
           <n-input
             v-model:value="user.document"
             v-mask="`${maskDocument}`"
+            :disabled="!isEditing"
             readonly
           />
         </n-form-item>
 
         <n-form-item :label="t('checkout.user.phone')">
-          <n-input v-model:value="user.phone" readonly />
+          <n-input v-model:value="user.phone" :disabled="!isEditing" readonly />
         </n-form-item>
 
         <n-form-item :label="t('checkout.user.email')">
-          <n-input v-model:value="user.email" readonly />
+          <n-input v-model:value="user.email" :disabled="!isEditing" readonly />
         </n-form-item>
 
         <n-form-item :label="t('checkout.user.chooseLanguage')">
           <n-select
             v-model:value="lang"
             :options="locales"
+            :disabled="!isEditing"
             @update:value="changeLanguage"
           />
         </n-form-item>
 
         <div class="buttons">
-          <n-button type="primary" ghost>{{
-            t('checkout.user.buttons.edit')
-          }}</n-button>
-          <n-button type="primary">{{
+          <n-button
+            type="primary"
+            ghost
+            :disabled="isEditing"
+            @click="isEditing = true"
+            >{{ t('checkout.user.buttons.edit') }}</n-button
+          >
+          <n-button type="primary" :disabled="!isEditing" @click="handleSave">{{
             t('checkout.user.buttons.save')
           }}</n-button>
         </div>
