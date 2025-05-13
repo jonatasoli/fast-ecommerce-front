@@ -142,14 +142,14 @@ export default {
     title: 'Iniciar sesión',
     username: 'CPF',
     passLabel: 'contraseña',
-    forgotPassword: 'Olvidé mi contraseña',
+    forgotPassLabel: 'Olvidé mi contraseña',
     submit: 'Entrar',
     register: 'Aún no soy cliente',
     formValidation: {
       invalidCredentials: 'Usuario o contraseña inválidos',
       serverError: 'Error al iniciar sesión',
       requiredUsername: 'El CPF es obligatorio',
-      requiredPassword: 'La contraseña es obligatoria',
+      requiredPassLabel: 'La contraseña es obligatoria',
     },
     requestResetPassword: {
       error:
@@ -165,13 +165,13 @@ export default {
   resetPassword: {
     title: 'Recuperar contraseña',
     document: 'CPF',
-    newPassword: 'Nueva contraseña',
-    confirmPassword: 'Confirmar nueva contraseña',
+    newPassLabel: 'Nueva contraseña',
+    confirmPassLabel: 'Confirmar nueva contraseña',
     submit: 'Cambiar contraseña',
     formValidation: {
       documentRequired: 'El CPF es obligatorio',
-      requiredNewPassword: 'La nueva contraseña es obligatoria',
-      requiredConfirmPassword:
+      requiredNewPassLabel: 'La nueva contraseña es obligatoria',
+      requiredConfirmPassLabel:
         'La confirmación de la contraseña es obligatoria',
       passMismatchLabel: 'las contraseñas no coinciden',
       serverError: 'Error al cambiar la contraseña',
@@ -197,7 +197,7 @@ export default {
     email: 'Correo electrónico',
     document: 'CPF',
     passLabel: 'contraseña',
-    confirmPassword: 'Confirmar contraseña',
+    confirmPassLabel: 'Confirmar contraseña',
     phone: 'Ingresa tu teléfono',
     submit: 'Registrarse',
     formValidation: {
@@ -205,9 +205,9 @@ export default {
       requiredName: 'El nombre es obligatorio',
       requiredEmail: 'El correo electrónico es obligatorio',
       requiredDocument: 'El CPF es obligatorio',
-      requiredPassword: 'La contraseña es obligatoria',
+      requiredPassLabel: 'La contraseña es obligatoria',
       passMinLengthLabel: 'la contraseña debe tener al menos 6 caracteres',
-      requiredConfirmPassword:
+      requiredConfirmPassLabel:
         'La confirmación de la contraseña es obligatoria',
       requiredPhone: 'El teléfono es obligatorio',
       invalidDocument: 'CPF inválido',
