@@ -195,6 +195,19 @@ export type CreditCardPayment = {
   card_brand: string
   installments: number
 }
+export type PaymentGateway = 'STRIPE' | 'MERCADO_PAGO' | 'PAYPAL'
+export interface BaseCreditCardPayment {
+  payment_gateway: PaymentGateway
+  installments: number
+}
+
+export interface StripeCreditCardPayment extends BaseCreditCardPayment {
+  number: string
+  exp_month: number
+  exp_year: number
+  cvc: string
+  name: string
+}
 
 type Response<T> = {
   success: boolean

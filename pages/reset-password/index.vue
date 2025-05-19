@@ -25,10 +25,10 @@
           .min(11, t('resetPassword.formValidation.documentRequired')),
         newPassword: zod
           .string()
-          .min(3, t('resetPassword.formValidation.requiredNewPassword')),
+          .min(3, t('resetPassword.formValidation.requiredNewPassLabel')),
         confirmPassword: zod
           .string()
-          .min(6, t('resetPassword.formValidation.requiredConfirmPassword')),
+          .min(6, t('resetPassword.formValidation.requiredConfirmPassLabel')),
       })
       .refine((data) => data.newPassword === data.confirmPassword, {
         message: t('resetPassword.formValidation.passMismatchLabel'),
@@ -114,25 +114,25 @@
           />
         </n-form-item>
         <n-form-item
-          :label="t('resetPassword.newPassword')"
+          :label="t('resetPassword.newPassLabel')"
           path="newPassword"
           v-bind="newPasswordProps"
         >
           <n-input
             v-model:value="newPassword"
             type="password"
-            :placeholder="t('resetPassword.newPassword')"
+            :placeholder="t('resetPassword.newPassLabel')"
           />
         </n-form-item>
         <n-form-item
-          :label="t('resetPassword.confirmPassword')"
+          :label="t('resetPassword.confirmPassLabel')"
           path="password"
           v-bind="confirmPasswordProps"
         >
           <n-input
             v-model:value="confirmPassword"
             type="password"
-            :placeholder="t('resetPassword.confirmPassword')"
+            :placeholder="t('resetPassword.confirmPassLabel')"
           />
         </n-form-item>
       </n-form>

@@ -417,7 +417,9 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addMercadoPagoCreditCardPayment(payment: CreditCardPayment) {
+  async function addMercadoPagoCreditCardPayment(
+    payment: CreditCardPayment | StripeCreditCardPayment,
+  ) {
     try {
       const uuid = cart.value.uuid
       if (!uuid) {

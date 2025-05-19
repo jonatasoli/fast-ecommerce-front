@@ -41,10 +41,10 @@
         password: z
           .string()
           .min(6, t('register.formValidation.passMinLengthLabel'))
-          .nonempty(t('register.formValidation.requiredPassword')),
+          .nonempty(t('register.formValidation.requiredPassLabel')),
         confirmPassword: z
           .string()
-          .nonempty(t('register.formValidation.requiredConfirmPassword')),
+          .nonempty(t('register.formValidation.requiredConfirmPassLabel')),
         phone: z.string(),
         terms: z.boolean().refine((val) => val === true, {
           message: t('register.formValidation.acceptTerms'),
@@ -182,14 +182,14 @@
           />
         </n-form-item>
         <n-form-item
-          :label="t('register.confirmPassword')"
+          :label="t('register.confirmPassLabel')"
           path="confirmPassword"
           v-bind="confirmPassword"
         >
           <n-input
             v-bind="confirmPassword"
             type="password"
-            :placeholder="t('register.confirmPassword')"
+            :placeholder="t('register.confirmPassLabel')"
           />
         </n-form-item>
         <n-form-item
