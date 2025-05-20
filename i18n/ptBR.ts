@@ -341,6 +341,7 @@ export default {
         installmentsRequired: 'Parcelas é obrigatório',
         type_document_invalid: 'Tipo de documento é obrigatório',
         document_number_invalid: 'Número do documento é obrigatório',
+        oneInstallmentMessage: '1x a pronto pagamento de {value}',
       },
     },
     finally: {

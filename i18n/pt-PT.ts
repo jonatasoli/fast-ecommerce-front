@@ -342,6 +342,7 @@ export default {
         installmentsRequired: 'Parcelas são obrigatórias',
         type_document_invalid: 'Tipo de documento é obrigatório',
         document_number_invalid: 'Número do documento é obrigatório',
+        oneInstallmentMessage: '1x à vista de {value}',
       },
     },
     finally: {

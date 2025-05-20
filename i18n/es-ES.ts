@@ -345,6 +345,7 @@ export default {
         installmentsRequired: 'Los plazos son obligatorios',
         type_document_invalid: 'Tipo de documento obligatorio',
         document_number_invalid: 'Número de documento obligatorio',
+        oneInstallmentMessage: '1 cuota al contado de {value}',
       },
     },
     finally: {

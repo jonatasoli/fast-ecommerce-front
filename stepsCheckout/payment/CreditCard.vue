@@ -19,9 +19,10 @@
   const bin = ref<string>('')
   const creditCardBrand = ref<string>('')
   const optionInstallments = ref<{ label: string; value: number }[]>([])
-  const lang = useCookie('i18n_redirected').value
+  const lang = useCookie('i18n_redirected').value ?? 'pt-BR'
   const notification = useNotification()
   const { loading } = storeToRefs(cartStore)
+  const { t } = useI18n()
 
   async function createStripePayment(card) {
     loading.value = true
@@ -35,14 +36,15 @@
         name: card.cardholderName,
         installments: 1,
       })
+      const installmentsMessage = `${t('checkout.payment.form.oneInstallmentMessage')} ${currencyFormat(Number(cart.value.total), lang)}`
 
       cartStore.setPaymentCreditCard({
         creditCardNumber: card.cardNumber,
         creditCardName: card.cardholderName,
         creditCardExpiration: `${card.cardExpirationMonth}/${card.cardExpirationYear}`,
         creditCardCvv: card.securityCode,
-        installments: card.installments,
-        installmentsMessage: '',
+        installments: 1,
+        installmentsMessage,
         typeDocument: card.identificationType,
         document: card.identificationNumber,
       })
@@ -129,23 +131,40 @@
       return
     }
 
-    try {
-      const installments = await $mercadoPago.getInstallments({
-        amount: cart.value.total,
-        bin: unref(bin),
-        paymentTypeId: unref(creditCardBrand),
-      })
+    if (lang !== 'pt-BR') {
+      optionInstallments.value = [
+        {
+          label: t('checkout.payment.form.oneInstallmentMessage', {
+            value: currencyFormat(Number(cart.value.total), lang),
+          }),
+          value: 1,
+        },
+      ]
+    } else {
+      try {
+        const installments = await $mercadoPago.getInstallments({
+          amount: cart.value.total,
+          bin: unref(bin),
+          paymentTypeId: unref(creditCardBrand),
+        })
 
-      const { payer_costs: payerCosts } = installments[0]
-      const options = payerCosts.map((payerCost) => ({
-        label: payerCost.recommended_message,
-        value: payerCost.installments,
-      }))
+        const { payer_costs: payerCosts } = installments[0]
+        const options = payerCosts.map((payerCost) => ({
+          label: payerCost.recommended_message,
+          value: payerCost.installments,
+        }))
 
-      optionInstallments.value = options
-      creditCardBrand.value = installments[0].payment_method_id
-    } catch (error) {
-      console.error(error)
+        optionInstallments.value = options
+        creditCardBrand.value = installments[0].payment_method_id
+      } catch (error) {
+        console.error(error)
+
+        notification.error({
+          content: 'Erro ao criar a compra.',
+          duration: 4000,
+          closable: true,
+        })
+      }
     }
   }
 

@@ -338,6 +338,7 @@ export default {
         installmentsRequired: 'Installments are required',
         type_document_invalid: 'Document type is required',
         document_number_invalid: 'Document number is required',
+        oneInstallmentMessage: '1x single payment of {value}',
       },
     },
     finally: {
