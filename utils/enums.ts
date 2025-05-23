@@ -11,6 +11,16 @@ export enum CURRENCIES {
   'pt-PT' = 'EUR',
 }
 
+type SupportedFlag = 'br' | 'us' | 'gb' | 'es' | 'fr'
+
+export const FLAG_TO_LOCALE: Record<SupportedFlag, string> = {
+  br: 'pt-BR',
+  us: 'en-US',
+  gb: 'en-GB',
+  es: 'es-ES',
+  fr: 'fr-FR',
+}
+
 export const CURRENCY_MAP: Record<string, 'BRL' | 'USD' | 'EUR'> = {
   'pt-BR': 'BRL',
 

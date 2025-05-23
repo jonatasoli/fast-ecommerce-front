@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
+  css: ['vue3-flag-icons/styles'],
   ssr: false,
   head: {
     __dangerouslyDisableSanitizers: ['script'],
