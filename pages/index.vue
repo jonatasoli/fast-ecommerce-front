@@ -30,6 +30,7 @@
   const { data: carousel } = await useAsyncData(() =>
     store.getProductsShowcase(),
   )
+
   const { data: featured } = await useFetch<{ products: ProductItem[] }>(
     `${serverUrl}/catalog/featured?currency=${currency}`,
   )
@@ -104,7 +105,13 @@
       v-if="carousel && carousel.length > 0"
       class="home__carousel container"
     >
-      <n-carousel show-arrow autoplay draggable>
+      <n-carousel
+        show-arrow
+        autoplay
+        draggable
+        slides-per-view="auto"
+        :space-between="20"
+      >
         <NuxtLink
           v-for="(product, index) in carousel"
           :key="index"
@@ -125,6 +132,7 @@
         />
       </div>
     </div>
+
     <div v-if="categories.length > 0" class="home__features container">
       <div
         v-for="category in categories"
@@ -134,6 +142,7 @@
         <FeatureCard :item="category" />
       </div>
     </div>
+
     <div v-if="featuredProducts?.length > 0" class="home__heros container">
       <FeatureHero
         v-for="(product, index) in featuredProducts"
@@ -147,4 +156,18 @@
 
 <style lang="scss" scoped>
   @use '@/assets/scss/pages/index.scss' as *;
+
+  // .carousel-img-wrapper {
+  //   width: 100%;
+  //   height: 100%;
+  //   background-size: contain;
+  //   background-position: center;
+  //   position: relative;
+  // }
+
+  // .carousel-img {
+  //   width: 100%;
+  //   height: 100%;
+  //   object-fit: cover; /* Ajusta a imagem */
+  // }
 </style>

@@ -20,9 +20,12 @@ export const useProductsStore = defineStore('products', () => {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-      const res = await fetch(`${serverUrl}/catalog/showcase/all`, {
-        headers,
-      })
+      const res = await fetch(
+        `${serverUrl}/catalog/showcase/all?currency=${currency}`,
+        {
+          headers,
+        },
+      )
       const data = await res.json()
 
       showcase = data || []
