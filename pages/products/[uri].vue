@@ -12,7 +12,7 @@
     useRouter,
     useRuntimeConfig,
   } from '#imports'
-  import type { ProductItem } from '~/utils/types'
+  import type { MediaItem, ProductItem } from '~/utils/types'
 
   const route = useRoute()
   const router = useRouter()
@@ -22,6 +22,10 @@
 
   const { data: product, error } = await useFetch<ProductItem>(
     `${config.public.serverUrl}/product/uri/${route.params.uri}`,
+  )
+
+  const { data: carousel } = await useFetch<MediaItem[]>(
+    `${config.public.serverUrl}/product/media/${product.value?.uri}`,
   )
 
   const productValue = unref(product)
@@ -88,7 +92,21 @@
 <template>
   <main v-if="product" class="product">
     <div class="product__info">
+      <n-carousel v-if="carousel && carousel.length > 0" autoplay>
+        <n-carousel-item
+          v-for="(image, index) in carousel"
+          :key="image.media_id"
+        >
+          <img
+            class="product__info--image"
+            :src="image.uri"
+            :alt="`Imagem do produto ${index + 1}`"
+          />
+        </n-carousel-item>
+      </n-carousel>
+
       <img
+        v-else
         class="product__info--image"
         :src="product.image_path"
         :alt="product.name"

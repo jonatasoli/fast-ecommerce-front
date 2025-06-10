@@ -17,6 +17,17 @@ type Variant = {
   label: string
 }
 
+export interface MediaItem {
+  type: 'PHOTO' | 'VIDEO'
+  order: number
+  media_id: number
+  uri: string
+}
+
+export interface CarouselResponse {
+  data: MediaItem[]
+  error?: string
+}
 export type ProductItem = {
   product_id: number
   name: string

@@ -94,5 +94,9 @@
       background-repeat: no-repeat;
       background-size: contain;
     }
+
+    @media (min-width: 640px) {
+      display: none; // Esconde o carousel a partir de 640px
+    }
   }
 }
