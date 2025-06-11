@@ -21,6 +21,7 @@
   const optionInstallments = ref<{ label: string; value: number }[]>([])
   const lang = useCookie('i18n_redirected').value ?? 'pt-BR'
   const notification = useNotification()
+  const duration = ref(4000)
   const { loading } = storeToRefs(cartStore)
   const { t } = useI18n()
 
@@ -52,8 +53,8 @@
       return data
     } catch {
       notification.error({
-        content: 'Erro ao criar a compra.',
-        duration: 4000,
+        content: t('checkout.payment.error'),
+        duration: duration.value,
         closable: true,
       })
       loading.value = false
@@ -160,8 +161,8 @@
         console.error(error)
 
         notification.error({
-          content: 'Erro ao criar a compra.',
-          duration: 4000,
+          content: t('checkout.payment.error'),
+          duration: duration.value,
           closable: true,
         })
       }

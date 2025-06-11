@@ -50,6 +50,7 @@ export default {
   productItem: {
     buy: 'Comprar',
     outOfStock: 'Esgotado',
+    productImg: 'Imagem do produto',
   },
 
   profilePage: {
@@ -334,6 +335,7 @@ export default {
       credit_card_validate: 'Data de Validade',
       credit_card_cvv: 'CVV',
       installments: 'Parcelas',
+      error: 'Erro ao criar a compra',
       form: {
         credit_card_number_invalid: 'Número de cartão inválido',
         credit_card_name_invalid: 'Nome do titular inválido',

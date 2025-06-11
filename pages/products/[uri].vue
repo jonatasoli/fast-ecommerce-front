@@ -100,7 +100,7 @@
           <img
             class="product__info--image"
             :src="image.uri"
-            :alt="`Imagem do produto ${index + 1}`"
+            :alt="`${t('productItem.productImg')} ${index + 1}`"
           />
         </n-carousel-item>
       </n-carousel>

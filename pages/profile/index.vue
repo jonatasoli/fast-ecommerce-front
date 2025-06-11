@@ -27,6 +27,7 @@
   const notification = useNotification()
   const isEditing = ref(false)
   const cartStore = useCartStore()
+  const duration = ref(2500)
 
   const { t } = useI18n()
 
@@ -46,7 +47,7 @@
         notification.error({
           title: t('profile.notification.error.title'),
           content: t('profile.notification.error.content'),
-          duration: 2500,
+          duration: duration.value,
         })
         return
       }
