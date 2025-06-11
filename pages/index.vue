@@ -157,17 +157,4 @@
 <style lang="scss" scoped>
   @use '@/assets/scss/pages/index.scss' as *;
 
-  // .carousel-img-wrapper {
-  //   width: 100%;
-  //   height: 100%;
-  //   background-size: contain;
-  //   background-position: center;
-  //   position: relative;
-  // }
-
-  // .carousel-img {
-  //   width: 100%;
-  //   height: 100%;
-  //   object-fit: cover; /* Ajusta a imagem */
-  // }
 </style>

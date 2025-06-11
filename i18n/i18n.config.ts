@@ -1,5 +1,5 @@
-import { enUS } from './enUS' // importação direta do novo idioma
-import { esES } from './esES' // importação direta do novo idioma
+import { enUS } from './enUS'
+import { esES } from './esES'
 import { ptPT } from './ptPT'
 import { ptBR } from './index'
 
