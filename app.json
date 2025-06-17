@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dokku": {
+      "predeploy": "echo 'Pré-deploy: testes ou limpeza'",
+      "postdeploy": "echo 'Pós-deploy: notificar sistema externo'"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  }
+}

@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   },
   css: ['vue3-flag-icons/styles'],
   ssr: false,
+  nitro: {
+    preset: 'node-server' // Configuração essencial para Dokku
+  },
   head: {
     __dangerouslyDisableSanitizers: ['script'],
     script: [
