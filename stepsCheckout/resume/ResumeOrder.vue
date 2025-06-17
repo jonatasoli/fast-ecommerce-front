@@ -165,7 +165,7 @@
         <n-gi span="1 800:8">
           <h3 class="title">Pagamento</h3>
 
-          <div v-if="preview.payment_method === 'credit_card'" class="payment">
+          <div v-if="preview.payment_method === 'credit-card'" class="payment">
             <ul>
               <li>
                 {{ paymentCreditCard.creditCardName }}
@@ -191,27 +191,33 @@
         <n-gi span="1 800:3">
           <div class="amount">
             <div class="row">
-              <span class="total__title"> Subtotal: </span>
+              <span class="total__title">
+                {{ t('resumeOrder.subtotal') }}:
+              </span>
               <h3 class="total__value">
-                {{ currencyFormat(subtotal) }}
+                {{ currencyFormat(Number(subtotal)) }}
               </h3>
             </div>
             <div class="row">
-              <span class="total__title"> Frete: </span>
+              <span class="total__title">
+                {{ t('resumeOrder.freight') }}:
+              </span>
               <h3 class="total__value">
-                {{ currencyFormat(preview.freight.price) }}
+                {{ currencyFormat(Number(preview.freight.price)) }}
               </h3>
             </div>
             <div class="row">
-              <span class="total__title"> Desconto: </span>
+              <span class="total__title">
+                {{ t('resumeOrder.discount') }}:
+              </span>
               <h3 class="total__value">
-                {{ currencyFormat(preview.discount) }}
+                {{ currencyFormat(Number(preview.discount)) }}
               </h3>
             </div>
             <div class="row">
-              <span class="total__title"> Total: </span>
+              <span class="total__title"> {{ t('resumeOrder.total') }}: </span>
               <h3 class="total__value">
-                {{ currencyFormat(total) }}
+                {{ currencyFormat(Number(total)) }}
               </h3>
             </div>
           </div>

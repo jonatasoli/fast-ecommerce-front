@@ -43,7 +43,7 @@ export interface CartUserData {
 }
 
 export interface CartCreditCardData extends CartData {
-  payment_method: 'credit_card'
+  payment_method: 'credit-card'
   payment_method_id: string | null
   payment_intent: string | null
   card_token: string | null

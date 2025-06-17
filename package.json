@@ -88,6 +88,7 @@
     "vue-router": "^4.5.0",
     "vue-tel-input": "^9.3.0",
     "vue-the-mask": "^0.11.1",
+    "vue3-flag-icons": "^0.0.3",
     "zod": "^3.24.2"
   },
   "overrides": {

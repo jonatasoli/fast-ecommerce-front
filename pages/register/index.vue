@@ -40,11 +40,11 @@
           .nonempty(t('register.formValidation.requiredDocument')),
         password: z
           .string()
-          .min(6, t('register.formValidation.passwordMinLength'))
-          .nonempty(t('register.formValidation.requiredPassword')),
+          .min(6, t('register.formValidation.passMinLengthLabel'))
+          .nonempty(t('register.formValidation.requiredPassLabel')),
         confirmPassword: z
           .string()
-          .nonempty(t('register.formValidation.requiredConfirmPassword')),
+          .nonempty(t('register.formValidation.requiredConfirmPassLabel')),
         phone: z.string(),
         terms: z.boolean().refine((val) => val === true, {
           message: t('register.formValidation.acceptTerms'),
@@ -55,7 +55,7 @@
           return value.password === value.confirmPassword
         },
         {
-          message: t('register.formValidation.passwordMismatch'),
+          message: t('register.formValidation.passMismatchLabel'),
           path: ['confirmPassword'],
         },
       ),
@@ -171,25 +171,25 @@
           <n-input v-bind="document" :placeholder="t('register.document')" />
         </n-form-item>
         <n-form-item
-          :label="t('register.password')"
+          :label="t('register.passLabel')"
           path="password"
           v-bind="password"
         >
           <n-input
             v-bind="password"
             type="password"
-            :placeholder="t('register.password')"
+            :placeholder="t('register.passLabel')"
           />
         </n-form-item>
         <n-form-item
-          :label="t('register.confirmPassword')"
+          :label="t('register.confirmPassLabel')"
           path="confirmPassword"
           v-bind="confirmPassword"
         >
           <n-input
             v-bind="confirmPassword"
             type="password"
-            :placeholder="t('register.confirmPassword')"
+            :placeholder="t('register.confirmPassLabel')"
           />
         </n-form-item>
         <n-form-item

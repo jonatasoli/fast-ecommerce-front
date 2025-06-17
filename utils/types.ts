@@ -17,6 +17,17 @@ type Variant = {
   label: string
 }
 
+export interface MediaItem {
+  type: 'PHOTO' | 'VIDEO'
+  order: number
+  media_id: number
+  uri: string
+}
+
+export interface CarouselResponse {
+  data: MediaItem[]
+  error?: string
+}
 export type ProductItem = {
   product_id: number
   name: string
@@ -94,14 +105,14 @@ export interface Cart {
 }
 
 export interface Address {
-  country: string
-  state: string
-  city: string
-  neighborhood: string
-  street: string
-  street_number: string
-  address_complement: string
-  zipcode: string
+  country?: string
+  state?: string
+  city?: string
+  neighborhood?: string
+  street?: string
+  street_number?: string
+  address_complement?: string
+  zipcode?: string
 }
 
 export interface Payment {
@@ -128,7 +139,10 @@ export type User = {
   email: string
   document: string
   phone: string
+  addresses: Address[]
 }
+
+export type UserBase = Omit<User, 'user_id' | 'addresses'>
 
 export type Order = {
   order_id: number
@@ -191,6 +205,19 @@ export type CreditCardPayment = {
   card_issuer: string
   card_brand: string
   installments: number
+}
+export type PaymentGateway = 'STRIPE' | 'MERCADO_PAGO' | 'PAYPAL'
+export interface BaseCreditCardPayment {
+  payment_gateway: PaymentGateway
+  installments: number
+}
+
+export interface StripeCreditCardPayment extends BaseCreditCardPayment {
+  number: string
+  exp_month: number
+  exp_year: number
+  cvc: string
+  name: string
 }
 
 type Response<T> = {

@@ -78,7 +78,7 @@
     },
     {
       key: 'myOrders',
-      label: 'Meus pedidos',
+      label: t('profilePage.myOrders'),
       props: {
         onClick: () => {
           router.push('/orders')
@@ -86,8 +86,17 @@
       },
     },
     {
+      key: 'profile',
+      label: t('profilePage.profile'),
+      props: {
+        onClick: () => {
+          router.push('/profile')
+        },
+      },
+    },
+    {
       key: 'logout',
-      label: 'Sair',
+      label: t('profilePage.out'),
       props: {
         onClick: async () => {
           await storeAuth.logout()

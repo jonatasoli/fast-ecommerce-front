@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { ProductItem } from '~/utils/types'
-import { computed, ref, useRuntimeConfig } from '#imports'
+import { computed, ref, useRuntimeConfig, useCookie } from '#imports'
 
 export const useProductsStore = defineStore('products', () => {
   const products = ref<ProductItem[]>([])
@@ -8,6 +8,8 @@ export const useProductsStore = defineStore('products', () => {
   const loading = ref(false)
   const config = useRuntimeConfig()
   const serverUrl = config.public.serverUrl
+  const locale = useCookie('i18n_redirected').value || 'pt-BR'
+  const currency = detectCurrencyByLocale(locale)
 
   async function getProductsShowcase() {
     loading.value = true
@@ -18,9 +20,12 @@ export const useProductsStore = defineStore('products', () => {
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-      const res = await fetch(`${serverUrl}/catalog/showcase/all`, {
-        headers,
-      })
+      const res = await fetch(
+        `${serverUrl}/catalog/showcase/all?currency=${currency}`,
+        {
+          headers,
+        },
+      )
       const data = await res.json()
 
       showcase = data || []
@@ -40,7 +45,7 @@ export const useProductsStore = defineStore('products', () => {
         'Access-Control-Allow-Origin': '*',
       }
       const res = await fetch(
-        `${serverUrl}/catalog/category/products/${category}`,
+        `${serverUrl}/catalog/category/products/${category}?currency=${currency}`,
         {
           headers,
         },

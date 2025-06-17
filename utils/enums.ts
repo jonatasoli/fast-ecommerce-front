@@ -1,9 +1,44 @@
 export enum LOCALES {
-  PT_BR = 'pt-br',
+  PT_BR = 'pt-BR',
+  EN_US = 'en-US',
+  PT_PT = 'pt-PT',
+  ES_ES = 'es-ES',
 }
 
 export enum CURRENCIES {
-  'pt-br' = 'BRL',
+  'pt-BR' = 'BRL',
+  'en-US' = 'USD',
+  'pt-PT' = 'EUR',
+}
+
+type SupportedFlag = 'br' | 'us' | 'gb' | 'es' | 'fr'
+
+export const FLAG_TO_LOCALE: Record<SupportedFlag, string> = {
+  br: 'pt-BR',
+  us: 'en-US',
+  gb: 'en-GB',
+  es: 'es-ES',
+  fr: 'fr-FR',
+}
+
+export const CURRENCY_MAP: Record<string, 'BRL' | 'USD' | 'EUR'> = {
+  'pt-BR': 'BRL',
+
+  'en-US': 'USD',
+  'en-CA': 'USD',
+  'en-AU': 'USD',
+  'es-MX': 'USD',
+  'es-AR': 'USD',
+  'en-IN': 'USD',
+
+  'pt-PT': 'EUR',
+  'fr-FR': 'EUR',
+  'de-DE': 'EUR',
+  'es-ES': 'EUR',
+  'it-IT': 'EUR',
+  'nl-NL': 'EUR',
+  'fi-FI': 'EUR',
+  'el-GR': 'EUR',
 }
 
 export enum CATEGORIES {

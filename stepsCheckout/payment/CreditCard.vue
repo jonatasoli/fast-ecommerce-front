@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import { useNotification } from 'naive-ui'
   import {
     getMonthYearFromTimestamp,
     ref,
@@ -18,6 +19,49 @@
   const bin = ref<string>('')
   const creditCardBrand = ref<string>('')
   const optionInstallments = ref<{ label: string; value: number }[]>([])
+  const lang = useCookie('i18n_redirected').value ?? 'pt-BR'
+  const notification = useNotification()
+  const duration = ref(4000)
+  const { loading } = storeToRefs(cartStore)
+  const { t } = useI18n()
+
+  async function createStripePayment(card) {
+    loading.value = true
+    try {
+      const data = await cartStore.addMercadoPagoCreditCardPayment({
+        payment_gateway: 'STRIPE',
+        number: card.cardNumber,
+        exp_month: Number(card.cardExpirationMonth),
+        exp_year: Number(card.cardExpirationYear),
+        cvc: card.securityCode,
+        name: card.cardholderName,
+        installments: 1,
+      })
+      const installmentsMessage = `${t('checkout.payment.form.oneInstallmentMessage')} ${currencyFormat(Number(cart.value.total), lang)}`
+
+      cartStore.setPaymentCreditCard({
+        creditCardNumber: card.cardNumber,
+        creditCardName: card.cardholderName,
+        creditCardExpiration: `${card.cardExpirationMonth}/${card.cardExpirationYear}`,
+        creditCardCvv: card.securityCode,
+        installments: 1,
+        installmentsMessage,
+        typeDocument: card.identificationType,
+        document: card.identificationNumber,
+      })
+
+      return data
+    } catch {
+      notification.error({
+        content: t('checkout.payment.error'),
+        duration: duration.value,
+        closable: true,
+      })
+      loading.value = false
+    } finally {
+      loading.value = false
+    }
+  }
 
   async function handleSubmitCreditCard() {
     if (!formCreditCard.value) {
@@ -45,26 +89,32 @@
       identificationNumber: creditCard.document,
     }
 
-    const tokenResponse = await $mercadoPago.createCardToken(card)
-    const { id, last_four_digits: lastFourDigits } = tokenResponse
+    if (lang === 'pt-BR') {
+      const tokenResponse = await $mercadoPago.createCardToken(card)
+      const { id, last_four_digits: lastFourDigits } = tokenResponse
 
-    const data = await cartStore.addMercadoPagoCreditCardPayment({
-      card_token: id,
-      installments: creditCard.installments,
-      payment_gateway: 'MERCADOPAGO',
-      card_issuer: lastFourDigits,
-      card_brand: unref(creditCardBrand),
-    })
+      const data = await cartStore.addMercadoPagoCreditCardPayment({
+        card_token: id,
+        installments: creditCard.installments,
+        payment_gateway: 'MERCADOPAGO',
+        card_issuer: lastFourDigits,
+        card_brand: unref(creditCardBrand),
+      })
 
-    const installmentsMessage = unref(optionInstallments).find(
-      (option) => option.value === creditCard.installments,
-    )
+      const installmentsMessage = unref(optionInstallments).find(
+        (option) => option.value === creditCard.installments,
+      )
 
-    await cartStore.setPaymentCreditCard({
-      ...creditCard,
-      installmentsMessage: installmentsMessage?.label || '',
-    })
-    return data
+      await cartStore.setPaymentCreditCard({
+        ...creditCard,
+        installmentsMessage: installmentsMessage?.label || '',
+      })
+      return data
+    } else {
+      const data = createStripePayment(card)
+
+      return data
+    }
   }
 
   function handleUpdateCreditCard(creditCardNumber) {
@@ -82,23 +132,40 @@
       return
     }
 
-    try {
-      const installments = await $mercadoPago.getInstallments({
-        amount: cart.value.total,
-        bin: unref(bin),
-        paymentTypeId: unref(creditCardBrand),
-      })
+    if (lang !== 'pt-BR') {
+      optionInstallments.value = [
+        {
+          label: t('checkout.payment.form.oneInstallmentMessage', {
+            value: currencyFormat(Number(cart.value.total), lang),
+          }),
+          value: 1,
+        },
+      ]
+    } else {
+      try {
+        const installments = await $mercadoPago.getInstallments({
+          amount: cart.value.total,
+          bin: unref(bin),
+          paymentTypeId: unref(creditCardBrand),
+        })
 
-      const { payer_costs: payerCosts } = installments[0]
-      const options = payerCosts.map((payerCost) => ({
-        label: payerCost.recommended_message,
-        value: payerCost.installments,
-      }))
+        const { payer_costs: payerCosts } = installments[0]
+        const options = payerCosts.map((payerCost) => ({
+          label: payerCost.recommended_message,
+          value: payerCost.installments,
+        }))
 
-      optionInstallments.value = options
-      creditCardBrand.value = installments[0].payment_method_id
-    } catch (error) {
-      console.error(error)
+        optionInstallments.value = options
+        creditCardBrand.value = installments[0].payment_method_id
+      } catch (error) {
+        console.error(error)
+
+        notification.error({
+          content: t('checkout.payment.error'),
+          duration: duration.value,
+          closable: true,
+        })
+      }
     }
   }
 

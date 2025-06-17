@@ -1,27 +1,32 @@
-import { CURRENCIES, LOCALES, STATUS_ORDER } from './enums'
-import { ref, useRoute } from '#imports'
+import { LOCALES, STATUS_ORDER } from './enums'
+import { ref, useRoute, useLocaleFromCookie } from '#imports'
 
 export function currencyFormat(
-  value,
-  locale = LOCALES.PT_BR,
-  type = '',
+  value: number,
+  passedLocale?: string,
+  type: string = '',
 ): string {
-  const currency = CURRENCIES[locale] || LOCALES.PT_BR
+  const locale = passedLocale || useLocaleFromCookie()
+  const currency = CURRENCY_MAP[locale] || CURRENCY_MAP['pt-BR']
 
-  const { format } = new Intl.NumberFormat(locale, {
+  const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
   })
 
   if (!value) {
-    return format(0)
+    return formatter.format(0)
   }
 
   if (type === 'freight') {
-    return format(value)
+    return formatter.format(value)
   }
 
-  return format(value)
+  return formatter.format(value)
+}
+
+export function detectCurrencyByLocale(locale: string): 'BRL' | 'USD' | 'EUR' {
+  return CURRENCY_MAP[locale] || 'BRL'
 }
 
 export function dateFormat(value, locale = LOCALES.PT_BR): string {
@@ -34,6 +39,33 @@ export function dateFormat(value, locale = LOCALES.PT_BR): string {
 
   return format(date)
 }
+
+export const locales = [
+  { label: 'English (United States)', value: 'en-US', isDefault: false },
+  { label: 'English (United Kingdom)', value: 'en-GB', isDefault: false },
+  { label: 'Português (Brasil)', value: 'pt-BR', isDefault: true },
+  { label: 'Português (Portugal)', value: 'pt-PT', isDefault: false },
+  { label: 'Español (España)', value: 'es-ES', isDefault: false },
+  { label: 'Español (México)', value: 'es-MX', isDefault: false },
+  { label: 'Français (France)', value: 'fr-FR', isDefault: false },
+  { label: 'Français (Canada)', value: 'fr-CA', isDefault: false },
+  { label: 'Deutsch (Deutschland)', value: 'de-DE', isDefault: false },
+  { label: 'Italiano (Italia)', value: 'it-IT', isDefault: false },
+  { label: '日本語 (日本)', value: 'ja-JP', isDefault: false },
+  { label: '中文 (中国)', value: 'zh-CN', isDefault: false },
+  { label: '中文 (台灣)', value: 'zh-TW', isDefault: false },
+  { label: 'Русский (Россия)', value: 'ru-RU', isDefault: false },
+  { label: '한국어 (대한민국)', value: 'ko-KR', isDefault: false },
+  {
+    label: 'العربية (المملكة العربية السعودية)',
+    value: 'ar-SA',
+    isDefault: false,
+  },
+  { label: 'Nederlands (Nederland)', value: 'nl-NL', isDefault: false },
+  { label: 'Svenska (Sverige)', value: 'sv-SE', isDefault: false },
+  { label: 'Norsk (Norge)', value: 'no-NO', isDefault: false },
+  { label: 'Suomi (Suomi)', value: 'fi-FI', isDefault: false },
+]
 
 export function getPageFromRoute() {
   const page = useRoute().query.p?.toString() || ''

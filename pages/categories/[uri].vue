@@ -7,12 +7,15 @@
     useRouter,
     useRuntimeConfig,
     watch,
+    useCookie,
   } from '#imports'
   import { ProductCard, ProductSkeleton } from '~/components/shared'
   import { getPageFromRoute } from '~/utils/helpers'
   import type { PaginatedProducts } from '~/utils/types'
 
   const { serverUrl } = useRuntimeConfig().public
+  const locale = useCookie('i18n_redirected').value || 'pt-BR'
+  const currency = detectCurrencyByLocale(locale)
   const route = useRoute()
   const router = useRouter()
   const OFFSET = 12
@@ -20,8 +23,8 @@
   const { page } = getPageFromRoute()
   const url = computed(() =>
     route.params.uri === 'latest'
-      ? `${serverUrl}/catalog/latest`
-      : `${serverUrl}/catalog/category/products/${route.params.uri}`,
+      ? `${serverUrl}/catalog/latest?currency=${currency}`
+      : `${serverUrl}/catalog/category/products/${route.params.uri}?currency=${currency}`,
   )
 
   const categoryTitle = computed(() => {

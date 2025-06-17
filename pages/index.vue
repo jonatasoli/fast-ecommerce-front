@@ -24,15 +24,19 @@
   const cartStore = useCartStore()
   const router = useRouter()
   const serverUrl = useRuntimeConfig().public.serverUrl
+  const locale = useCookie('i18n_redirected').value || 'pt-BR'
+  const currency = detectCurrencyByLocale(locale)
 
   const { data: carousel } = await useAsyncData(() =>
     store.getProductsShowcase(),
   )
+
   const { data: featured } = await useFetch<{ products: ProductItem[] }>(
-    `${serverUrl}/catalog/featured`,
+    `${serverUrl}/catalog/featured?currency=${currency}`,
   )
+
   const { data: latest } = await useFetch<{ products: ProductItem[] }>(
-    `${serverUrl}/catalog/latest`,
+    `${serverUrl}/catalog/latest?currency=${currency}`,
   )
 
   const productToFeature = ({
@@ -101,7 +105,13 @@
       v-if="carousel && carousel.length > 0"
       class="home__carousel container"
     >
-      <n-carousel show-arrow autoplay draggable>
+      <n-carousel
+        show-arrow
+        autoplay
+        draggable
+        slides-per-view="auto"
+        :space-between="20"
+      >
         <NuxtLink
           v-for="(product, index) in carousel"
           :key="index"
@@ -122,6 +132,7 @@
         />
       </div>
     </div>
+
     <div v-if="categories.length > 0" class="home__features container">
       <div
         v-for="category in categories"
@@ -131,6 +142,7 @@
         <FeatureCard :item="category" />
       </div>
     </div>
+
     <div v-if="featuredProducts?.length > 0" class="home__heros container">
       <FeatureHero
         v-for="(product, index) in featuredProducts"
@@ -144,4 +156,5 @@
 
 <style lang="scss" scoped>
   @use '@/assets/scss/pages/index.scss' as *;
+
 </style>

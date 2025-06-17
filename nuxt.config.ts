@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
+  css: ['vue3-flag-icons/styles'],
   ssr: false,
   head: {
     __dangerouslyDisableSanitizers: ['script'],
@@ -43,8 +44,19 @@ export default defineNuxtConfig({
 
   i18n: {
     baseUrl: process.env.I18N_BASE_URL,
-    locales: [{ language: 'pt-BR', code: LOCALES.PT_BR }],
+    strategy: 'no_prefix',
+    locales: [
+      { language: 'pt-BR', code: LOCALES.PT_BR },
+      { language: 'en-US', code: LOCALES.EN_US },
+      { language: 'pt-PT', code: LOCALES.PT_PT },
+      { language: 'es-ES', code: LOCALES.ES_ES },
+    ],
     defaultLocale: LOCALES.PT_BR,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      fallbackLocale: LOCALES.PT_BR,
+    },
     vueI18n: './i18n.config.ts',
   },
   googleFonts: {

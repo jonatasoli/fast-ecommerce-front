@@ -26,7 +26,9 @@
   const validationSchema = toTypedSchema(
     zod.object({
       username: zod.string().min(3, t('login.formValidation.requiredUsername')),
-      password: zod.string().min(6, t('login.formValidation.requiredPassword')),
+      password: zod
+        .string()
+        .min(6, t('login.formValidation.requiredPassLabel')),
     }),
   )
 
@@ -122,14 +124,14 @@
           />
         </n-form-item>
         <n-form-item
-          :label="t('login.password')"
+          :label="t('login.passLabel')"
           path="password"
           v-bind="passwordProps"
         >
           <n-input
             v-model:value="password"
             type="password"
-            :placeholder="t('login.password')"
+            :placeholder="t('login.passLabel')"
           />
         </n-form-item>
       </n-form>
@@ -166,7 +168,7 @@
               <ChevronRightIcon />
             </n-icon>
           </template>
-          {{ t('login.forgotPassword') }}
+          {{ t('login.forgotPassLabel') }}
         </n-button>
         <NuxtLink to="/register">
           <n-button

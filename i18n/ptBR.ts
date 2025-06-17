@@ -1,5 +1,4 @@
 export default {
-
   terms: {
     acceptTerms:
       'Aceito os Termos e Condições e a Política de Privacidade da Gatto Rosa.',
@@ -53,6 +52,19 @@ export default {
     outOfStock: 'Produto indisponível',
   },
 
+  profilePage: {
+    myOrders: 'Meus pedidos',
+    profile: 'Perfil',
+    out: 'sair',
+    noOrdersTitle: 'Não tem nenhuma encomenda',
+    buyNow: 'Comprar agora',
+    order: 'Encomenda',
+    status: 'Estado',
+    unitPrice: 'Valor unitário',
+    quantity: 'Quantidade',
+    date: 'Data',
+  },
+
   pageNotFound: {
     notFound:
       'O produto que você digitou não existe ou a url fornecida está incorreta',
@@ -74,8 +86,17 @@ export default {
     installments: 'em até {count} de {amount} sem juros',
     variants: 'Selecione uma opção:',
   },
+  profile: {
+    notification: {
+      error: {
+        title: 'Error',
+        content: 'Erro ao tentar buscar usuário, Tente novamente',
+      },
+    },
+  },
 
   cart: {
+    titlePage: 'Carrinho',
     title: 'Meu Carrinho',
     empty: 'Seu carrinho está vazio',
     total: 'Total',
@@ -97,6 +118,7 @@ export default {
       shipping: {
         title: 'Insira seu CEP para calcular o frete e o prazo de entrega',
         buttonText: 'Calcular',
+        placeholder: 'Informe seu CEP',
       },
       discount: {
         title: 'Cupom de desconto',
@@ -107,6 +129,7 @@ export default {
       part1: 'Entrega - até',
       part2: 'dias úteis',
       error: 'Algo deu errado ao calcular o frete. Tente novamente mais tarde.',
+      shippingNationwide: 'Envio para todo o país',
     },
 
     coupon: {
@@ -117,15 +140,15 @@ export default {
   login: {
     title: 'Login',
     username: 'CPF',
-    password: 'Senha',
-    forgotPassword: 'Esqueci minha senha',
+    passLabel: 'Senha',
+    forgotPassLabel: 'Esqueci minha senha',
     submit: 'Entrar',
     register: 'Ainda não sou cliente',
     formValidation: {
       invalidCredentials: 'Usuário ou senha inválidos',
       serverError: 'Erro ao realizar login',
       requiredUsername: 'CPF é obrigatório',
-      requiredPassword: 'Senha é obrigatória',
+      requiredPassLabel: 'Senha é obrigatória',
     },
     requestResetPassword: {
       error:
@@ -141,14 +164,14 @@ export default {
   resetPassword: {
     title: 'Recuperar senha',
     document: 'CPF',
-    newPassword: 'Nova senha',
-    confirmPassword: 'Confirmar nova senha',
+    newPassLabel: 'Nova senha',
+    confirmPassLabel: 'Confirmar nova senha',
     submit: 'Alterar senha',
     formValidation: {
       documentRequired: 'CPF é obrigatório',
-      requiredNewPassword: 'Nova senha é obrigatória',
-      requiredConfirmPassword: 'Confirmação de senha é obrigatória',
-      passwordMismatch: 'Senhas não conferem',
+      requiredNewPassLabel: 'Nova senha é obrigatória',
+      requiredConfirmPassLabel: 'Confirmação de senha é obrigatória',
+      passMismatchLabel: 'Senhas não conferem',
       serverError: 'Erro ao realizar alteração de senha',
     },
     message: {
@@ -171,8 +194,8 @@ export default {
     name: 'Nome',
     email: 'E-mail',
     document: 'CPF',
-    password: 'Senha',
-    confirmPassword: 'Confirmar senha',
+    passLabel: 'Senha',
+    confirmPassLabel: 'Confirmar senha',
     phone: 'Informe seu telefone',
     submit: 'Cadastrar',
     formValidation: {
@@ -180,16 +203,16 @@ export default {
       requiredName: 'Nome é obrigatório',
       requiredEmail: 'E-mail é obrigatório',
       requiredDocument: 'CPF é obrigatório',
-      requiredPassword: 'Senha é obrigatória',
-      passwordMinLength: 'Senha deve ter no mínimo 6 caracteres',
-      requiredConfirmPassword: 'Confirmação de senha é obrigatória',
+      requiredPassLabel: 'Senha é obrigatória',
+      passMinLengthLabel: 'Senha deve ter no mínimo 6 caracteres',
+      requiredConfirmPassLabel: 'Confirmação de senha é obrigatória',
       requiredPhone: 'Telefone é obrigatório',
       invalidDocument: 'CPF inválido',
       invalidPhone: 'Informe um telefone válido',
       invalidEmail: 'Informe um e-mail válido',
       invalidUsername:
         'Apenas letras minúsculas e números, sem espaços ou caracteres especiais',
-      passwordMismatch: 'Senhas não conferem',
+      passMismatchLabel: 'Senhas não conferem',
       serverError: 'Erro ao realizar cadastro',
       acceptTerms: 'O usuário deve aceitar os termos e condições',
     },
@@ -228,6 +251,7 @@ export default {
     welcome: 'Olá, {user}',
     visitor: 'visitante',
     myAccount: 'Acessar minha conta',
+    placeholder: 'Digite o que você procura',
     login: 'Login',
     logout: 'Sair',
     or: 'ou',
@@ -254,7 +278,14 @@ export default {
     user: {
       title: 'Informações pessoais',
       name: 'Nome',
+      document: 'Documento',
+      zipcode: 'Código Postal',
+      buttons: {
+        edit: 'Editar',
+        save: 'Salvar',
+      },
       email: 'E-mail',
+      chooseLanguage: 'Escolha o idioma',
       phone: 'Telefone',
       login: {
         part1: 'Faça seu',
@@ -310,6 +341,7 @@ export default {
         installmentsRequired: 'Parcelas é obrigatório',
         type_document_invalid: 'Tipo de documento é obrigatório',
         document_number_invalid: 'Número do documento é obrigatório',
+        oneInstallmentMessage: '1x a pronto pagamento de {value}',
       },
     },
     finally: {
@@ -325,6 +357,13 @@ export default {
     },
   },
 
+  resumeOrder: {
+    subtotal: 'Subtotal',
+    freight: 'Envio',
+    discount: 'Desconto',
+    total: 'Total',
+  },
+
   finishCheckout: {
     pending: 'Aguarde um momento...',
     pendingDescription: 'Por favor aguarde, não feche ou atualize a página!',
@@ -336,6 +375,41 @@ export default {
     buttonError: 'Voltar para o carrinho',
     pixTitle: 'Seu pagamento foi finalizado',
     cardTitle: 'Seu pagamento está sendo processado',
+  },
+
+  modalPix: {
+    title: {
+      pixPayment: 'Quase Pronto!',
+      pixPaymentSubtitle: 'Siga as instruções abaixo para finalizar!',
+      error: 'Erro ao gerar código de pagamento.',
+    },
+    actions: {
+      copyLink: 'Copiar Link',
+      copied: 'Copiado',
+      tryAgain: 'Tentar Novamente',
+      error: {
+        copyToClipbordNotSupported:
+          'Infelizmente seu browser não suporta essa funcionalidade.',
+      },
+    },
+    messages: {
+      copyLinkIntro: 'Ou copie este código para fazer o pagamento',
+      copyLinkInstructions:
+        'Escolha pagar via Pix no aplicativo do seu banco e depois, cole o código abaixo.',
+      qrCodeInstructions:
+        'Escolha pagar via Pix no aplicativo do seu banco e depois, escaneie o código abaixo.',
+      qrCodeIntro: 'Escaneie o QR code abaixo',
+    },
+    error: {
+      'pix-qr-code':
+        'Parece que houve um erro ao gerar o código QR. Por favor, tente novamente.',
+    },
+  },
+
+  bannerCookies: {
+    accept: 'Aceitar e fechar',
+    message:
+      'Este site utiliza cookies para melhorar a sua experiência de navegação. Ao continuar a navegar no site, está a concordar com a nossa utilização de cookies.',
   },
 
   config: {

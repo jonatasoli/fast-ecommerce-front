@@ -3,7 +3,6 @@
 
   import { useI18n } from '#imports'
 
-
   const props = defineProps({
     isOpen: {
       type: Boolean,
@@ -15,7 +14,6 @@
 
   const { t } = useI18n()
 
-
   const closeModal = () => {
     emit('close')
   }
@@ -23,7 +21,6 @@
 <template>
   <div v-if="props.isOpen" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
-
       <h2 class="modal-title">{{ t('terms.importantAlert') }}</h2>
       <p class="modal-body">
         <strong>{{ t('terms.termsOfUse') }}</strong
@@ -38,7 +35,6 @@
       <button class="close-modal-btn" @click="closeModal">
         {{ t('terms.close') }}
       </button>
-
     </div>
   </div>
 </template>
