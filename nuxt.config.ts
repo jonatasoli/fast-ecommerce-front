@@ -11,7 +11,6 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
-  experimental: { reactivityTransform: true },
   css: ['vue3-flag-icons/styles'],
   ssr: false,
   nitro: {
