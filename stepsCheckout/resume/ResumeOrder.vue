@@ -9,7 +9,7 @@
   const { t } = useI18n()
   const { address, paymentCreditCard } = storeToRefs(cartStore)
   const { isMobile } = useDevice()
-  const preview = $ref<Checkout>({
+  const preview = ref<Checkout>({
     uuid: '',
     cart_items: [],
     affiliate: '',

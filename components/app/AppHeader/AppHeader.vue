@@ -16,7 +16,7 @@
 
   const { isMobile } = useDevice()
   const router = useRouter()
-  const search = $ref('')
+  const search = ref('')
   const config = useRuntimeConfig()
   const { t } = useI18n()
   const Logo = config.public.urlLogo

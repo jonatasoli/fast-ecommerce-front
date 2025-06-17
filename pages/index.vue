@@ -156,5 +156,4 @@
 
 <style lang="scss" scoped>
   @use '@/assets/scss/pages/index.scss' as *;
-
 </style>

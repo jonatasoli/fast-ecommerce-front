@@ -8,7 +8,7 @@
   const props = defineProps<Props>()
   const emit = defineEmits(['radio-change'])
   const { t } = useI18n()
-  const checkedValue = $ref(props.checkedValue)
+  const checkedValue = ref(props.checkedValue)
 
   function handleChange(value: string) {
     emit('radio-change', value)
