@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { ref } from 'vue' 
   import { useNuxtApp, onBeforeMount } from '#imports'
   import { useUserStore } from '@/stores/user'
   import { useCategoryStore } from '@/stores/categories'
