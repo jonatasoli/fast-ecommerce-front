@@ -4,7 +4,7 @@
   import { useUserStore } from '@/stores/user'
   import { useAuthStore } from '@/stores/auth'
 
-  const show = $ref(false)
+  const show = ref(false)
   const storeUser = useUserStore()
   const storeAuth = useAuthStore()
 

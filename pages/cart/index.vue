@@ -16,16 +16,16 @@
   const cartStore = useCartStore()
   const notification = useNotification()
   const { getCart, coupon, loading } = storeToRefs(cartStore)
-  const checkedFreightProductCode = $ref('PAC')
-  const validationCEP = $ref<'error' | 'success' | 'warning' | undefined>(
+  const checkedFreightProductCode = ref('PAC')
+  const validationCEP = ref<'error' | 'success' | 'warning' | undefined>(
     undefined,
   )
-  const validationCoupon = $ref<'error' | 'success' | 'warning' | undefined>(
+  const validationCoupon = ref<'error' | 'success' | 'warning' | undefined>(
     undefined,
   )
-  const messageInvalidCoupon = $ref('')
-  const messageInvalidCEP = $ref('')
-  const cart = $ref<Cart>()
+  const messageInvalidCoupon = ref('')
+  const messageInvalidCEP = ref('')
+  const cart = ref<Cart>()
 
   const { data, pending, error, refresh: refreshEstimate } = await useEstimate()
 

@@ -70,7 +70,7 @@ export const locales = [
 export function getPageFromRoute() {
   const page = useRoute().query.p?.toString() || ''
   const intPage = parseInt(page)
-  const pageRef = $ref(1)
+  const pageRef = ref(1)
 
   if (page && !isNaN(intPage) && intPage > 0) {
     pageRef.value = intPage

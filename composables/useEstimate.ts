@@ -3,10 +3,10 @@ interface IDataCart extends Cart {}
 
 export function useEstimate() {
   const config = useRuntimeConfig()
-  const pending = $ref(false)
-  const fetching = $ref(false)
-  const data = $ref<IDataCart | null>(null)
-  const error = $ref<string | null>(null)
+  const pending = ref(false)
+  const fetching = ref(false)
+  const data = ref<IDataCart | null>(null)
+  const error = ref<string | null>(null)
   const serverUrl = config.public.serverUrl
   const cartStore = useCartStore()
   const { cart, coupon, affiliate } = storeToRefs(cartStore)
