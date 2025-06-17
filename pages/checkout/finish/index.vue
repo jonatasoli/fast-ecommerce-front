@@ -24,8 +24,8 @@
 
   const { t } = useI18n()
   const cartStore = useCartStore()
-  const pending = ref<boolean>(false)
-  const checkout = ref<Checkout>()
+  const pending = $ref<boolean>(false)
+  const checkout = $ref<Checkout>()
 
   const isPix = computed<boolean>(() => {
     return cartStore.payment.payment_method?.toUpperCase() === 'PIX'

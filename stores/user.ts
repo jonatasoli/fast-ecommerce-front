@@ -12,9 +12,9 @@ interface IDataUser {
 }
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<IDataUser | null>(null)
-  const authenticated = ref(false)
-  const pending = ref(false)
+  const user = $ref<IDataUser | null>(null)
+  const authenticated = $ref(false)
+  const pending = $ref(false)
 
   async function getUser() {
     pending.value = true

@@ -20,9 +20,9 @@
   const router = useRouter()
   const route = useRoute()
   const notification = useNotification()
-  const redirect = ref(route.query.redirect as string | undefined)
+  const redirect = $ref(route.query.redirect as string | undefined)
   const { t } = useI18n()
-  const error = ref('')
+  const error = $ref('')
   const validationSchema = toTypedSchema(
     zod.object({
       username: zod.string().min(3, t('login.formValidation.requiredUsername')),

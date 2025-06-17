@@ -84,7 +84,7 @@
     },
   })
 
-  const showModal = ref(false)
+  const showModal = $ref(false)
   const name = defineComponentBinds('name', naiveConfig)
   const username = defineComponentBinds('username', naiveConfig)
   const mail = defineComponentBinds('mail', naiveConfig)
@@ -92,9 +92,9 @@
   const password = defineComponentBinds('password', naiveConfig)
   const confirmPassword = defineComponentBinds('confirmPassword', naiveConfig)
   const terms = defineComponentBinds('terms', naiveConfig)
-  const phone = ref('')
-  const countryCallingCode = ref('')
-  const phoneIsValid = ref(true)
+  const phone = $ref('')
+  const countryCallingCode = $ref('')
+  const phoneIsValid = $ref(true)
   const notification = useNotification()
 
   const onSubmit = handleSubmit(async (values) => {

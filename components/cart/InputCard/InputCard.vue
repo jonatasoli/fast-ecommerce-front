@@ -21,7 +21,7 @@
 
   const emit = defineEmits(['onButtonClick'])
 
-  const value = ref('')
+  const value = $ref('')
   value.value = props.receivedValue ?? ''
 
   function handleButtonClick() {
