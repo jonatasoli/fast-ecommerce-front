@@ -247,40 +247,37 @@
   @use '@/assets/scss/pages/products/product.scss' as *;
 
   .carousel-custom {
-    background: transparent; /* Fundo transparente */
+    background: transparent;
     position: relative;
   }
-  /* Adiciona uma sombra de caixa sutil e moderna para os elementos do carrossel */
+
   .carousel-media-wrapper {
     width: 100%;
-    height: 400px; /* Ajuste a altura conforme necessário */
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    border-radius: 8px; /* Bordas arredondadas para um visual mais suave */
-    transition: box-shadow 0.3s ease; /* Transição suave para a sombra */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
   }
 
-  /* Para o efeito hover: Aumenta a sombra ao passar o mouse */
   .carousel-media-wrapper:hover {
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra mais intensa no hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
 
-  /* Para as imagens */
   .product__info--image {
     width: 100%;
     height: 400px;
     object-fit: contain;
-    border-radius: 8px; /* Borda arredondada para um visual mais limpo */
+    border-radius: 8px;
   }
 
   .product__info--video {
     width: 100%;
     height: 500px;
     object-fit: contain;
-    border-radius: 8px; /* Borda arredondada para um visual mais limpo */
+    border-radius: 8px;
   }
-  /* Para os vídeos */
 </style>
