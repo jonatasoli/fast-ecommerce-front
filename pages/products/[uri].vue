@@ -19,6 +19,7 @@
   const config = useRuntimeConfig()
   const { t, locale } = useI18n()
   const cartStore = useCartStore()
+  const isAutoplay = ref(true)
 
   const { data: product, error } = await useFetch<ProductItem>(
     `${config.public.serverUrl}/product/uri/${route.params.uri}`,
@@ -87,21 +88,49 @@
   }
 
   const isPtBr = computed(() => locale.value === LOCALES.PT_BR)
+
+  function handleVideoPlay() {
+    isAutoplay.value = false
+  }
+
+  function handleVideoEnded() {
+    isAutoplay.value = true
+  }
 </script>
 
 <template>
   <main v-if="product" class="product">
     <div class="product__info">
-      <n-carousel v-if="carousel && carousel.length > 0" autoplay>
+      <n-carousel
+        v-if="carousel && carousel.length > 0"
+        :autoplay="isAutoplay"
+        class="carousel-custom"
+      >
         <n-carousel-item
-          v-for="(image, index) in carousel"
-          :key="image.media_id"
+          v-for="(media, index) in carousel"
+          :key="media.media_id"
         >
-          <img
-            class="product__info--image"
-            :src="image.uri"
-            :alt="`${t('productItem.productImg')} ${index + 1}`"
-          />
+          <div class="carousel-media-wrapper">
+            <div v-if="media.type === 'PHOTO'">
+              <img
+                class="product__info--image"
+                :src="media.uri"
+                :alt="`${t('productItem.productImg')} ${index + 1}`"
+              />
+            </div>
+
+            <div v-else-if="media.type === 'VIDEO'">
+              <video
+                class="product__info--video"
+                controls
+                :src="media.uri"
+                :alt="`${t('productItem.productVideo')} ${index + 1}`"
+                @play="handleVideoPlay"
+                @ended="handleVideoEnded"
+                @pause="handleVideoEnded"
+              ></video>
+            </div>
+          </div>
         </n-carousel-item>
       </n-carousel>
 
@@ -216,4 +245,39 @@
 
 <style lang="scss" scoped>
   @use '@/assets/scss/pages/products/product.scss' as *;
+
+  .carousel-custom {
+    background: transparent;
+    position: relative;
+  }
+
+  .carousel-media-wrapper {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .carousel-media-wrapper:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .product__info--image {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .product__info--video {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
 </style>
