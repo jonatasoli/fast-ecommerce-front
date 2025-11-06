@@ -8,7 +8,7 @@
   } from '#imports'
   // import { ProductCard } from '@/components/shared'
   import { FeatureCard, FeatureHero } from '~/components/home'
-  // import ProductImage from '@/assets/images/product-item-example.jpeg'
+
   import { useProductsStore } from '~/stores/products'
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
@@ -21,8 +21,8 @@
   const store = useProductsStore()
 
   const categoryStore = useCategoryStore()
-  // const cartStore = useCartStore()
-  // const router = useRouter()
+  const cartStore = useCartStore()
+  const router = useRouter()
   const serverUrl = useRuntimeConfig().public.serverUrl
   const locale = useCookie('i18n_redirected').value || 'pt-BR'
   const currency = detectCurrencyByLocale(locale)
@@ -77,26 +77,26 @@
       return []
     }
 
-    return latest.value.products.slice(0, 4)
+    return latest.value.products.slice(0, 5)
   })
 
-  // async function handleAddToCart(product: ProductItem) {
-  //   if (!product) {
-  //     return
-  //   }
+  async function handleAddToCart(product: ProductItem) {
+    if (!product) {
+      return
+    }
 
-  //   await cartStore.addToCart({
-  //     image_path: product.image_path,
-  //     name: product.name,
-  //     price: product.price,
-  //     product_id: product.product_id,
-  //     quantity: 1,
-  //     discount_price: product.discount,
-  //     available_quantity: product.quantity,
-  //   })
+    await cartStore.addToCart({
+      image_path: product.image_path,
+      name: product.name,
+      price: product.price,
+      product_id: product.product_id,
+      quantity: 1,
+      discount_price: product.discount,
+      available_quantity: product.quantity,
+    })
 
-  //   router.push('/cart')
-  // }
+    router.push('/cart')
+  }
 </script>
 
 <template>
@@ -134,7 +134,10 @@
           @add-to-cart="handleAddToCart"
         /> -->
       </div>
-      <ProductCardImg :latest-products="latestProducts" />
+      <ProductCardImg
+        :latest-products="latestProducts"
+        :on-add-to-cart="handleAddToCart"
+      />
     </div>
 
     <div v-if="categories.length > 0" class="home__features container">

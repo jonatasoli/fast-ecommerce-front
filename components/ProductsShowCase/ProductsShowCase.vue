@@ -69,9 +69,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-
     background-color: #f7f7f7;
-    aspect-ratio: 16 / 9;
     max-height: 720px;
   }
 
@@ -159,6 +157,18 @@
     .dots span {
       width: 8px;
       height: 8px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1199px) {
+    .banner-carousel {
+      max-height: 450px;
+    }
+  }
+
+  @media (min-width: 1800px) {
+    .banner-carousel {
+      max-height: 1080px;
     }
   }
 </style>
