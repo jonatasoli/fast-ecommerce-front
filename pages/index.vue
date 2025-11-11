@@ -6,9 +6,9 @@
     useI18n,
     useRuntimeConfig,
   } from '#imports'
-  import { ProductCard } from '@/components/shared'
+  // import { ProductCard } from '@/components/shared'
   import { FeatureCard, FeatureHero } from '~/components/home'
-  import ProductImage from '@/assets/images/product-item-example.jpeg'
+
   import { useProductsStore } from '~/stores/products'
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
@@ -68,16 +68,16 @@
       })),
   )
 
-  const carouselBackground = (image?: string) => ({
-    backgroundImage: `url('${image ?? ProductImage}')`,
-  })
+  // const carouselBackground = (image?: string) => ({
+  //   backgroundImage: `url('${image ?? ProductImage}')`,
+  // })
 
   const latestProducts = computed(() => {
     if (!latest.value) {
       return []
     }
 
-    return latest.value.products.slice(0, 4)
+    return latest.value.products.slice(0, 5)
   })
 
   async function handleAddToCart(product: ProductItem) {
@@ -101,7 +101,7 @@
 
 <template>
   <main class="home">
-    <div
+    <!-- <div
       v-if="carousel && carousel.length > 0"
       class="home__carousel container"
     >
@@ -120,17 +120,24 @@
           class="carousel-slide"
         />
       </n-carousel>
+    </div> -->
+    <div>
+      <ProductsShowCase :carousel="carousel ?? []" />
     </div>
     <div v-if="latestProducts.length > 0" class="home__news">
       <h2>{{ t('home.news.title') }}</h2>
       <div class="home__news-list">
-        <ProductCard
+        <!-- <ProductCard
           v-for="product in latestProducts"
           :key="product.product_id"
           :product="product"
           @add-to-cart="handleAddToCart"
-        />
+        /> -->
       </div>
+      <ProductCardImg
+        :latest-products="latestProducts"
+        :on-add-to-cart="handleAddToCart"
+      />
     </div>
 
     <div v-if="categories.length > 0" class="home__features container">
