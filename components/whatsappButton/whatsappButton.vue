@@ -1,44 +1,23 @@
 <template>
-  <div class="whatsapp-button" @click="contactWhatsApp">
-    <img src="../../assets//images//icons8-whatsapp.svg" alt="" />
-  </div>
+  <div></div>
 </template>
 
-<script lang="ts" setup>
-  import { defineProps } from 'vue'
-  import { useNuxtApp } from '#app'
+<script setup lang="ts">
+  import { onMounted } from 'vue'
 
-  const props = defineProps<{
-    message?: string
-    buttonText?: string
-  }>()
+  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js'
 
-  const { $whatsapp } = useNuxtApp()
-
-  const contactWhatsApp = () => {
-    const whatsappMessage =
-      props.message || 'Olá, gostaria de saber mais informações.'
-    $whatsapp(whatsappMessage)
-  }
+  onMounted(() => {
+    Typebot.initBubble({
+      typebot: 'my-typebot-18eihra',
+      apiHost: 'https://bot.hairschoolacademy.com',
+      previewMessage: {
+        message: 'Tem alguma dúvida? Entre em contato conosco.',
+      },
+      theme: {
+        button: { backgroundColor: '#598E71', size: 'large' },
+        chatWindow: { backgroundColor: '#fff' },
+      },
+    })
+  })
 </script>
-
-<style scoped lang="scss">
-  .whatsapp-button {
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
-
-    border-radius: 50%;
-    padding: 10px;
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-    img {
-      width: 50px;
-      height: 50px;
-    }
-  }
-</style>
