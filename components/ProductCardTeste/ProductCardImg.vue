@@ -74,18 +74,15 @@
     display: flex;
     gap: 1.5rem;
     overflow-x: auto;
-    padding: 1rem;
     scroll-snap-type: x mandatory;
     width: 100%;
     box-sizing: border-box;
-    scrollbar-color: #d4c7a0 transparent; /* cor tema */
+    scrollbar-color: #d4c7a0 transparent;
     scrollbar-width: thin;
-    padding: 1rem 1rem; /* ajuste lateral: esquerda e direita */
-    scroll-padding-inline: 1rem; /* garante snap respeite o padding ao "encaixar" */
-    box-sizing: border-box;
+    padding: 1rem 1rem;
+    scroll-padding-inline: 1rem;
   }
 
-  /* Estilo da scrollbar */
   .product-row::-webkit-scrollbar {
     height: 8px;
   }
@@ -97,7 +94,6 @@
     background: #da9a39;
   }
 
-  /* Cards */
   .product-card {
     flex: 0 0 260px;
     background: #ffffff;
@@ -215,36 +211,33 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* distribui imagem, texto e botão */
-    height: 470px; /* altura total fixa */
+    justify-content: space-between;
+    height: 470px;
   }
 
-  /* Garante altura igual para área de texto (título + preço) */
   .product-title {
-    min-height: 2.6em; /* mantém duas linhas fixas */
+    min-height: 2.6em;
     line-height: 1.3em;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* corta nomes longos */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .product-price {
-    min-height: 2.2em; /* garante espaço fixo p/ preço */
+    min-height: 2.2em;
   }
 
-  /* Botão sempre fixo na base do card */
   .buy-button,
   .out-of-stock-badge {
     margin-top: auto;
     align-self: center;
   }
 
-  /* Responsividade */
   @media (max-width: 1024px) {
     .product-card {
-      flex: 0 0 240px; /* ligeiramente mais largo em tablets */
-      height: 440px; /* ajusta proporção */
+      flex: 0 0 240px;
+      height: 440px;
     }
     .image-wrapper {
       height: 250px;
@@ -253,13 +246,13 @@
 
   @media (max-width: 640px) {
     .product-card {
-      flex: 0 0 65%; /* ocupa 85% da largura da tela (ideal p/ carrossel mobile) */
-      height: 380px; /* altura mais enxuta */
+      flex: 0 0 65%;
+      height: 380px;
       padding: 0.9rem;
     }
 
     .image-wrapper {
-      height: 200px; /* proporcional ao novo tamanho */
+      height: 200px;
     }
 
     .product-title {
