@@ -1,9 +1,39 @@
 <script setup lang="ts">
-  import { useNuxtApp, onBeforeMount } from '#imports'
+  import {
+    useNuxtApp,
+    onBeforeMount,
+    useRoute,
+    useRuntimeConfig,
+    useHead,
+    useI18n,
+  } from '#imports'
   import { useUserStore } from '@/stores/user'
   import { useCategoryStore } from '@/stores/categories'
+  import { useCartStore } from '@/stores/cart'
 
   const nuxtApp = useNuxtApp()
+  const config = useRuntimeConfig()
+  const { t } = useI18n()
+  const Logo = config.public.urlLogo
+
+  useHead({
+    titleTemplate: (title) => (title ? `${title} | Gattorosa` : t('seo.title')),
+
+    meta: [
+      { name: 'description', content: t('seo.description') },
+
+      { property: 'og:site_name', content: 'Gattorosa' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: t('seo.ogTitle') },
+      { property: 'og:description', content: t('seo.ogDescription') },
+      {
+        property: 'og:image',
+        content: Logo,
+      },
+    ],
+
+    link: [{ rel: 'canonical', href: config.public.serverUrl }],
+  })
 
   const storeUser = useUserStore()
   const storeCategory = useCategoryStore()
@@ -16,6 +46,7 @@
     await storeUser.getUser()
     await storeCategory.getCategorys()
     await nuxtApp.$router.isReady()
+
     if (affiliate) {
       await cartStore.setAffiliate(affiliate)
     }

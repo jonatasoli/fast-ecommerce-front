@@ -12,6 +12,16 @@ export default {
     buyPurchasing: '* AO COMPRAR, AFIRMO SER UM PROFISSIONAL CABELEIREIRO',
     close: 'Fechar',
   },
+
+  seo: {
+    title: 'Gattorosa | Cosméticos e Maquiagem',
+    description: 'Descubra produtos profissionais de beleza...',
+    ogTitle: 'Gattorosa - Beleza e Cosméticos',
+    ogDescription: 'Produtos profissionais com entrega rápida.',
+  },
+  common: {
+    site_name: 'Gattorosa',
+  },
   address:
     'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
   navigation: {
