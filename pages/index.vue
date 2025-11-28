@@ -6,7 +6,7 @@
     useI18n,
     useRuntimeConfig,
   } from '#imports'
-  // import { ProductCard } from '@/components/shared'
+
   import { FeatureCard, FeatureHero } from '~/components/home'
 
   import { useProductsStore } from '~/stores/products'
@@ -68,10 +68,6 @@
       })),
   )
 
-  // const carouselBackground = (image?: string) => ({
-  //   backgroundImage: `url('${image ?? ProductImage}')`,
-  // })
-
   const latestProducts = computed(() => {
     if (!latest.value) {
       return []
@@ -101,39 +97,12 @@
 
 <template>
   <main class="home">
-    <!-- <div
-      v-if="carousel && carousel.length > 0"
-      class="home__carousel container"
-    >
-      <n-carousel
-        show-arrow
-        autoplay
-        draggable
-        slides-per-view="auto"
-        :space-between="20"
-      >
-        <NuxtLink
-          v-for="(product, index) in carousel"
-          :key="index"
-          :style="carouselBackground(product.image_path)"
-          :to="`/products/${product.uri}`"
-          class="carousel-slide"
-        />
-      </n-carousel>
-    </div> -->
     <div>
       <ProductsShowCase :carousel="carousel ?? []" />
     </div>
     <div v-if="latestProducts.length > 0" class="home__news">
       <h2>{{ t('home.news.title') }}</h2>
-      <div class="home__news-list">
-        <!-- <ProductCard
-          v-for="product in latestProducts"
-          :key="product.product_id"
-          :product="product"
-          @add-to-cart="handleAddToCart"
-        /> -->
-      </div>
+      <div class="home__news-list"></div>
       <ProductCardImg
         :latest-products="latestProducts"
         :on-add-to-cart="handleAddToCart"

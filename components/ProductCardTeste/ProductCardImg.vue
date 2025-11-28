@@ -72,15 +72,16 @@
 <style scoped>
   .product-row {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-auto-flow: row;
     gap: 1.5rem;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+
     width: 100%;
     box-sizing: border-box;
-    scrollbar-color: #d4c7a0 transparent;
-    scrollbar-width: thin;
+
     padding: 1rem 1rem;
-    scroll-padding-inline: 1rem;
   }
 
   .product-row::-webkit-scrollbar {
