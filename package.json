@@ -2,7 +2,7 @@
   "type": "module",
   "private": true,
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "nuxt dev",
