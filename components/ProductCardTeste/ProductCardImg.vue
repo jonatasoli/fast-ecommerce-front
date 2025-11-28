@@ -131,7 +131,7 @@
   }
 
   .product-image {
-    width: 100%;
+    width: 98%;
     height: auto;
     object-fit: cover;
     transition: transform 0.4s ease;
