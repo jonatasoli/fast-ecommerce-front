@@ -247,6 +247,7 @@
   @use '@/assets/scss/pages/products/product.scss' as *;
 
   .carousel-custom {
+
     background: transparent;
     position: relative;
   }
@@ -254,10 +255,12 @@
   .carousel-media-wrapper {
     width: 100%;
     height: 400px;
+
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
@@ -267,17 +270,22 @@
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
 
+
   .product__info--image {
     width: 100%;
     height: 400px;
     object-fit: contain;
+
     border-radius: 8px;
+
   }
 
   .product__info--video {
     width: 100%;
     height: 500px;
     object-fit: contain;
+
     border-radius: 8px;
   }
+
 </style>
