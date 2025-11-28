@@ -9,7 +9,7 @@
     watch,
     useCookie,
   } from '#imports'
-  import { ProductCard, ProductSkeleton } from '~/components/shared'
+  import { ProductSkeleton } from '~/components/shared'
   import { getPageFromRoute } from '~/utils/helpers'
   import type { PaginatedProducts } from '~/utils/types'
 
@@ -108,10 +108,11 @@
     <div v-else-if="products.length === 0" class="category__empty">
       <p>{{ t(`categoryPage.empty`) }}</p>
     </div>
-    <div v-else class="category__products">
-      <div v-for="product in products" :key="product.product_id">
-        <ProductCard v-bind="{ product }" @add-to-cart="handleAddToCart" />
-      </div>
+    <div v-else>
+      <ProductCardImg
+        :latest-products="products"
+        :on-add-to-cart="handleAddToCart"
+      />
     </div>
     <n-space align="flex-end" vertical class="category__pagination">
       <n-pagination v-model:page="page" :page-count="totalPages" size="large" />
