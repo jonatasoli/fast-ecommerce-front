@@ -1,24 +1,17 @@
 <script lang="ts" setup>
-  import {
-    computed,
-    useAsyncData,
-    useFetch,
-    useI18n,
-    useRuntimeConfig,
-  } from '#imports'
+  import { computed, useFetch, useI18n, useRuntimeConfig } from '#imports'
 
   import { FeatureCard, FeatureHero } from '~/components/home'
 
-  import { useProductsStore } from '~/stores/products'
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
+  import type { Carousel } from '~/types/products'
 
   useHead({
     title: 'Home',
   })
 
   const { t, te } = useI18n()
-  const store = useProductsStore()
 
   const categoryStore = useCategoryStore()
   const cartStore = useCartStore()
@@ -27,8 +20,8 @@
   const locale = useCookie('i18n_redirected').value || 'pt-BR'
   const currency = detectCurrencyByLocale(locale)
 
-  const { data: carousel } = await useAsyncData(() =>
-    store.getProductsShowcase(),
+  const { data: carousel } = await useFetch<Carousel[]>(
+    `${serverUrl}/product/media/teste-banner`,
   )
 
   const { data: featured } = await useFetch<{ products: ProductItem[] }>(

@@ -1,14 +1,9 @@
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue'
-
-  interface CarouselItem {
-    product_id: number
-    name: string
-    image_path: string
-  }
+  import type { Carousel } from '~/types/products'
 
   const props = defineProps<{
-    carousel: CarouselItem[]
+    carousel: Carousel[]
   }>()
 
   const currentIndex = ref(0)
@@ -30,7 +25,7 @@
   }
 
   onMounted(() => {
-    intervalId = setInterval(nextBanner, 100000)
+    intervalId = setInterval(nextBanner, 4000)
   })
   onUnmounted(() => {
     if (intervalId) {
@@ -45,8 +40,8 @@
       class="banner-wrapper"
       :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
     >
-      <div v-for="item in carousel" :key="item.product_id" class="banner-card">
-        <img :src="item.image_path" :alt="item.name" />
+      <div v-for="item in carousel" :key="item.media_id" class="banner-card">
+        <img :src="item.uri" :alt="item.type" />
       </div>
     </div>
 
