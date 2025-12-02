@@ -1,5 +1,6 @@
 # Fast Ecommerce Front
 
+
 ## Project Configuration
 
 This project is configured to use environment variables and runtime configuration for various services and features. Below are the details on how to set up the necessary environment variables.
