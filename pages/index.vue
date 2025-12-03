@@ -1,8 +1,6 @@
 <script lang="ts" setup>
   import { computed, useFetch, useI18n, useRuntimeConfig } from '#imports'
-
   import { FeatureCard, FeatureHero } from '~/components/home'
-
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
   import type { Carousel } from '~/types/products'
@@ -19,6 +17,8 @@
   const serverUrl = useRuntimeConfig().public.serverUrl
   const locale = useCookie('i18n_redirected').value || 'pt-BR'
   const currency = detectCurrencyByLocale(locale)
+
+  await categoryStore.getCategorys(true)
 
   const { data: carousel } = await useFetch<Carousel[]>(
     `${serverUrl}/product/media/teste-banner`,
@@ -50,6 +50,7 @@
 
   const categories = computed(() =>
     categoryStore.categories
+      .filter((category) => category.showcase === true) // Filtra apenas showcase true
       .filter(({ name }) => !['news', 'sales'].includes(name))
       .slice(0, 3)
       .map((category) => ({
