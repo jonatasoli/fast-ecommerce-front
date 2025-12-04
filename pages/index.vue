@@ -1,11 +1,12 @@
 <script lang="ts" setup>
   import { computed, useFetch, useI18n, useRuntimeConfig } from '#imports'
 
-  import { FeatureCard, FeatureHero } from '~/components/home'
+  import { FeatureHero } from '~/components/home'
 
   import type { FeatureItem, ProductItem } from '~/utils/types'
   import { useCategoryStore } from '~/stores/categories'
   import type { Carousel } from '~/types/products'
+  import CategoryCard from '~/components/CategoryCard/CategoryCard.vue'
 
   useHead({
     title: 'Home',
@@ -108,7 +109,7 @@
         :key="category.uri"
         class="home__features-item"
       >
-        <FeatureCard :item="category" />
+        <CategoryCard :item="category" />
       </div>
     </div>
 
