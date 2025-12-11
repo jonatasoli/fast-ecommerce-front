@@ -13,7 +13,7 @@ export default {
     close: 'Close',
   },
   address:
-    'Brazilian Beauty Academy Hair School - CNPJ: 09.675.354/0001-00 © All rights reserved. 2023',
+    'Academia Brasileira de Beleza Hair School - Tax ID: 09.675.354/0001-00 Customer Service: +55 (11) 95163-9542 - © All rights reserved. 2023',
   navigation: {
     news: 'News',
     latest: 'Latest',

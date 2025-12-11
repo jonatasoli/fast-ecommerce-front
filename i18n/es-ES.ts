@@ -15,7 +15,7 @@ export default {
     close: 'Cerrar',
   },
   address:
-    'Academia Brasileña de Belleza Hair School - CNPJ: 09.675.354/0001-00 © Todos los derechos reservados. 2023',
+    'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 Servicio al Cliente: +55 (11) 95163-9542 - © Todos los derechos reservados. 2023',
   navigation: {
     news: 'Novedades',
     latest: 'Novedades',
