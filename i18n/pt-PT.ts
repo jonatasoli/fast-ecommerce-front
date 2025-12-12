@@ -14,7 +14,7 @@ export default {
     close: 'Fechar',
   },
   address:
-    'Brazilian Beauty Academy Hair School - NIF: 09.675.354/0001-00 © Todos os direitos reservados. 2023',
+    'Academia Brasileira de Beleza Hair School - CNPJ: 09.675.354/0001-00 SAC pelo telefone: (11) 95163-9542 - © Todos os direitos reservados. 2023',
   navigation: {
     news: 'Novidades',
     latest: 'Lançamentos',
