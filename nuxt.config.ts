@@ -8,6 +8,11 @@ const { VITEST, NODE_ENV, SERVER_BASE_URL } = process.env
 const transpileNaive = NODE_ENV === 'production' || VITEST !== undefined
 
 export default defineNuxtConfig({
+  routeRules: {
+    '/api/proxy/**': {
+      proxy: 'https://api.gattorosa.com.br/**',
+    },
+  },
   imports: {
     autoImport: true,
   },
